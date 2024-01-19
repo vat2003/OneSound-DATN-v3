@@ -11,6 +11,7 @@ import {ManagesongAdminComponent} from "./pages/adminPage/manage/managesong-admi
 import {ManageuserAdminComponent} from "./pages/adminPage/manage/manageuser-admin/manageuser-admin.component";
 import {ChartComponent} from "./pages/adminPage/chart/chart.component";
 import {ManageimageAdminComponent} from "./pages/adminPage/manage/manageimage-admin/manageimage-admin.component";
+import {UserHomeComponentComponent} from "./pages/userPage/user-home-component/user-home-component.component";
 
 export const routes: Routes = [
   {path: '', component: Notfound404Component},
@@ -31,6 +32,7 @@ export const routes: Routes = [
       {path: 'dashboard', component: BlankComponent}
     ]
   },
+  {path: 'onesound/home', component: UserHomeComponentComponent}
 
 
 ];
