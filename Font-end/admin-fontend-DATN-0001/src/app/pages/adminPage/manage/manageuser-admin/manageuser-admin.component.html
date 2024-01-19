@@ -1,0 +1,133 @@
+<!-- Form Start -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4 text-uppercase">User management</h6>
+        <form>
+          <div class="mb-3">
+            <label class="form-label">ID</label>
+            <input type="text" class="form-control" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Fullname</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input type="email" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Phone number</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Birthday</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" >Gender</label> <br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                     value="option1">
+              <label class="form-check-label" for="inlineRadio1">Female</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                     value="option2">
+              <label class="form-check-label" for="inlineRadio2">Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                     value="option3" disabled>
+              <label class="form-check-label" for="inlineRadio3">Other (disabled)</label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label> <br>
+            <div class="btn-group" role="group">
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
+                     checked>
+              <label class="btn btn-outline-primary" for="btnradio1">USER</label>
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
+                     checked>
+              <label class="btn btn-outline-primary" for="btnradio1">ADMIN</label>
+              <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+              <label class="btn btn-outline-primary" for="btnradio3">PREMIUM</label>
+            </div>
+          </div>
+          <label class="form-label">Active</label> <br>
+          <div class="btn-group mb-3" role="group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
+                   checked>
+            <label class="btn btn-outline-primary" for="btnradio1">Active</label>
+
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
+          </div>
+          <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+          <br>
+          <label class="form-label">Avatar</label>
+          <div class="file-upload">
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+            <div class="image-upload-wrap">
+              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+              <div class="drag-text">
+                <h3>Drag and drop a file or select add Image</h3>
+              </div>
+            </div>
+            <div class="file-upload-content">
+              <img class="file-upload-image" src="#" alt="your image" />
+              <div class="image-title-wrap">
+                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+              </div>
+            </div>
+          </div>
+
+          <br>
+          <button type="submit" class="btn btn-primary mt-4">Create/Update</button>
+          <button type="submit" class="btn btn-danger mt-4">Delete</button>
+          <button type="submit" class="btn btn-warning mt-4">Reset</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">USER LIST</h6>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Email</th>
+            <th scope="col">FullName</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>jhonemail.com</td>
+            <td>John</td>
+            <td>0328645096</td>
+            <td><button class="btn btn-primary">Detail</button></td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- Form End -->
