@@ -4,6 +4,7 @@ import {UserTabExploreComponent} from "../user-tab-explore/user-tab-explore.comp
 import {UserTabChartsComponent} from "../user-tab-charts/user-tab-charts.component";
 import {UserTabRadioComponent} from "../user-tab-radio/user-tab-radio.component";
 import {UserTabFollowingComponent} from "../user-tab-following/user-tab-following.component";
+import {NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-user-home-component',
@@ -13,7 +14,8 @@ import {UserTabFollowingComponent} from "../user-tab-following/user-tab-followin
     UserTabExploreComponent,
     UserTabChartsComponent,
     UserTabRadioComponent,
-    UserTabFollowingComponent
+    UserTabFollowingComponent,
+    NgOptimizedImage
   ],
   templateUrl: './user-home-component.component.html',
   styleUrl: './user-home-component.component.scss'

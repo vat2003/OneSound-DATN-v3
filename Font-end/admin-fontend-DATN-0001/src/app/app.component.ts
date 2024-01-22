@@ -89,6 +89,7 @@ export class AppComponent implements OnInit {
     this.addScript('assets/data/tabExplore/events.js');
     this.addScript('assets/data/tabExplore/newPlaylists.js');
     this.addScript('assets/data/tabExplore/favArtists.js');
+    // this.addScript('assets/data/tabExplore/brands.js');
     this.addScript('assets/data/specialPlaylists.js');
     this.addScript('assets/data/normalPlaylists.js');
     this.addScript('assets/data/tabCharts/playlistCharts.js');
@@ -151,6 +152,7 @@ export class AppComponent implements OnInit {
     this.removeScript('assets/data/tabExplore/events.js');
     this.removeScript('assets/data/tabExplore/newPlaylists.js');
     this.removeScript('assets/data/tabExplore/favArtists.js');
+    // this.removeScript('assets/data/tabExplore/brands.js');
     this.removeScript('assets/data/specialPlaylists.js');
     this.removeScript('assets/data/normalPlaylists.js');
     this.removeScript('assets/data/tabCharts/playlistCharts.js');

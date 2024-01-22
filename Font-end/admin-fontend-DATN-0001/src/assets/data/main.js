@@ -205,7 +205,7 @@ const app = {
                                 <span class="playlist__song-title info__title">${song.name}</span>
                                 <p class="playlist__song-author info__author">
                                     ${song.singer.map((singer, index) => {
-            return app.html`
+          return app.html`
                                         <a href="#" class="is-ghost">${singer}</a>${index < song.singer.length - 1 && ', '}
                                         `
         })}
