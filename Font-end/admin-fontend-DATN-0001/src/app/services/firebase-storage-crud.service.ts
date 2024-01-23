@@ -84,4 +84,15 @@ export class FirebaseStorageCrudService {
     }
   }
 
+  async getFile(filePath: string) {
+    const fileRef = ref(this.storage, filePath);
+    getDownloadURL(fileRef)
+      .then((url) => {
+        console.log(url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
 }
