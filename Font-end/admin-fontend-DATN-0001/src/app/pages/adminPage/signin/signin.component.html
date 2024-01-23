@@ -1,35 +1,69 @@
-<div class="container-fluid position-relative d-flex p-0">
-  <!-- Sign In Start -->
-  <div class="container-fluid">
-    <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
-      <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-        <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <a routerLink="/onesound/admin" class="">
-              <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>OneSound</h3>
-            </a>
-            <h3>Sign In</h3>
+<div class="login-container">
+  <div class="logo-login">
+    <a href="/home/index" class="nav-brand"><img src="/img/core-img/logo.png" alt=""></a>
+  </div>
+  <div class="login-title">Log In</div>
+  <div class="login-form">
+    <div class="login-form-inner">
+      <form action="/auth/login" method="post" class="signin-form">
+        <div class="form-item">
+          <div class="login-form-inner-title">
+            Enter your email
           </div>
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput">Email address</label>
-          </div>
-          <div class="form-floating mb-4">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-          </div>
-          <div class="d-flex align-items-center justify-content-between mb-4">
-            <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1">
-              <label class="form-check-label" for="exampleCheck1">Check me out</label>
-            </div>
-            <a href="">Forgot Password</a>
-          </div>
-          <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
-          <p class="text-center mb-0">Don't have an Account? <a routerLink="/onesound/admin/signup">Sign Up</a></p>
+          <input type="text" name="username" class="form-control" placeholder="Email" required>
+
         </div>
-      </div>
+        <div class="form-item">
+          <div class="login-form-inner-title">
+            Enter your password
+          </div>
+          <input id="password-field" name="password" type="password" class="form-control"
+                 placeholder="Password" required>
+
+        </div>
+        <!--        <h5 class="mb-4 text-center" style="color: red;">[[${mess}]]</h5>-->
+
+
+        <div class="form-item">
+          <a class="login-form-inner-title" href="/forgotPassword">Forgot your Password?</a>
+        </div>
+
+        <button id="login-btn" class="login-button" type="submit">
+          Continue
+        </button>
+        <div class="form-item-or">or</div>
+      </form>
+      <button class="login-button-social">
+        <!--        <a th:href="@{/oauth2/authorization/facebook}" style="text-decoration: none;">-->
+        <a style="text-decoration: none;">
+          <i class="fa-brands fa-facebook"></i>
+          <span>Continue with Facebook</span>
+        </a>
+      </button>
+      <button class="login-button-social">
+        <a th:href="@{/oauth2/authorization/google}" style="text-decoration: none;">
+          <i class="fa-brands fa-google"></i><span> &nbsp;Continue with Google</span>
+        </a>
+      </button>
+
+
+      <button class="signup-button" routerLink="/onesound/admin/signup">
+        <a class="" >
+          Create Account</a>
+      </button>
     </div>
   </div>
-  <!-- Sign In End -->
+  <div class="login-footer">
+    <div class="login-footer-first">
+
+      © 2023 One Sound
+    </div>
+    <div class="login-footer-second">
+      <a href="">Privacy Notice</a>
+      <a href=""> Terms and Conditions</a>
+      <a href=""> Cookie Settings</a>
+      <a href="">Accessibility Statement</a>
+      <a href=""> Contact</a>
+    </div>
+  </div>
 </div>
