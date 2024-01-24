@@ -18,7 +18,6 @@ export class FirebaseStorageCrudService {
 
   async uploadFile(folderName: string, file: File): Promise<void> {
     const filePath = folderName + `/${file.name}`;
-    // const filePath = `archivos/${file.name}`;
     const fileRef = ref(this.storage, filePath);
     const uploadFile = uploadBytesResumable(fileRef, file);
 
@@ -84,15 +83,20 @@ export class FirebaseStorageCrudService {
     }
   }
 
-  async getFile(filePath: string) {
+  // async getFile(filePath: string): Promise<string> {
+  //   const fileRef = ref(this.storage, filePath);
+  //   getDownloadURL(fileRef)
+  //     .then((url) => {
+  //       console.log(url);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
+  async getFile(filePath: string): Promise<string> {
     const fileRef = ref(this.storage, filePath);
-    getDownloadURL(fileRef)
-      .then((url) => {
-        console.log(url);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    return await getDownloadURL(fileRef);
   }
+
 
 }

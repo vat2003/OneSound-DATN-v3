@@ -1,16 +1,21 @@
 import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Genre} from "../../adminEntityService/adminEntity/genre/genre";
 import {GenreServiceService} from "../../adminEntityService/adminService/genre-service.service";
 import {ActivatedRoute, Router} from '@angular/router';
+import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-crud.service";
+import {typeCheckFilePath} from "@angular/compiler-cli/src/ngtsc/typecheck";
+import {from, Observable} from "rxjs";
 
 @Component({
   selector: 'app-managegenre-admin',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,],
+    FormsModule,
+    NgOptimizedImage,
+  ],
   templateUrl: './managegenre-admin.component.html',
   styleUrl: './managegenre-admin.component.scss'
 })
@@ -19,13 +24,16 @@ export class ManagegenreAdminComponent implements OnInit {
   Genre: Genre[] = [];
   Genree: Genre = new Genre();
   imageUrl: string = '';
+  setImageUrl: string = '';
+  imageFile: any;
 
   constructor
   (private GenreService: GenreServiceService,
    private router: Router,
    private route: ActivatedRoute,
    private el: ElementRef,
-   private renderer: Renderer2
+   private renderer: Renderer2,
+   protected firebaseStorage: FirebaseStorageCrudService
   ) {
   }
 
@@ -47,7 +55,9 @@ export class ManagegenreAdminComponent implements OnInit {
         this.renderer.setAttribute(this.el.nativeElement.querySelector('.file-upload-image'), 'src', e.target.result);
         this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'block');
       };
-
+      this.setImageUrl = 'adminManageImage/genre/' + archivoSelectcionado.name;
+      this.imageFile = archivoSelectcionado;
+      console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
       this.removeUpload();
@@ -72,10 +82,14 @@ export class ManagegenreAdminComponent implements OnInit {
 
 
   getEmployees() {
-    this.GenreService.getCategories(0, 10).subscribe(data => {
+    this.GenreService.getCategories(0, 10).subscribe(async data => {
       console.log(data);
       this.Genre = data.content;
+      for (const genre of this.Genre) {
+        genre.image = await this.firebaseStorage.getFile(genre.image);
+      }
     });
+
   }
 
   goToSingerList() {
@@ -84,12 +98,17 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   saveGenre() {
+    this.Genree.image = this.setImageUrl;
     this.GenreService.createGenre(this.Genree).subscribe(
-      (data) => {
+      async (data) => {
+        if (this.Genree.image != null) {
+          await this.firebaseStorage.uploadFile('adminManageImage/genre/', this.imageFile);
+        }
         console.log(data);
       },
       (error) => console.log(error)
     );
+
   }
 
   updateGender(id: number) {

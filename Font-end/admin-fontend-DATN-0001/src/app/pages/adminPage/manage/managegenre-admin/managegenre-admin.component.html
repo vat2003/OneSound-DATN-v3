@@ -11,9 +11,9 @@
           </div>
           <div class="form-group m-3">
             <label for="description">Description</label>
-                        <input type="text" class="form-control" id="description" name="description"
-                               [(ngModel)]="Genree.description">
-<!--            <textarea class="form-control" id="description" name="description"-->
+            <input type="text" class="form-control" id="description" name="description"
+                   [(ngModel)]="Genree.description">
+            <!--            <textarea class="form-control" id="description" name="description"-->
             <!--                      [(ngModel)]="Genree.description">-->
             <!--            </textarea>-->
 
@@ -98,10 +98,14 @@
           </tr>
           </thead>
           <tbody>
+          <!--          <img [src]="setImage('adminManageImage/genre/logo_luoicode.jpg') | async" alt="a">-->
+          <!--            <img src="{{setImage('adminManageImage/genre/logo_luoicode.jpg')}}" alt="a">-->
           <tr *ngFor="let Genre of Genre">
             <th scope="row">{{ Genre.id }}</th>
             <td>{{ Genre.name }}</td>
-            <td>{{ Genre.image }}</td>
+            <!--            <td>{{ Genre.image }}</td>-->
+            <td><img src="{{Genre.image }}" width="70" height="70" alt="Genre image"></td>
+
             <td>{{ Genre.description }}</td>
 
             <td>
