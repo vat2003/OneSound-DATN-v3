@@ -85,6 +85,7 @@ export class ManagegenreAdminComponent implements OnInit {
     this.GenreService.getCategories(0, 10).subscribe(async data => {
       console.log(data);
       this.Genre = data.content;
+
       for (const genre of this.Genre) {
         genre.image = await this.firebaseStorage.getFile(genre.image);
       }
@@ -102,12 +103,13 @@ export class ManagegenreAdminComponent implements OnInit {
     this.GenreService.createGenre(this.Genree).subscribe(
       async (data) => {
         if (this.Genree.image != null) {
-          await this.firebaseStorage.uploadFile('adminManageImage/genre/', this.imageFile);
+           await this.firebaseStorage.uploadFile('adminManageImage/genre/', this.imageFile);
         }
         console.log(data);
       },
       (error) => console.log(error)
     );
+
 
   }
 

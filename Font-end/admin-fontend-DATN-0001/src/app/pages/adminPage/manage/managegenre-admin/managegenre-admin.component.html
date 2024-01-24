@@ -34,7 +34,7 @@
                 </div>
               </div>
               <div class="file-upload-content">
-                <img class="file-upload-image" [src]="imageUrl" alt="your image"/>
+                <img class="file-upload-image" [src]="imageUrl" alt="{{imageUrl}}"/>
                 <div class="image-title-wrap">
                   <button type="button" (click)="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span>
                   </button>
@@ -44,49 +44,12 @@
           </div>
           <button type="submit" class="btn btn-primary">Add</button>
         </form>
-        <!-- <form (ngSubmit)="onSubmit()">
-
-          <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" [(ngModel)]="Genree.name">
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Description</label>
-            <input type="text" class="form-control" [(ngModel)]="Genree.description">
-          </div>
-          <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-         <div class="file-upload">
-            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add
-              Image</button>
-
-            <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-              <div class="drag-text">
-                <h3>Drag and drop a file or select add Image</h3>
-              </div>
-            </div>
-            <div class="file-upload-content">
-              <img class="file-upload-image" src="#" alt="your image" />
-              <div class="image-title-wrap">
-                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
-                    class="image-title">Uploaded Image</span></button>
-              </div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" [(ngModel)]="Genree.image">
-          </div>
-          <button type="submit" class="btn btn-primary m-2">Create/Update</button>
-          <button type="submit" class="btn btn-danger m-2">Delete</button>
-          <button type="submit" class="btn btn-warning m-2">Reset</button>
-        </form> -->
       </div>
     </div>
 
     <div class="col-sm-12 col-xl-6">
-      <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">GENRES LIST</h6>
+      <div class="table-content-wrapper bg-secondary rounded h-100 p-4">
+        <h6 class="header-genre-list mb-4">GENRES LIST</h6>
         <table class="table table-hover">
           <thead>
           <tr>
@@ -97,14 +60,12 @@
             <th scope="col">Action</th>
           </tr>
           </thead>
-          <tbody>
-          <!--          <img [src]="setImage('adminManageImage/genre/logo_luoicode.jpg') | async" alt="a">-->
-          <!--            <img src="{{setImage('adminManageImage/genre/logo_luoicode.jpg')}}" alt="a">-->
+
+          <tbody >
           <tr *ngFor="let Genre of Genre">
             <th scope="row">{{ Genre.id }}</th>
             <td>{{ Genre.name }}</td>
-            <!--            <td>{{ Genre.image }}</td>-->
-            <td><img src="{{Genre.image }}" width="70" height="70" alt="Genre image"></td>
+            <td><img src="{{Genre.image }}" width="70" height="70" alt="{{Genre.image}}"></td>
 
             <td>{{ Genre.description }}</td>
 
@@ -115,6 +76,7 @@
           </tr>
 
           </tbody>
+
         </table>
       </div>
     </div>
