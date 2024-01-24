@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Genre} from "../../adminEntityService/adminEntity/genre/genre";
 import {GenreServiceService} from "../../adminEntityService/adminService/genre-service.service";
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-managegenre-admin',
@@ -14,24 +14,54 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './managegenre-admin.component.html',
   styleUrl: './managegenre-admin.component.scss'
 })
-export class ManagegenreAdminComponent implements OnInit{
+export class ManagegenreAdminComponent implements OnInit {
   id!: number;
   Genre: Genre[] = [];
   Genree: Genre = new Genre();
-  constructor(
-    private GenreService: GenreServiceService,
-    private router: Router,
-    private route: ActivatedRoute
+  imageUrl: string = '';
 
-  ){
+  constructor
+  (private GenreService: GenreServiceService,
+   private router: Router,
+   private route: ActivatedRoute,
+   private el: ElementRef,
+   private renderer: Renderer2
+  ) {
   }
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.getEmployees();
     this.loadSingerById();
 
   }
-  private loadSingerById() {
+
+  onFileSelected(event: any) {
+    const archivoSelectcionado: File = event.target.files[0];
+    console.log("FILE OBJECT ==> ", archivoSelectcionado);
+    if (archivoSelectcionado) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imageUrl = e.target.result;
+        this.renderer.setStyle(this.el.nativeElement.querySelector('.image-upload-wrap'), 'display', 'none');
+        this.renderer.setAttribute(this.el.nativeElement.querySelector('.file-upload-image'), 'src', e.target.result);
+        this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'block');
+      };
+
+      reader.readAsDataURL(archivoSelectcionado);
+    } else {
+      this.removeUpload();
+    }
+  }
+
+  removeUpload(): void {
+    this.imageUrl = '';
+    this.renderer.setProperty(this.el.nativeElement.querySelector('.file-upload-input'), 'value', '');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'none');
+    this.renderer.setStyle(this.el.nativeElement.querySelector('.image-upload-wrap'), 'display', 'block');
+  }
+
+  loadSingerById() {
     this.GenreService.getGenre(this.id).subscribe(
       (data) => {
         this.Genree = data;
@@ -40,8 +70,9 @@ export class ManagegenreAdminComponent implements OnInit{
     );
   }
 
-  private getEmployees(){
-    this.GenreService.getCategories(0,10).subscribe(data => {
+
+  getEmployees() {
+    this.GenreService.getCategories(0, 10).subscribe(data => {
       console.log(data);
       this.Genre = data.content;
     });
