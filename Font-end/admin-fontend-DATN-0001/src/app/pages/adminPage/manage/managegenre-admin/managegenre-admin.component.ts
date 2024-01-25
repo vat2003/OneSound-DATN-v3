@@ -3,7 +3,7 @@ import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Genre} from "../../adminEntityService/adminEntity/genre/genre";
 import {GenreServiceService} from "../../adminEntityService/adminService/genre-service.service";
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-crud.service";
 import {typeCheckFilePath} from "@angular/compiler-cli/src/ngtsc/typecheck";
 import {from, Observable} from "rxjs";
@@ -15,6 +15,7 @@ import {from, Observable} from "rxjs";
     CommonModule,
     FormsModule,
     NgOptimizedImage,
+    RouterLink,
   ],
   templateUrl: './managegenre-admin.component.html',
   styleUrl: './managegenre-admin.component.scss'
@@ -33,7 +34,7 @@ export class ManagegenreAdminComponent implements OnInit {
    private route: ActivatedRoute,
    private el: ElementRef,
    private renderer: Renderer2,
-   protected firebaseStorage: FirebaseStorageCrudService
+   private firebaseStorage: FirebaseStorageCrudService,
   ) {
   }
 
@@ -41,6 +42,8 @@ export class ManagegenreAdminComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.getEmployees();
     this.loadSingerById();
+    this.getGenre(this.id);
+
 
   }
 
@@ -51,15 +54,22 @@ export class ManagegenreAdminComponent implements OnInit {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imageUrl = e.target.result;
-        this.renderer.setStyle(this.el.nativeElement.querySelector('.image-upload-wrap'), 'display', 'none');
-        this.renderer.setAttribute(this.el.nativeElement.querySelector('.file-upload-image'), 'src', e.target.result);
-        this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'block');
+        this.fillImage(this.imageUrl);
       };
       this.setImageUrl = 'adminManageImage/genre/' + archivoSelectcionado.name;
       this.imageFile = archivoSelectcionado;
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
+      this.removeUpload();
+    }
+  }
+
+  fillImage(url: string): void {
+    this.renderer.setStyle(this.el.nativeElement.querySelector('.image-upload-wrap'), 'display', 'none');
+    this.renderer.setAttribute(this.el.nativeElement.querySelector('.file-upload-image'), 'src', url);
+    this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'block');
+    if (url.length == 0) {
       this.removeUpload();
     }
   }
@@ -87,10 +97,18 @@ export class ManagegenreAdminComponent implements OnInit {
       this.Genre = data.content;
 
       for (const genre of this.Genre) {
-        genre.image = await this.firebaseStorage.getFile(genre.image);
+        genre.image = await this.setImageURLFirebase(genre.image);
       }
     });
 
+  }
+
+  async setImageURLFirebase(image: string): Promise<string> {
+    if (image != null) {
+      return await this.firebaseStorage.getFile(image);
+    } else {
+      return 'null';
+    }
   }
 
   goToSingerList() {
@@ -103,7 +121,7 @@ export class ManagegenreAdminComponent implements OnInit {
     this.GenreService.createGenre(this.Genree).subscribe(
       async (data) => {
         if (this.Genree.image != null) {
-           await this.firebaseStorage.uploadFile('adminManageImage/genre/', this.imageFile);
+          await this.firebaseStorage.uploadFile('adminManageImage/genre/', this.imageFile);
         }
         console.log(data);
       },
@@ -114,7 +132,20 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   updateGender(id: number) {
-    this.router.navigate(['update-genre', id]);
+    this.router.navigate(['onesound/admin/manage/genre/update-genre', id]);
+  }
+
+  getGenre(id: number) {
+    this.GenreService.getGenre(id).subscribe(
+      async (data: Genre) => {
+        this.Genree = data;
+        this.fillImage(await this.setImageURLFirebase(this.Genree.image));
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
+    // this.Genree = this.router.navigate(['onesound/admin/manage/genre/', id]);
   }
 
   deleteGender(id: number) {
@@ -127,17 +158,24 @@ export class ManagegenreAdminComponent implements OnInit {
     }
   }
 
-
   onSubmit() {
-    this.saveGenre();
-    this.goToSingerList();
-    this.GenreService.updateGenre(this.id, this.Genree).subscribe(
-      (data) => {
-        this.goToSingerList();
-      },
-      (error) => console.log(error)
-    );
+    if (this.id) {
+      this.updateGender(this.id);
+    } else {
+      this.saveGenre();
+    }
   }
+
+  // onSubmit() {
+  //   this.saveGenre();
+  //   this.goToSingerList();
+  //   this.GenreService.updateGenre(this.id, this.Genree).subscribe(
+  //     (data) => {
+  //       this.goToSingerList();
+  //     },
+  //     (error) => console.log(error)
+  //   );
+  // }
 
 
 }
