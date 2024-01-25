@@ -26,6 +26,8 @@ export const routes: Routes = [
       {path: 'manage/album', component: ManagealbumAdminComponent},
       {path: 'manage/artist', component: ManageartistAdminComponent},
       {path: 'manage/genre', component: ManagegenreAdminComponent},
+      {path: 'manage/genre/update-genre/:id', component: ManagegenreAdminComponent},
+      {path: 'manage/genre/:id', component: ManagegenreAdminComponent},
       {path: 'manage/song', component: ManagesongAdminComponent},
       {path: 'manage/user', component: ManageuserAdminComponent},
       {path: 'chart', component: ChartComponent},
