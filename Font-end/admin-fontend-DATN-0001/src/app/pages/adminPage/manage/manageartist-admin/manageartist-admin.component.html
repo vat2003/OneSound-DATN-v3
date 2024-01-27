@@ -3,41 +3,23 @@
   <div class="row g-4">
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4 text-uppercase">Artist management</h6>
-        <form>
-          <div class="mb-3">
-            <label class="form-label">ID</label>
-            <input type="text" class="form-control" readonly>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Fullname</label>
-            <input type="text" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Description</label>
-            <textarea class="form-control" aria-label="With textarea" rows="5"></textarea>
-          </div>
-          <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-          <div class="file-upload">
-            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+        <h6 class="mb-4 text-uppercase">ba</h6>
 
-            <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-              <div class="drag-text">
-                <h3>Drag and drop a file or select add Image</h3>
-              </div>
-            </div>
-            <div class="file-upload-content">
-              <img class="file-upload-image" src="#" alt="your image" />
-              <div class="image-title-wrap">
-                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
-              </div>
-            </div>
+        <form (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="fullname">First Name</label>
+            <input type="text" class="form-control" id="fullname" name="fullname" [(ngModel)]="singer.fullname">
           </div>
-
-          <button type="submit" class="btn btn-primary mt-4">Create/Update</button>
-          <button type="submit" class="btn btn-danger mt-4">Delete</button>
-          <button type="submit" class="btn btn-warning mt-4">Reset</button>
+          <div class="form-group">
+            <label for="description">Last Name</label>
+            <input type="text" class="form-control" id="description" name="description"
+              [(ngModel)]="singer.description">
+          </div>
+          <div class="form-group">
+            <label for="image">Email Address</label>
+            <input type="email" class="form-control" id="image" name="image" [(ngModel)]="singer.image">
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
         </form>
       </div>
     </div>
@@ -47,22 +29,24 @@
         <h6 class="mb-4">ARTIST LIST</h6>
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Email</th>
-            <th scope="col">FullName</th>
-            <th scope="col">Phone number</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Email</th>
+              <th scope="col">FullName</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>jhonemail.com</td>
-            <td>John</td>
-            <td>0328645096</td>
-            <td><button class="btn btn-primary">Detail</button></td>
-          </tr>
+            <tr *ngFor="let singer of singers">
+              <th scope="row">{{singer.id}}</th>
+              <td>{{singer.fullname}}</td>
+              <td>{{singer.description}}</td>
+              <td>{{singer.image}}</td>
+              <td>
+                <button (click)="updateSinger(singer.id)" class="btn btn-info">Update</button>
+                <button (click)="deleteSinger(singer.id)" class="btn btn-danger">Delete</button>
+              </td>
+            </tr>
 
           </tbody>
         </table>
