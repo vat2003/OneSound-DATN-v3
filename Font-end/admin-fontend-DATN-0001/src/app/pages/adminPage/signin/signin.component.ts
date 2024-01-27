@@ -31,17 +31,14 @@ import { TokenInterceptor } from '../adminEntityService/adminService/token.inter
 export class SigninComponent implements OnInit {
   @ViewChild('loginForm') loginForm!: NgForm;
 
-  phoneNumber: string = '';
+  email: string = '';
   password: string = '';
   account?: account;
   showPassword: boolean = false;
 
 
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
     private userService: accountServiceService,
-    private tokenService: TokenService,
 
   ) { }
 
@@ -50,7 +47,7 @@ export class SigninComponent implements OnInit {
 
   login() {
     var login: login = {
-      email: this.phoneNumber,
+      email: this.email,
       password: this.password,
     };
     this.userService.login(login).subscribe({

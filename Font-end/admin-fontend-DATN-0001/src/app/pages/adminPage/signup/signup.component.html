@@ -13,8 +13,9 @@
           </div>
           <div class="form-floating mb-3">
             <input [(ngModel)]="fullname" type="text" class="form-control" id="floatingText" placeholder="jhondoe"
-              name="name">
+              name="fullname" required id="fullname">
             <label for="floatingText">Full name</label>
+
           </div>
 
           <div class="form-floating mb-3">
@@ -22,6 +23,14 @@
               placeholder="name@example.com">
             <label for="floatingEmail">Email address</label>
           </div>
+
+          <div class="form-floating mb-3">
+            <input [(ngModel)]="createdDate" type="date" class="form-control" id="floatingEmail" name="date"
+              placeholder="name@example.com">
+            <label for="floatingEmail">date </label>
+          </div>
+
+
 
           <div class="form-floating mb-4">
             <input [(ngModel)]="password" type="text" class="form-control" id="floatingPassword" placeholder="Password"

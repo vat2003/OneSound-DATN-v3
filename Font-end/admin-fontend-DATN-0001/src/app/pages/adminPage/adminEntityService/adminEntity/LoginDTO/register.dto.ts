@@ -13,8 +13,8 @@ export class Register {
         this.email = data.email;
         this.password = data.password;
         this.retype_password = data.retype_password;
-        this.createdDate = data.date_of_birth;
-        this.active = data.active || false;  // Set to false if not provided
+        this.createdDate = data.createdDate;
+        this.active = data.active || false;  
         this.role_id = data.role_id || 7;
     }
 }

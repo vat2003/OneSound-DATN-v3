@@ -11,13 +11,11 @@
             <h3>Sign In</h3>
           </div>
           <div class="form-floating mb-3">
-            <!-- <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"> -->
-            <input type="text" class="form-control" id="floatingInput" [(ngModel)]="phoneNumber" name="phone"
+            <input type="text" class="form-control" id="floatingInput" [(ngModel)]="email" name="email"
               (focus)="loginForm.form.markAsTouched()" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
           </div>
           <div class="form-floating mb-4">
-            <!-- <input type="password" class="form-control" id="floatingPassword" placeholder="Password"> -->
             <input type="{{ showPassword ? 'text' : 'password' }}" [(ngModel)]="password" name="password"
               placeholder="Ít nhất 3 ký tự" class="form-control" id="password">
             <i class="password-toggle fas" [ngClass]="showPassword ? 
@@ -32,13 +30,11 @@
             <a href="">Forgot Password</a>
           </div>
 
+          <button type="button" (click)="login()" class="btn btn-primary py-3 w-100 mb-2 ">Sign In</button>
 
-          <!-- <button type="submit" class="btn btn-primary py-3 w-100 mb-2 ">Sign In</button> -->
-          <button type="button" (click)="login()" class="login-button">Đăng nhập</button>
           <hr>
           <div class="text-center mb-2">or</div>
 
-          <!-- Facebook and Google Login Buttons -->
           <div class="d-flex justify-content-between mb-4">
             <a class="btn btn-outline-primary py-3 rounded-pill flex-grow-1 me-2">
               <i class="fab fa-facebook-f mx-auto"></i> Facebook

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import {Router, RouterLink} from "@angular/router";
 import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
-import { RegisterDTO } from '../adminEntityService/adminEntity/LoginDTO/register.dto';
+import { Register } from '../adminEntityService/adminEntity/LoginDTO/register.dto';
 
 @Component({
   selector: 'app-signup',
@@ -49,7 +49,7 @@ export class SignupComponent {
     console.log(message);
     alert(message);
   
-    const registerDTO: RegisterDTO = {
+    const Register: Register = {
       fullname: this.fullname,
       email: this.email,
       password: this.password,
@@ -59,7 +59,7 @@ export class SignupComponent {
       role_id: 1
     };
   
-    this.userService.register(registerDTO).subscribe({
+    this.userService.register(Register).subscribe({
       next: (response: any) => {
         alert("thành công")
       },
