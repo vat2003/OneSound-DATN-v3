@@ -64,12 +64,14 @@ export class SigninComponent implements OnInit {
   
         this.tokenService.setToken(token);
         this.userService.getUserDetail(token).subscribe({
+                    
           next: (response: any) => {            
-            alert("profile thành công " + response);
+            debugger
+            alert("profile thành công " + response.fullname
+            );
             console.log(response);
           },
           complete: () => {
-            alert("lỗi gì đó");
           },
           error: (error: any) => {
             alert("profile thất bại" + error);

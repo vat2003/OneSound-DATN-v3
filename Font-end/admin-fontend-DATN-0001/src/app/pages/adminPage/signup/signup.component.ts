@@ -39,15 +39,11 @@ export class SignupComponent {
       return;
     }
   
-
-    const message = `phone: ${this.email}`+
-      `password: ${this.password}`+
-      `retypePassword: ${this.retypePassword}`+
-      `fullName: ${this.fullname}`+
-      `date: ${this.createdDate}`+
-      `isAccepted: ${this.active}`;
-    console.log(message);
-    alert(message);
+    if (this.password !== this.retypePassword) {
+      alert("Mật khẩu không khớp");
+      return;
+    }
+ 
   
     const Register: Register = {
       fullname: this.fullname,
@@ -55,25 +51,22 @@ export class SignupComponent {
       password: this.password,
       retype_password: this.retypePassword,
       active: this.active,
-      createdDate: this.createdDate,  
+      createdDate: this.createdDate,
       role_id: 1
     };
   
     this.userService.register(Register).subscribe({
       next: (response: any) => {
-        alert("thành công")
+        alert("Thành công");
       },
       complete: () => {
-        debugger
       },
       error: (error: any) => {
-        alert("thất bại" + error)
-
+        alert("Thất bại: " + error);
       }
     });
   }
   
-
 
 
 }

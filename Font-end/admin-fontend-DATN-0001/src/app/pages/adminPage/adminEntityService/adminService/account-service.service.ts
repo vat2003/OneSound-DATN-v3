@@ -35,7 +35,9 @@ export class accountServiceService{
 
     
     register(Register: Register):Observable<any> {
-      return this.http.post(this.apiRegister, Register, this.apiConfig);
+      return this.http.post(this.baseUrl, Register, this.apiConfig);
+    
+     
     }
 
     getUserDetail(token: string) {
