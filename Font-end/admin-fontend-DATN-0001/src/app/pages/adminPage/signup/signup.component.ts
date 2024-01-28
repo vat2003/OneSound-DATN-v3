@@ -3,13 +3,15 @@ import {FormsModule, NgForm} from '@angular/forms';
 import {Router, RouterLink} from "@angular/router";
 import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
 import {Register} from '../adminEntityService/adminEntity/LoginDTO/register.dto';
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-signup',
   standalone: true,
   imports: [
     RouterLink,
-    FormsModule
+    FormsModule,
+    NgClass
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
@@ -32,6 +34,17 @@ export class SignupComponent {
     this.active = true;
     this.createdDate = new Date();
 
+  }
+
+  showRePassword = false;
+  showPassword = false;
+
+  toggleShowRePassword() {
+    this.showRePassword = !this.showRePassword;
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
   }
 
   register() {

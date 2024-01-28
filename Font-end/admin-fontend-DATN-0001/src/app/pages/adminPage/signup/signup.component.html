@@ -63,18 +63,26 @@
           </div>
 
 
-          <div class="form-floating mb-4">
-            <input [(ngModel)]="password" type="password" class="form-control" id="floatingPassword"
-                   placeholder="Password" name="Password">
+          <div class="form-floating input-group mb-4">
+            <input [(ngModel)]="password" type="{{ showPassword ? 'text' : 'password' }}"
+                   class="form-control" id="floatingPassword" name="Password" placeholder="Password">
             <label for="floatingPassword">Password</label>
+            <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowPassword()">
+              <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+            </button>
           </div>
 
 
-          <div class="form-floating mb-4">
-            <input [(ngModel)]="retypePassword" type="password" class="form-control" id="floatingRePassword"
-                   name="retypePassword" placeholder="Password">
+
+          <div class="form-floating input-group mb-4">
+            <input [(ngModel)]="retypePassword" type="{{ showRePassword ? 'text' : 'password' }}"
+                   class="form-control" id="floatingRePassword" name="retypePassword" placeholder="Password">
             <label for="floatingRePassword">Repeat Password</label>
+            <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowRePassword()">
+              <i class="password-toggle fas" [ngClass]="showRePassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+            </button>
           </div>
+
           <button type="button" (click)="register()" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
           <p class="text-center mb-0">Already have an Account? <a routerLink="/onesound/signin">Sign In</a></p>
 
