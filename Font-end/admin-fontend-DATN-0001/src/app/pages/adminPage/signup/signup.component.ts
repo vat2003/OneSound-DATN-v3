@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import {Component, ViewChild} from '@angular/core';
+import {FormsModule, NgForm} from '@angular/forms';
 import {Router, RouterLink} from "@angular/router";
-import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
-import { Register } from '../adminEntityService/adminEntity/LoginDTO/register.dto';
+import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
+import {Register} from '../adminEntityService/adminEntity/LoginDTO/register.dto';
 
 @Component({
   selector: 'app-signup',
@@ -24,27 +24,28 @@ export class SignupComponent {
   createdDate: Date;
 
 
-  constructor(private router: Router, private userService: accountServiceService){
+  constructor(private router: Router, private userService: accountServiceService) {
     this.email = '';
     this.password = '';
     this.retypePassword = '';
-    this.fullname = '';   
+    this.fullname = '';
     this.active = true;
     this.createdDate = new Date();
 
   }
+
   register() {
     if (this.registerForm.invalid) {
       console.log("Form is invalid");
       return;
     }
-  
+
     if (this.password !== this.retypePassword) {
       alert("Mật khẩu không khớp");
       return;
     }
- 
-  
+
+
     const Register: Register = {
       fullname: this.fullname,
       email: this.email,
@@ -54,19 +55,18 @@ export class SignupComponent {
       createdDate: this.createdDate,
       role_id: 1
     };
-  
+
     this.userService.register(Register).subscribe({
       next: (response: any) => {
-        alert("Thành công");
+        alert("Thành công: " + response);
       },
       complete: () => {
       },
       error: (error: any) => {
-        alert("Thất bại: " + error);
+        alert("Đăng ký thất bại: " + error);
       }
     });
   }
-  
 
 
 }

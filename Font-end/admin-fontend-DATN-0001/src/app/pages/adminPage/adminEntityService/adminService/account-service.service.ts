@@ -25,24 +25,22 @@ export class accountServiceService{
         private http: HttpClient,
         private httpUtilService: HttpUtilService,
         @Inject(DOCUMENT) private document: Document
-        ) { 
+        ) {
           this.localStorage = document.defaultView?.localStorage;
-        }  
+        }
 
-    login(login: login): Observable<any> {    
+    login(login: login): Observable<any> {
       return this.http.post(this.apiLogin, login, this.apiConfig);
     }
 
-    
+
     register(Register: Register):Observable<any> {
-      return this.http.post(this.baseUrl, Register, this.apiConfig);
-    
-     
+      return this.http.post(this.apiRegister, Register, this.apiConfig);
     }
 
     getUserDetail(token: string) {
       const trimmedToken = token.trim();
-    
+
       return this.http.post(this.apiUserDetail, {}, {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -50,9 +48,9 @@ export class accountServiceService{
         })
       });
     }
-    
 
-  
-        
+
+
+
 
 }

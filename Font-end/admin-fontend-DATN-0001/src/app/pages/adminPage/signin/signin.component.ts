@@ -48,24 +48,26 @@ export class SigninComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
   login() {
     var login: login = {
       email: this.email,
       password: this.password,
     };
-      
-  
+
+
     this.userService.login(login).subscribe({
       next: (response: LoginResponse) => {
         alert("Đăng nhập thành công! Response: " + response);
         const { token } = response;
         console.log(token);
-  
+
         this.tokenService.setToken(token);
         this.userService.getUserDetail(token).subscribe({
-                    
-          next: (response: any) => {            
+
+          next: (response: any) => {
             debugger
             alert("profile thành công " + response.fullname
             );
@@ -87,8 +89,8 @@ export class SigninComponent implements OnInit {
     });
   }
 
- 
-  
-  
-  
+
+
+
+
 }
