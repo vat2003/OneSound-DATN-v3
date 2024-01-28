@@ -1,15 +1,24 @@
-import {ApplicationConfig, importProvidersFrom} from '@angular/core';
-import {provideRouter} from '@angular/router';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
-import {routes} from './app.routes';
-import {provideClientHydration} from '@angular/platform-browser';
-import {initializeApp, provideFirebaseApp} from "@angular/fire/app";
-import {getStorage, provideStorage} from "@angular/fire/storage";
-import {provideAnimations} from "@angular/platform-browser/animations";
-import {HttpClientModule, provideHttpClient, withFetch} from "@angular/common/http";
+import { routes } from './app.routes';
+import { provideClientHydration } from '@angular/platform-browser';
+import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
+import { getStorage, provideStorage } from "@angular/fire/storage";
+import { provideAnimations } from "@angular/platform-browser/animations";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { TokenInterceptor } from './pages/adminPage/adminEntityService/adminService/token.interceptor';
+import { withFetch, provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideClientHydration(),
+  providers: [
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: TokenInterceptor, 
+      multi: true 
+    },
+    provideRouter(routes), 
+    provideClientHydration(),
     provideHttpClient(withFetch()),
     importProvidersFrom(HttpClientModule),
     importProvidersFrom([
@@ -22,6 +31,7 @@ export const appConfig: ApplicationConfig = {
         appId: "1:381125680019:web:15d3810b037f7e7cf1e666"
       })),
       provideStorage(() => getStorage())
-    ]), provideAnimations(), provideAnimations()
+    ]), 
+    provideAnimations()
   ]
 };
