@@ -18,6 +18,9 @@ export const routes: Routes = [
   {path: 'onesound/admin/signin', component: SigninComponent},
   {path: 'onesound/admin/signup', component: SignupComponent},
   {path: 'onesound/admin/image', component: ManageimageAdminComponent},
+  { path: 'update-genre/:id', component: ManagegenreAdminComponent },
+  { path: 'update-singer/:id', component: ManageartistAdminComponent },
+
   {
     path: 'onesound/admin', component: HomeComponent,
     children: [

@@ -8,6 +8,8 @@ import { accountServiceService } from '../adminEntityService/adminService/accoun
 import { TokenService } from '../adminEntityService/adminService/token.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from '../adminEntityService/adminService/token.interceptor';
+import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.response';
+import * as jwt_decode from "jsonwebtoken";
 
 @Component({
   selector: 'app-signin',
@@ -39,6 +41,8 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private userService: accountServiceService,
+    private tokenService: TokenService,
+
 
   ) { }
 
@@ -50,18 +54,39 @@ export class SigninComponent implements OnInit {
       email: this.email,
       password: this.password,
     };
+      
+  
     this.userService.login(login).subscribe({
-      next: (response) => {
-        alert("thành công");  
+      next: (response: LoginResponse) => {
+        alert("Đăng nhập thành công! Response: " + response);
+        const { token } = response;
+        console.log(token);
+  
+        this.tokenService.setToken(token);
+        this.userService.getUserDetail(token).subscribe({
+          next: (response: any) => {            
+            alert("profile thành công " + response);
+            console.log(response);
+          },
+          complete: () => {
+            alert("lỗi gì đó");
+          },
+          error: (error: any) => {
+            alert("profile thất bại" + error);
+            console.log(error);
+          }
+        });
       },
       error: (error) => {
-       
         console.error(error);
-        alert("thất bại");
+        alert("Đăng nhập thất bại");
       },
-      complete: () => {
-      }
+      complete: () => {}
     });
-    
   }
+
+ 
+  
+  
+  
 }
