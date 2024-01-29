@@ -95,7 +95,7 @@ export class SigninComponent implements OnInit {
         });
       },
       error: (error) => {
-        debugger
+        
         console.error(error);
         alert("Đăng nhập thất bại");
       },
