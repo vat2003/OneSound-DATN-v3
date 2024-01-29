@@ -19,6 +19,8 @@ export class SignupComponent {
   email: string;
   password: string;
   retypePassword: string;
+  gender: boolean; 
+
   fullname: string;
   active: boolean;
   createdDate: Date;
@@ -29,11 +31,14 @@ export class SignupComponent {
     this.password = '';
     this.retypePassword = '';
     this.fullname = '';   
+    this.gender = true;   
     this.active = true;
     this.createdDate = new Date();
 
   }
   register() {
+ 
+  
     if (this.registerForm.invalid) {
       console.log("Form is invalid");
       return;
@@ -43,13 +48,13 @@ export class SignupComponent {
       alert("Mật khẩu không khớp");
       return;
     }
- 
   
     const Register: Register = {
       fullname: this.fullname,
       email: this.email,
       password: this.password,
       retype_password: this.retypePassword,
+      gender: this.gender, 
       active: this.active,
       createdDate: this.createdDate,
       role_id: 1
@@ -62,10 +67,12 @@ export class SignupComponent {
       complete: () => {
       },
       error: (error: any) => {
-        alert("Thất bại: " + error);
+        alert("Thất bại");
       }
     });
   }
+  
+  
   
 
 

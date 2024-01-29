@@ -12,11 +12,13 @@ import {ManageuserAdminComponent} from "./pages/adminPage/manage/manageuser-admi
 import {ChartComponent} from "./pages/adminPage/chart/chart.component";
 import {ManageimageAdminComponent} from "./pages/adminPage/manage/manageimage-admin/manageimage-admin.component";
 import {UserHomeComponentComponent} from "./pages/userPage/user-home-component/user-home-component.component";
+import { profileComponent } from './pages/adminPage/profile/profile.component';
 
 export const routes: Routes = [
   {path: '', component: Notfound404Component},
   {path: 'onesound/admin/signin', component: SigninComponent},
   {path: 'onesound/admin/signup', component: SignupComponent},
+  {path: 'onesound/admin/profile', component: profileComponent},
   {path: 'onesound/admin/image', component: ManageimageAdminComponent},
   { path: 'update-genre/:id', component: ManagegenreAdminComponent },
   { path: 'update-singer/:id', component: ManageartistAdminComponent },

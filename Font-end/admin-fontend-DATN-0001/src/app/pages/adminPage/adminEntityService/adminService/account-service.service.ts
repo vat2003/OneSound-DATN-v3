@@ -30,14 +30,14 @@ export class accountServiceService{
         }  
 
     login(login: login): Observable<any> {    
+      
       return this.http.post(this.apiLogin, login, this.apiConfig);
     }
 
     
-    register(Register: Register):Observable<any> {
-      return this.http.post(this.baseUrl, Register, this.apiConfig);
-    
-     
+    register(Register: Register):Observable<any> {  
+      
+      return this.http.post(this.apiRegister, Register, this.apiConfig);         
     }
 
     getUserDetail(token: string) {
@@ -49,6 +49,45 @@ export class accountServiceService{
           Authorization: `Bearer ${trimmedToken}`
         })
       });
+    }
+
+    getUserResponseFromLocalStorage():account | null {    
+      try {        
+        const userResponseJSON = this.localStorage?.getItem('user'); 
+        if(userResponseJSON == null || userResponseJSON == undefined) {
+          return null;
+        }
+        const userResponse = JSON.parse(userResponseJSON!);  
+        console.log('User response retrieved from local storage.');
+        return userResponse;
+      } catch (error) {
+        console.error('Error retrieving user response from local storage:', error);
+        return null; 
+      }
+    }
+
+    saveUserResponseToLocalStorage(userResponse?: account) {
+        
+      try {        
+        if(userResponse == null || !userResponse) {
+          return;
+        }
+        const userResponseJSON = JSON.stringify(userResponse);  
+        this.localStorage?.setItem('user', userResponseJSON);  
+        console.log('User response saved to local storage.' + userResponseJSON);
+      } catch (error) {
+        console.error('Error saving user response to local storage:', error);
+      }
+    }
+
+
+    removeUserFromLocalStorage():void {
+      try {
+        this.localStorage?.removeItem('user');
+        console.log('User data removed from local storage.');
+      } catch (error) {
+        console.error('Error removing user data from local storage:', error);
+      }
     }
     
 

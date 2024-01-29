@@ -35,11 +35,13 @@ export class SigninComponent implements OnInit {
 
   email: string = '';
   password: string = '';
-  account?: account;
+  account1?: account;
+  account?: account | null;
   showPassword: boolean = false;
 
 
   constructor(
+    private router: Router,
     private userService: accountServiceService,
     private tokenService: TokenService,
 
@@ -47,7 +49,13 @@ export class SigninComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    alert(this.account)
+    console.log(this.account);
+    
+    this.account = this.userService.getUserResponseFromLocalStorage();    
   }
+
+
 
   login() {
     var login: login = {
@@ -65,11 +73,18 @@ export class SigninComponent implements OnInit {
         this.tokenService.setToken(token);
         this.userService.getUserDetail(token).subscribe({
                     
-          next: (response: any) => {            
-            debugger
+          next: (response: any) => {  
+                      
+            this.account = {
+              ...response
+            };   
             alert("profile thành công " + response.fullname
             );
             console.log(response);
+            this.userService.saveUserResponseToLocalStorage(response); 
+           
+            this.router.navigate(['/onesound/admin']);                      
+
           },
           complete: () => {
           },
@@ -80,6 +95,7 @@ export class SigninComponent implements OnInit {
         });
       },
       error: (error) => {
+        debugger
         console.error(error);
         alert("Đăng nhập thất bại");
       },

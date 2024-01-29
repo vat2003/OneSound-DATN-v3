@@ -30,6 +30,18 @@
             <label for="floatingEmail">date </label>
           </div>
 
+          <div class="d-flex gap-5">
+            <div class="form-check mb-3">
+              <input type="radio" class="form-check-input" id="genderMale" name="gender" [(ngModel)]="gender"
+                [value]="true">
+              <label class="form-check-label" for="genderMale">Male</label>
+            </div>
+            <div class="form-check mb-3">
+              <input type="radio" class="form-check-input" id="genderFemale" name="gender" [(ngModel)]="gender"
+                [value]="false">
+              <label class="form-check-label" for="genderFemale">Female</label>
+            </div>
+          </div>
 
 
           <div class="form-floating mb-4">

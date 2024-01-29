@@ -5,6 +5,7 @@ export class Register {
     password: string;
     retype_password: string;
     createdDate: Date;
+    gender:boolean;
     active: boolean;
     role_id: number = 7;
     
@@ -13,6 +14,7 @@ export class Register {
         this.email = data.email;
         this.password = data.password;
         this.retype_password = data.retype_password;
+        this.gender = data.gender;
         this.createdDate = data.createdDate;
         this.active = data.active || false;  
         this.role_id = data.role_id || 7;
