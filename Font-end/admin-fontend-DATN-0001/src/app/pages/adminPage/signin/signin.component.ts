@@ -60,7 +60,6 @@ export class SigninComponent implements OnInit {
       password: this.password,
     };
 
-
     this.userService.login(login).subscribe({
       next: (response: LoginResponse) => {
         alert("Đăng nhập thành công! Response: " + response);

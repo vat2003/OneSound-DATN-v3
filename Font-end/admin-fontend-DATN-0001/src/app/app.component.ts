@@ -34,11 +34,12 @@ export class AppComponent implements OnInit {
         const isUserClient = event.url.includes('onesound');
         const signin = event.url.includes('signin');
         const signup = event.url.includes('signup');
+        const changepassword = event.url.includes('changepassword');
         const forgotpass = event.url.includes('forgotpassword');
         this.adminUserService.setAdminMode(isAdmin);
 
         // Add or remove stylesheets based on the isAdmin condition
-        if (isAdmin || signin || signup || forgotpass) {
+        if (isAdmin || signin || signup || forgotpass || changepassword) {
           //Remove USER-CLIENT Css StyleSheet Libraries
           this.removeUserStyle();
           //Remove USER-CLIENT JavaScript Libraries

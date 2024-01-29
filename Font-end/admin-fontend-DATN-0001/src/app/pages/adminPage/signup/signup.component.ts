@@ -3,7 +3,7 @@ import {FormsModule, NgForm} from '@angular/forms';
 import {Router, RouterLink} from "@angular/router";
 import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
 import {Register} from '../adminEntityService/adminEntity/LoginDTO/register.dto';
-import {NgClass} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-signup',
@@ -11,7 +11,8 @@ import {NgClass} from "@angular/common";
   imports: [
     RouterLink,
     FormsModule,
-    NgClass
+    NgClass,
+    NgIf
   ],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
@@ -50,11 +51,12 @@ export class SignupComponent {
   register() {
     if (this.registerForm.invalid) {
       console.log("Form is invalid");
+      alert("PLEASE FILL UP THE FORM!");
       return;
     }
 
     if (this.password !== this.retypePassword) {
-      alert("Mật khẩu không khớp");
+      alert("The password does not match");
       return;
     }
 
@@ -71,12 +73,17 @@ export class SignupComponent {
 
     this.userService.register(Register).subscribe({
       next: (response: any) => {
-        alert("Thành công: " + response);
+        debugger;
+        alert("Sign up successfully");
+        console.log(response);
+        this.router.navigate(['onesound/signin']);
+        return;
       },
       complete: () => {
       },
       error: (error: any) => {
-        alert("Đăng ký thất bại: " + error);
+        debugger
+        alert("Sign up failed: " + error);
       }
     });
   }

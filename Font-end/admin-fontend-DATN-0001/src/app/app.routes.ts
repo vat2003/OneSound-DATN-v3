@@ -13,11 +13,13 @@ import {ChartComponent} from "./pages/adminPage/chart/chart.component";
 import {ManageimageAdminComponent} from "./pages/adminPage/manage/manageimage-admin/manageimage-admin.component";
 import {UserHomeComponentComponent} from "./pages/userPage/user-home-component/user-home-component.component";
 import {ForgotpasswordComponent} from "./pages/adminPage/forgotpassword/forgotpassword.component";
+import {ChangePasswordComponent} from "./pages/adminPage/change-password/change-password.component";
 
 export const routes: Routes = [
   {path: '', component: Notfound404Component},
   {path: 'onesound/signin', component: SigninComponent},
   {path: 'onesound/signup', component: SignupComponent},
+  {path: 'onesound/changepassword', component: ChangePasswordComponent},
   {path: 'onesound/forgotpassword', component: ForgotpasswordComponent},
   {path: 'onesound/admin/image', component: ManageimageAdminComponent},
   { path: 'update-genre/:id', component: ManagegenreAdminComponent },
