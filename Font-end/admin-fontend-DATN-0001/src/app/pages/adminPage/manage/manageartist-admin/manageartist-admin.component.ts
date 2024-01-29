@@ -1,10 +1,11 @@
-import {CommonModule} from '@angular/common';
-import {Component, ElementRef, Renderer2} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {Singer} from '../../adminEntityService/adminEntity/singer/singer';
-import {SingerService} from '../../adminEntityService/adminService/singer-service.service';
-import {ActivatedRoute, Router} from '@angular/router';
-import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-crud.service";
+import { CommonModule } from '@angular/common';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Singer } from '../../adminEntityService/adminEntity/singer/singer';
+import { SingerService } from '../../adminEntityService/adminService/singer-service.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FirebaseStorageCrudService } from "../../../../services/firebase-storage-crud.service";
+import { read } from 'node:fs';
 
 @Component({
   selector: 'app-manageartist-admin',
@@ -98,7 +99,7 @@ export class ManageartistAdminComponent {
       async (data) => {
         if (this.singer.image != null) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
-        }this.goToSingerList();
+        } this.goToSingerList();
         console.log(data);
       },
       (error) => console.log(error)
@@ -128,8 +129,59 @@ export class ManageartistAdminComponent {
   }
 
   onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+    const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
+    //Kiểm tra giới hạn kích thước ảnh
+    if (selectedFile.size > maxSizeInBytes) {
+      alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      this.resetFileInput();
+      return;
+    }
+
+    if (selectedFile && !selectedFile.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      this.resetFileInput(); // Hàm này để đặt lại input file sau khi thông báo lỗi
+      return;
+    }
+
+    //Dọc file ảnh
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = () => {
+        const maxW = 800; // chiều rông 800
+        const maxH = 800; // chiều cao 800
+
+        let newW = img.width;
+        let newH = img.height
+
+        if (img.width > maxW) {
+          newW = maxW;
+          newH = (img.height * maxW) / img.width;
+        }
+
+        if (img.height > maxH) {
+          newH = maxH;
+          newW = (img.width * maxH) / img.height;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = newW;
+        canvas.height = newH;
+        const ctx = canvas.getContext('2d');
+
+        ctx?.drawImage(img, 0, 0, newW, newH);
+
+        const resizedImageData = canvas.toDataURL('image/*')
+
+      }
+    }
+
     const archivoSelectcionado: File = event.target.files[0];
     console.log("FILE OBJECT ==> ", archivoSelectcionado);
+
     if (archivoSelectcionado) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
@@ -142,6 +194,14 @@ export class ManageartistAdminComponent {
       reader.readAsDataURL(archivoSelectcionado);
     } else {
       this.removeUpload();
+    }
+  }
+
+  resetFileInput(): void {
+    // Đặt lại giá trị của input file
+    const fileInput: any = document.getElementById('fileInput');
+    if (fileInput) {
+      fileInput.value = '';
     }
   }
 
