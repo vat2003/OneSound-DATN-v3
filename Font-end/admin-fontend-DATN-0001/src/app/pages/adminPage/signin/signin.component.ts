@@ -1,15 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms';
-import { account } from '../adminEntityService/adminEntity/account/account';
-import { login } from '../adminEntityService/adminEntity/LoginDTO/login';
-import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
-import { TokenService } from '../adminEntityService/adminService/token.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { TokenInterceptor } from '../adminEntityService/adminService/token.interceptor';
-import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.response';
-import * as jwt_decode from "jsonwebtoken";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
+import {CommonModule} from '@angular/common';
+import {FormsModule, NgForm} from '@angular/forms';
+import {account} from '../adminEntityService/adminEntity/account/account';
+import {login} from '../adminEntityService/adminEntity/LoginDTO/login';
+import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
+import {TokenService} from '../adminEntityService/adminService/token.service';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {TokenInterceptor} from '../adminEntityService/adminService/token.interceptor';
+import {LoginResponse} from '../adminEntityService/adminEntity/utils/login.response';
 
 @Component({
   selector: 'app-signin',
@@ -35,11 +34,15 @@ export class SigninComponent implements OnInit {
 
   email: string = '';
   password: string = '';
+<<<<<<< HEAD
   account1?: account;
+=======
+>>>>>>> main
   account?: account | null;
   showPassword: boolean = false;
 
 
+<<<<<<< HEAD
   constructor(
     private router: Router,
     private userService: accountServiceService,
@@ -53,6 +56,22 @@ export class SigninComponent implements OnInit {
     console.log(this.account);
     
     this.account = this.userService.getUserResponseFromLocalStorage();    
+=======
+  constructor(private router: Router,
+              private userService: accountServiceService,
+              private tokenService: TokenService,
+  ) {
+  }
+
+  ngOnInit(): void {
+    console.log(this.account);
+
+    this.account = this.userService.getUserResponseFromLocalStorage();
+  }
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+>>>>>>> main
   }
 
 
@@ -62,16 +81,16 @@ export class SigninComponent implements OnInit {
       email: this.email,
       password: this.password,
     };
-      
-  
+
     this.userService.login(login).subscribe({
       next: (response: LoginResponse) => {
         alert("Đăng nhập thành công! Response: " + response);
-        const { token } = response;
+        const {token} = response;
         console.log(token);
-  
+
         this.tokenService.setToken(token);
         this.userService.getUserDetail(token).subscribe({
+<<<<<<< HEAD
                     
           next: (response: any) => {  
                       
@@ -84,6 +103,20 @@ export class SigninComponent implements OnInit {
             this.userService.saveUserResponseToLocalStorage(response); 
            
             this.router.navigate(['/onesound/admin']);                      
+=======
+
+          next: (response: any) => {
+
+            this.account = {
+              ...response
+            };
+            alert("profile thành công " + response.fullname
+            );
+            console.log(response);
+            this.userService.saveUserResponseToLocalStorage(response);
+
+            this.router.navigate(['/onesound/admin']);
+>>>>>>> main
 
           },
           complete: () => {
@@ -99,12 +132,10 @@ export class SigninComponent implements OnInit {
         console.error(error);
         alert("Đăng nhập thất bại");
       },
-      complete: () => {}
+      complete: () => {
+      }
     });
   }
 
- 
-  
-  
-  
+
 }

@@ -22,31 +22,31 @@ export class SingerService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getAllemployees(): Observable<Singer[]> {    
+  getAllArtists(): Observable<Singer[]> {
     return this.httpClient.get<Singer[]>(`${this.baseUrl}`);
   }
 
   getCategories(page: number, size: number):Observable<SingerResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
-      .set('size', size.toString());        
-      return this.httpClient.get<SingerResponse>(`${this.baseUrl}/Singers`, { params });                   
+      .set('size', size.toString());
+      return this.httpClient.get<SingerResponse>(`${this.baseUrl}/Singers`, { params });
   }
 
 
-  createEmployee(Singer: Singer): Observable<Object> {
+  createArtist(Singer: Singer): Observable<Object> {
     return this.httpClient.post(`${this.baseUrl}`, Singer);
   }
 
-  getEmployeeById(id: number): Observable<Singer> {
+  getArtistById(id: number): Observable<Singer> {
     return this.httpClient.get<Singer>(`${this.baseUrl}/${id}`);
   }
 
-  updateEmployee(id: number, Singer: Singer): Observable<Object> {
+  updateArtist(id: number, Singer: Singer): Observable<Object> {
     return this.httpClient.put(`${this.baseUrl}/${id}`, Singer);
   }
 
-  deleteEmployee(id: number): Observable<Object> {
+  deleteArtist(id: number): Observable<Object> {
     console.log(`${this.baseUrl}/${id}`);
     return this.httpClient.delete(`${this.baseUrl}/${id}`);
   }

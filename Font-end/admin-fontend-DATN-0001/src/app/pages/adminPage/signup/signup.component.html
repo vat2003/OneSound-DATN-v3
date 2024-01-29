@@ -12,6 +12,7 @@
             <h3>Sign Up</h3>
           </div>
           <div class="form-floating mb-3">
+<<<<<<< HEAD
             <input [(ngModel)]="fullname" type="text" class="form-control" id="floatingText" placeholder="jhondoe"
               name="fullname" required id="fullname">
             <label for="floatingText">Full name</label>
@@ -60,13 +61,71 @@
             <div class="form-check">
               <input type="checkbox" class="form-check-input" id="exampleCheck1">
               <label class="form-check-label" for="exampleCheck1">Check me out</label>
+=======
+            <input [(ngModel)]="fullname" type="text" class="form-control" placeholder="jhondoe"
+                   name="fullname" required id="fullname">
+            <label for="fullname">Full name</label>
+            <div
+              *ngIf="registerForm.controls['fullname'].invalid && (registerForm.controls['fullname'].dirty || registerForm.controls['fullname'].touched)"
+              class="text-warning">
+              Please enter your full name
+>>>>>>> main
             </div>
-            <a href="">Forgot Password</a>
           </div>
-          <button type="button" (click)="register()" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
 
+          <div class="form-floating mb-3">
+            <input [(ngModel)]="email" type="email" class="form-control" id="mail" name="mail" required
+                   placeholder="name@example.com">
+<!--                   pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*"-->
+
+            <label for="mail">Email address</label>
+            <div
+              *ngIf="registerForm.controls['mail'].invalid && (registerForm.controls['mail'].dirty || registerForm.controls['mail'].touched)"
+              class="text-warning">
+              Please enter your email
+            </div>
+          </div>
+
+
+          <div class="form-floating input-group mb-3">
+            <input [(ngModel)]="password" type="{{ showPassword ? 'text' : 'password' }}" required minlength="8"
+                   class="form-control" id="password" name="password" placeholder="Password">
+            <label for="password">Password</label>
+            <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowPassword()">
+              <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+            </button>
+          </div>
+          <div class="mb-3 text-warning" *ngIf="registerForm.controls['password'].hasError('minlength')">
+            Please enter a password with at least 8 characters.
+          </div>
+          <div
+            *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].dirty || registerForm.controls['password'].touched)"
+            class="mb-3 text-warning">
+            Please enter password
+          </div>
+
+          <div class="form-floating input-group mb-3">
+            <input [(ngModel)]="retypePassword" type="{{ showRePassword ? 'text' : 'password' }}" required minlength="8"
+                   class="form-control" id="retypePassword" name="retypePassword" placeholder="Password">
+            <label for="retypePassword">Retype Password</label>
+            <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowRePassword()">
+              <i class="password-toggle fas" [ngClass]="showRePassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+            </button>
+          </div>
+          <div class="mb-3 text-warning" *ngIf="registerForm.controls['retypePassword'].hasError('minlength')">
+            Please enter a password with at least 8 characters.
+          </div>
+          <div
+            *ngIf="registerForm.controls['retypePassword'].invalid && (registerForm.controls['retypePassword'].dirty || registerForm.controls['retypePassword'].touched)"
+            class="mb-3 text-warning">
+            Please enter retype password
+          </div>
+
+          <button type="button" (click)="register()" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
+          <p class="text-center mb-0">Already have an Account? <a class="text-danger" routerLink="/onesound/signin">Sign In</a></p>
         </div>
       </form>
+      <!--&gt;>>>>>> origin/test-->
     </div>
   </div>
 </div>

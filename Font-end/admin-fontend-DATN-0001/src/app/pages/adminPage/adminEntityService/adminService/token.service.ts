@@ -6,19 +6,19 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root',
 })
 export class TokenService {
-    private readonly TOKEN_KEY = 'access_token';
-    localStorage?:Storage;
+  private readonly TOKEN_KEY = 'access_token';
+  localStorage?:Storage;
 
-    constructor(){
-    }
+  constructor(){
+  }
 
-    getToken():string {
-        return this.localStorage?.getItem(this.TOKEN_KEY) ?? '';
-    }
-    setToken(token: string): void {        
-        localStorage.setItem(this.TOKEN_KEY, token);        
-    }
-   
+  getToken():string {
+    return this.localStorage?.getItem(this.TOKEN_KEY) ?? '';
+  }
+  setToken(token: string): void {
+    localStorage.setItem(this.TOKEN_KEY, token);
+  }
 
-      
+
+
 }
