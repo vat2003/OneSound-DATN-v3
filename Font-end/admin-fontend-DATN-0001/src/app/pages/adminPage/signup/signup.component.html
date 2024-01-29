@@ -22,19 +22,18 @@
             </div>
           </div>
 
-<!--          <div class="form-floating mb-3">-->
-<!--            <input [(ngModel)]="email" type="email" class="form-control" id="mail" name="mail" required-->
-<!--                   placeholder="name@example.com"-->
-<!--                   pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*">-->
-<!--            <label for="mail">Email address</label>-->
-<!--            <div-->
-<!--              *ngIf="registerForm.controls['mail'].invalid && (registerForm.controls['mail'].dirty || registerForm.controls['mail'].touched)"-->
-<!--              class="text-warning">-->
-<!--              <div *ngIf="registerForm.controls['mail'].errors?.pattern">-->
-<!--                Please enter a valid email address-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="form-floating mb-3">
+            <input [(ngModel)]="email" type="email" class="form-control" id="mail" name="mail" required
+                   placeholder="name@example.com">
+<!--                   pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*"-->
+
+            <label for="mail">Email address</label>
+            <div
+              *ngIf="registerForm.controls['mail'].invalid && (registerForm.controls['mail'].dirty || registerForm.controls['mail'].touched)"
+              class="text-warning">
+              Please enter your email
+            </div>
+          </div>
 
 
           <div class="form-floating input-group mb-3">
@@ -72,8 +71,7 @@
           </div>
 
           <button type="button" (click)="register()" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
-          <p class="text-center mb-0">Already have an Account? <a class="text-danger" routerLink="/onesound/signin">Sign
-            In</a></p>
+          <p class="text-center mb-0">Already have an Account? <a class="text-danger" routerLink="/onesound/signin">Sign In</a></p>
         </div>
       </form>
       <!--&gt;>>>>>> origin/test-->
