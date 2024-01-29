@@ -6,7 +6,7 @@
     font-family: "Poppins", sans-serif;
 }
 
-body {
+.daddy {
     width: 100%;
     height: 100vh;
     background-color: #0d0d0d;
@@ -120,8 +120,11 @@ header .song-side::-webkit-scrollbar-thumb {
 
 
 header .master_play {
-    width: 100%;
-    height: 15%;
+    /* width: 100%;   nếu dán thẳng player vào menuside thì dùng cái này  */
+    /* height: 15%;   nếu dán thẳng player vào menuside thì dùng cái này*/
+    
+    width: 100%; /* nếu dán dùng playercomponent thì dùng cái này */
+    height: 100%;/* nếu dán dùng playercomponent thì dùng cái này */
     background-color: #242429;
     display: flex;
     align-items: center;

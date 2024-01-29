@@ -11,7 +11,6 @@ import { ManagesongAdminComponent } from './pages/adminPage/manage/managesong-ad
 import { ManageuserAdminComponent } from './pages/adminPage/manage/manageuser-admin/manageuser-admin.component';
 import { ChartComponent } from './pages/adminPage/chart/chart.component';
 import { ManageimageAdminComponent } from './pages/adminPage/manage/manageimage-admin/manageimage-admin.component';
-import { UserHomeComponentComponent } from './pages/userPage/user-home-component/user-home-component.component';
 import { ForgotpasswordComponent } from './pages/adminPage/forgotpassword/forgotpassword.component';
 import { UserMenusideComponent } from './pages/client/user-menuside/user-menuside.component';
 import { UserExploreComponent } from './pages/client/user-explore/user-explore.component';
