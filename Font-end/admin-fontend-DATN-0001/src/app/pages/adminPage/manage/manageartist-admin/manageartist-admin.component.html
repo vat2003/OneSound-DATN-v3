@@ -28,12 +28,8 @@
                 Image
               </button>
               <div class="image-upload-wrap">
-<<<<<<< HEAD
-                <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event) "
-=======
-                <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
->>>>>>> test
-                  accept="image/*" />
+                <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)" class="
+                  file-upload-input" type='file' accept="image/*" />
 
                 <div class="drag-text">
                   <h3>Drag and drop a file or select add Image</h3>
@@ -79,22 +75,12 @@
               <td>{{ singer.fullname }}</td>
               <td>{{ singer.description }}</td>
               <td><img src="{{singer.image }}" width="70" height="70" alt="{{singer.image}}"></td>
-<<<<<<< HEAD
 
               <td>
                 <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-50">Detail</button>
                 <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-50">Delete</button>
               </td>
             </tr>
-=======
-
-              <td>
-                <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-50">Detail</button>
-                <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-50">Delete</button>
-              </td>
-            </tr>
-
->>>>>>> test
 
           </tbody>
         </table>
