@@ -18,18 +18,6 @@ export class HomeComponent implements OnInit{
   account?:account | null;
 
   constructor(
-<<<<<<< HEAD
-    private UserService: accountServiceService,       
-    private tokenService: TokenService,    
-    private router: Router,
-  ) {
-    
-   }
-  ngOnInit() {    
-    this.account = this.UserService.getUserResponseFromLocalStorage();    
-    console.log(this.account);
-  }  
-=======
     private UserService: accountServiceService,
     private tokenService: TokenService,
     private router: Router,
@@ -40,15 +28,11 @@ export class HomeComponent implements OnInit{
     this.account = this.UserService.getUserResponseFromLocalStorage();
     console.log(this.account);
   }
->>>>>>> main
 
   logout(){
     this.UserService.removeUserFromLocalStorage();
   }
-<<<<<<< HEAD
   profile(){
     this.router.navigate(['/onesound/profile']);                      
   }
-=======
->>>>>>> main
 }

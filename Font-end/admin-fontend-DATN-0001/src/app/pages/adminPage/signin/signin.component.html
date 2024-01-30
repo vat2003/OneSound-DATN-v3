@@ -7,20 +7,17 @@
           <div class="d-flex align-items-center justify-content-between mb-3">
             <a routerLink="/onesound/admin" class="">
               <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>OneSound</h3>
-              <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i> {{ account?.email }}
-              </h3>
-
             </a>
             <h3>Sign In</h3>
           </div>
           <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" [(ngModel)]="email" name="email"
-                   (focus)="loginForm.form.markAsTouched()" placeholder="name@example.com">
+              (focus)="loginForm.form.markAsTouched()" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
           </div>
           <div class="form-floating input-group">
             <input type="{{ showPassword ? 'text' : 'password' }}" [(ngModel)]="password" name="password"
-                   placeholder="Ít nhất 3 ký tự" class="form-control" id="password">
+              placeholder="Ít nhất 3 ký tự" class="form-control" id="password">
             <label for="password">Password</label>
             <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowPassword()">
               <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>

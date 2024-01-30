@@ -1,5 +1,5 @@
-import {CommonModule} from '@angular/common';
-import {Component, ElementRef, Renderer2} from '@angular/core';
+import {CommonModule, DOCUMENT} from '@angular/common';
+import {Component, ElementRef, Inject, Renderer2} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {Singer} from '../../adminEntityService/adminEntity/singer/singer';
 import {SingerService} from '../../adminEntityService/adminService/singer-service.service';
@@ -21,6 +21,13 @@ export class ManageartistAdminComponent {
   imageUrl: string = '';
   setImageUrl: string = '';
   imageFile: any;
+  pages: number[] = [];
+  totalPages:number = 0;
+  visiblePages: number[] = [];
+  localStorage?:Storage;
+  currentPage: number = 1;
+  itemsPerPage: number = 4;
+
 
   constructor(
     private singerService: SingerService,
@@ -29,18 +36,20 @@ export class ManageartistAdminComponent {
     private el: ElementRef,
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
-  ) {
-  }
+    @Inject(DOCUMENT) private document: Document
+    ) {
+      this.localStorage = document.defaultView?.localStorage;
+    }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.loadSingers();
+    this.loadSingers(0,4);
     this.loadSingerById();
     this.getArtist(this.id);
   }
 
-  loadSingers() {
-    this.singerService.getCategories(0, 10).subscribe(
+  loadSingers(page: number, limit: number) {
+    this.singerService.getCategories(page, limit).subscribe(
       async (data) => {
         console.log(data);
         this.singers = data.content;
@@ -51,9 +60,33 @@ export class ManageartistAdminComponent {
           }
           singer.image = await this.setImageURLFirebase(singer.image);
         }
-
+        this.totalPages = data.totalPages;
+        this.visiblePages = this.generateVisiblePageArray(this.currentPage, this.totalPages);
+     
       }
     );
+  }
+
+  onPageChange(page: number) {      
+    this.currentPage = page < 0 ? 0 : page;
+    this.localStorage?.setItem('currentProductPage', String(this.currentPage)); 
+    this.loadSingers(this.currentPage, this.itemsPerPage);
+  }
+  
+
+  generateVisiblePageArray(currentPage: number, totalPages: number): number[] {
+    const maxVisiblePages = 5;
+    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
+  
+    let startPage = Math.max(currentPage - halfVisiblePages, 1);
+    let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+  
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+  
+    return new Array(endPage - startPage + 1).fill(0)
+      .map((_, index) => startPage + index);
   }
 
   private loadSingerById() {
@@ -87,7 +120,7 @@ export class ManageartistAdminComponent {
     if (isConfirmed) {
       this.singerService.deleteArtist(id).subscribe((data) => {
         console.log(data);
-        this.loadSingers();
+        this.loadSingers(0,4);
       });
     }
   }
@@ -107,7 +140,7 @@ export class ManageartistAdminComponent {
   }
 
   goToSingerList() {
-    this.loadSingers();
+    this.loadSingers(0,4);
     this.router.navigate(['/manage/artist']);
   }
 
