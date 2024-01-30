@@ -4,6 +4,7 @@
     margin: 0;
     color: white;
     font-family: "Poppins", sans-serif;
+  background-color: #000;
 }
 
 .daddy {
@@ -122,7 +123,7 @@ header .song-side::-webkit-scrollbar-thumb {
 header .master_play {
     /* width: 100%;   nếu dán thẳng player vào menuside thì dùng cái này  */
     /* height: 15%;   nếu dán thẳng player vào menuside thì dùng cái này*/
-    
+
     width: 100%; /* nếu dán dùng playercomponent thì dùng cái này */
     height: 100%;/* nếu dán dùng playercomponent thì dùng cái này */
     background-color: #242429;
@@ -520,7 +521,7 @@ header .master_play .vol .dot::before {
     color: #c0c0c0;
 }
 
-/* 
+/*
 popular */
 
 header .song-side .popular_song {
@@ -665,7 +666,7 @@ header .song-side .suggested-new-tracks table{
     border-collapse: collapse;
     font-size:14px;
     font-weight: 500;
-    
+
 }
 header .song-side .suggested-new-tracks table th:first-child{
     width: 50px;
@@ -858,7 +859,7 @@ header .song-side .explore .explore-card li h5 .subtitle {
 .detail-container::before {
     content: "";
     background: var(--category-thumbnail) center;
-    opacity: 0.15; 
+    opacity: 0.15;
     position: absolute;
     top: -5rem;
     left: 0;
@@ -1040,7 +1041,7 @@ header .song-side .list-tracks table{
     border-collapse: collapse;
     font-size:14px;
     font-weight: 500;
-    
+
 }
 header .song-side .list-tracks table th:first-child{
     width: 50px;
@@ -1137,7 +1138,7 @@ header .song-side .list-tracks table tr:hover td .bi{
     height: 100%;
     background-color: rgba(0, 0, 0, 0.89);
   }
-  
+
   .modal-update{
     display: none;
     position: fixed;
@@ -1155,7 +1156,7 @@ header .song-side .list-tracks table tr:hover td .bi{
     padding: 20px;
     border-radius: 5px;
   }
-  
+
   .close {
     color: #aaa;
     float: right;
@@ -1163,15 +1164,15 @@ header .song-side .list-tracks table tr:hover td .bi{
     font-weight: bold;
     cursor: pointer;
   }
-  
+
   .close:hover {
     color: rgb(135, 135, 135);
   }
-  
+
   /* Additional styles to make it look nice */
 
-  
- .modal-content 
+
+ .modal-content
   button {
     display: block;
     margin: 10px auto;
@@ -1180,7 +1181,7 @@ header .song-side .list-tracks table tr:hover td .bi{
     font-size: 16px;
     border-radius: 5px;
   }
-  
+
   button {
     background-color:#454545;
     color: rgb(221, 221, 221);
@@ -1188,12 +1189,12 @@ header .song-side .list-tracks table tr:hover td .bi{
     border: none;
     transition: 0.3s ease-in-out;
   }
-  
+
   button:hover {
     background-color:#23f4e4;
     color:black;
   }
-  
+
   .modal-content input[type="text"]{
     width: 100%;
     height: 50px;
