@@ -1,11 +1,11 @@
 import { Inject, Injectable } from "@angular/core";
-import { login } from "../adminEntity/LoginDTO/login";
+import { login } from "../adminEntity/DTO/login";
 import { Observable, catchError } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { DOCUMENT } from "@angular/common";
 import { HttpUtilService } from "./http.util.service";
 import { account } from "../adminEntity/account/account";
-import { Register } from "../adminEntity/LoginDTO/register.dto";
+import { Register } from "../adminEntity/DTO/Register";
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +42,6 @@ export class accountServiceService{
 
   getUserDetail(token: string) {
     const trimmedToken = token.trim();
-
     return this.http.post(this.apiUserDetail, {}, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

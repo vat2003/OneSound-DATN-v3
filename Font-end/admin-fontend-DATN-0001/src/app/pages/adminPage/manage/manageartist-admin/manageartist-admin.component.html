@@ -28,7 +28,11 @@
                 Image
               </button>
               <div class="image-upload-wrap">
+<<<<<<< HEAD
                 <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event) "
+=======
+                <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
+>>>>>>> test
                   accept="image/*" />
 
                 <div class="drag-text">
@@ -75,6 +79,14 @@
               <td>{{ singer.fullname }}</td>
               <td>{{ singer.description }}</td>
               <td><img src="{{singer.image }}" width="70" height="70" alt="{{singer.image}}"></td>
+<<<<<<< HEAD
+
+              <td>
+                <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-50">Detail</button>
+                <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-50">Delete</button>
+              </td>
+            </tr>
+=======
 
               <td>
                 <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-50">Detail</button>
@@ -82,8 +94,38 @@
               </td>
             </tr>
 
+>>>>>>> test
+
           </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="currentPage > 0">
+                <a class="page-link" (click)="onPageChange(0)">First</a>
+              </li>
+              <li class="page-item" *ngIf="currentPage > 0">
+                <a class="page-link" (click)="onPageChange(currentPage - 1)">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <ng-container *ngFor="let page of visiblePages">
+                <li class="page-item" [ngClass]="{'active': page === currentPage + 1}">
+                  <a class="page-link" (click)="onPageChange(page - 1)">{{ page }}</a>
+                </li>
+              </ng-container>
+              <li class="page-item" *ngIf="currentPage < totalPages - 1">
+                <a class="page-link" (click)="onPageChange(currentPage + 1)">
+                  <i class="fa fa-chevron-right"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngIf="currentPage < totalPages - 1">
+                <a class="page-link" (click)="onPageChange(totalPages - 1)">Last</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+
       </div>
     </div>
 

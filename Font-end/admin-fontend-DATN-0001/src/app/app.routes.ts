@@ -14,11 +14,16 @@ import {ManageimageAdminComponent} from "./pages/adminPage/manage/manageimage-ad
 import {UserHomeComponentComponent} from "./pages/userPage/user-home-component/user-home-component.component";
 import {ForgotpasswordComponent} from "./pages/adminPage/forgotpassword/forgotpassword.component";
 import {ChangePasswordComponent} from "./pages/adminPage/change-password/change-password.component";
+import { ManageprofileAdminComponent } from './pages/adminPage/manage/manageprofile-admin/manageprofile-admin.component';
+import { LoginneComponent } from './pages/adminPage/loginne/loginne.component';
+import { DangkyComponent } from './pages/adminPage/dangky/dangky.component';
 
 export const routes: Routes = [
   {path: '', component: Notfound404Component},
   {path: 'onesound/signin', component: SigninComponent},
   {path: 'onesound/signup', component: SignupComponent},
+  {path: 'onesound/dangnhap', component: LoginneComponent},
+  {path: 'onesound/dangky', component: DangkyComponent},
   {path: 'onesound/changepassword', component: ChangePasswordComponent},
   {path: 'onesound/forgotpassword', component: ForgotpasswordComponent},
   {path: 'onesound/admin/image', component: ManageimageAdminComponent},
@@ -33,6 +38,7 @@ export const routes: Routes = [
       {path: 'manage/album', component: ManagealbumAdminComponent},
       {path: 'manage/artist', component: ManageartistAdminComponent},
       {path: 'manage/genre', component: ManagegenreAdminComponent},
+      {path: 'manage/profile', component: ManageprofileAdminComponent},
       {path: 'manage/genre/update-genre/:id', component: ManagegenreAdminComponent},
       {path: 'manage/genre/:id', component: ManagegenreAdminComponent},
       {path: 'manage/song', component: ManagesongAdminComponent},

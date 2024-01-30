@@ -1,12 +1,12 @@
-import {Component, ViewChild} from '@angular/core';
-import {FormsModule, NgForm} from '@angular/forms';
-import {Router, RouterLink} from "@angular/router";
-import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
+import { NgClass, NgIf } from '@angular/common';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
 import { Register } from '../adminEntityService/adminEntity/DTO/Register';
-import {NgClass, NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-signup',
+  selector: 'app-dangky',
   standalone: true,
   imports: [
     RouterLink,
@@ -14,10 +14,10 @@ import {NgClass, NgIf} from "@angular/common";
     NgClass,
     NgIf
   ],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+  templateUrl: './dangky.component.html',
+  styleUrl: './dangky.component.scss'
 })
-export class SignupComponent {
+export class DangkyComponent {
   @ViewChild('registerForm') registerForm!: NgForm;
   email: string;
   password: string;
@@ -27,7 +27,7 @@ export class SignupComponent {
   active: boolean;
   createdDate: Date;
 
-
+  
   constructor(private router: Router, private userService: accountServiceService) {
     this.email = '';
     this.password = '';
@@ -39,30 +39,19 @@ export class SignupComponent {
 
   }
 
-  showRePassword = false;
-  showPassword = false;
-
-  toggleShowRePassword() {
-    this.showRePassword = !this.showRePassword;
-  }
-
-  toggleShowPassword() {
-    this.showPassword = !this.showPassword;
-  }
-
   register() {
  
   
-    if (this.registerForm.invalid) {
-      console.log("Form is invalid");
-      alert("PLEASE FILL UP THE FORM!");
-      return;
-    }
+    // if (this.registerForm.invalid) {
+    //   console.log("Form is invalid");
+    //   alert("PLEASE FILL UP THE FORM!");
+    //   return;
+    // }
 
-    if (this.password !== this.retypePassword) {
-      alert("The password does not match");
-      return;
-    }
+    // if (this.password !== this.retypePassword) {
+    //   alert("The password does not match");
+    //   return;
+    // }
   
     const Register: Register = {
       fullname: this.fullname,
@@ -75,9 +64,10 @@ export class SignupComponent {
       role_id: 1
     };
 
+    console.log(Register);
+    
     this.userService.register(Register).subscribe({
-      next: (response: any) => {
-        debugger;
+      next: (response: any) => {        
         alert("Sign up successfully");
         console.log(response);
         this.router.navigate(['onesound/signin']);
@@ -89,6 +79,6 @@ export class SignupComponent {
         alert("Thất bại");
       }
     });
-  }
 
+  }
 }

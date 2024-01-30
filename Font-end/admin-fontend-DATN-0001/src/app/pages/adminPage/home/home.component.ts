@@ -32,4 +32,7 @@ export class HomeComponent implements OnInit{
   logout(){
     this.UserService.removeUserFromLocalStorage();
   }
+  profile(){
+    this.router.navigate(['/onesound/profile']);                      
+  }
 }

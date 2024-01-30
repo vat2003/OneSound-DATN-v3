@@ -29,10 +29,10 @@
       </div>
       <div class="navbar-nav w-100">
         <a routerLink="dashboard" class="nav-item nav-link active"><i
-          class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+            class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-            class="fa fa-laptop me-2"></i>Management</a>
+              class="fa fa-laptop me-2"></i>Management</a>
           <div class="dropdown-menu bg-transparent border-0">
             <a routerLink="manage/album" class="dropdown-item">Album</a>
             <a routerLink="manage/artist" class="dropdown-item">Artist</a>
@@ -47,7 +47,7 @@
         <a routerLink="chart" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-            class="far fa-file-alt me-2"></i>Pages</a>
+              class="far fa-file-alt me-2"></i>Pages</a>
           <div class="dropdown-menu bg-transparent border-0">
             <a routerLink="/onesound/signin" class="dropdown-item">Sign In</a>
             <a routerLink="/onesound/signup" class="dropdown-item">Sign Up</a>
@@ -144,7 +144,7 @@
             <span class="d-none d-lg-inline-flex">John Doe</span>
           </a>
           <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-            <a href="#" class="dropdown-item">My Profile</a>
+            <a routerLink="/signin" (click)="profile()" class="dropdown-item">My Profile</a>
             <a href="#" class="dropdown-item">Settings</a>
             <a routerLink="/signin" (click)="logout()" class="dropdown-item">Log Out</a>
           </div>
