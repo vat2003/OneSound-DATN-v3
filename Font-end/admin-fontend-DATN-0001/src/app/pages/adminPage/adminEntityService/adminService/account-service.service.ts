@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { DOCUMENT } from "@angular/common";
 import { HttpUtilService } from "./http.util.service";
 import { Register } from "../adminEntity/DTO/Register";
+<<<<<<< HEAD
 // import { Register } from "../adminEntity/LoginDTO/register.dto";
 interface AccountResponse {
   content: account[];
@@ -15,6 +16,9 @@ interface AccountResponse {
   totalElements: number;
   // Add other properties as needed
 }
+=======
+import { UpdateUserDTO } from "../adminEntity/DTO/update.user.dto";
+>>>>>>> viet
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +28,11 @@ export class accountServiceService{
   private apiLogin = `${this.baseUrl}/users/login`;
   private apiRegister = `${this.baseUrl}/users/register`;
   private apiUserDetail = `${this.baseUrl}/users/details`;
+<<<<<<< HEAD
 
+=======
+  private apiUserUpdate = `${this.baseUrl}/users/details`;
+>>>>>>> viet
   localStorage?:Storage;
 
   private apiConfig = {
@@ -46,7 +54,9 @@ export class accountServiceService{
 
   register(Register: Register):Observable<any> {  debugger;
     return this.http.post(this.apiRegister, Register, this.apiConfig);
+  }
 
+<<<<<<< HEAD
   }
 
   createAccount(account:account):Observable<account>{
@@ -55,6 +65,15 @@ export class accountServiceService{
 
   getUserById(id:number):Observable<account>{
     return this.http.get<account>(`${this.baseUrl}/users/${id}`);
+=======
+  UpdateProfile(updateUserDTO: UpdateUserDTO) {    
+    
+    var userResponse = this.getUserResponseFromLocalStorage();       
+
+    return this.http.put(`${this.apiUserDetail}/${userResponse?.id}`,updateUserDTO,{
+      
+    })
+>>>>>>> viet
   }
 
   getUserDetail(token: string) {
@@ -83,7 +102,6 @@ export class accountServiceService{
   }
 
   saveUserResponseToLocalStorage(userResponse?: account) {
-
     try {
       if(userResponse == null || !userResponse) {
         return;
@@ -95,6 +113,9 @@ export class accountServiceService{
       console.error('Error saving user response to local storage:', error);
     }
   }
+
+
+ 
 
 
   removeUserFromLocalStorage():void {

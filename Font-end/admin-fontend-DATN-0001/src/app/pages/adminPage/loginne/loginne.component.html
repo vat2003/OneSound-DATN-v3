@@ -10,15 +10,14 @@
           <div class="login-form-inner-title">
             Enter your email
           </div>
-          <input type="text" placeholder="Enter your email" name="email-login" id="" [(ngModel)]="email"
-          />
+          <input type="text" placeholder="Enter your email" name="email-login" id="" [(ngModel)]="email" name="email" />
         </div>
         <div class="form-item">
           <div class="login-form-inner-title">
             Enter your password
           </div>
-          <input placeholder="Enter your password" name="password-login" id="password-login" type="password"
-                 [(ngModel)]="password"/>
+          <input type="password" placeholder="Enter your password" name="password-login" id="" type="password"
+            [(ngModel)]="password" />
         </div>
         <button id="login-btn" class="login-button" (click)="login()">
           Continue
@@ -32,9 +31,8 @@
         </button>
 
         <button class="signup-button">
-          <!--                    <a class="">-->
-          Create Account
-          <!--                    </a>-->
+          <a class="">
+            Create Account</a>
         </button>
       </form>
     </div>
@@ -49,9 +47,9 @@
             }
           </style>
         </defs>
-        <rect class="cls-1" x="551.64" y="127.08" width="300" height="300" rx="150"/>
+        <rect class="cls-1" x="551.64" y="127.08" width="300" height="300" rx="150" />
         <path class="cls-1"
-              d="M700,1239.56H700c-193.28,0-350-156.69-350-350v-.06c0-193.29,156.69-350,350-350H700c193.28,0,350,156.68,350,350v.06C1050,1082.87,893.31,1239.56,700,1239.56Zm150-350h0a150,150,0,0,0-150-150h0a150,150,0,0,0-150,150h0a150,150,0,0,0,150,150h0A150,150,0,0,0,850,889.56Z"/>
+          d="M700,1239.56H700c-193.28,0-350-156.69-350-350v-.06c0-193.29,156.69-350,350-350H700c193.28,0,350,156.68,350,350v.06C1050,1082.87,893.31,1239.56,700,1239.56Zm150-350h0a150,150,0,0,0-150-150h0a150,150,0,0,0-150,150h0a150,150,0,0,0,150,150h0A150,150,0,0,0,850,889.56Z" />
       </svg>
       © 2023 OneSound Music
     </div>

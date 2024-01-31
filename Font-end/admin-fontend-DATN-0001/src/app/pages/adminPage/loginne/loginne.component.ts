@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule, NgForm, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { account } from '../adminEntityService/adminEntity/account/account';
 import { login } from '../adminEntityService/adminEntity/DTO/login';
@@ -36,7 +36,6 @@ maxIncorrectLoginAttempts: number = 5; // Số lần đăng nhập sai tối đa
     private tokenService: TokenService,
 ) {
 }
-
 
   ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();

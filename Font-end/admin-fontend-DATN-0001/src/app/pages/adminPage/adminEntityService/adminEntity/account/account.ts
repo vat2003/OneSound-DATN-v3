@@ -11,10 +11,13 @@ export class account{
   avatar_url: string;
   gender:boolean;
   createdDate?: Date;
+<<<<<<< HEAD
   birthday?:Date;
   phonenumber:string;
 
   // ... các trường khác
+=======
+>>>>>>> viet
   accountRole?: Role;
   passwordResetToken?: PasswordResetToken;
 

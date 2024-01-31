@@ -15,6 +15,7 @@ import { Register } from '../adminEntityService/adminEntity/DTO/Register';
     NgIf
   ],
   templateUrl: './dangky.component.html',
+
   styleUrl: './dangky.component.scss'
 })
 export class DangkyComponent {
@@ -27,6 +28,8 @@ export class DangkyComponent {
   active: boolean;
   createdDate: Date;
 
+  isEmailValid: boolean = true;
+
   
   constructor(private router: Router, private userService: accountServiceService) {
     this.email = '';
@@ -36,49 +39,62 @@ export class DangkyComponent {
     this.gender = true;   
     this.active = true;
     this.createdDate = new Date();
+    this.createdDate.setFullYear(this.createdDate.getFullYear() - 18);
 
   }
 
+
+
   register() {
- 
+    // Kiểm tra tính hợp lệ của các trường
+    if (this.registerForm.valid) {
+      // Nếu tất cả các trường hợp lệ, tiến hành đăng ký
+      const registerData: Register = {
+        fullname: this.fullname,
+        email: this.email,
+        password: this.password,
+        retype_password: this.retypePassword,
+        gender: this.gender,
+        active: this.active,
+        createdDate: this.createdDate,
+        role_id: 1
+      };
   
-    // if (this.registerForm.invalid) {
-    //   console.log("Form is invalid");
-    //   alert("PLEASE FILL UP THE FORM!");
-    //   return;
-    // }
-
-    // if (this.password !== this.retypePassword) {
-    //   alert("The password does not match");
-    //   return;
-    // }
+      // Gửi yêu cầu đăng ký
+      this.userService.register(registerData).subscribe({
+        next: (response: any) => {
+          alert("Sign up successfully");
+          console.log(response);
+          this.router.navigate(['onesound/signin']);
+          return;
+        },
+        complete: () => {
+        },
+        error: (error: any) => {
+          alert("Thất bại");
+        }
+      });
+    } else {
+      alert("vui lòng không để trống các thông tin người dùng");
+    }
+  }
   
-    const Register: Register = {
-      fullname: this.fullname,
-      email: this.email,
-      password: this.password,
-      retype_password: this.retypePassword,
-      gender: this.gender, 
-      active: this.active,
-      createdDate: this.createdDate,
-      role_id: 1
-    };
 
-    console.log(Register);
-    
-    this.userService.register(Register).subscribe({
-      next: (response: any) => {        
-        alert("Sign up successfully");
-        console.log(response);
-        this.router.navigate(['onesound/signin']);
-        return;
-      },
-      complete: () => {
-      },
-      error: (error: any) => {
-        alert("Thất bại");
+  checkAge() {
+    if (this.createdDate) {
+      const today = new Date();
+      const birthDate = new Date(this.createdDate);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
       }
-    });
 
+      if (age < 18) {
+        this.registerForm.form.controls['dateOfBirth'].setErrors({ 'invalidAge': true });
+      } else {
+        this.registerForm.form.controls['dateOfBirth'].setErrors(null);
+      }
+    }
   }
 }

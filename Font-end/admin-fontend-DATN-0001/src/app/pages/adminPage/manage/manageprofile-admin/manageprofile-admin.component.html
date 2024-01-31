@@ -3,71 +3,47 @@
         <div class="col-sm-2 col-xl-6">
             <div class="bg-secondary rounded h-100 p-4">
                 <h6 class="mb-4 text-uppercase">Profile</h6>
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">ID</label>
-                        <input type="text" class="form-control" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Fullname</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <h6 class="mb-0">{{ account?.email }}</h6>
+                <form [formGroup]="userProfileForm">
+                    <input type="text" hidden formControlName="id" class="form-control">
 
-                        <label for="exampleInputEmail1" class="form-label">Email</label>
-                        <input type="email" class="form-control">
-                    </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Phone number</label>
-                        <input type="text" class="form-control">
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
+                        <input readonly type="email" formControlName="email" class="form-control text-dark">
+
+
+
                     </div>
+
+                    <div class="mb-3">
+                        <label for="fullname" class="form-label">Họ và tên</label>
+                        <input type="text" formControlName="fullname" class="form-control" id="fullname"
+                            [ngClass]="{'is-invalid': userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched}">
+                        <div *ngIf="userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched"
+                            class="invalid-feedback" style="size: 100px; color: red;">
+                            Họ và tên là trường bắt buộc.
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Birthday</label>
-                        <input type="date" class="form-control">
+                        <input type="date" formControlName="createdDate" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Gender</label> <br>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                            <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio1"
                                 value="option1">
                             <label class="form-check-label" for="inlineRadio1">Female</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                            <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio2"
                                 value="option2">
                             <label class="form-check-label" for="inlineRadio2">Male</label>
                         </div>
-
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Address</label>
-                        <input type="text" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Role</label> <br>
-                        <div class="btn-group" role="group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
-                                checked>
-                            <label class="btn btn-outline-primary" for="btnradio1">USER</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
-                                checked>
-                            <label class="btn btn-outline-primary" for="btnradio1">ADMIN</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio3">PREMIUM</label>
-                        </div>
-                    </div>
-                    <label class="form-label">Active</label> <br>
-                    <div class="btn-group mb-3" role="group">
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                        <label class="btn btn-outline-primary" for="btnradio1">Active</label>
-
-                        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
+                        <input type="text" formControlName="address" class="form-control">
                     </div>
                     <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
                     <br>
@@ -89,11 +65,8 @@
                                         class="image-title">Uploaded Image</span></button>
                             </div>
                         </div>
+                        <button type="button" (click)="save()" class="btn btn-primary mt-4 w-100">Update</button>
                     </div>
-
-                    <br>
-                    <!-- <button type="submit" class="btn btn-primary mt-4 w-100">Update</button> -->
-
                 </form>
             </div>
         </div>

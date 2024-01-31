@@ -1,4 +1,5 @@
 export class Singer {
+  
   id!: number;
   fullname: string;
   description: string;

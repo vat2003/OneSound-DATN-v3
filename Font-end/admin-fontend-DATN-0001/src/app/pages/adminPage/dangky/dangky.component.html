@@ -1,39 +1,59 @@
-<div class="login-container">
-    <div class="logo-login">
-        <a href="" class="nav-brand"><img src="asset\img\logo copy.png" alt=""></a>
-    </div>
+<div class="login-container" style="background-color: black;padding-top: 30px;">
     <div class="login-title">Create Your Account</div>
     <div class="signup-form">
         <div class="login-form-inner">
-            <form action="">
+            <form #registerForm="ngForm">
+
+
                 <div class="form-item">
                     <div class="login-form-inner-title">
                         Enter your fullname
                     </div>
                     <input type="text" placeholder="Enter your fullname" name="name-register" id=""
                         [(ngModel)]="fullname" />
+                    <p class="text-danger" style="color: red;"
+                        *ngIf="fullname.length < 6 && registerForm.controls['name-register'].touched">Tên không được
+                        ngắn quá (dưới 6 ký tự)</p>
                 </div>
+
                 <div class="form-item">
                     <div class="login-form-inner-title">Enter your email</div>
-                    <input type="text" placeholder="Enter your email" name="email-register" id="" [(ngModel)]="email" />
+                    <input type="text" placeholder="Enter your email" name="email-register" id="" [(ngModel)]="email"
+                        #emailInput="ngModel" [ngClass]="{'is-invalid': emailInput.invalid && emailInput.touched}"
+                        required email />
+                    <p class="text-danger" style="color: red;" *ngIf="!emailInput.valid && emailInput.touched">Vui lòng
+                        nhập đúng định dạng email</p>
                 </div>
+
                 <div class="form-item">
                     <div class="login-form-inner-title">Enter your password</div>
                     <input type="password" placeholder="Enter your password" name="password-regis" id=""
                         [(ngModel)]="password" />
+                    <p class="text-danger" style="color: red;"
+                        *ngIf="password.length < 6 && registerForm.controls['password-regis'].touched">Mật khẩu phải dài
+                        hơn 6 kí tự</p>
                 </div>
-                <div class="form-item">
-                    <div class="login-form-inner-title">Enter your password</div>
-                    <input type="date" placeholder="Enter your date" name="date-regis" id=""
-                        [(ngModel)]="createdDate" />
-                </div>
-
 
                 <div class="form-item">
                     <div class="login-form-inner-title">Re-Enter your password</div>
                     <input type="password" placeholder="Enter your password" name="password-regis-confirm" id=""
                         [(ngModel)]="retypePassword" />
+                    <p class="text-danger" style="color: red;"
+                        *ngIf="retypePassword !== password && registerForm.controls['password-regis-confirm'].touched">
+                        Mật khẩu không khớp</p>
                 </div>
+                <div class="form-item">
+                    <div class="login-form-inner-title">Enter your date</div>
+                    <input type="date" placeholder="Enter your date" name="dateOfBirth" id="" [(ngModel)]="createdDate"
+                        required id="date-of-birth" (input)="registerForm.form.markAsTouched(); checkAge()" />
+                    <div class="divider-nospace"></div>
+
+                    <p class="text-danger" style="color: red;" *ngIf="registerForm.controls['dateOfBirth']?.hasError('invalidAge') 
+                        && registerForm.form.touched">
+                        Bạn chưa đủ 18 tuổi
+                    </p>
+                </div>
+
                 <button class="login-button" id="signup-btn" (click)="register()">Continue</button>
                 <button class="login-button-social">
                     <i class="fa-solid fa-circle-info"></i><span>I Already Have Account</span>

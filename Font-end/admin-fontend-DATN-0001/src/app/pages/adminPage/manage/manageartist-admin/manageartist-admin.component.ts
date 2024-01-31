@@ -23,11 +23,11 @@ export class ManageartistAdminComponent {
   setImageUrl: string = '';
   imageFile: any;
   pages: number[] = [];
-  totalPages: number = 0;
+  total: number = 0;
   visiblePages: number[] = [];
   localStorage?: Storage;
-  currentPage: number = 1;
-  itemsPerPage: number = 4;
+  page: number = 1;
+  itempage: number = 4;
 
 
   constructor(
@@ -61,26 +61,26 @@ export class ManageartistAdminComponent {
           }
           singer.image = await this.setImageURLFirebase(singer.image);
         }
-        this.totalPages = data.totalPages;
-        this.visiblePages = this.generateVisiblePageArray(this.currentPage, this.totalPages);
+        this.total = data.totalPages;
+        this.visiblePages = this.PageArray(this.page, this.total);
 
       }
     );
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page < 0 ? 0 : page;
-    this.localStorage?.setItem('currentProductPage', String(this.currentPage));
-    this.loadSingers(this.currentPage, this.itemsPerPage);
+  Page(page: number) {
+    this.page = page < 0 ? 0 : page;
+    this.localStorage?.setItem('currentProductPage', String(this.page));
+    this.loadSingers(this.page, this.itempage);
   }
 
 
-  generateVisiblePageArray(currentPage: number, totalPages: number): number[] {
+  PageArray(page: number, total: number): number[] {
     const maxVisiblePages = 5;
     const halfVisiblePages = Math.floor(maxVisiblePages / 2);
 
-    let startPage = Math.max(currentPage - halfVisiblePages, 1);
-    let endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+    let startPage = Math.max(page - halfVisiblePages, 1);
+    let endPage = Math.min(startPage + maxVisiblePages - 1, total);
 
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(endPage - maxVisiblePages + 1, 1);
@@ -147,14 +147,7 @@ export class ManageartistAdminComponent {
   }
 
   onSubmit() {
-    // this.saveSinger();
-    // this.goToSingerList();
-    // this.singerService.updateArtist(this.id, this.singer).subscribe(
-    //   (data) => {
-    //     this.goToSingerList();
-    //   },
-    //   (error) => console.log(error)
-    // );
+ 
     if (this.id) {
       this.updateSinger(this.id);
     } else {
@@ -165,7 +158,6 @@ export class ManageartistAdminComponent {
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
     const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
-    //Kiểm tra giới hạn kích thước ảnh
     if (selectedFile.size > maxSizeInBytes) {
       alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
       this.resetFileInput();
