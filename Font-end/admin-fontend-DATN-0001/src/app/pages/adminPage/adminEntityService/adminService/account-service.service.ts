@@ -61,7 +61,7 @@ export class accountServiceService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/Account`, {params});
+    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/users`, {params,});
   }
 
   deleteUser(id: number): Observable<Object> {

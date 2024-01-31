@@ -7,10 +7,11 @@ export class account{
   fullname: string;
   email: string;
   active:boolean;
+  createdDate?: Date;
   address: string;
   avatar_url: string;
   gender:boolean;
-  createdDate?: Date;
+
   birthday?:Date;
   phonenumber:string;
 

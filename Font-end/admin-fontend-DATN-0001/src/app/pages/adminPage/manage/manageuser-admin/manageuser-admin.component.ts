@@ -5,10 +5,8 @@ import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
-// import { Role } from '../../adminEntityService/adminEntity/Role/Role';
 import {RoleService} from '../../adminEntityService/adminService/role.service';
 import {Role} from '../../adminEntityService/adminEntity/Role/Role';
-import {Observable} from "rxjs";
 
 
 @Component({
@@ -69,9 +67,10 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    // this.loadUserById();
     this.getPages();
-    this.getUser(this.id);
-    this.getAllRole();
+    // this.getUser(this.id);
+    // this.getAllRole();
   }
 
   togglePasswordVisibility() {
@@ -133,10 +132,14 @@ export class ManageuserAdminComponent implements OnInit {
 
 
   getPages() {
-    this.accountServiceService.getPages(1, 10).subscribe(
-      async data => {
+    this.accountServiceService.getPages(0,10).subscribe(
+    // this.accountServiceService.getPages(1, 10).subscribe(
+      async (data) => {
         console.log("asdasd" + data);
         this.Accounts = data.content;
+        console.log('adf ads = ' + data.content);
+
+        console.log('accounts :: ' + this.Accounts);
 
         for (const account of this.Accounts) {
           if (account.avatar_url == "" || account.avatar_url == null) {
