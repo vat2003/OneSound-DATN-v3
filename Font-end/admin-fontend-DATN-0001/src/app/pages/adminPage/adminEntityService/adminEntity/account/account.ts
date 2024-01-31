@@ -11,8 +11,6 @@ export interface account{
   avatar_url: string;
   gender:boolean;
   createdDate?: Date;
-
-  // ... các trường khác
   accountRole?: Role;
   passwordResetToken?: PasswordResetToken;
 

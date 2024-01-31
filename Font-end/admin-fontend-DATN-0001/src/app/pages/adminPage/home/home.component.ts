@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit{
   }
   ngOnInit() {
     this.account = this.UserService.getUserResponseFromLocalStorage();
+
     console.log(this.account);
   }
 
