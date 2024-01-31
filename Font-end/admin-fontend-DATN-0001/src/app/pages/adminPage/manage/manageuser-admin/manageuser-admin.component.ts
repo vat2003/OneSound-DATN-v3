@@ -1,49 +1,51 @@
-
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { account, createAccount } from '../../adminEntityService/adminEntity/account/account';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {account, createAccount} from '../../adminEntityService/adminEntity/account/account';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
 // import { Role } from '../../adminEntityService/adminEntity/Role/Role';
-import { RoleService } from '../../adminEntityService/adminService/role.service';
-import { Role } from '../../adminEntityService/adminEntity/Role/Role';
+import {RoleService} from '../../adminEntityService/adminService/role.service';
+import {Role} from '../../adminEntityService/adminEntity/Role/Role';
+import {Observable} from "rxjs";
 
 
 @Component({
   selector: 'app-manageuser-admin',
   standalone: true,
-  imports: [CommonModule,FormsModule, NgOptimizedImage,
+  imports: [CommonModule, FormsModule, NgOptimizedImage,
     RouterLink],
   templateUrl: './manageuser-admin.component.html',
   styleUrl: './manageuser-admin.component.scss'
 })
-export class ManageuserAdminComponent implements OnInit{
-  id!:number;
-  Account:account=createAccount();
-  Accounts:account[]=[];
+export class ManageuserAdminComponent implements OnInit {
+  id!: number;
+  Account: account = createAccount();
+  Accounts: account[] = [];
   imageUrl: string = '';
   setImageUrl: string = '';
   imageFile: any;
   showPassword = false;
   showPassword2 = false;
-  Roles: Role[]=[];
+  Roles: Role[] = [];
   Role: Role = new Role();
-  selectedRole!:string;
+  selectedRole!: string;
+
   constructor(
-    private accountServiceService:accountServiceService,
+    private accountServiceService: accountServiceService,
     private router: Router,
     private route: ActivatedRoute,
     private el: ElementRef,
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
-    private RoleService:RoleService
-    ){
+    private RoleService: RoleService
+  ) {
 
 
   }
-  getAllRole(){
+
+  getAllRole() {
     // this.RoleService.getAllRolesPages(1).subscribe(
     //   (data) => {
     //     this.Roles = data;
@@ -51,18 +53,20 @@ export class ManageuserAdminComponent implements OnInit{
     //   }
     //   );
     this.RoleService.getAllRoles().subscribe(
-      (data:any)=> {
+      (data: any) => {
         this.Roles = data;
-        console.log('dataa ==== > '+ this.Roles);
+        console.log('dataa ==== > ' + this.Roles);
       }
     );
-    for(const x of this.Roles){
-      console.log(' FOREASCSLC === '+ x.name);
+    for (const x of this.Roles) {
+      console.log(' FOREASCSLC === ' + x.name);
     }
   }
-  Count(role:string){
-    console.log("Đã click nhưng đếu ăn"+Role)
+
+  Count(role: string) {
+    console.log("Đã click nhưng đếu ăn" + Role)
   }
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.getPages();
@@ -76,6 +80,7 @@ export class ManageuserAdminComponent implements OnInit{
     passwordField.type = this.showPassword ? 'text' : 'password';
 
   }
+
   togglePasswordVisibility2() {
     this.showPassword2 = !this.showPassword2;
     const passwordField2 = document.getElementById('passwordField2') as HTMLInputElement;
@@ -127,11 +132,10 @@ export class ManageuserAdminComponent implements OnInit{
   }
 
 
-
   getPages() {
     this.accountServiceService.getPages(1, 10).subscribe(
       async data => {
-        console.log("asdasd"+data);
+        console.log("asdasd" + data);
         this.Accounts = data.content;
 
         for (const account of this.Accounts) {
@@ -171,6 +175,8 @@ export class ManageuserAdminComponent implements OnInit{
     );
 
   }
+
+
 
   updateUser(id: number) {
     this.Account.avatar_url = this.setImageUrl;
@@ -212,5 +218,6 @@ export class ManageuserAdminComponent implements OnInit{
       });
     }
   }
+
 
 }
