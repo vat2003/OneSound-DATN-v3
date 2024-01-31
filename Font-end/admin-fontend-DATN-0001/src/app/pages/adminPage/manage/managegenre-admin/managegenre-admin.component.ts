@@ -54,6 +54,7 @@ export class ManagegenreAdminComponent implements OnInit {
         this.imageUrl = e.target.result;
         this.fillImage(this.imageUrl);
       };
+      //Set path ảnh theo thư mục
       this.setImageUrl = 'adminManageImage/genre/' + archivoSelectcionado.name;
       this.imageFile = archivoSelectcionado;
       console.log(this.imageUrl);
@@ -119,12 +120,16 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   saveGenre() {
+    //Set path ảnh được chọn từ Func onFileSelected()
     this.Genree.image = this.setImageUrl;
+    //Lưu đối tượng vào Database bằng GenreService
     this.GenreService.createGenre(this.Genree).subscribe(
       async (data) => {
+        //Trong lúc lưu đối tượng vào Database thì đồng thời Set path và file ảnh lên Firebase
         if (this.Genree.image != null) {
           await this.firebaseStorage.uploadFile('adminManageImage/genre/', this.imageFile);
         }
+        //Load lại table
         this.goToSingerList();
         console.log(data);
       },
