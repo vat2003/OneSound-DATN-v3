@@ -1,11 +1,20 @@
+import { account } from '../adminEntity/account/account';
 import { Inject, Injectable } from "@angular/core";
 import { login } from "../adminEntity/DTO/login";
 import { Observable, catchError } from "rxjs";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { DOCUMENT } from "@angular/common";
 import { HttpUtilService } from "./http.util.service";
-import { account } from "../adminEntity/account/account";
 import { Register } from "../adminEntity/DTO/Register";
+// import { Register } from "../adminEntity/LoginDTO/register.dto";
+interface AccountResponse {
+  content: account[];
+  pageable: any; // Adjust the type as needed
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  // Add other properties as needed
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +24,7 @@ export class accountServiceService{
   private apiLogin = `${this.baseUrl}/users/login`;
   private apiRegister = `${this.baseUrl}/users/register`;
   private apiUserDetail = `${this.baseUrl}/users/details`;
+
   localStorage?:Storage;
 
   private apiConfig = {
@@ -23,7 +33,7 @@ export class accountServiceService{
 
   constructor(
     private http: HttpClient,
-    private httpUtilService: HttpUtilService,
+    private httpUtilService: HttpUtilService,private httpClient: HttpClient,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.localStorage = document.defaultView?.localStorage;
@@ -37,7 +47,14 @@ export class accountServiceService{
   register(Register: Register):Observable<any> {  debugger;
     return this.http.post(this.apiRegister, Register, this.apiConfig);
 
+  }
 
+  createAccount(account:account):Observable<account>{
+    return this.http.post<account>(this.apiRegister,account,this.apiConfig);
+  }
+
+  getUserById(id:number):Observable<account>{
+    return this.http.get<account>(`${this.baseUrl}/users/${id}`);
   }
 
   getUserDetail(token: string) {
@@ -89,8 +106,19 @@ export class accountServiceService{
     }
   }
 
+  getPages(page: number, size: number):Observable<AccountResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/Account`, { params });
+  }
 
+  updateUser(id:number,account:account): Observable<Object>{
+    return this.http.put<account>(`${this.baseUrl}/users/${id}`,account);
+  }
 
-
+  deleteUser(id:number):Observable<Object>{
+    return this.http.delete(`${this.baseUrl}/users/${id}`);
+  }
 
 }
