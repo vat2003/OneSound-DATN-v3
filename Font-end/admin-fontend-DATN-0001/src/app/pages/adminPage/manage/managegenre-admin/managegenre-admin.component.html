@@ -1,5 +1,6 @@
 <!-- Form Start -->
 <div class="container-fluid pt-4 px-4">
+
   <div class="row g-4">
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
@@ -7,16 +8,23 @@
         <form (ngSubmit)="onSubmit()">
           <div class="form-group m-3">
             <label for="name">Genre name</label>
-            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="Genree.name">
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="Genree.name" required>
+            <span *ngIf="errorFieldsArr.includes('name')" class="text-warning">*Please enter the
+              music genre name</span>
+            <span *ngIf="errorFieldsArr.includes('existGenreName')" class="text-warning">The name of
+              the music genre
+              already exists</span>
           </div>
           <div class="form-group m-3">
             <label for="description">Description</label>
             <input type="text" class="form-control" id="description" name="description"
-                   [(ngModel)]="Genree.description">
+              [(ngModel)]="Genree.description">
             <!--            <textarea class="form-control" id="description" name="description"-->
             <!--                      [(ngModel)]="Genree.description">-->
             <!--            </textarea>-->
-
+            <span *ngIf="errorFieldsArr.includes('description')" class="text-warning">*Please enter
+              the music genre
+              description</span>
           </div>
 
           <div class="form-group m-3">
@@ -27,16 +35,21 @@
               </button>
               <div class="image-upload-wrap">
                 <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
-                       accept="image/*"/>
+                  accept="image/*" />
 
                 <div class="drag-text">
                   <h3>Drag and drop a file or select add Image</h3>
                 </div>
               </div>
+              <span *ngIf="errorFieldsArr.includes('name')" class="text-warning">*Please enter the
+                music genre
+                image</span>
+
               <div class="file-upload-content">
-                <img class="file-upload-image" [src]="imageUrl" alt="{{imageUrl}}"/>
+                <img class="file-upload-image" [src]="imageUrl" alt="{{imageUrl}}" />
                 <div class="image-title-wrap">
-                  <button type="button" (click)="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span>
+                  <button type="button" (click)="removeUpload()" class="remove-image">Remove <span
+                      class="image-title">Uploaded Image</span>
                   </button>
                 </div>
               </div>
@@ -45,7 +58,7 @@
 
 
           <button (click)="saveGenre()" class="btn btn-primary w-50 fw-bold">Add</button>
-          <button (click)="updateGender(Genree.id)" class="btn btn-info w-50 fw-bold">Update</button>
+          <button (click)="updateGenre(Genree.id)" class="btn btn-info w-50 fw-bold">Update</button>
         </form>
       </div>
     </div>
@@ -55,28 +68,28 @@
         <h6 class="header-genre-list mb-4">GENRES LIST</h6>
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Image</th>
-            <th scope="col">Description</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Image</th>
+              <th scope="col">Description</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
 
           <tbody>
-          <tr *ngFor="let Genre of Genre">
-            <th scope="row">{{ Genre.id }}</th>
-            <td>{{ Genre.name }}</td>
-            <td><img src="{{Genre.image }}" width="70" height="70" alt="{{Genre.image}}"></td>
+            <tr *ngFor="let Genre of Genre">
+              <th scope="row">{{ Genre.id }}</th>
+              <td>{{ Genre.name }}</td>
+              <td><img src="{{Genre.image }}" width="70" height="70" alt="{{Genre.image}}"></td>
 
-            <td>{{ Genre.description }}</td>
+              <td>{{ Genre.description }}</td>
 
-            <td>
-              <button (click)="getGenre(Genre.id)" class="btn btn-outline-info w-50">Detail</button>
-              <button (click)="deleteGender(Genre.id)" class="btn btn-outline-danger w-50">Delete</button>
-            </td>
-          </tr>
+              <td>
+                <button (click)="getGenre(Genre.id)" class="btn btn-outline-info w-50">Detail</button>
+                <button (click)="deleteGender(Genre.id)" class="btn btn-outline-danger w-50">Delete</button>
+              </td>
+            </tr>
 
           </tbody>
 
