@@ -33,7 +33,7 @@
 /*** Button ***/
 .btn {
   transition: .5s;
-  margin-right: 7px;
+  /*margin-right: 7px;*/
 }
 
 .btn-square {
