@@ -1,16 +1,17 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Genre } from '../../adminEntityService/adminEntity/genre/genre';
-import { GenreServiceService } from '../../adminEntityService/adminService/genre-service.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
-import { error, log } from 'console';
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Genre} from '../../adminEntityService/adminEntity/genre/genre';
+import {GenreServiceService} from '../../adminEntityService/adminService/genre-service.service';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
+import {error, log} from 'console';
+import {NgToastModule, NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-managegenre-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgOptimizedImage, RouterLink],
+  imports: [CommonModule, FormsModule, NgOptimizedImage, RouterLink, NgToastModule],
   templateUrl: './managegenre-admin.component.html',
   styleUrl: './managegenre-admin.component.scss',
 })
@@ -24,14 +25,17 @@ export class ManagegenreAdminComponent implements OnInit {
   imageFile: any;
   submitted = false;
   errorFieldsArr: String[] = [];
+
   constructor(
     private GenreService: GenreServiceService,
     private router: Router,
     private route: ActivatedRoute,
     private el: ElementRef,
     private renderer: Renderer2,
-    private firebaseStorage: FirebaseStorageCrudService
-  ) { }
+    private firebaseStorage: FirebaseStorageCrudService,
+    private toast: NgToastService
+  ) {
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -55,6 +59,8 @@ export class ManagegenreAdminComponent implements OnInit {
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
+      this.setImageUrl = 'adminManageImage/genre/null.jpg';
+
       this.removeUpload();
     }
   }
@@ -82,6 +88,8 @@ export class ManagegenreAdminComponent implements OnInit {
 
   removeUpload(): void {
     this.imageUrl = '';
+    this.setImageUrl = '';
+    // this.imageFile = null;
     this.renderer.setProperty(
       this.el.nativeElement.querySelector('.file-upload-input'),
       'value',
@@ -138,40 +146,57 @@ export class ManagegenreAdminComponent implements OnInit {
   saveGenre() {
     //Set path ảnh được chọn từ Func onFileSelected()
     this.Genree.image = this.setImageUrl;
+    if (!this.setImageUrl || !this.imageFile) {
+      this.Genree.image = 'adminManageImage/genre/null.jpg';
+    }
     this.GenreService.createGenre(this.Genree).subscribe(
       async (data) => {
         //Trong lúc lưu đối tượng vào Database thì đồng thời Set path và file ảnh lên Firebase
-        if (this.Genree.image != null) {
+        if (this.imageFile) {
           await this.firebaseStorage.uploadFile(
             'adminManageImage/genre/',
             this.imageFile
           );
         }
+        this.Genree = new Genre();
+        this.removeUpload();
         //Load lại table
         this.goToSingerList();
         console.log(data);
+        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 3000});
       },
-      (error) => console.log(error)
+      (error) => {
+        console.log(error);
+        this.toast.error({detail: 'Failed Message', summary: 'Adding failed', duration: 3000});
+
+      }
     );
   }
 
   updateGenre(id: number) {
     this.Genree.image = this.setImageUrl;
+    if (!this.setImageUrl || !this.imageFile) {
+      this.Genree.image = 'adminManageImage/genre/null.jpg';
+    }
     this.GenreService.updateGenre(id, this.Genree).subscribe(
       async (data) => {
-        if (this.Genree.image != null && this.Genree.image != 'null') {
+        if (this.imageFile) {
           await this.firebaseStorage.uploadFile(
             'adminManageImage/genre/',
             this.imageFile
           );
         }
-        this.goToSingerList();
         this.Genree = new Genre();
-        this.removeUpload();
+
         this.goToSingerList();
+        this.removeUpload();
         console.log(data);
+        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
       },
-      (error) => console.log(error)
+      (error) => {
+        console.log(error)
+        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+      }
     );
   }
 

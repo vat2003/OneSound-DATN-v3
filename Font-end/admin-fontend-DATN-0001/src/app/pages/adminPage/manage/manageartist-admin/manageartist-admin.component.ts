@@ -6,14 +6,16 @@ import {SingerService} from '../../adminEntityService/adminService/singer-servic
 import {ActivatedRoute, Router} from '@angular/router';
 import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-crud.service";
 import {read} from 'node:fs';
+import {NgToastModule, NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-manageartist-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgToastModule],
 
   templateUrl: './manageartist-admin.component.html',
-  styleUrl: './manageartist-admin.component.scss'
+  styleUrl: './manageartist-admin.component.scss',
+  providers: [NgToastService]
 })
 export class ManageartistAdminComponent {
   id!: number;
@@ -37,6 +39,7 @@ export class ManageartistAdminComponent {
     private el: ElementRef,
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
+    private toast: NgToastService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.localStorage = document.defaultView?.localStorage;
@@ -44,7 +47,7 @@ export class ManageartistAdminComponent {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.loadSingers(0, 4);
+    this.loadSingers(0, 10);
     this.loadSingerById();
     this.getArtist(this.id);
   }
@@ -121,7 +124,7 @@ export class ManageartistAdminComponent {
     if (isConfirmed) {
       this.singerService.deleteArtist(id).subscribe((data) => {
         console.log(data);
-        this.loadSingers(0, 4);
+        this.loadSingers(0, 10);
       });
     }
   }
@@ -133,21 +136,29 @@ export class ManageartistAdminComponent {
         if (this.singer.image != null) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
+        this.singer = new Singer();
+        this.removeUpload();
         this.goToSingerList();
         console.log(data);
+        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 3000});
+
+
       },
-      (error) => console.log(error)
+      (error) => {
+        this.toast.error({detail: 'Error Message', summary: 'Adding failed', duration: 3000});
+        console.log(error)
+      }
     );
 
   }
 
   goToSingerList() {
-    this.loadSingers(0, 4);
+    this.loadSingers(0, 10);
     this.router.navigate(['/manage/artist']);
   }
 
   onSubmit() {
- 
+
     if (this.id) {
       this.updateSinger(this.id);
     } else {
@@ -160,6 +171,11 @@ export class ManageartistAdminComponent {
     const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
     if (selectedFile.size > maxSizeInBytes) {
       alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'File size axceeds the allowed limit (8 MB). Please choose a smaller file.',
+        duration: 5000
+      })
       this.resetFileInput();
       return;
     }
@@ -219,6 +235,7 @@ export class ManageartistAdminComponent {
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
+
       this.removeUpload();
     }
   }

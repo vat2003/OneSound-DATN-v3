@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import {Component, Injectable, OnInit, Renderer2} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   NavigationEnd,
@@ -8,14 +8,15 @@ import {
 } from '@angular/router';
 import { AdminUserServiceService } from './services/admin-user-service.service';
 import { filter } from 'rxjs';
+import {NgToastModule, NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [CommonModule, RouterOutlet, RouterLink, NgToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [AdminUserServiceService],
+  providers: [AdminUserServiceService, NgToastService],
 })
 export class AppComponent implements OnInit {
   title = 'admin-fontend-DATN-0001';
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private adminUserService: AdminUserServiceService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private toast: NgToastService
   ) {}
 
   // app.component.ts
