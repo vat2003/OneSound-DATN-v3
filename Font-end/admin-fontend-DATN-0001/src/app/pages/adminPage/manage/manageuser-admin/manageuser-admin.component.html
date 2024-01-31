@@ -6,81 +6,244 @@
         <h6 class="mb-4 text-uppercase">User management</h6>
         <form>
           <div class="mb-3">
-            <label class="form-label">ID</label>
-            <input type="text" class="form-control" readonly>
+            <!-- <label class="form-label">ID</label> -->
+            <input
+              type="text"
+              class="form-control"
+              hidden
+              [(ngModel)]="Account.id"
+              name="id"
+            />
           </div>
           <div class="mb-3">
             <label class="form-label">Fullname</label>
-            <input type="text" class="form-control">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Elton John"
+              [(ngModel)]="Account.fullname"
+              name="fullname"
+            />
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email</label>
-            <input type="email" class="form-control">
+            <input
+              type="email"
+              class="form-control"
+              placeholder="john@email.com"
+              [(ngModel)]="Account.email"
+              name="email"
+            />
           </div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Phone number</label>
-            <input type="text" class="form-control">
+            <label for="exampleInputEmail1" class="form-label"
+              >Phone number</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              placeholder="0384594520"
+              [(ngModel)]="Account.phonenumber"
+              name="phonenumber"
+            />
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Birthday</label>
-            <input type="date" class="form-control">
+            <input
+              type="date"
+              class="form-control calendar-icon-white"
+              [(ngModel)]="Account.birthday"
+              name="birthday"
+            />
           </div>
+
           <div class="mb-3">
-            <label class="form-label" >Gender</label> <br>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                     value="option1">
-              <label class="form-check-label" for="inlineRadio1">Female</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                     value="option2">
-              <label class="form-check-label" for="inlineRadio2">Male</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
-                     value="option3" disabled>
-              <label class="form-check-label" for="inlineRadio3">Other (disabled)</label>
+            <label class="form-label me-3">Gender</label>
+            <div class="btn-group" role="group">
+              <input
+                type="radio"
+                class="btn-check"
+                name="inlineRadioOptions"
+                id="inlineRadio1"
+                value="Female"
+                [(ngModel)]="Account.gender"
+                checked
+                name="gender"
+              />
+              <label class="btn btn-outline-primary" for="inlineRadio1"
+                >Female</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="inlineRadioOptions"
+                id="inlineRadio2"
+                value="Male"
+                [(ngModel)]="Account.gender"
+                name="gender"
+              />
+              <label class="btn btn-outline-primary" for="inlineRadio2"
+                >Male</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="inlineRadioOptions"
+                id="inlineRadio3"
+                value="Other"
+                [(ngModel)]="Account.gender"
+                name="gender"
+              />
+              <label class="btn btn-outline-primary" for="inlineRadio3"
+                >Other</label
+              >
             </div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Address</label>
-            <input type="text" class="form-control">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="123 Rollway, New York city, US."
+              [(ngModel)]="Account.address"
+              name="address"
+            />
           </div>
           <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role</label> <br>
-            <div class="btn-group" role="group">
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
-                     checked>
-              <label class="btn btn-outline-primary" for="btnradio1">USER</label>
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
-                     checked>
-              <label class="btn btn-outline-primary" for="btnradio1">ADMIN</label>
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-              <label class="btn btn-outline-primary" for="btnradio3">PREMIUM</label>
+            <label for="exampleInputPassword1" class="form-label"
+              >Password</label
+            >
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="passwordField"
+                [(ngModel)]="Account.password"
+                name="password"
+              />
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="togglePasswordVisibility()"
+              >
+                <i
+                  class="bi bi-eye-slash"
+                  *ngIf="!showPassword"
+                  style="color: white"
+                ></i>
+                <i
+                  class="bi bi-eye"
+                  *ngIf="showPassword"
+                  style="color: white"
+                ></i>
+              </button>
             </div>
           </div>
-          <label class="form-label">Active</label> <br>
-          <div class="btn-group mb-3" role="group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
-                   checked>
-            <label class="btn btn-outline-primary" for="btnradio1">Active</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label"
+              >Re-Password</label
+            >
+            <div class="input-group">
+              <input
+                type="password"
+                class="form-control"
+                id="passwordField2"
+                name="Re-Password"
+              />
+              <button
+                type="button"
+                class="btn"
+                style="background-color: none"
+                (click)="togglePasswordVisibility2()"
+              >
+                <i
+                  class="bi bi-eye-slash"
+                  *ngIf="!showPassword2"
+                  style="color: white"
+                ></i>
+                <i
+                  class="bi bi-eye"
+                  *ngIf="showPassword2"
+                  style="color: white"
+                ></i>
+              </button>
+            </div>
           </div>
-          <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-          <br>
+          <div class="mb-3">
+            <label class="form-label">Role</label> <br />
+            <div class="btn-group" role="group" *ngFor="let role of Roles">
+              <input
+                type="radio"
+                class="btn-check"
+                name="role"
+                [id]="'radio' + role.name"
+                [value]="role.name"
+                [(ngModel)]="selectedRole"
+              />
+              <label
+                class="btn btn-outline-primary"
+                [for]="'radio' + role.name"
+              >
+                {{ role.name }}
+              </label>
+            </div>
+          </div>
+
+          <label class="form-label">Active</label> <br />
+          <div class="btn-group mb-3" role="group">
+            <input
+              type="radio"
+              class="btn-check"
+              name="active"
+              id="btnradio1"
+              autocomplete="off"
+              checked
+              [value]="true"
+              [(ngModel)]="Account.active"
+            />
+            <label class="btn btn-outline-primary" for="btnradio1"
+              >Active</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="active"
+              id="btnradio3"
+              autocomplete="off"
+              [(ngModel)]="Account.active"
+              [value]="false"
+            />
+            <label class="btn btn-outline-primary" for="btnradio3"
+              >Inactive</label
+            >
+          </div>
+          <script
+            class="jsbin"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"
+          ></script>
+          <br />
           <label class="form-label">Avatar</label>
           <div class="file-upload">
-            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+            <button
+              class="file-upload-btn"
+              type="button"
+              onclick="$('.file-upload-input').trigger( 'click' )"
+            >
+              Add Image
+            </button>
 
             <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+              <input
+                class="file-upload-input"
+                type="file"
+                onchange="readURL(this);"
+                accept="image/*"
+              />
               <div class="drag-text">
                 <h3>Drag and drop a file or select add Image</h3>
               </div>
@@ -88,46 +251,56 @@
             <div class="file-upload-content">
               <img class="file-upload-image" src="#" alt="your image" />
               <div class="image-title-wrap">
-                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                <button
+                  type="button"
+                  onclick="removeUpload()"
+                  class="remove-image"
+                >
+                  Remove <span class="image-title">Uploaded Image</span>
+                </button>
               </div>
             </div>
           </div>
 
-          <br>
-          <button type="submit" class="btn btn-primary mt-4">Create/Update</button>
-          <button type="submit" class="btn btn-danger mt-4">Delete</button>
-          <button type="submit" class="btn btn-warning mt-4">Reset</button>
+          <br />
+          <button type="submit" class="btn btn-primary">Create/Update</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+          <button type="submit" class="btn btn-warning">Reset</button>
         </form>
       </div>
     </div>
 
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
+        <input
+          type="text"
+          class="form-control mb-4 border-light border-2"
+          style="border-radius: 20px"
+          placeholder="Search"
+        />
         <h6 class="mb-4">USER LIST</h6>
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Email</th>
-            <th scope="col">FullName</th>
-            <th scope="col">Phone number</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Email</th>
+              <th scope="col">FullName</th>
+              <th scope="col">Phone number</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>jhonemail.com</td>
-            <td>John</td>
-            <td>0328645096</td>
-            <td><button class="btn btn-primary">Detail</button></td>
-          </tr>
-
+            <tr *ngFor="let item of Accounts; let i; for: index">
+              <th scope="row">{{ i }}</th>
+              <td>{{ item.email }}</td>
+              <td>{{ item.fullname }}</td>
+              <td>{{ item.phonenumber }}</td>
+              <td><button class="btn btn-primary">Detail</button></td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
-
   </div>
 </div>
 <!-- Form End -->
