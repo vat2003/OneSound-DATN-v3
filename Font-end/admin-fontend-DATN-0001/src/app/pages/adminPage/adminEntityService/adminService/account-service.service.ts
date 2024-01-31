@@ -1,39 +1,23 @@
-import { account } from '../adminEntity/account/account';
-import { Inject, Injectable } from "@angular/core";
-import { login } from "../adminEntity/DTO/login";
-import { Observable, catchError } from "rxjs";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { DOCUMENT } from "@angular/common";
-import { HttpUtilService } from "./http.util.service";
-import { Register } from "../adminEntity/DTO/Register";
-<<<<<<< HEAD
-// import { Register } from "../adminEntity/LoginDTO/register.dto";
-interface AccountResponse {
-  content: account[];
-  pageable: any; // Adjust the type as needed
-  last: boolean;
-  totalPages: number;
-  totalElements: number;
-  // Add other properties as needed
-}
-=======
-import { UpdateUserDTO } from "../adminEntity/DTO/update.user.dto";
->>>>>>> viet
+import {Inject, Injectable} from "@angular/core";
+import {login} from "../adminEntity/DTO/login";
+import {Observable, catchError} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {DOCUMENT} from "@angular/common";
+import {HttpUtilService} from "./http.util.service";
+import {account} from "../adminEntity/account/account";
+import {Register} from "../adminEntity/DTO/Register";
+import {UpdateUserDTO} from "../adminEntity/DTO/update.user.dto";
 
 @Injectable({
   providedIn: 'root'
 })
-export class accountServiceService{
+export class accountServiceService {
   private baseUrl = 'http://localhost:8080/api/v1';
   private apiLogin = `${this.baseUrl}/users/login`;
   private apiRegister = `${this.baseUrl}/users/register`;
   private apiUserDetail = `${this.baseUrl}/users/details`;
-<<<<<<< HEAD
-
-=======
   private apiUserUpdate = `${this.baseUrl}/users/details`;
->>>>>>> viet
-  localStorage?:Storage;
+  localStorage?: Storage;
 
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
@@ -41,7 +25,7 @@ export class accountServiceService{
 
   constructor(
     private http: HttpClient,
-    private httpUtilService: HttpUtilService,private httpClient: HttpClient,
+    private httpUtilService: HttpUtilService,
     @Inject(DOCUMENT) private document: Document
   ) {
     this.localStorage = document.defaultView?.localStorage;
@@ -52,28 +36,16 @@ export class accountServiceService{
   }
 
 
-  register(Register: Register):Observable<any> {  debugger;
+  register(Register: Register): Observable<any> {
+    debugger;
     return this.http.post(this.apiRegister, Register, this.apiConfig);
   }
 
-<<<<<<< HEAD
-  }
+  UpdateProfile(updateUserDTO: UpdateUserDTO) {
 
-  createAccount(account:account):Observable<account>{
-    return this.http.post<account>(this.apiRegister,account,this.apiConfig);
-  }
+    var userResponse = this.getUserResponseFromLocalStorage();
 
-  getUserById(id:number):Observable<account>{
-    return this.http.get<account>(`${this.baseUrl}/users/${id}`);
-=======
-  UpdateProfile(updateUserDTO: UpdateUserDTO) {    
-    
-    var userResponse = this.getUserResponseFromLocalStorage();       
-
-    return this.http.put(`${this.apiUserDetail}/${userResponse?.id}`,updateUserDTO,{
-      
-    })
->>>>>>> viet
+    return this.http.put(`${this.apiUserDetail}/${userResponse?.id}`, updateUserDTO, {})
   }
 
   getUserDetail(token: string) {
@@ -86,10 +58,10 @@ export class accountServiceService{
     });
   }
 
-  getUserResponseFromLocalStorage():account | null {
+  getUserResponseFromLocalStorage(): account | null {
     try {
       const userResponseJSON = this.localStorage?.getItem('user');
-      if(userResponseJSON == null || userResponseJSON == undefined) {
+      if (userResponseJSON == null || userResponseJSON == undefined) {
         return null;
       }
       const userResponse = JSON.parse(userResponseJSON!);
@@ -103,7 +75,7 @@ export class accountServiceService{
 
   saveUserResponseToLocalStorage(userResponse?: account) {
     try {
-      if(userResponse == null || !userResponse) {
+      if (userResponse == null || !userResponse) {
         return;
       }
       const userResponseJSON = JSON.stringify(userResponse);
@@ -115,10 +87,7 @@ export class accountServiceService{
   }
 
 
- 
-
-
-  removeUserFromLocalStorage():void {
+  removeUserFromLocalStorage(): void {
     try {
       this.localStorage?.removeItem('user');
       console.log('User data removed from local storage.');
@@ -127,19 +96,5 @@ export class accountServiceService{
     }
   }
 
-  getPages(page: number, size: number):Observable<AccountResponse> {
-    const params = new HttpParams()
-      .set('page', page.toString())
-      .set('size', size.toString());
-    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/Account`, { params });
-  }
-
-  updateUser(id:number,account:account): Observable<Object>{
-    return this.http.put<account>(`${this.baseUrl}/users/${id}`,account);
-  }
-
-  deleteUser(id:number):Observable<Object>{
-    return this.http.delete(`${this.baseUrl}/users/${id}`);
-  }
 
 }
