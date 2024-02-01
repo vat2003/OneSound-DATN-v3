@@ -57,6 +57,8 @@ export class ManageartistAdminComponent {
     );
   }
 
+
+
   private loadSingerById() {
     this.singerService.getArtistById(this.id).subscribe(
       (data) => {

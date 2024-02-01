@@ -1,13 +1,25 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
-import {AdminUserServiceService} from "./services/admin-user-service.service";
-import {filter} from "rxjs";
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
+import { AdminUserServiceService } from "./services/admin-user-service.service";
+import { filter } from "rxjs";
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [AdminUserServiceService]
