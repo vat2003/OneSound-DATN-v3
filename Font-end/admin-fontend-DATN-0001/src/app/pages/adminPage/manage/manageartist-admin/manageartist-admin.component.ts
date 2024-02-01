@@ -93,6 +93,8 @@ export class ManageartistAdminComponent {
       .map((_, index) => startPage + index);
   }
 
+
+
   private loadSingerById() {
     this.singerService.getArtistById(this.id).subscribe(
       (data) => {
@@ -104,17 +106,25 @@ export class ManageartistAdminComponent {
 
   updateSinger(id: number) {
     this.singer.image = this.setImageUrl;
+    if (!this.setImageUrl || !this.imageFile) {
+      this.singer.image = 'adminManageImage/genre/null.jpg';
+    }
     this.singerService.updateArtist(id, this.singer).subscribe(
       async (data) => {
-        if (this.singer.image != null && this.singer.image != 'null') {
+        if (this.imageFile) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
         this.singer = new Singer();
         this.removeUpload();
         this.goToSingerList();
         console.log(data);
+        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+
       },
-      (error) => console.log(error)
+      (error) => {
+        console.log(error)
+        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+      }
     );
 
   }
@@ -131,9 +141,12 @@ export class ManageartistAdminComponent {
 
   saveSinger() {
     this.singer.image = this.setImageUrl;
+    if (!this.setImageUrl || !this.imageFile) {
+      this.singer.image = 'adminManageImage/genre/null.jpg';
+    }
     this.singerService.createArtist(this.singer).subscribe(
       async (data) => {
-        if (this.singer.image != null) {
+        if (this.imageFile) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
         this.singer = new Singer();
@@ -173,7 +186,7 @@ export class ManageartistAdminComponent {
       alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
       this.toast.warning({
         detail: 'Warning Message',
-        summary: 'File size axceeds the allowed limit (8 MB). Please choose a smaller file.',
+        summary: 'File size access the allowed limit (8 MB). Please choose a smaller file.',
         duration: 5000
       })
       this.resetFileInput();

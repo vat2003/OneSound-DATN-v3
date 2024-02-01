@@ -1,19 +1,27 @@
-import {Component, Injectable, OnInit, Renderer2} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
-import { AdminUserServiceService } from './services/admin-user-service.service';
-import { filter } from 'rxjs';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
+import {Component, OnInit, Renderer2} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {AdminUserServiceService} from "./services/admin-user-service.service";
+import {filter} from "rxjs";
+import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, NgToastModule],
+  // imports: [CommonModule, RouterOutlet, RouterLink, NgToastModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgToastModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [AdminUserServiceService, NgToastService],
@@ -26,7 +34,8 @@ export class AppComponent implements OnInit {
     private adminUserService: AdminUserServiceService,
     private renderer: Renderer2,
     private toast: NgToastService
-  ) {}
+  ) {
+  }
 
   // app.component.ts
   ngOnInit() {
@@ -220,6 +229,7 @@ export class AppComponent implements OnInit {
       this.renderer.appendChild(document.head, link);
     }
   }
+
   private addPreconnect(href: string): void {
     if (typeof document !== 'undefined' && !this.isStylesheetPresent(href)) {
       const link = this.renderer.createElement('link');
