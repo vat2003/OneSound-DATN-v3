@@ -18,6 +18,8 @@ import {NgToastModule, NgToastService} from "ng-angular-popup";
 export class ManagegenreAdminComponent implements OnInit {
   id!: number;
   Genre: Genre[] = [];
+  GenresFromData: Genre[] = [];
+  filterName: string = '';
   Genree: Genre = new Genre();
   GenreeByName: any;
   imageUrl: string = '';
@@ -119,7 +121,8 @@ export class ManagegenreAdminComponent implements OnInit {
   getListGenresPage() {
     this.GenreService.getListGenres(0, 10).subscribe(async (data) => {
       console.log(data);
-      this.Genre = data.content;
+      this.GenresFromData = data.content;
+      this.Genre = this.GenresFromData;
 
       for (const genre of this.Genre) {
         if (genre.image == '' || genre.image == null) {
@@ -249,6 +252,12 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   isNameExistsInArray(genreCheck: Genre): boolean {
-    return this.Genre.some((genre) => genre.name === genreCheck.name);
+    return this.GenresFromData.some((genre) => genre.name === genreCheck.name);
+  }
+
+  filterName_Search() {
+    this.Genre = this.GenresFromData.filter((genre: Genre) => {
+      return genre.name.includes(this.filterName);
+    });
   }
 }
