@@ -23,8 +23,8 @@ import {UserPlaysongComponent} from './pages/client/user-playsong/user-playsong.
 
 export const routes: Routes = [
   {path: '', component: Notfound404Component},
-  {path: 'onesound/signin', component: SigninComponent},
-  {path: 'onesound/signup', component: SignupComponent},
+  {path: 'onesound/signin', component: LoginneComponent},
+  {path: 'onesound/signup', component: DangkyComponent},
   {path: 'onesound/dangnhap', component: LoginneComponent},
   {path: 'onesound/dangky', component: DangkyComponent},
   {path: 'onesound/changepassword', component: ChangePasswordComponent},

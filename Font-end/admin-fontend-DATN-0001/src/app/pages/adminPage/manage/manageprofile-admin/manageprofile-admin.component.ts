@@ -12,8 +12,8 @@ import { UpdateUserDTO } from '../../adminEntityService/adminEntity/DTO/update.u
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule, 
-    ReactiveFormsModule,   
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './manageprofile-admin.component.html',
   styleUrl: './manageprofile-admin.component.scss'
@@ -30,24 +30,24 @@ export class ManageprofileAdminComponent implements OnInit{
     private userService: accountServiceService,
     private router: Router,
 
-  ){           
+  ){
     this.userProfileForm = this.formBuilder.group({
-      fullname: [''],     
-      id: [''],     
-      email: [''],     
-      address: [''],     
-      createdDate: [''],     
-      gender: true,     
-      avatar_url: [''],     
-      
+      fullname: [''],
+      id: [''],
+      email: [''],
+      address: [''],
+      createdDate: [''],
+      gender: true,
+      avatar_url: [''],
+
     }, {
     });
   }
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(this.account?.createdDate, 'yyyy-MM-dd') ?? '';
-  
+
     this.userProfileForm.patchValue({
       fullname: this.account?.fullname ?? '',
       id: this.account?.id ?? '',
@@ -56,12 +56,12 @@ export class ManageprofileAdminComponent implements OnInit{
       avatar_url: this.account?.avatar_url ?? '',
       gender: this.account?.gender ?? true,
       createdDate: formattedDate,
-    });  
+    });
 
   }
 
-  save(){   
-    debugger
+  save(){
+
     const updateUserDTO: UpdateUserDTO = {
       id: this.userProfileForm.get('id')?.value,
       fullname: this.userProfileForm.get('fullname')?.value,
@@ -69,16 +69,19 @@ export class ManageprofileAdminComponent implements OnInit{
       avatar_url: this.userProfileForm.get('avatar_url')?.value,
       gender: this.userProfileForm.get('gender')?.value,
       createdDate: this.userProfileForm.get('createdDate')?.value,
-   };
+    };
 
-   this.userService.UpdateProfile(updateUserDTO)
+    this.userService.UpdateProfile(updateUserDTO)
       .subscribe({
-        next: (response: any) => {      
+
+        next: (response: any) => {
+
           this.router.navigate(['/onesound/dangnhap']);
         },
         error: (error: any) => {
+
           alert(error.error.message);
         }
       });
-  }      
+  }
 }

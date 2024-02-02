@@ -34,6 +34,6 @@ export class HomeComponent implements OnInit{
     this.UserService.removeUserFromLocalStorage();
   }
   profile(){
-    this.router.navigate(['/onesound/profile']);                      
+    this.router.navigate(['/onesound/admin/manage/profile']);
   }
 }

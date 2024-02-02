@@ -23,30 +23,34 @@ export class DangkyComponent {
   email: string;
   password: string;
   retypePassword: string;
-  gender: boolean; 
+  gender: boolean;
   fullname: string;
   active: boolean;
   createdDate: Date;
 
   isEmailValid: boolean = true;
 
-  
+
   constructor(private router: Router, private userService: accountServiceService) {
     this.email = '';
     this.password = '';
     this.retypePassword = '';
-    this.fullname = '';   
-    this.gender = true;   
+    this.fullname = '';
+    this.gender = true;
     this.active = true;
     this.createdDate = new Date();
     this.createdDate.setFullYear(this.createdDate.getFullYear() - 18);
 
   }
 
+  dangnhap(){
+    this.router.navigate(['onesound/signin']);
+  }
 
 
   register() {
-    // Kiểm tra tính hợp lệ của các trường
+    debugger
+  // Kiểm tra tính hợp lệ của các trường
     if (this.registerForm.valid) {
       // Nếu tất cả các trường hợp lệ, tiến hành đăng ký
       const registerData: Register = {
@@ -59,26 +63,43 @@ export class DangkyComponent {
         createdDate: this.createdDate,
         role_id: 1
       };
-  
-      // Gửi yêu cầu đăng ký
-      this.userService.register(registerData).subscribe({
-        next: (response: any) => {
-          alert("Sign up successfully");
-          console.log(response);
-          this.router.navigate(['onesound/signin']);
-          return;
-        },
-        complete: () => {
+
+      // Gửi yêu cầu kiểm tra email tồn tại trước khi đăng ký
+      this.userService.checkEmailExists(this.email).subscribe({
+        next: (emailExists: boolean) => {
+          debugger
+          if (emailExists) {
+            alert("Email already exists. Please use a different email.");
+          } else {
+            this.userService.register(registerData).subscribe({
+              next: (response: any) => {
+                debugger
+                alert("Sign up successfully");
+                console.log(response);
+                this.router.navigate(['onesound/dangnhap']);
+                return;
+              },
+              complete: () => {
+                debugger
+              },
+              error: (error: any) => {
+                debugger
+                alert("Thất bại");
+              }
+            });
+          }
         },
         error: (error: any) => {
-          alert("Thất bại");
+          console.error("Error checking email existence", error);
         }
       });
+
     } else {
       alert("vui lòng không để trống các thông tin người dùng");
     }
   }
-  
+
+
 
   checkAge() {
     if (this.createdDate) {

@@ -105,10 +105,14 @@ export class ManageartistAdminComponent {
   }
 
   updateSinger(id: number) {
-    this.singer.image = this.setImageUrl;
-    if (!this.setImageUrl || !this.imageFile) {
-      this.singer.image = 'adminManageImage/genre/null.jpg';
-    }
+      console.log('001 === ' + this.singer.image);
+      if (this.imageFile) {
+        this.singer.image = this.setImageUrl;
+      }
+
+      if (!this.imageFile && !this.setImageUrl) {
+        this.singer.image = 'adminManageImage/artist/null.jpg';
+      }
     this.singerService.updateArtist(id, this.singer).subscribe(
       async (data) => {
         if (this.imageFile) {
@@ -172,11 +176,11 @@ export class ManageartistAdminComponent {
 
   onSubmit() {
 
-    if (this.id) {
-      this.updateSinger(this.id);
-    } else {
-      this.saveSinger();
-    }
+    // if (this.id) {
+    //   this.updateSinger(this.id);
+    // } else {
+    //   this.saveSinger();
+    // }
   }
 
   onFileSelected(event: any) {

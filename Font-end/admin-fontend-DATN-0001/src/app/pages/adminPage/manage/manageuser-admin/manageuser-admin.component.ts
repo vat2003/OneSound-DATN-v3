@@ -68,11 +68,16 @@ export class ManageuserAdminComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     // this.loadUserById();
-    this.getPages();
+    this.getAllUsers();
     // this.getUser(this.id);
     // this.getAllRole();
   }
-
+  getAllUsers(){
+    this.accountServiceService.getAll().subscribe(data=>{
+      this.Accounts=data;
+      console.log("List account nè",this.Accounts);
+    })
+  }
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     const passwordField = document.getElementById('passwordField') as HTMLInputElement;

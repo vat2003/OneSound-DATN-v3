@@ -1,77 +1,74 @@
 <div class="container-fluid pt-4 px-4">
-    <div class="d-flex align-items-center justify-content-center g-4">
-        <div class="col-sm-2 col-xl-6">
-            <div class="bg-secondary rounded h-100 p-4">
-                <h6 class="mb-4 text-uppercase">Profile</h6>
-                <form [formGroup]="userProfileForm">
-                    <input type="text" hidden formControlName="id" class="form-control">
+  <div class="d-flex align-items-center justify-content-center g-4">
+    <div class="col-sm-2 col-xl-6">
+      <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4 text-uppercase">Profile</h6>
+        <form [formGroup]="userProfileForm">
+          <input type="text" hidden formControlName="id" class="form-control">
 
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Email</label>
-                        <input readonly type="email" formControlName="email" class="form-control text-dark">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input readonly type="email" formControlName="email" class="form-control text-dark">
+          </div>
 
-
-
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="fullname" class="form-label">Họ và tên</label>
-                        <input type="text" formControlName="fullname" class="form-control" id="fullname"
-                            [ngClass]="{'is-invalid': userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched}">
-                        <div *ngIf="userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched"
-                            class="invalid-feedback" style="size: 100px; color: red;">
-                            Họ và tên là trường bắt buộc.
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Birthday</label>
-                        <input type="date" formControlName="createdDate" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Gender</label> <br>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio1"
-                                value="option1">
-                            <label class="form-check-label" for="inlineRadio1">Female</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio2"
-                                value="option2">
-                            <label class="form-check-label" for="inlineRadio2">Male</label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Address</label>
-                        <input type="text" formControlName="address" class="form-control">
-                    </div>
-                    <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-                    <br>
-                    <label class="form-label">Avatar</label>
-                    <div class="file-upload">
-                        <button class="file-upload-btn" type="button"
-                            onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
-
-                        <div class="image-upload-wrap">
-                            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-                            <div class="drag-text">
-                                <h3>Drag and drop a file or select add Image</h3>
-                            </div>
-                        </div>
-                        <div class="file-upload-content">
-                            <img class="file-upload-image" src="#" alt="your image" />
-                            <div class="image-title-wrap">
-                                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
-                                        class="image-title">Uploaded Image</span></button>
-                            </div>
-                        </div>
-                        <button type="button" (click)="save()" class="btn btn-primary mt-4 w-100">Update</button>
-                    </div>
-                </form>
+          <div class="mb-3">
+            <label for="fullname" class="form-label">Họ và tên</label>
+            <input type="text" formControlName="fullname" class="form-control" id="fullname"
+                   [ngClass]="{'is-invalid': userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched}">
+            <div *ngIf="userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched"
+                 class="invalid-feedback" style="size: 100px; color: red;">
+              Họ và tên là trường bắt buộc.
             </div>
-        </div>
+          </div>
 
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Birthday</label>
+            <input type="date" formControlName="createdDate" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Gender</label> <br>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio1"
+                     value="option1">
+              <label class="form-check-label" for="inlineRadio1">Female</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio2"
+                     value="option2">
+              <label class="form-check-label" for="inlineRadio2">Male</label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" formControlName="address" class="form-control">
+          </div>
+          <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+          <br>
+          <label class="form-label">Avatar</label>
+          <div class="file-upload">
+            <button class="file-upload-btn" type="button"
+                    onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
 
-
+            <div class="image-upload-wrap">
+              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+              <div class="drag-text">
+                <h3>Drag and drop a file or select add Image</h3>
+              </div>
+            </div>
+            <div class="file-upload-content">
+              <img class="file-upload-image" src="#" alt="your image" />
+              <div class="image-title-wrap">
+                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
+                  class="image-title">Uploaded Image</span></button>
+              </div>
+            </div>
+            <button type="button" (click)="save()" class="btn btn-primary mt-4 w-100">Update</button>
+          </div>
+        </form>
+      </div>
     </div>
+
+
+
+  </div>
 </div>

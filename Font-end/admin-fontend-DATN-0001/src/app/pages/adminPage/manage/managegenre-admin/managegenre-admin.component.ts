@@ -147,8 +147,21 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   saveGenre() {
+    debugger
+    if (this.errorFieldsArr.length !== 0) {
+      this.toast.warning({detail: 'Warning Message', summary: 'Name is null', duration: 5000});
+      return;
+    }
+    if (this.isNameExistsInArray(this.Genree)) {
+      // alert('The name of the music genre already exists');
+      this.toast.warning({detail: 'Warning Message', summary: 'Name is exists', duration: 5000});
+      this.errorFieldsArr.push('existGenreName');
+      return;
+    }
     //Set path ảnh được chọn từ Func onFileSelected()
     this.Genree.image = this.setImageUrl;
+    this.errorFieldsArr = this.validateGenreEmpty(this.Genree);
+
     if (!this.setImageUrl || !this.imageFile) {
       this.Genree.image = 'adminManageImage/genre/null.jpg';
     }
@@ -177,10 +190,15 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   updateGenre(id: number) {
-    this.Genree.image = this.setImageUrl;
-    if (!this.setImageUrl || !this.imageFile) {
+    console.log('001 === ' + this.Genree.image);
+    if (this.imageFile) {
+      this.Genree.image = this.setImageUrl;
+    }
+
+    if (!this.imageFile && !this.setImageUrl) {
       this.Genree.image = 'adminManageImage/genre/null.jpg';
     }
+    console.log('002 === ' + this.Genree.image);
     this.GenreService.updateGenre(id, this.Genree).subscribe(
       async (data) => {
         if (this.imageFile) {
@@ -188,9 +206,10 @@ export class ManagegenreAdminComponent implements OnInit {
             'adminManageImage/genre/',
             this.imageFile
           );
+          console.log('003 === ' + this.Genree.image);
         }
         this.Genree = new Genre();
-
+        console.log('004 === ' + this.Genree.image);
         this.goToSingerList();
         this.removeUpload();
         console.log(data);
@@ -207,12 +226,14 @@ export class ManagegenreAdminComponent implements OnInit {
     this.GenreService.getGenre(id).subscribe(
       async (data: Genre) => {
         this.Genree = data;
+        this.setImageUrl = this.Genree.image;
         this.fillImage(await this.setImageURLFirebase(this.Genree.image));
       },
       (error: any) => {
         console.log(error);
       }
     );
+
     // this.Genree = this.router.navigate(['onesound/admin/manage/genre/', id]);
   }
 
@@ -223,6 +244,7 @@ export class ManagegenreAdminComponent implements OnInit {
     if (isConfirmed) {
       this.GenreService.deleteGenre(id).subscribe((data) => {
         console.log(data);
+
         this.getListGenresPage();
       });
     }

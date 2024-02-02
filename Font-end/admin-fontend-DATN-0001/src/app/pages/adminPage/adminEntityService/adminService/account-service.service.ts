@@ -21,12 +21,14 @@ interface AccountResponse {
   providedIn: 'root'
 })
 export class accountServiceService {
+
   private baseUrl = 'http://localhost:8080/api/v1';
   private apiLogin = `${this.baseUrl}/users/login`;
   private apiRegister = `${this.baseUrl}/users/register`;
   private apiUserDetail = `${this.baseUrl}/users/details`;
   private apiUserUpdate = `${this.baseUrl}/users/details`;
   localStorage?: Storage;
+  private apicheckmail = `${this.baseUrl}/users/email`;
 
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
@@ -39,7 +41,9 @@ export class accountServiceService {
   ) {
     this.localStorage = document.defaultView?.localStorage;
   }
-
+  getAll(): Observable<account[]>{
+    return this.http.get<account[]>(`${this.baseUrl}/users`);
+  }
   login(login: login): Observable<any> {
     return this.http.post(this.apiLogin, login, this.apiConfig);
   }
@@ -77,6 +81,12 @@ export class accountServiceService {
     var userResponse = this.getUserResponseFromLocalStorage();
 
     return this.http.put(`${this.apiUserDetail}/${userResponse?.id}`, updateUserDTO, {})
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    debugger
+    const url = `${this.apicheckmail}/${email}`;
+    return this.http.get<boolean>(url, this.apiConfig);
   }
 
   getUserDetail(token: string) {
