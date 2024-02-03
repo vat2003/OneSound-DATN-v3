@@ -35,7 +35,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChanges {
 
-  id!: number;
+  id: number = -1;
   albums: Album[] = [];
   album: Album = new Album();
   imageAlbum: string[] = [];
@@ -50,11 +50,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   formcontrol = new FormControl('');
   selectedSingerToTable: Singer | null = null;
   imageFile: any;
-  albumForm: FormGroup = this.formBuilder.group({
-    title: ['', { validators: [Validators.required] }],
-    description: ['', Validators.required],
-    // // ... (add other form controls with their respective validators)
-  });
+  errorFieldsArr: String[] = [];
 
 
 
@@ -97,16 +93,14 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
   onSubmit() {
 
-    if (this.albumForm.valid) {
-      if (this.id) {
-        this.updateAlbum(this.id);
-      } else {
-        this.createAlbum();
-      }
+
+    if (this.id !== -1) {
+
+      this.updateAlbum(this.id);
     } else {
-      // Handle invalid form, mark controls as touched to display validation messages
-      this.markFormGroupTouched(this.albumForm);
+      this.createAlbum();
     }
+
 
   }
 
@@ -182,6 +176,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     }
 
     const archivoSelectcionado: File = event.target.files[0];
+    console.log("Image after click", archivoSelectcionado);
     console.log("FILE OBJECT ==> ", archivoSelectcionado);
     if (archivoSelectcionado) {
       const reader = new FileReader();
@@ -345,30 +340,31 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
 
   //---------------create album---------------------------
-  show() {
-    console.log(this.imageAlbum);
-    console.log(this.titleAlbum);
-    console.log("Form album: ", this.album);
-    console.log("image: ", this.setImageUrl);
 
-  }
   createAlbum() {
+
     const img = this.setImageUrl;
-    if (img == '') {
-      alert("Please.  Upload image for Album");
-      return;
-    }
+
+
 
     const duplicateIamge = this.imageAlbum.some(image => image === this.setImageUrl);
     const duplicateTitle = this.titleAlbum.some(title => title == this.album.title);
     this.album.image = this.setImageUrl;
     console.log("duplicateIamge", duplicateIamge);
     console.log("duplicateTitle", duplicateTitle);
-
+    if (img == '') {
+      alert("Please.  Upload image for Album");
+      return;
+    }
+    this.errorFieldsArr = this.validateAlbumEmpty(this.album);
+    if (this.errorFieldsArr.length !== 0) {
+      return;
+    }
     if (duplicateIamge && duplicateTitle) {
       alert("Duplicate image and title. Please choose a different one.");
       return;
     }
+
     this.albumService.createAlbum(this.album).subscribe(
 
       async (data: any) => {
@@ -378,8 +374,10 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         }
         const albumId = data.id;
         console.log("Add album successful!");
-        this.addSingerAlbums(albumId);
+        console.log("AlbumId: ", albumId);
+
         this.displayDataOnTable();
+        this.addSingerAlbums(albumId);
         console.log("List album: ", this.albums);
 
       },
@@ -394,9 +392,9 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     // Lặp qua mảng singerIds và thực hiện gọi API thêm singerAlbum
     for (const singerId of singerIds) {
 
-      console.log("singerId: ", singerId + "albumId: ", albumId);
+      console.log("singerId: ", singerId + " albumId: ", albumId);
 
-      this.singerAlbumService.createSingerAlbum(singerId, albumId).subscribe(
+      this.singerAlbumService.createSingerAlbum(36, 71).subscribe(
         () => {
           console.log(`Added singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
         },
@@ -404,7 +402,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
           console.log(error);
 
-          console.log(`Failed to add singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
+          console.log(`----------Failed to add singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
         }
       );
     }
@@ -415,6 +413,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     this.albumService.getAlbumById(id).subscribe(
       async (data: Album) => {
         this.album = data;
+        this.id = data.id;
         this.fillImage(await this.setImageURLFirebase(this.album.image));
       },
       (error: any) => {
@@ -430,15 +429,18 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //||                   Update Album                        ||
   //||-------------------------------------------------------||
   updateAlbum(id: number) {
-    this.album.image = this.setImageUrl;
 
+    if (this.imageFile) {
+      this.album.image = this.setImageUrl;
+    }
     this.albumService.updateAlbum(id, this.album).subscribe(
       async (data) => {
-        if (this.album.image != null && this.album.image != 'null') {
+        if (this.album.image != null && this.album.image != 'null' && this.setImageUrl) {
           await this.firebaseStorage.uploadFile('adminManageImage/album/', this.imageFile);
         }
         this.album = new Album();
         this.removeUpload();
+        this.displayDataOnTable();
 
       },
       (error) => console.log(error)
@@ -463,15 +465,44 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //||-------------------------------------------------------||
   //||                   Validate Form                       ||
   //||-------------------------------------------------------||
-  markFormGroupTouched(formGroup: FormGroup) {
-    // Mark all controls in the form group as touched
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
 
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
+  show() {
+    console.log(this.imageAlbum);
+    console.log(this.titleAlbum);
+    console.log("Form album: ", this.album);
+
+    console.log("image: ", this.setImageUrl);
+    console.log("imageFile: ", this.imageFile);
   }
+
+
+  validateAlbumEmpty(valueCheck: any): string[] {
+    const errorFieldsArr: string[] = [];
+    for (const key in valueCheck) {
+      if (valueCheck.hasOwnProperty(key)) {
+        if (!valueCheck[key]) {
+          //valueCheck[key] là giá trị
+          //key là tên thuộc tính
+          errorFieldsArr.push(key);
+        }
+      }
+    }
+    //return nếu không lỗi
+    return errorFieldsArr;
+  }
+
+
+  test() {
+    this.album.image = this.imageUrl;
+    this.errorFieldsArr = this.validateAlbumEmpty(this.album);
+    console.log(this.errorFieldsArr);
+    if (this.errorFieldsArr.length !== 0) {
+
+
+      return;
+    }
+    alert("ok----------------------")
+  }
+
 
 }

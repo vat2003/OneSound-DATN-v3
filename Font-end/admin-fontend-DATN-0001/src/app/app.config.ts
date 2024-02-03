@@ -9,6 +9,7 @@ import { provideAnimations } from "@angular/platform-browser/animations";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { TokenInterceptor } from './pages/adminPage/adminEntityService/adminService/token.interceptor';
 import { withFetch, provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,6 +34,6 @@ export const appConfig: ApplicationConfig = {
         provideStorage(() => getStorage())
     ]),
     provideAnimations(),
-    provideAnimations()
+    provideAnimations(), provideAnimationsAsync()
 ]
 };

@@ -4,19 +4,13 @@
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4 text-uppercase">Album management</h6>
-        <form [formGroup]="albumForm">
-          <div class="mb-3">
-            <label class="form-label">ID</label>
-            <input type="text" class="form-control" readonly>
-          </div>
+        <form>
+
           <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" id="title" formControlName="title" name="title" [(ngModel)]="album.title"
-              class="form-control">
-            <span *ngIf="albumForm.get('title')?.hasError('required') && albumForm.get('title')?.touched"
-              class="text-warning">
-              *Please enter the album title!
-            </span>
+            <input type="text" id="title" name="title" [(ngModel)]="album.title" class="form-control">
+            <span *ngIf="errorFieldsArr.includes('title')" class="text-warning">*Please enter the
+              album title</span>
           </div>
           <div class=" mb-3">
             <label for="floatingSelect">Release year</label>
@@ -29,12 +23,11 @@
 
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Description</label>
-            <textarea class="form-control" formControlName="description" name="description" aria-label="With textarea"
-              rows="5" [(ngModel)]="album.description"></textarea>
-            <span *ngIf="albumForm.get('description')?.hasError('required') && albumForm.get('description')?.touched"
-              class="text-warning">
-              *Please enter the description
-            </span>
+            <textarea class="form-control" name="description" aria-label="With textarea" rows="5"
+              [(ngModel)]="album.description"></textarea>
+            <span *ngIf="errorFieldsArr.includes('description')" class="text-warning">*Please enter
+              the description of the album.</span>
+
           </div>
 
           <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -105,11 +98,13 @@
             </table>
 
           </div>
-          <button (click)="onSubmit()" type="submit" class="btn btn-primary mt-4">Save</button>
-          <button (click)="deleteSinger(album.id)" type="submit" class="btn btn-danger mt-4">Delete</button>
-          <button (click)="resetForm()" type="submit" class="btn btn-warning mt-4">Reset</button>
-          <button (click)="show()" type="submit" class="btn btn-warning mt-4">Show</button>
+          <div class="d-flex justify-content-between mt-4">
+            <button (click)="createAlbum()" type="submit" class="btn btn-primary me-2 col mb-4">Save</button>
+            <button (click)="deleteSinger(album.id)" type="submit" class="btn btn-danger me-2 col mb-4">Delete</button>
+            <button (click)="resetForm()" type="submit" class="btn btn-warning me-2 col mb-4">Reset</button>
+            <button (click)="test()" type="submit" class="btn btn-warning me-2 col mb-4">Test</button>
 
+          </div>
         </form>
       </div>
     </div>
