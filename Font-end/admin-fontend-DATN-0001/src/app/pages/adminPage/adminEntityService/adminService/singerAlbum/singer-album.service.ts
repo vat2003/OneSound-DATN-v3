@@ -18,9 +18,19 @@ export class SingerAlbumService {
   // }
 
   createSingerAlbum(singerId: number, albumId: number): Observable<Object> {
+
     const body = { singerId, albumId };
     return this.httpClient.post(`${this.baseURL}/create`, body);
   }
 
+  deleteSingerAlbum(albumId: number): Observable<Object> {
+
+    return this.httpClient.delete(`${this.baseURL}/delete/${albumId}`);
+  }
+
+  deleteAllSingerAlbumByAlbumId(albumId: number): Observable<Object> {
+
+    return this.httpClient.delete(`${this.baseURL}/deleteByAlbumId/${albumId}`);
+  }
 
 }

@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SingerAlbumService } from '../../adminEntityService/adminService/singerAlbum/singer-album.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
@@ -28,13 +29,17 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatInputModule,
     MatAutocompleteModule,
     MatSelectModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    NgxPaginationModule
+  ],
   templateUrl: './managealbum-admin.component.html',
   styleUrl: './managealbum-admin.component.scss',
   schemas: [NO_ERRORS_SCHEMA]
 })
 export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChanges {
 
+  p: number = 1;
+  totalAlbums: number = 0;
   id: number = -1;
   albums: Album[] = [];
   album: Album = new Album();
@@ -51,8 +56,12 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   selectedSingerToTable: Singer | null = null;
   imageFile: any;
   errorFieldsArr: String[] = [];
-
-
+  pages: number[] = [];
+  total: number = 0;
+  visiblePages: number[] = [];
+  localStorage?: Storage;
+  page: number = 1;
+  itempage: number = 4;
 
   private _FILTER(value: string): string[] {
     const searchValue = value.toLocaleLowerCase();
@@ -72,6 +81,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     private singerAlbumService: SingerAlbumService,
     private formBuilder: FormBuilder,
 
+
   ) {
 
   }
@@ -84,7 +94,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.displaySelectedYear();
-    this.displayDataOnTable();
+    this.displayDataOnTable(0, 10);
     this.displaySingerBysearch();
     this.filterOptions = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
@@ -104,15 +114,55 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
   }
 
+  Page(page: number) {
+    this.page = page < 0 ? 0 : page;
+    this.localStorage?.setItem('currentProductPage', String(this.page));
+    this.displayDataOnTable(this.page, this.itempage);
+  }
+
+  PageArray(page: number, total: number): number[] {
+    const maxVisiblePages = 5;
+    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
+
+    let startPage = Math.max(page - halfVisiblePages, 1);
+    let endPage = Math.min(startPage + maxVisiblePages - 1, total);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    return new Array(endPage - startPage + 1).fill(0)
+      .map((_, index) => startPage + index);
+  }
+
   resetForm() {
 
+    this.singerService.getAllArtists().subscribe(
+      async (data) => {
+        this.singerName = data.map((singer: Singer) => singer.fullname);
+        console.log("List singer", this.singers);
+      }
+    )
+    this.filterOptions = this.formcontrol.valueChanges.pipe(
+      startWith(''), map(value => this._FILTER(value || ''))
+    )
+    this.reload();
     this.album.title = '';
     this.album.description = '';
     this.album.releaseYear = new Date().getFullYear();
     this.removeUpload();
     this.singerTable = [];
 
+
   }
+
+  reload() {
+    const currentUrl = this.router.url;
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl]);
+    });
+  }
+
 
   ngAfterViewInit(): void {
     this.filterOptions = this.formcontrol.valueChanges.pipe(
@@ -233,8 +283,8 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
   //Hiển thị dữ liệu lên table
-  displayDataOnTable() {
-    this.albumService.getAllAlbum(0, 10).subscribe(
+  displayDataOnTable(page: number, limit: number) {
+    this.albumService.getAllAlbum(page, limit).subscribe(
       async (data) => {
         console.log(data);
         this.imageAlbum = data.content.map((album: Album) => album.image);
@@ -248,13 +298,15 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
           album.image = await this.setImageURLFirebase(album.image);
           album.albumcreateDate = new Date(album.albumcreateDate);
         }
+        this.total = data.totalPages;
+        this.visiblePages = this.PageArray(this.page, this.total);
 
       }, (error) => {
         console.error('Error fetching data:', error);
-
       }
     );
   }
+
   async setImageURLFirebase(image: string): Promise<string> {
     if (image != null) {
       return await this.firebaseStorage.getFile(image);
@@ -301,7 +353,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     if (!singerExists || this.singerTable.length === 0) {
       // Gọi API hoặc thực hiện các thao tác khác để lấy thông tin singer từ tên
       this.singerService.getAllArtistsByName(singerName).subscribe(
-        (singer: Singer) => {
+        async (singer: Singer) => {
           // Thêm singer vào mảng singerTable
           this.singerTable.push(singer);
           // Hiển thị thông báo hoặc thực hiện các công việc khác
@@ -309,6 +361,13 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
           console.log("Singer Table: ", this.singerTable);
           this.singerName = this.singerName.filter(name => name !== singerName);
           this.formcontrol.setValue('');
+          for (const album of this.singerTable) {
+            if (album.image == null || album.image == '') {
+              continue;
+            }
+            album.image = await this.setImageURLFirebase(album.image);
+
+          }
         },
         (error) => {
           // Xử lý lỗi khi không tìm thấy singer
@@ -343,6 +402,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
   createAlbum() {
 
+
     const img = this.setImageUrl;
 
 
@@ -376,37 +436,43 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         console.log("Add album successful!");
         console.log("AlbumId: ", albumId);
 
-        this.displayDataOnTable();
-        this.addSingerAlbums(albumId);
-        console.log("List album: ", this.albums);
 
+
+        console.log("List album: ", this.albums);
+        //----------------------Thêm Singer Album-------------------------
+        const singerIds = this.singerTable.map(singer => singer.id);
+        console.log("---------------test--------------------------")
+        for (const singerId of singerIds) {
+
+          console.log("singerId: ", singerId + " albumId: ", albumId);
+
+          this.singerAlbumService.createSingerAlbum(singerId, data.id).subscribe(
+
+
+            () => {
+
+              console.log(`----------Added singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
+            },
+            (error) => {
+
+              console.log(error);
+
+              console.log(`----------Failed to add singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
+            }
+          );
+        }
+        this.displayDataOnTable(0, 10);
+        this.resetForm();
       },
+
       (error) => console.log("Add album failed!")
     )
+
+
   }
 
 
-  addSingerAlbums(albumId: number) {
-    const singerIds = this.singerTable.map(singer => singer.id);
 
-    // Lặp qua mảng singerIds và thực hiện gọi API thêm singerAlbum
-    for (const singerId of singerIds) {
-
-      console.log("singerId: ", singerId + " albumId: ", albumId);
-
-      this.singerAlbumService.createSingerAlbum(36, 71).subscribe(
-        () => {
-          console.log(`Added singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
-        },
-        (error) => {
-
-          console.log(error);
-
-          console.log(`----------Failed to add singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
-        }
-      );
-    }
-  }
 
 
   getAlbum(id: number) {
@@ -419,7 +485,26 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       (error: any) => {
         console.log(error);
       }
+    );
+
+    this.singerService.getAllArtistsByAlbumId(id).subscribe((data) => {
+      this.singerTable = data;
+      this.singerTable.forEach((singer: Singer) => {
+        const singerNameIndex = this.singerName.indexOf(singer.fullname);
+        if (singerNameIndex !== -1) {
+          // fullname tồn tại trong singerName, hãy xóa nó
+          this.singerName.splice(singerNameIndex, 1);
+        }
+      });
+      this.filterOptions = this.formcontrol.valueChanges.pipe(
+        startWith(''), map(value => this._FILTER(value || ''))
+      )
+      console.log("Singer in Table --------------------->", this.singerTable);
+    }, error => console.log("Get singer by AlbumId")
+
     )
+
+
     // this.Genree = this.router.navigate(['onesound/admin/manage/genre/', id]);
   }
 
@@ -440,8 +525,36 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         }
         this.album = new Album();
         this.removeUpload();
-        this.displayDataOnTable();
+        this.displayDataOnTable(0, 10);
+        //------------------------Delete Singer Album
+        this.singerAlbumService.deleteAllSingerAlbumByAlbumId(id).subscribe((data) => {
+          console.log("--------Delete all SingerAlbum successful!");
 
+          //----------------------Thêm Singer Album-------------------------
+          const singerIds = this.singerTable.map(singer => singer.id);
+          console.log("---------------test--------------------------")
+          for (const singerId of singerIds) {
+
+            console.log("singerId: ", singerId + " albumId: ", id);
+
+            this.singerAlbumService.createSingerAlbum(singerId, id).subscribe(
+
+
+              () => {
+
+                console.log(`----------Added singerAlbum for singer with ID ${singerId} and album with ID ${id}`);
+              },
+              (error) => {
+
+                console.log(error);
+
+                console.log(`----------Failed to add singerAlbum for singer with ID ${singerId} and album with ID ${id}`);
+              }
+            );
+          }
+          this.resetForm();
+          alert("Update successful!")
+        })
       },
       (error) => console.log(error)
     )
@@ -451,13 +564,29 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //||-------------------------------------------------------||
   //||                   Delete Album                        ||
   //||-------------------------------------------------------||
-  deleteSinger(id: number) {
-    const isConfirmed = window.confirm('Are you sure you want to delete this album? ');
+  deleteAlbum(id: number) {
+    const isConfirmed = window.confirm('Are you sure you want to delete this album? If you delete  it, all related information will be deleted too');
     if (isConfirmed) {
-      this.albumService.deleteAlbum(id).subscribe((data) => {
-        console.log(data);
-        this.displayDataOnTable();
-      });
+      //----------------------delete SingerAlbum---------------------
+      this.singerAlbumService.deleteSingerAlbum(id).subscribe((data) => {
+        console.log("--------Delete SingerAlbum successful!");
+        this.displayDataOnTable(0, 10);
+        //--------------------delete Album after SingerAlbum-------
+        this.albumService.deleteAlbum(id).subscribe((data) => {
+
+          console.log("--------Delete Album successful!");
+          this.displayDataOnTable(0, 10);
+        }, error => console.log("---------Failed to delete the Album!")
+        );
+
+      }, error => console.log("----------Failed to delete SingerAlbum")
+
+
+      )
+
+
+    } else {
+
     }
   }
 
