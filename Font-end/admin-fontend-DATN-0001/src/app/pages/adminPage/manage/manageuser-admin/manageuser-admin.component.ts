@@ -29,7 +29,12 @@ export class ManageuserAdminComponent implements OnInit {
   Roles: Role[] = [];
   Role: Role = new Role();
   selectedRole!: string;
-
+  pages: number[] = [];
+  total: number = 0;
+  visiblePages: number[] = [];
+  localStorage?: Storage;
+  page: number = 1;
+  itempage: number = 4;
   constructor(
     private accountServiceService: accountServiceService,
     private router: Router,
@@ -69,6 +74,7 @@ export class ManageuserAdminComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     // this.loadUserById();
     this.getAllUsers();
+    // this.getPages();
     // this.getUser(this.id);
     // this.getAllRole();
   }
@@ -137,24 +143,22 @@ export class ManageuserAdminComponent implements OnInit {
 
 
   getPages() {
-    this.accountServiceService.getPages(0,10).subscribe(
-    // this.accountServiceService.getPages(1, 10).subscribe(
-      async (data) => {
-        console.log("asdasd" + data);
-        this.Accounts = data.content;
-        console.log('adf ads = ' + data.content);
-
-        console.log('accounts :: ' + this.Accounts);
-
-        for (const account of this.Accounts) {
-          if (account.avatar_url == "" || account.avatar_url == null) {
-            continue;
-          }
-          account.avatar_url = await this.setImageURLFirebase(account.avatar_url);
+    this.accountServiceService.getPages(0, 10).subscribe(
+      (data) => {
+        if (data && data.content) {
+          this.Accounts = data.content;
+          console.log('Accounts:', this.Accounts);
+        } else {
+          console.error('Invalid data structure:', data);
         }
-      });
-
+      },
+      (error) => {
+        console.error('Error:', error);
+      }
+    );
   }
+
+
 
   async setImageURLFirebase(image: string): Promise<string> {
     if (image != null) {
