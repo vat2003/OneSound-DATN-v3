@@ -4,10 +4,10 @@ import { Singer } from '../../adminEntityService/adminEntity/singer/singer';
 import { Album } from '../../adminEntityService/adminEntity/album/album';
 import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators, NgModel } from '@angular/forms';
 import { error, log } from 'console';
 import { SingerService } from '../../adminEntityService/adminService/singer-service.service';
-import { Observable, debounceTime, distinctUntilChanged, fromEvent, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, fromEvent, map, startWith, switchMap } from 'rxjs';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -62,7 +62,8 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   localStorage?: Storage;
   page: number = 1;
   itempage: number = 4;
-
+  searchTerm: string = '';
+  private searchTerms = new Subject<string>();
   private _FILTER(value: string): string[] {
     const searchValue = value.toLocaleLowerCase();
     return this.singerName.filter(option => option.toLocaleLowerCase().includes(searchValue));
@@ -99,7 +100,34 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     this.filterOptions = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
     )
+
+    this.searchTerms
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term: string) => this.albumService.getAllAlbumByAlbumTitle(term, 0, 10))
+      )
+      .subscribe(async (data) => {
+        // Xử lý kết quả tìm kiếm ở đây
+        // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
+        this.imageAlbum = data.content.map((album: Album) => album.image);
+        this.titleAlbum = data.content.map((album: Album) => album.title);
+        this.albums = data.content;
+
+        for (const album of this.albums) {
+          if (album.image == null || album.image == '') {
+            continue;
+          }
+          album.image = await this.setImageURLFirebase(album.image);
+          album.albumcreateDate = new Date(album.albumcreateDate);
+        }
+        this.total = data.totalPages;
+        this.visiblePages = this.PageArray(this.page, this.total);
+      });
   }
+
+
+
 
   onSubmit() {
 
@@ -631,6 +659,17 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       return;
     }
     alert("ok----------------------")
+  }
+
+  //||-------------------------------------------------------||
+  //||                   Tìm kiếm                            ||
+  //||-------------------------------------------------------||
+
+
+
+
+  search() {
+    this.searchTerms.next(this.searchTerm);
   }
 
 
