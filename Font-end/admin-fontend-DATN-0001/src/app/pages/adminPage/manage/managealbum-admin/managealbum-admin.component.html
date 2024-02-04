@@ -4,19 +4,13 @@
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4 text-uppercase">Album management</h6>
-        <form [formGroup]="albumForm">
-          <div class="mb-3">
-            <label class="form-label">ID</label>
-            <input type="text" class="form-control" readonly>
-          </div>
+        <form>
+
           <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" id="title" formControlName="title" name="title" [(ngModel)]="album.title"
-              class="form-control">
-            <span *ngIf="albumForm.get('title')?.hasError('required') && albumForm.get('title')?.touched"
-              class="text-warning">
-              *Please enter the album title!
-            </span>
+            <input type="text" id="title" name="title" [(ngModel)]="album.title" class="form-control">
+            <span *ngIf="errorFieldsArr.includes('title')" class="text-warning">*Please enter the
+              album title</span>
           </div>
           <div class=" mb-3">
             <label for="floatingSelect">Release year</label>
@@ -29,12 +23,11 @@
 
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Description</label>
-            <textarea class="form-control" formControlName="description" name="description" aria-label="With textarea"
-              rows="5" [(ngModel)]="album.description"></textarea>
-            <span *ngIf="albumForm.get('description')?.hasError('required') && albumForm.get('description')?.touched"
-              class="text-warning">
-              *Please enter the description
-            </span>
+            <textarea class="form-control" name="description" aria-label="With textarea" rows="5"
+              [(ngModel)]="album.description"></textarea>
+            <span *ngIf="errorFieldsArr.includes('description')" class="text-warning">*Please enter
+              the description of the album.</span>
+
           </div>
 
           <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -85,15 +78,15 @@
             <table class="table table-dark">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">First Name</th>
-                  <th scope="col">Last Name</th>
-                  <th scope="col">Email</th>
+                  <th scope="col">No. </th>
+                  <th scope="col">Fullname</th>
+                  <th scope="col">Desc</th>
+                  <th scope="col">Image</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let singer of singerTable">
-                  <th scope="row">{{ singer.id }}</th>
+                <tr *ngFor="let singer of singerTable, let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
                   <td>{{ singer.fullname }}</td>
                   <td>{{ singer.description }}</td>
                   <td><img src="{{singer.image }}" width="70" height="70" alt="{{singer.image}}"></td>
@@ -105,11 +98,14 @@
             </table>
 
           </div>
-          <button (click)="onSubmit()" type="submit" class="btn btn-primary mt-4">Save</button>
-          <button (click)="deleteSinger(album.id)" type="submit" class="btn btn-danger mt-4">Delete</button>
-          <button (click)="resetForm()" type="submit" class="btn btn-warning mt-4">Reset</button>
-          <button (click)="show()" type="submit" class="btn btn-warning mt-4">Show</button>
+          <div class="d-flex justify-content-between mt-4">
+            <button (click)="createAlbum()" type="submit" class="btn btn-primary me-2 col mb-4">Save</button>
+            <button (click)="updateAlbum(album.id)" type="submit" class="btn btn-warning me-2 col mb-4">Update</button>
+            <button (click)="deleteAlbum(album.id)" type="submit" class="btn btn-danger me-2 col mb-4">Delete</button>
+            <button (click)="resetForm()" type="submit" class="btn btn-warning me-2 col mb-4">Reset</button>
 
+
+          </div>
         </form>
       </div>
     </div>
@@ -117,6 +113,9 @@
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4">ALBUM LIST</h6>
+        <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="search()" />
+
         <table class="table table-hover">
           <thead>
             <tr>
@@ -137,11 +136,38 @@
               <td>{{ album.releaseYear}}</td>
               <td>
                 <button (click)="getAlbum(album.id)" class="btn btn-outline-info w-50">Detail</button>
-                <button (click)="deleteSinger(album.id)" class="btn btn-outline-danger w-50">Delete</button>
+                <button (click)="deleteAlbum(album.id)" class="btn btn-outline-danger w-50">Delete</button>
               </td>
             </tr>
           </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" (click)="Page(0)">First</a>
+              </li>
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" (click)="Page(page - 1)">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <ng-container *ngFor="let page of visiblePages">
+                <li class="page-item" [ngClass]="{'active': page === page + 1}">
+                  <a class="page-link" (click)="Page(page - 1)">{{ page }}</a>
+                </li>
+              </ng-container>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a class="page-link" (click)="Page(page + 1)">
+                  <i class="fa fa-chevron-right"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a class="page-link" (click)="Page(total - 1)">Last</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
 

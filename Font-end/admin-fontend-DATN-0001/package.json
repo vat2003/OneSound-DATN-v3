@@ -18,7 +18,7 @@
     "@angular/core": "^17.0.0",
     "@angular/fire": "^17.0.1",
     "@angular/forms": "^17.0.0",
-    "@angular/material": "^17.1.1",
+    "@angular/material": "^17.1.2",
     "@angular/platform-browser": "^17.0.0",
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/platform-server": "^17.0.0",
@@ -31,6 +31,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "ng-angular-popup": "^0.5.2",
+    "ng-toast": "^2.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

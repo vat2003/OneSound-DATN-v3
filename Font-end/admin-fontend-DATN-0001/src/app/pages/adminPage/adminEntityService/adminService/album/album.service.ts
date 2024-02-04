@@ -26,6 +26,14 @@ export class AlbumService {
     return this.httpClient.get<AlbumResponse>(`${this.baseURL}/getall`, { params });
   }
 
+  getAllAlbumByAlbumTitle(title: string, page: number, size: number): Observable<AlbumResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.httpClient.get<AlbumResponse>(`${this.baseURL}/getAlbumByTitle/${title}`, { params });
+    // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
+  }
+
   createAlbum(album: Album): Observable<Object> {
 
     return this.httpClient.post(`${this.baseURL}/create`, album);

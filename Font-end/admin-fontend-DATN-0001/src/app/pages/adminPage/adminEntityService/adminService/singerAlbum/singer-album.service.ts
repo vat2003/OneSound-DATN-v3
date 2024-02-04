@@ -10,11 +10,27 @@ export class SingerAlbumService {
 
   private baseURL = 'http://localhost:8080/api/v1/singerAlbum';
 
-  constructor(private htppClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
-  createSingerAlbum(singerId: number, albumId: number): Observable<SingerAlbum> {
+  // createSingerAlbum(singerId: number, albumId: number): Observable<SingerAlbum> {
+  //   const body = { singerId, albumId };
+  //   return this.httpClient.post<SingerAlbum>(`${this.baseURL}/create`, body);
+  // }
 
-    return this.htppClient.post<SingerAlbum>(`${this.baseURL}/create`, { singerId, albumId });
+  createSingerAlbum(singerId: number, albumId: number): Observable<Object> {
+
+    const body = { singerId, albumId };
+    return this.httpClient.post(`${this.baseURL}/create`, body);
+  }
+
+  deleteSingerAlbum(albumId: number): Observable<Object> {
+
+    return this.httpClient.delete(`${this.baseURL}/delete/${albumId}`);
+  }
+
+  deleteAllSingerAlbumByAlbumId(albumId: number): Observable<Object> {
+
+    return this.httpClient.delete(`${this.baseURL}/deleteByAlbumId/${albumId}`);
   }
 
 }
