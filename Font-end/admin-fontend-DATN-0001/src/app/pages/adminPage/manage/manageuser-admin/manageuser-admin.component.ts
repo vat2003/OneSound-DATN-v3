@@ -73,8 +73,8 @@ export class ManageuserAdminComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     // this.loadUserById();
-    this.getAllUsers();
-    // this.getPages();
+    // this.getAllUsers();
+    this.getPages();
     // this.getUser(this.id);
     // this.getAllRole();
   }
@@ -145,14 +145,19 @@ export class ManageuserAdminComponent implements OnInit {
   getPages() {
     this.accountServiceService.getPages(0, 10).subscribe(
       (data) => {
+        debugger
         if (data && data.content) {
+          debugger
           this.Accounts = data.content;
+
           console.log('Accounts:', this.Accounts);
         } else {
+          debugger
           console.error('Invalid data structure:', data);
         }
       },
       (error) => {
+        debugger
         console.error('Error:', error);
       }
     );

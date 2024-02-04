@@ -53,8 +53,10 @@ export class ManageartistAdminComponent {
   }
 
   loadSingers(page: number, limit: number) {
+    debugger
     this.singerService.getCategories(page, limit).subscribe(
       async (data) => {
+        debugger
         console.log(data);
         this.singers = data.content;
 
