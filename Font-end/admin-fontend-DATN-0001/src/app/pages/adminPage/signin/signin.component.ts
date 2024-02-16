@@ -3,7 +3,7 @@ import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {CommonModule} from '@angular/common';
 import {FormsModule, NgForm} from '@angular/forms';
 import {account} from '../adminEntityService/adminEntity/account/account';
-import {login} from '../adminEntityService/adminEntity/LoginDTO/login';
+import {login} from '../adminEntityService/adminEntity/DTO/login';
 import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
 import {TokenService} from '../adminEntityService/adminService/token.service';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -36,6 +36,8 @@ export class SigninComponent implements OnInit {
   password: string = '';
   account?: account | null;
   showPassword: boolean = false;
+
+
 
 
   constructor(private router: Router,

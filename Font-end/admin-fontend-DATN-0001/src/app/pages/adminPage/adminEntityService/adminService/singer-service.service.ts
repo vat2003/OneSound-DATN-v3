@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
 import { Singer } from '../adminEntity/singer/singer';
 interface SingerResponse {
   content: Singer[];
@@ -26,11 +26,24 @@ export class SingerService {
     return this.httpClient.get<Singer[]>(`${this.baseUrl}`);
   }
 
-  getCategories(page: number, size: number):Observable<SingerResponse> {
+  getAllArtistsByName(name: string): Observable<Singer> {
+    const params = new HttpParams().set('name', name); // Thêm tham số truy vấn 'name'
+
+    return this.httpClient.get<Singer>(`${this.baseUrl}/get-singer-by-name`, { params });
+    // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
+  }
+
+  getAllArtistsByAlbumId(id: number): Observable<Singer[]> {
+
+    return this.httpClient.get<Singer[]>(`${this.baseUrl}/getAllByAlbumId/${id}`);
+    // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
+  }
+
+  getCategories(page: number, size: number): Observable<SingerResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-      return this.httpClient.get<SingerResponse>(`${this.baseUrl}/Singers`, { params });
+    return this.httpClient.get<SingerResponse>(`${this.baseUrl}/Singers`, { params });
   }
 
 

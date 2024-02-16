@@ -1,86 +1,80 @@
 <!-- Form Start -->
 <div class="container-fluid pt-4 px-4">
   <div class="row g-4">
-    <div class="col-sm-12 col-xl-6">
+    <div class="col-sm-12 col-xl-12">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4 text-uppercase">User management</h6>
-        <form>
+        <form (ngSubmit)="onSubmit()">
           <div class="mb-3">
-            <label class="form-label">ID</label>
-            <input type="text" class="form-control" readonly>
+            <input type="text" class="form-control" hidden [(ngModel)]="Account.id" name="id" />
           </div>
           <div class="mb-3">
             <label class="form-label">Fullname</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" [(ngModel)]="Account.fullname" name="fullname" />
           </div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email</label>
-            <input type="email" class="form-control">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" [(ngModel)]="Account.email" name="email" id="email" />
           </div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Phone number</label>
-            <input type="text" class="form-control">
+            <label class="form-label">Phone number</label>
+            <input type="text" class="form-control" [(ngModel)]="Account.Phone" name="Phone" />
           </div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Birthday</label>
-            <input type="date" class="form-control">
+            <label for="birthday" class="form-label">Birthday</label>
+            <input type="date" class="form-control calendar-icon-white" [(ngModel)]="Account.birthday" name="birthday"
+              id="birthday" />
           </div>
+
+
+
           <div class="mb-3">
-            <label class="form-label" >Gender</label> <br>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                     value="option1">
-              <label class="form-check-label" for="inlineRadio1">Female</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                     value="option2">
-              <label class="form-check-label" for="inlineRadio2">Male</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
-                     value="option3" disabled>
-              <label class="form-check-label" for="inlineRadio3">Other (disabled)</label>
+            <label class="form-label me-3">Role</label>
+            <div class="btn-group" role="group">
+              <ng-container *ngFor="let role of Roles">
+                <input type="radio" class="btn-check" [id]="role.id" [value]="role" name="inlineRadioOptions"
+                  [(ngModel)]="Account.accountRole" [checked]="Account.accountRole?.id === role.id" />
+                <label class="btn btn-outline-primary mx-2" [for]="role.id">{{ role.name }}</label>
+              </ng-container>
             </div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Address</label>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control" [(ngModel)]="Account.address" name="address" />
           </div>
           <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Role</label> <br>
-            <div class="btn-group" role="group">
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
-                     checked>
-              <label class="btn btn-outline-primary" for="btnradio1">USER</label>
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off"
-                     checked>
-              <label class="btn btn-outline-primary" for="btnradio1">ADMIN</label>
-              <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-              <label class="btn btn-outline-primary" for="btnradio3">PREMIUM</label>
+            <label class="form-label">Password</label>
+            <div class="input-group">
+              <input type="password" class="form-control" id="passwordField" [(ngModel)]="Account.password"
+                name="password" />
+              <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+                <i class="bi bi-eye-slash" *ngIf="!showPassword" style="color: white"></i>
+                <i class="bi bi-eye" *ngIf="showPassword" style="color: white"></i>
+              </button>
             </div>
           </div>
-          <label class="form-label">Active</label> <br>
+
+          <label class="form-label">Active</label> <br />
           <div class="btn-group mb-3" role="group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"
-                   checked>
+            <input type="radio" class="btn-check" name="active" id="btnradio1" autocomplete="off" checked [value]="true"
+              [(ngModel)]="Account.active" />
             <label class="btn btn-outline-primary" for="btnradio1">Active</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+            <input type="radio" class="btn-check" name="active" id="btnradio3" autocomplete="off"
+              [(ngModel)]="Account.active" [value]="false" />
             <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
           </div>
           <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-          <br>
+          <br />
           <label class="form-label">Avatar</label>
           <div class="file-upload">
-            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">
+              Add Image
+            </button>
 
             <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+              <input class="file-upload-input" type="file" onchange="readURL(this);" accept="image/*" />
               <div class="drag-text">
                 <h3>Drag and drop a file or select add Image</h3>
               </div>
@@ -88,46 +82,93 @@
             <div class="file-upload-content">
               <img class="file-upload-image" src="#" alt="your image" />
               <div class="image-title-wrap">
-                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                <button type="button" onclick="removeUpload()" class="remove-image">
+                  Remove <span class="image-title">Uploaded Image</span>
+                </button>
               </div>
             </div>
           </div>
 
-          <br>
-          <button type="submit" class="btn btn-primary mt-4">Create/Update</button>
-          <button type="submit" class="btn btn-danger mt-4">Delete</button>
-          <button type="submit" class="btn btn-warning mt-4">Reset</button>
+          <br />
+          <button (click)="saveUsers()" class="btn btn-primary">Create</button>
+          <button (click)="updateUser()" class="btn btn-dark">Update</button>
+          <button (click)="deleteUser()" class="btn btn-danger">Delete</button>
+          <button class="btn btn-warning">Reset</button>
         </form>
       </div>
     </div>
 
-    <div class="col-sm-12 col-xl-6">
+    <div class="col-sm-12 col-xl-12">
       <div class="bg-secondary rounded h-100 p-4">
+        <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" />
         <h6 class="mb-4">USER LIST</h6>
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Email</th>
-            <th scope="col">FullName</th>
-            <th scope="col">Phone number</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">Series</th>
+              <th scope="col">Fullname</th>
+              <th scope="col">Email</th>
+              <th scope="col">Birthday</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Role</th>
+              <th scope="col">Image</th>
+              <th scope="col">Address</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Active</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>jhonemail.com</td>
-            <td>John</td>
-            <td>0328645096</td>
-            <td><button class="btn btn-primary">Detail</button></td>
-          </tr>
-
+            <tr *ngFor="let item of this.Accounts; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.fullname }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.birthday }}</td>
+              <td>{{ item.gender }}</td>
+              <td>{{ item.Phone }}</td>
+              <td>{{ item.accountRole?.name}}</td>
+              <td>{{ item.avatar_url }}</td>
+              <td>{{ item.address }}</td>
+              <td>{{ item.createdDate | date:'yyyy-MM-dd' }}</td>
+              <td>{{ item.active }}</td>
+              <td>
+                <button (click)="view(item.id!)" class="btn btn-primary">Detail</button>
+              </td>
+            </tr>
           </tbody>
+
         </table>
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" (click)="Page(0)">First</a>
+              </li>
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" (click)="Page(page - 1)">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <ng-container *ngFor="let page of visiblePages">
+                <li class="page-item" [ngClass]="{'active': page === page + 1}">
+                  <a class="page-link" (click)="Page(page - 1)">{{ page }}</a>
+                </li>
+              </ng-container>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a class="page-link" (click)="Page(page + 1)">
+                  <i class="fa fa-chevron-right"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a class="page-link" (click)="Page(total - 1)">Last</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
-
   </div>
 </div>
 <!-- Form End -->

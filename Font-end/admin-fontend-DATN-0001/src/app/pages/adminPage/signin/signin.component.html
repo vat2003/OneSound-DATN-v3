@@ -12,12 +12,14 @@
           </div>
           <div class="form-floating mb-3">
             <input type="text" class="form-control" id="floatingInput" [(ngModel)]="email" name="email"
-                   (focus)="loginForm.form.markAsTouched()" placeholder="name@example.com">
+              (focus)="loginForm.form.markAsTouched()" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
           </div>
+
+
           <div class="form-floating input-group">
             <input type="{{ showPassword ? 'text' : 'password' }}" [(ngModel)]="password" name="password"
-                   placeholder="Ít nhất 3 ký tự" class="form-control" id="password">
+              placeholder="Ít nhất 3 ký tự" class="form-control" id="password">
             <label for="password">Password</label>
             <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowPassword()">
               <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>

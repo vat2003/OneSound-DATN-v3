@@ -1,0 +1,160 @@
+<div class="daddy">
+    <header>
+        <div class="menu-side">
+            <div class="account-section">
+                <a href="/home/index" class="nav-brand"><img src="assets\img\logo.png" alt="" /></a>
+            </div>
+            <div class="web-nav">
+                <p class="active">
+                    <span></span><a href="webplayer.html"><i class="bi bi-music-note-beamed"></i> Home</a>
+                </p>
+                <p>
+                    <span></span><a href="explore.html"><i class="bi bi-music-note-beamed"></i> Explore</a>
+                </p>
+                <p>
+                    <span></span><a href="#"><i class="bi bi-music-note-beamed"></i> Videos</a>
+                </p>
+            </div>
+            <div class="my-collection">
+                <p class="my-collection-tilte">MY COLLECTION</p>
+                <p>
+                    <span></span><i class="fa-solid fa-podcast"></i> Mixes &
+                    Radio
+                </p>
+                <p>
+                    <span></span><i class="fa-solid fa-sliders"></i> Playlists
+                </p>
+                <p>
+                    <span></span><i class="fa-solid fa-compact-disc"></i> Albums
+                </p>
+                <p><span></span><i class="fa-solid fa-music"></i> Tracks</p>
+                <p>
+                    <span></span><i class="fa-brands fa-youtube"></i> Videos
+                </p>
+                <p>
+                    <span></span><i class="fa-solid fa-microphone"></i> Artists
+                </p>
+            </div>
+            <div class="create-playlist">
+                <p class="create-playlist-title">
+                    PLAYLISTS
+                    <svg width="20" height="20" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M256 304C282.51 304 304 282.51 304 256C304 229.49 282.51 208 256 208C229.49 208 208 229.49 208 256C208 282.51 229.49 304 256 304Z"
+                            fill="gray" />
+                        <path
+                            d="M416 304C442.51 304 464 282.51 464 256C464 229.49 442.51 208 416 208C389.49 208 368 229.49 368 256C368 282.51 389.49 304 416 304Z"
+                            fill="gray" />
+                        <path
+                            d="M96 304C122.51 304 144 282.51 144 256C144 229.49 122.51 208 96 208C69.4903 208 48 229.49 48 256C48 282.51 69.4903 304 96 304Z"
+                            fill="gray" />
+                    </svg>
+                </p>
+                <div class="create-playlist-a">
+                    <a href="#" onclick="openModal()">
+                        <span></span>
+                        <i class="fa-solid fa-circle-plus"></i>
+                        Create...
+                    </a>
+                </div>
+                <div style="margin-bottom: 30px;" id="list-playlists">
+                    <div class="playlist-items">
+                        <a href="">Chillin</a>
+                    </div>
+                </div>
+
+
+                <!-- Modal -->
+                <div class="modal" id="playlistModal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <h2>Create Playlist</h2>
+                        <input type="text" id="name-playlist" placeholder="Enter playlist name" />
+                        <button id="submit-playlist">Create</button>
+                    </div>
+                </div>
+                <!-- Modal Add Song-->
+                <div class="modal" id="addToPlaylistModal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeAddToPlaylistModal()">&times;</span>
+                        <h2>Add to Playlist</h2>
+
+                        <!-- Danh sách các playlist có sẵn -->
+                        <div id="list-playlists-model">
+                            <!-- Danh sách các playlist sẽ được hiển thị tại đây -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Add Song-->
+            </div>
+        </div>
+
+
+        <div class="song-side">
+
+
+            <div class="song-side-header">
+                <div class="song-side-header-navigation">
+                    <!-- <i class="fa-solid fa-circle-chevron-left"></i>
+                <i class="fa-solid fa-circle-chevron-right"></i> -->
+                </div>
+                <div class="song-side-header-noti">
+                    <div class="search">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search" />
+                    </div>
+                    <div class="notification">
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                </div>
+            </div>
+            <router-outlet></router-outlet>
+
+        </div>
+
+
+
+        <app-user-playermusic style="width: 100%; height: 15%;"></app-user-playermusic>
+        <!-- <div class="master_play">
+            <img src="assets/img/client/whatitis.jpg" alt="Alan" id="poster_master_play" />
+            <h5 id="title">
+                <p class="line-clamp" id="song-title">
+                    What it is
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-solid fa-ellipsis"></i>
+                </p>
+
+                <div class="subtitle line-clamp" id="artist-name">
+                    Doechii
+                </div>
+                <div class="album line-clamp" id="category-name">
+                    PLAYING FROM: HIP-HOP
+                </div>
+            </h5>
+            <div class="icon">
+                <i class="fa-solid fa-backward" id="back"></i>
+                <i class="fa-solid fa-play" id="masterPlay"></i>
+                <i class="fa-solid fa-forward" id="next"></i>
+            </div>
+            <span id="currentStart">0:00</span>
+            <div class="bar">
+                <input type="range" id="seek" min="0" value="0" max="100" />
+                <div class="bar2" id="bar2"></div>
+                <div class="dot"></div>
+            </div>
+            <span id="currentEnd">0:00</span>
+
+            <div class="vol">
+                <i class="fa-solid fa-volume-low" id="vol_icon"></i>
+                <input type="range" id="vol" min="0" value="30" max="100" />
+                <div class="vol_bar"></div>
+                <div class="dot" id="vol_dot"></div>
+            </div>
+            <div class="mode">
+                <div class="mode-type">HIFI</div>
+                <i class="fa-solid fa-bars"></i>
+                <i class="fa-solid fa-square-arrow-up-right"></i>
+            </div>
+        </div> -->
+    </header>
+</div>

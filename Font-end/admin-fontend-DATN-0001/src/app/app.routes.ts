@@ -11,37 +11,55 @@ import {ManagesongAdminComponent} from "./pages/adminPage/manage/managesong-admi
 import {ManageuserAdminComponent} from "./pages/adminPage/manage/manageuser-admin/manageuser-admin.component";
 import {ChartComponent} from "./pages/adminPage/chart/chart.component";
 import {ManageimageAdminComponent} from "./pages/adminPage/manage/manageimage-admin/manageimage-admin.component";
-import {UserHomeComponentComponent} from "./pages/userPage/user-home-component/user-home-component.component";
 import {ForgotpasswordComponent} from "./pages/adminPage/forgotpassword/forgotpassword.component";
 import {ChangePasswordComponent} from "./pages/adminPage/change-password/change-password.component";
+import { ManageprofileAdminComponent } from './pages/adminPage/manage/manageprofile-admin/manageprofile-admin.component';
+import { LoginneComponent } from './pages/adminPage/loginne/loginne.component';
+import { DangkyComponent } from './pages/adminPage/dangky/dangky.component';
+import {UserMenusideComponent} from './pages/client/user-menuside/user-menuside.component';
+import {UserExploreComponent} from './pages/client/user-explore/user-explore.component';
+import {UserPlaysongComponent} from './pages/client/user-playsong/user-playsong.component';
+
 
 export const routes: Routes = [
   {path: '', component: Notfound404Component},
-  {path: 'onesound/signin', component: SigninComponent},
-  {path: 'onesound/signup', component: SignupComponent},
+  {path: 'onesound/signin', component: LoginneComponent},
+  {path: 'onesound/signup', component: DangkyComponent},
+  {path: 'onesound/dangnhap', component: LoginneComponent},
+  {path: 'onesound/dangky', component: DangkyComponent},
   {path: 'onesound/changepassword', component: ChangePasswordComponent},
   {path: 'onesound/forgotpassword', component: ForgotpasswordComponent},
   {path: 'onesound/admin/image', component: ManageimageAdminComponent},
-  { path: 'update-genre/:id', component: ManagegenreAdminComponent },
-  { path: 'update-singer/:id', component: ManageartistAdminComponent },
-
+  {path: 'update-genre/:id', component: ManagegenreAdminComponent},
+  {path: 'update-singer/:id', component: ManageartistAdminComponent},
   {
-    path: 'onesound/admin', component: HomeComponent,
+    path: 'onesound/admin',
+    component: HomeComponent,
     children: [
       {path: 'blank', component: BlankComponent},
       {path: '404', component: Notfound404Component},
       {path: 'manage/album', component: ManagealbumAdminComponent},
       {path: 'manage/artist', component: ManageartistAdminComponent},
       {path: 'manage/genre', component: ManagegenreAdminComponent},
+      {path: 'manage/profile', component: ManageprofileAdminComponent},
       {path: 'manage/genre/update-genre/:id', component: ManagegenreAdminComponent},
+      {
+        path: 'manage/genre/update-genre/:id',
+        component: ManagegenreAdminComponent,
+      },
       {path: 'manage/genre/:id', component: ManagegenreAdminComponent},
       {path: 'manage/song', component: ManagesongAdminComponent},
       {path: 'manage/user', component: ManageuserAdminComponent},
       {path: 'chart', component: ChartComponent},
-      {path: 'dashboard', component: BlankComponent}
-    ]
+      {path: 'dashboard', component: BlankComponent},
+    ],
   },
-  {path: 'onesound/home', component: UserHomeComponentComponent}
-
-
+  {
+    path: 'onesound/home',
+    component: UserMenusideComponent,
+    children: [
+      {path: 'explore', component: UserExploreComponent},
+      {path: 'playsong', component: UserPlaysongComponent},
+    ],
+  },
 ];

@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {FormsModule, NgForm} from '@angular/forms';
 import {Router, RouterLink} from "@angular/router";
 import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
-import {Register} from '../adminEntityService/adminEntity/LoginDTO/register.dto';
+import { Register } from '../adminEntityService/adminEntity/DTO/Register';
 import {NgClass, NgIf} from "@angular/common";
 
 @Component({
@@ -22,6 +22,7 @@ export class SignupComponent {
   email: string;
   password: string;
   retypePassword: string;
+  gender: boolean; 
   fullname: string;
   active: boolean;
   createdDate: Date;
@@ -31,7 +32,8 @@ export class SignupComponent {
     this.email = '';
     this.password = '';
     this.retypePassword = '';
-    this.fullname = '';
+    this.fullname = '';   
+    this.gender = true;   
     this.active = true;
     this.createdDate = new Date();
 
@@ -49,6 +51,8 @@ export class SignupComponent {
   }
 
   register() {
+ 
+  
     if (this.registerForm.invalid) {
       console.log("Form is invalid");
       alert("PLEASE FILL UP THE FORM!");
@@ -59,13 +63,13 @@ export class SignupComponent {
       alert("The password does not match");
       return;
     }
-
-
+  
     const Register: Register = {
       fullname: this.fullname,
       email: this.email,
       password: this.password,
       retype_password: this.retypePassword,
+      gender: this.gender, 
       active: this.active,
       createdDate: this.createdDate,
       role_id: 1
@@ -82,11 +86,9 @@ export class SignupComponent {
       complete: () => {
       },
       error: (error: any) => {
-        debugger
-        alert("Sign up failed: " + error);
+        alert("Thất bại");
       }
     });
   }
-
 
 }

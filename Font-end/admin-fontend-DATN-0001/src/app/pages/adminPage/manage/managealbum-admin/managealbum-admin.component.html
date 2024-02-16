@@ -5,23 +5,31 @@
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4 text-uppercase">Album management</h6>
         <form>
-          <div class="mb-3">
-            <label class="form-label">ID</label>
-            <input type="text" class="form-control" readonly>
-          </div>
+
           <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control">
+            <input type="text" id="title" name="title" [(ngModel)]="album.title" class="form-control">
+            <span *ngIf="errorFieldsArr.includes('title')" class="text-warning">*Please enter the
+              album title</span>
           </div>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Release year</label>
-            <input type="text" class="form-control">
+          <div class=" mb-3">
+            <label for="floatingSelect">Release year</label>
+            <select class="form-select year" id="year" name="year" [(ngModel)]="album.releaseYear"
+              aria-label="Floating label select example">
+
+            </select>
+
           </div>
 
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Description</label>
-            <textarea class="form-control" aria-label="With textarea" rows="5"></textarea>
+            <textarea class="form-control" name="description" aria-label="With textarea" rows="5"
+              [(ngModel)]="album.description"></textarea>
+            <span *ngIf="errorFieldsArr.includes('description')" class="text-warning">*Please enter
+              the description of the album.</span>
+
           </div>
+
           <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
           <label class="form-label">Album image</label>
           <div class="file-upload">
@@ -30,7 +38,8 @@
             </button>
 
             <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)" accept="image/*"/>
+              <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
+                accept="image/*" />
               <!--              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*"/>-->
 
               <div class="drag-text">
@@ -38,55 +47,65 @@
               </div>
             </div>
             <div class="file-upload-content">
-              <img class="file-upload-image" [src]="imageUrl" alt="your image"/>
+              <img class="file-upload-image" [src]="imageUrl" alt="your image" />
               <!--              <img class="file-upload-image" src="#" alt="your image"/>-->
               <div class="image-title-wrap">
                 <!--                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span>-->
                 <!--                </button>-->
-                <button type="button" (click)="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span>
+                <button type="button" (click)="removeUpload()" class="remove-image">Remove <span
+                    class="image-title">Uploaded Image</span>
                 </button>
               </div>
             </div>
           </div>
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Singer</label>
+            <!-- <input #searchSinger type="text" class="form-control mb-4 border-light border-2"
+              style="border-radius: 20px;" placeholder="Search"> -->
+
+
+
             <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px;"
-                   placeholder="Search">
+              placeholder="Search" matInput [matAutocomplete]="auto" [formControl]="formcontrol" />
+            <mat-autocomplete autoActiveFirstOption #auto>
+              <mat-option (click)="addSingertoTable(item)" *ngFor="let item of filterOptions | async"
+                value="{{item}}">{{item}}</mat-option>
+
+            </mat-autocomplete>
+
+
+
             <table class="table table-dark">
               <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-              </tr>
+                <tr>
+                  <th scope="col">No. </th>
+                  <th scope="col">Fullname</th>
+                  <th scope="col">Desc</th>
+                  <th scope="col">Image</th>
+                </tr>
               </thead>
               <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>John</td>
-                <td>Doe</td>
-                <td>jhonemail.com</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>markemail.com</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>jacobemail.com</td>
-              </tr>
+                <tr *ngFor="let singer of singerTable, let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ singer.fullname }}</td>
+                  <td>{{ singer.description }}</td>
+                  <td><img src="{{singer.image }}" width="70" height="70" alt="{{singer.image}}"></td>
+                  <td>
+                    <button (click)="deleteSingerInTable(singer.id)" class="btn btn-outline-danger w-50">Delete</button>
+                  </td>
+                </tr>
               </tbody>
             </table>
 
           </div>
-          <button type="submit" class="btn btn-primary mt-4">Create/Update</button>
-          <button type="submit" class="btn btn-danger mt-4">Delete</button>
-          <button type="submit" class="btn btn-warning mt-4">Reset</button>
+          <div class="d-flex justify-content-between mt-4">
+            <button (click)="createAlbum()" type="submit" class="btn btn-primary me-2 col mb-4">Save</button>
+            <button (click)="updateAlbum(album.id)" type="submit" class="btn btn-warning me-2 col mb-4">Update</button>
+            <button (click)="deleteAlbum(album.id)" type="submit" class="btn btn-danger me-2 col mb-4">Delete</button>
+            <button (click)="resetForm()" type="submit" class="btn btn-warning me-2 col mb-4">Reset</button>
+
+
+          </div>
         </form>
       </div>
     </div>
@@ -94,29 +113,61 @@
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4">ALBUM LIST</h6>
+        <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="search()" />
+
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Email</th>
-            <th scope="col">FullName</th>
-            <th scope="col">Phone number</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">IMAGE</th>
+              <th scope="col">TITLE</th>
+              <th scope="col">RELEASE YEAR</th>
+
+
+
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>jhonemail.com</td>
-            <td>John</td>
-            <td>0328645096</td>
-            <td>
-              <button class="btn btn-primary">Detail</button>
-            </td>
-          </tr>
-
+            <tr *ngFor="let album of albums; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td><img src="{{album.image }}" width="70" height="70" alt="{{album.image}}"></td>
+              <td>{{ album.title}}</td>
+              <td>{{ album.releaseYear}}</td>
+              <td>
+                <button (click)="getAlbum(album.id)" class="btn btn-outline-info w-50">Detail</button>
+                <button (click)="deleteAlbum(album.id)" class="btn btn-outline-danger w-50">Delete</button>
+              </td>
+            </tr>
           </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" (click)="Page(0)">First</a>
+              </li>
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" (click)="Page(page - 1)">
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <ng-container *ngFor="let page of visiblePages">
+                <li class="page-item" [ngClass]="{'active': page === page + 1}">
+                  <a class="page-link" (click)="Page(page - 1)">{{ page }}</a>
+                </li>
+              </ng-container>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a class="page-link" (click)="Page(page + 1)">
+                  <i class="fa fa-chevron-right"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a class="page-link" (click)="Page(total - 1)">Last</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
 

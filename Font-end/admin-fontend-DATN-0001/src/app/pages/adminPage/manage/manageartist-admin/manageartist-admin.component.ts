@@ -1,19 +1,21 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Renderer2 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Singer } from '../../adminEntityService/adminEntity/singer/singer';
-import { SingerService } from '../../adminEntityService/adminService/singer-service.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseStorageCrudService } from "../../../../services/firebase-storage-crud.service";
-import { read } from 'node:fs';
+import {CommonModule, DOCUMENT} from '@angular/common';
+import {Component, ElementRef, Inject, Renderer2} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {Singer} from '../../adminEntityService/adminEntity/singer/singer';
+import {SingerService} from '../../adminEntityService/adminService/singer-service.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-crud.service";
+import {read} from 'node:fs';
+import {NgToastModule, NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-manageartist-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgToastModule],
 
   templateUrl: './manageartist-admin.component.html',
-  styleUrl: './manageartist-admin.component.scss'
+  styleUrl: './manageartist-admin.component.scss',
+  providers: [NgToastService]
 })
 export class ManageartistAdminComponent {
   id!: number;
@@ -22,6 +24,13 @@ export class ManageartistAdminComponent {
   imageUrl: string = '';
   setImageUrl: string = '';
   imageFile: any;
+  pages: number[] = [];
+  total: number = 0;
+  visiblePages: number[] = [];
+  localStorage?: Storage;
+  page: number = 1;
+  itempage: number = 4;
+
 
   constructor(
     private singerService: SingerService,
@@ -30,19 +39,24 @@ export class ManageartistAdminComponent {
     private el: ElementRef,
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
+    private toast: NgToastService,
+    @Inject(DOCUMENT) private document: Document
   ) {
+    this.localStorage = document.defaultView?.localStorage;
   }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.loadSingers();
+    this.loadSingers(0, 10);
     this.loadSingerById();
     this.getArtist(this.id);
   }
 
-  loadSingers() {
-    this.singerService.getCategories(0, 10).subscribe(
+  loadSingers(page: number, limit: number) {
+    debugger
+    this.singerService.getCategories(page, limit).subscribe(
       async (data) => {
+        debugger
         console.log(data);
         this.singers = data.content;
 
@@ -52,10 +66,36 @@ export class ManageartistAdminComponent {
           }
           singer.image = await this.setImageURLFirebase(singer.image);
         }
+        this.total = data.totalPages;
+        this.visiblePages = this.PageArray(this.page, this.total);
 
       }
     );
   }
+
+  Page(page: number) {
+    this.page = page < 0 ? 0 : page;
+    this.localStorage?.setItem('currentProductPage', String(this.page));
+    this.loadSingers(this.page, this.itempage);
+  }
+
+
+  PageArray(page: number, total: number): number[] {
+    const maxVisiblePages = 5;
+    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
+
+    let startPage = Math.max(page - halfVisiblePages, 1);
+    let endPage = Math.min(startPage + maxVisiblePages - 1, total);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    return new Array(endPage - startPage + 1).fill(0)
+      .map((_, index) => startPage + index);
+  }
+
+
 
   private loadSingerById() {
     this.singerService.getArtistById(this.id).subscribe(
@@ -67,18 +107,30 @@ export class ManageartistAdminComponent {
   }
 
   updateSinger(id: number) {
-    this.singer.image = this.setImageUrl;
+      console.log('001 === ' + this.singer.image);
+      if (this.imageFile) {
+        this.singer.image = this.setImageUrl;
+      }
+
+      if (!this.imageFile && !this.setImageUrl) {
+        this.singer.image = 'adminManageImage/artist/null.jpg';
+      }
     this.singerService.updateArtist(id, this.singer).subscribe(
       async (data) => {
-        if (this.singer.image != null && this.singer.image != 'null') {
+        if (this.imageFile) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
         this.singer = new Singer();
         this.removeUpload();
         this.goToSingerList();
         console.log(data);
+        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+
       },
-      (error) => console.log(error)
+      (error) => {
+        console.log(error)
+        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+      }
     );
 
   }
@@ -88,52 +140,61 @@ export class ManageartistAdminComponent {
     if (isConfirmed) {
       this.singerService.deleteArtist(id).subscribe((data) => {
         console.log(data);
-        this.loadSingers();
+        this.loadSingers(0, 10);
       });
     }
   }
 
   saveSinger() {
     this.singer.image = this.setImageUrl;
+    if (!this.setImageUrl || !this.imageFile) {
+      this.singer.image = 'adminManageImage/genre/null.jpg';
+    }
     this.singerService.createArtist(this.singer).subscribe(
       async (data) => {
-        if (this.singer.image != null) {
+        if (this.imageFile) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
-        } this.goToSingerList();
+        }
+        this.singer = new Singer();
+        this.removeUpload();
+        this.goToSingerList();
         console.log(data);
+        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 3000});
+
+
       },
-      (error) => console.log(error)
+      (error) => {
+        this.toast.error({detail: 'Error Message', summary: 'Adding failed', duration: 3000});
+        console.log(error)
+      }
     );
 
   }
 
   goToSingerList() {
-    this.loadSingers();
+    this.loadSingers(0, 10);
     this.router.navigate(['/manage/artist']);
   }
 
   onSubmit() {
-    // this.saveSinger();
-    // this.goToSingerList();
-    // this.singerService.updateArtist(this.id, this.singer).subscribe(
-    //   (data) => {
-    //     this.goToSingerList();
-    //   },
-    //   (error) => console.log(error)
-    // );
-    if (this.id) {
-      this.updateSinger(this.id);
-    } else {
-      this.saveSinger();
-    }
+
+    // if (this.id) {
+    //   this.updateSinger(this.id);
+    // } else {
+    //   this.saveSinger();
+    // }
   }
 
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
     const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
-    //Kiểm tra giới hạn kích thước ảnh
     if (selectedFile.size > maxSizeInBytes) {
       alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'File size access the allowed limit (8 MB). Please choose a smaller file.',
+        duration: 5000
+      })
       this.resetFileInput();
       return;
     }
@@ -193,6 +254,7 @@ export class ManageartistAdminComponent {
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
+
       this.removeUpload();
     }
   }

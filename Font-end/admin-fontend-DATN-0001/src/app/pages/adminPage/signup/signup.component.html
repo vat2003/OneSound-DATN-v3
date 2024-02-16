@@ -12,8 +12,8 @@
             <h3>Sign Up</h3>
           </div>
           <div class="form-floating mb-3">
-            <input [(ngModel)]="fullname" type="text" class="form-control" placeholder="jhondoe"
-                   name="fullname" required id="fullname">
+            <input [(ngModel)]="fullname" type="text" class="form-control" placeholder="jhondoe" name="fullname"
+              required id="fullname">
             <label for="fullname">Full name</label>
             <div
               *ngIf="registerForm.controls['fullname'].invalid && (registerForm.controls['fullname'].dirty || registerForm.controls['fullname'].touched)"
@@ -24,8 +24,8 @@
 
           <div class="form-floating mb-3">
             <input [(ngModel)]="email" type="email" class="form-control" id="mail" name="mail" required
-                   placeholder="name@example.com">
-<!--                   pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*"-->
+              placeholder="name@example.com">
+            <!--                   pattern="[a-z0-9!#$%&'*+/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*"-->
 
             <label for="mail">Email address</label>
             <div
@@ -38,7 +38,7 @@
 
           <div class="form-floating input-group mb-3">
             <input [(ngModel)]="password" type="{{ showPassword ? 'text' : 'password' }}" required minlength="8"
-                   class="form-control" id="password" name="password" placeholder="Password">
+              class="form-control" id="password" name="password" placeholder="Password">
             <label for="password">Password</label>
             <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowPassword()">
               <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
@@ -55,7 +55,7 @@
 
           <div class="form-floating input-group mb-3">
             <input [(ngModel)]="retypePassword" type="{{ showRePassword ? 'text' : 'password' }}" required minlength="8"
-                   class="form-control" id="retypePassword" name="retypePassword" placeholder="Password">
+              class="form-control" id="retypePassword" name="retypePassword" placeholder="Password">
             <label for="retypePassword">Retype Password</label>
             <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowRePassword()">
               <i class="password-toggle fas" [ngClass]="showRePassword ? 'fa-eye' : 'fa-eye-slash'"></i>
@@ -71,7 +71,8 @@
           </div>
 
           <button type="button" (click)="register()" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
-          <p class="text-center mb-0">Already have an Account? <a class="text-danger" routerLink="/onesound/signin">Sign In</a></p>
+          <p class="text-center mb-0">Already have an Account? <a class="text-danger" routerLink="/onesound/signin">Sign
+              In</a></p>
         </div>
       </form>
       <!--&gt;>>>>>> origin/test-->
