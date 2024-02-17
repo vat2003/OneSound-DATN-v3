@@ -18,10 +18,10 @@ import { UpdateUserDTO } from '../../adminEntityService/adminEntity/DTO/update.u
   templateUrl: './manageprofile-admin.component.html',
   styleUrl: './manageprofile-admin.component.scss'
 })
-export class ManageprofileAdminComponent implements OnInit{
+export class ManageprofileAdminComponent implements OnInit {
   userResponse?: account;
-  token:string = '';
-  account?:account | null;
+  token: string = '';
+  account?: account | null;
   userProfileForm: FormGroup;
 
 
@@ -30,7 +30,7 @@ export class ManageprofileAdminComponent implements OnInit{
     private userService: accountServiceService,
     private router: Router,
 
-  ){
+  ) {
     this.userProfileForm = this.formBuilder.group({
       fullname: [''],
       id: [''],
@@ -45,6 +45,7 @@ export class ManageprofileAdminComponent implements OnInit{
   }
   ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
+
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(this.account?.createdDate, 'yyyy-MM-dd') ?? '';
 
@@ -60,8 +61,7 @@ export class ManageprofileAdminComponent implements OnInit{
 
   }
 
-  save(){
-
+  save() {
     const updateUserDTO: UpdateUserDTO = {
       id: this.userProfileForm.get('id')?.value,
       fullname: this.userProfileForm.get('fullname')?.value,

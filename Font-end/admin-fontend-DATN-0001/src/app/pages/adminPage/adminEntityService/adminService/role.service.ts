@@ -13,13 +13,11 @@ interface Role {
 })
 export class RoleService {
   private apiUrl = 'http://localhost:8080/api/v1';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllRoles(): Observable<Role[]> {
-    // interface RoleWithOptionalName extends Role {
-    //   name?: string;
-    // }
-    return this.http.get<Role[]>(this.apiUrl+'/Role');
+
+    return this.http.get<Role[]>(this.apiUrl + '/Role');
   }
 
 

@@ -1,12 +1,13 @@
-import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
-import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {account, createAccount} from '../../adminEntityService/adminEntity/account/account';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
-import {RoleService} from '../../adminEntityService/adminService/role.service';
-import {Role} from '../../adminEntityService/adminEntity/Role/Role';
+import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { account, createAccount } from '../../adminEntityService/adminEntity/account/account';
+import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
+import { RoleService } from '../../adminEntityService/adminService/role.service';
+import { Role } from '../../adminEntityService/adminEntity/Role/Role';
+import { UpdateUserForAdmin } from '../../adminEntityService/adminEntity/DTO/UpdateUserForAdmin';
 
 
 @Component({
@@ -19,6 +20,7 @@ import {Role} from '../../adminEntityService/adminEntity/Role/Role';
 })
 export class ManageuserAdminComponent implements OnInit {
   id!: number;
+  // UpdateUserForAdmin: UpdateUserForAdmin =createUpdateUserForAdmin();
   Account: account = createAccount();
   Accounts: account[] = [];
   imageUrl: string = '';
@@ -35,6 +37,10 @@ export class ManageuserAdminComponent implements OnInit {
   localStorage?: Storage;
   page: number = 1;
   itempage: number = 4;
+  selectedUser: account = createAccount();
+
+
+
   constructor(
     private accountServiceService: accountServiceService,
     private router: Router,
@@ -42,26 +48,67 @@ export class ManageuserAdminComponent implements OnInit {
     private el: ElementRef,
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
-    private RoleService: RoleService
+    private RoleService: RoleService,
   ) {
 
 
   }
 
+  Page(page: number) {
+    this.page = page < 0 ? 0 : page;
+    this.localStorage?.setItem('currentProductPage', String(this.page));
+    this.getAllUsers(this.page, this.itempage);
+  }
+
+
+  getAllUsers(page: number, limit: number) {
+    this.accountServiceService.getPages(page, limit).subscribe(
+      async (data) => {
+        console.log(data);
+        this.Accounts = data.content;
+
+        for (const Accounts of this.Accounts) {
+          if (Accounts.avatar_url == null || Accounts.avatar_url == '') {
+            continue;
+          }
+          Accounts.avatar_url = await this.setImageURLFirebase(Accounts.avatar_url);
+        }
+        this.total = data.totalPages;
+        this.visiblePages = this.PageArray(this.page, this.total);
+
+      }
+    );
+  }
+
+
+  PageArray(page: number, total: number): number[] {
+    const maxVisiblePages = 5;
+    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
+
+    let startPage = Math.max(page - halfVisiblePages, 1);
+    let endPage = Math.min(startPage + maxVisiblePages - 1, total);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    return new Array(endPage - startPage + 1).fill(0)
+      .map((_, index) => startPage + index);
+  }
+
+
+
   getAllRole() {
-    // this.RoleService.getAllRolesPages(1).subscribe(
-    //   (data) => {
-    //     this.Roles = data;
-    //     console.log(this.Roles);
-    //   }
-    //   );
+
     this.RoleService.getAllRoles().subscribe(
       (data: any) => {
+
         this.Roles = data;
         console.log('dataa ==== > ' + this.Roles);
       }
     );
     for (const x of this.Roles) {
+
       console.log(' FOREASCSLC === ' + x.name);
     }
   }
@@ -72,18 +119,13 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    // this.loadUserById();
-    // this.getAllUsers();
-    this.getPages();
-    // this.getUser(this.id);
-    // this.getAllRole();
+    this.getAllUsers(0, 4)
+
+    this.getAllRole();
+
+
   }
-  getAllUsers(){
-    this.accountServiceService.getAll().subscribe(data=>{
-      this.Accounts=data;
-      console.log("List account nè",this.Accounts);
-    })
-  }
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     const passwordField = document.getElementById('passwordField') as HTMLInputElement;
@@ -142,26 +184,14 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
 
-  getPages() {
-    this.accountServiceService.getPages(0, 10).subscribe(
-      (data) => {
-        debugger
-        if (data && data.content) {
-          debugger
-          this.Accounts = data.content;
 
-          console.log('Accounts:', this.Accounts);
-        } else {
-          debugger
-          console.error('Invalid data structure:', data);
-        }
-      },
-      (error) => {
-        debugger
-        console.error('Error:', error);
-      }
-    );
+  onSubmit() {
+
   }
+
+
+
+
 
 
 
@@ -174,48 +204,96 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   goToUserList() {
-    this.getPages();
+    this.getAllUsers(0, 4);
     this.router.navigate(['/manage/users']);
   }
+
+  view(id: number) {
+    debugger
+    this.accountServiceService.getUserById(id).subscribe(
+      (data: account) => {
+        debugger
+        this.Account = data;
+        this.formatDate(this.Account.createdDate)
+
+      },
+      (error: any) => {
+        debugger
+        console.log(error);
+      }
+    );
+  }
+  formatDate(date: Date | string | undefined): string {
+    if (!date) {
+      return '';
+    }
+    const formattedDate = typeof date === 'string' ? date : date.toISOString();
+    return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
+  }
+
+  updateUser() {
+    debugger
+    if (this.Account.id !== undefined) {
+      debugger
+      const datePipe = new DatePipe('en-US');
+      const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
+
+      const UpdateUserForAdmin: UpdateUserForAdmin = {
+        fullname: this.Account.fullname,
+        email: this.Account.email,
+        Phone: this.Account.Phone,
+        address: this.Account.address,
+        avatar_url: this.Account.avatar_url,
+        gender: this.Account.gender,
+        password: this.Account.password,
+        createdDate: formattedDate,
+        accountRole: this.Account.accountRole
+      };
+
+      debugger
+      this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
+        async (data) => {
+          debugger
+          console.log(data);
+        },
+        (error) => {
+          debugger
+          console.log(error);
+          // Xử lý khi có lỗi xảy ra
+        }
+      );
+    } else {
+      debugger
+      // Xử lý khi id là undefined
+      console.error("ID is undefined");
+    }
+  }
+
 
   saveUsers() {
     this.Account.avatar_url = this.setImageUrl;
     this.accountServiceService.createAccount(this.Account).subscribe(
-      async (data) => {
-        if (this.Account.avatar_url != null) {
-          await this.firebaseStorage.uploadFile('adminManageImage/users/', this.imageFile);
-        }
-        this.goToUserList();
-        console.log(data);
-      },
-      (error) => console.log(error)
-    );
 
+      async (data) => {
+        this.goToUserList();
+        console.log("thành công");
+      },
+      (error) => {
+
+        console.log("thất bại" + error);
+      }
+    );
   }
 
 
 
-  updateUser(id: number) {
-    this.Account.avatar_url = this.setImageUrl;
-    this.accountServiceService.updateUser(id, this.Account).subscribe(
-      async (data) => {
-        if (this.Account.avatar_url != null && this.Account.avatar_url != 'null') {
-          await this.firebaseStorage.uploadFile('adminManageImage/users/', this.imageFile);
-        }
-        this.goToUserList();
-        this.Account = createAccount();
-        this.removeUpload();
-        // this.goToSingerList();
-        console.log(data);
-      },
-      (error) => console.log(error)
-    );
 
-  }
+
 
   getUser(id: number) {
     this.accountServiceService.getUserById(id).subscribe(
       async (data: account) => {
+
         this.Account = data;
         this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
       },
@@ -226,15 +304,26 @@ export class ManageuserAdminComponent implements OnInit {
     // this.Genree = this.router.navigate(['onesound/admin/manage/genre/', id]);
   }
 
-  deleteGender(id: number) {
-    const isConfirmed = window.confirm('Are you sure to delete this User?');
-    if (isConfirmed) {
-      this.accountServiceService.deleteUser(id).subscribe((data) => {
+
+
+
+
+  deleteUser() {
+    alert(JSON.stringify(this.Account.id));
+    var ID = this.Account.id;
+    this.accountServiceService.deleteUser(ID!).subscribe(
+
+      (data) => {
         console.log(data);
-        this.getPages();
-      });
-    }
+        this.getAllUsers(0, 4);
+      },
+      (error) => {
+        console.error('Error deleting user:', error);
+      }
+    );
+
   }
+
 
 
 }

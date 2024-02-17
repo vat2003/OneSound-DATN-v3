@@ -1,21 +1,20 @@
 import { PasswordResetToken } from "../PasswordResetToken/PasswordResetToken";
 import { Role } from "../Role/Role";
 
-export class account{
+export class account {
   id?: number;
   password: string;
   fullname: string;
   email: string;
-  active:boolean;
+  active: boolean;
   createdDate?: Date;
+  // date: string;
   address: string;
   avatar_url: string;
-  gender:boolean;
+  Phone: string;
+  gender: boolean;
+  birthday?: Date;
 
-  birthday?:Date;
-  phonenumber:string;
-
-  // ... các trường khác
   accountRole?: Role;
   passwordResetToken?: PasswordResetToken;
 
@@ -23,15 +22,17 @@ export class account{
     password: string = '',
     fullname: string = '',
     email: string,
+    // date: string = '',
     active: boolean = true,
     address: string = '',
     avatar_url: string = '',
     gender: boolean = false,
     createdDate?: Date,
     birthday?: Date,
-    phonenumber: string = '',
+    Phone: string = '',
     accountRole?: Role,
     passwordResetToken?: PasswordResetToken,
+
   ) {
     // Initialize all properties
     this.password = password;
@@ -43,10 +44,10 @@ export class account{
     this.gender = gender;
     this.createdDate = createdDate ?? new Date();
     this.birthday = birthday ?? new Date();
-    this.phonenumber = phonenumber;
+    this.Phone = Phone ?? '';
     this.accountRole = accountRole;
     this.passwordResetToken = passwordResetToken;
-
+    // this.date = date;
   }
 
 
@@ -57,21 +58,18 @@ export function createAccount(
   const {
     password = '',
     fullname = '',
-    email='',
+    email = '',
+    // date='',
     active = true,
     address = '',
     avatar_url = '',
     gender = false,
     createdDate,
     birthday,
-    phonenumber = '',
+    Phone = '',
     accountRole,
     passwordResetToken,
   } = accountData;
-
-  // Xác thực email và password trước khi khởi tạo
-
-
-  return new account(password, fullname, email, active, address, avatar_url, gender, createdDate, birthday, phonenumber, accountRole, passwordResetToken);
+  return new account(password, fullname, email, active, address, avatar_url, gender, createdDate, birthday, Phone, accountRole, passwordResetToken);
 }
 

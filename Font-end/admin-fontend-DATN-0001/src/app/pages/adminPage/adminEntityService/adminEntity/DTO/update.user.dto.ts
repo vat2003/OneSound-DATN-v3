@@ -8,12 +8,13 @@ export class UpdateUserDTO {
   createdDate?: Date;
 
   constructor(data: any) {
-      this.id = data.id; 
-      this.fullname = data.fullname;
-      // this.email = data.email;
-      this.address = data.address;
-      this.avatar_url = data.avatar_url;
-      this.gender = data.gender;
-      this.createdDate = data.createdDate; 
+    this.id = data.id;
+    this.fullname = data.fullname;
+    // this.email = data.email;
+    this.address = data.address;
+    this.avatar_url = data.avatar_url;
+    this.gender = data.gender;
+    this.createdDate = data.createdDate;
+
   }
 }

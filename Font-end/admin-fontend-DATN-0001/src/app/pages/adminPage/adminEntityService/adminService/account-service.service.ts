@@ -1,12 +1,13 @@
-import {Inject, Injectable} from "@angular/core";
-import {login} from "../adminEntity/DTO/login";
-import {Observable, catchError} from "rxjs";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {DOCUMENT} from "@angular/common";
-import {HttpUtilService} from "./http.util.service";
-import {account} from "../adminEntity/account/account";
-import {Register} from "../adminEntity/DTO/Register";
-import {UpdateUserDTO} from "../adminEntity/DTO/update.user.dto";
+import { Inject, Injectable } from "@angular/core";
+import { login } from "../adminEntity/DTO/login";
+import { Observable, catchError } from "rxjs";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { DOCUMENT } from "@angular/common";
+import { HttpUtilService } from "./http.util.service";
+import { account } from "../adminEntity/account/account";
+import { Register } from "../adminEntity/DTO/Register";
+import { UpdateUserDTO } from "../adminEntity/DTO/update.user.dto";
+import { UpdateUserForAdmin } from "../adminEntity/DTO/UpdateUserForAdmin";
 
 interface AccountResponse {
   content: account[];
@@ -26,9 +27,10 @@ export class accountServiceService {
   private apiLogin = `${this.baseUrl}/users/login`;
   private apiRegister = `${this.baseUrl}/users/register`;
   private apiUserDetail = `${this.baseUrl}/users/details`;
-  private apiUserUpdate = `${this.baseUrl}/users/details`;
+  private apiUsercreate = `${this.baseUrl}/users/create`;
   localStorage?: Storage;
   private apicheckmail = `${this.baseUrl}/users/email`;
+  private apiupdateuser = `${this.baseUrl}/users/update`;
 
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
@@ -41,20 +43,33 @@ export class accountServiceService {
   ) {
     this.localStorage = document.defaultView?.localStorage;
   }
-  getAll(): Observable<account[]>{
-    return this.http.get<account[]>(`${this.baseUrl}/users`);
-  }
+  // getAll(): Observable<account[]>{
+  //   return this.http.get<account[]>(`${this.baseUrl}/users`);
+  // }
+
+
+
   login(login: login): Observable<any> {
     return this.http.post(this.apiLogin, login, this.apiConfig);
   }
 
-  updateUser(id: number, account: account): Observable<Object> {
-    return this.http.put<account>(`${this.baseUrl}/users/${id}`, account);
-  }
+
 
   register(Register: Register): Observable<any> {
-    debugger;
     return this.http.post(this.apiRegister, Register, this.apiConfig);
+  }
+
+  createAccount(account: account): Observable<account> {
+    return this.http.post<account>(this.apiUsercreate, account, this.apiConfig);
+  }
+
+  // updateUser(id: number, account: account): Observable<Object> {
+  //   debugger
+  //   return this.http.put<account>(`${this.apiupdateuser}/${id}`, account);
+  // }
+  updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {
+    debugger
+    return this.http.put<account>(`${this.apiupdateuser}/${id}`, account);
   }
 
   getUserById(id: number): Observable<account> {
@@ -65,26 +80,20 @@ export class accountServiceService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/users/page`, {params});
+    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/users/page`, { params });
   }
 
   deleteUser(id: number): Observable<Object> {
     return this.http.delete(`${this.baseUrl}/users/${id}`);
   }
 
-  createAccount(account: account): Observable<account> {
-    return this.http.post<account>(this.apiRegister, account, this.apiConfig);
-  }
 
   UpdateProfile(updateUserDTO: UpdateUserDTO) {
-
     var userResponse = this.getUserResponseFromLocalStorage();
-
     return this.http.put(`${this.apiUserDetail}/${userResponse?.id}`, updateUserDTO, {})
   }
 
   checkEmailExists(email: string): Observable<boolean> {
-    debugger
     const url = `${this.apicheckmail}/${email}`;
     return this.http.get<boolean>(url, this.apiConfig);
   }
