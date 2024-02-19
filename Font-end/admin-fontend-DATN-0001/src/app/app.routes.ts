@@ -1,3 +1,4 @@
+import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
 import {Routes} from '@angular/router';
 import {SigninComponent} from "./pages/adminPage/signin/signin.component";
 import {SignupComponent} from "./pages/adminPage/signup/signup.component";
@@ -51,6 +52,7 @@ export const routes: Routes = [
       {path: 'manage/genre/:id', component: ManagegenreAdminComponent},
       {path: 'manage/song', component: ManagesongAdminComponent},
       {path: 'manage/user', component: ManageuserAdminComponent},
+      {path: 'manage/author', component: ManageauthorComponent},
       {path: 'chart', component: ChartComponent},
       {path: 'dashboard', component: BlankComponent},
     ],
