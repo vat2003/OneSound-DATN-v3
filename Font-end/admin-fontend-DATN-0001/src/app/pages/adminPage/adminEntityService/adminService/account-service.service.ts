@@ -56,6 +56,7 @@ export class accountServiceService {
 
 
   register(Register: Register): Observable<any> {
+    debugger
     return this.http.post(this.apiRegister, Register, this.apiConfig);
   }
 
@@ -89,11 +90,13 @@ export class accountServiceService {
 
 
   UpdateProfile(updateUserDTO: UpdateUserDTO) {
+    debugger
     var userResponse = this.getUserResponseFromLocalStorage();
-    return this.http.put(`${this.apiUserDetail}/${userResponse?.id}`, updateUserDTO, {})
+    return this.http.put(`${this.apiupdateuser}/${userResponse?.id}`, updateUserDTO, {})
   }
 
   checkEmailExists(email: string): Observable<boolean> {
+    debugger
     const url = `${this.apicheckmail}/${email}`;
     return this.http.get<boolean>(url, this.apiConfig);
   }

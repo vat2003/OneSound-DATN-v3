@@ -1,12 +1,12 @@
-import {CommonModule} from '@angular/common';
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormsModule, NgForm, Validators} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
-import {account} from '../adminEntityService/adminEntity/account/account';
-import {login} from '../adminEntityService/adminEntity/DTO/login';
-import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
-import {TokenService} from '../adminEntityService/adminService/token.service';
-import {LoginResponse} from '../adminEntityService/adminEntity/utils/login.response';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormsModule, NgForm, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { account } from '../adminEntityService/adminEntity/account/account';
+import { login } from '../adminEntityService/adminEntity/DTO/login';
+import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
+import { TokenService } from '../adminEntityService/adminService/token.service';
+import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.response';
 
 @Component({
   selector: 'app-loginne',
@@ -32,8 +32,8 @@ export class LoginneComponent implements OnInit {
   maxIncorrectLoginAttempts: number = 5; // Số lần đăng nhập sai tối đa
 
   constructor(private router: Router,
-              private userService: accountServiceService,
-              private tokenService: TokenService,
+    private userService: accountServiceService,
+    private tokenService: TokenService,
   ) {
   }
 
@@ -58,7 +58,7 @@ export class LoginneComponent implements OnInit {
           this.userService.login(login).subscribe({
             next: (response: LoginResponse) => {
               alert("Login successful!");
-              const {token} = response;
+              const { token } = response;
               console.log(token);
               this.tokenService.setToken(token);
               this.incorrectLoginAttempts = 0;

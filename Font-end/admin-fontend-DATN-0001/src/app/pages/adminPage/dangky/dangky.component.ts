@@ -43,14 +43,14 @@ export class DangkyComponent {
 
   }
 
-  dangnhap(){
+  dangnhap() {
     this.router.navigate(['onesound/signin']);
   }
 
 
   register() {
     debugger
-  // Kiểm tra tính hợp lệ của các trường
+    // Kiểm tra tính hợp lệ của các trường
     if (this.registerForm.valid) {
       // Nếu tất cả các trường hợp lệ, tiến hành đăng ký
       const registerData: Register = {

@@ -12,11 +12,11 @@
           </div>
 
           <div class="mb-3">
-            <label for="fullname" class="form-label">Họ và tên</label>
+            <label for="fullname" class="form-label">Full name</label>
             <input type="text" formControlName="fullname" class="form-control" id="fullname"
-                   [ngClass]="{'is-invalid': userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched}">
+              [ngClass]="{'is-invalid': userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched}">
             <div *ngIf="userProfileForm.get('fullname')?.invalid && userProfileForm.get('fullname')?.touched"
-                 class="invalid-feedback" style="size: 100px; color: red;">
+              class="invalid-feedback" style="size: 100px; color: red;">
               Họ và tên là trường bắt buộc.
             </div>
           </div>
@@ -28,16 +28,21 @@
           <div class="mb-3">
             <label class="form-label">Gender</label> <br>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio1"
-                     value="option1">
+              <!-- <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="true"
+                [checked]="userProfileForm.get('gender')?.value == true"> -->
+              <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio1" value="true">
               <label class="form-check-label" for="inlineRadio1">Female</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio2"
-                     value="option2">
-              <label class="form-check-label" for="inlineRadio2">Male</label>
+              <!-- <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="false"
+                [checked]="userProfileForm.get('gender')?.value == false"> -->
+
+              <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio2" value="false"
+                [checked]="userProfileForm.get('gender')?.value === 'false'">
+              <label class="form-check-label" for="inlineRadio2">Male </label>
             </div>
           </div>
+          <input class="" type="text" placeholder="asd" [value]="userProfileForm.get('gender')?.value">
           <div class="mb-3">
             <label class="form-label">Address</label>
             <input type="text" formControlName="address" class="form-control">
@@ -46,8 +51,8 @@
           <br>
           <label class="form-label">Avatar</label>
           <div class="file-upload">
-            <button class="file-upload-btn" type="button"
-                    onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add
+              Image</button>
 
             <div class="image-upload-wrap">
               <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
@@ -59,7 +64,7 @@
               <img class="file-upload-image" src="#" alt="your image" />
               <div class="image-title-wrap">
                 <button type="button" onclick="removeUpload()" class="remove-image">Remove <span
-                  class="image-title">Uploaded Image</span></button>
+                    class="image-title">Uploaded Image</span></button>
               </div>
             </div>
             <button type="button" (click)="save()" class="btn btn-primary mt-4 w-100">Update</button>

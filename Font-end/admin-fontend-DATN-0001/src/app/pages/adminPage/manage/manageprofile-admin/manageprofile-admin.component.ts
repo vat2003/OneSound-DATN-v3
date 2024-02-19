@@ -39,7 +39,7 @@ export class ManageprofileAdminComponent implements OnInit {
       createdDate: [''],
       gender: true,
       avatar_url: [''],
-
+      role_id: 1
     }, {
     });
   }
@@ -57,29 +57,35 @@ export class ManageprofileAdminComponent implements OnInit {
       avatar_url: this.account?.avatar_url ?? '',
       gender: this.account?.gender ?? true,
       createdDate: formattedDate,
+      role_id: 1
     });
 
   }
 
   save() {
+    debugger
     const updateUserDTO: UpdateUserDTO = {
       id: this.userProfileForm.get('id')?.value,
+      email: this.userProfileForm.get('email')?.value,
       fullname: this.userProfileForm.get('fullname')?.value,
       address: this.userProfileForm.get('address')?.value,
       avatar_url: this.userProfileForm.get('avatar_url')?.value,
       gender: this.userProfileForm.get('gender')?.value,
       createdDate: this.userProfileForm.get('createdDate')?.value,
+      role_id: 1
     };
 
     this.userService.UpdateProfile(updateUserDTO)
       .subscribe({
 
         next: (response: any) => {
-
-          this.router.navigate(['/onesound/dangnhap']);
+          // debugger
+          // this.router.navigate(['/onesound/dangnhap']);
+          console.log(response);
+          alert('update profile successfully');
         },
         error: (error: any) => {
-
+          debugger
           alert(error.error.message);
         }
       });
