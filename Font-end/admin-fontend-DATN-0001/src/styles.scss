@@ -52,4 +52,9 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  @font-face {
+    font-family: "Roboto";
+    src: url("assets/fonts/Roboto-Black.ttf") format("truetype");
+  }
+
 }

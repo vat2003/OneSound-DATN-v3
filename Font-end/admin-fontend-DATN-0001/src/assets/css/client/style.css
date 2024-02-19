@@ -4,7 +4,9 @@
     margin: 0;
     /* background-color: #0d0d0d; */
     color: white;
-    font-family: "Poppins", sans-serif;
+    /* font-family: "Poppins", sans-serif; */
+    font-family: "Roboto";
+    src: url("assets/fonts/Roboto-Black.ttf") format("truetype");
 }
 body {
     background-color: #0d0d0d;
@@ -106,7 +108,7 @@ body {
 }
 
 .login-wrapper .login-submenu{
- 
+
     display: none;
 
 
