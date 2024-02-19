@@ -1,3 +1,4 @@
+import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
 import {Routes} from '@angular/router';
 import {SigninComponent} from "./pages/adminPage/signin/signin.component";
 import {SignupComponent} from "./pages/adminPage/signup/signup.component";
@@ -19,10 +20,11 @@ import { DangkyComponent } from './pages/adminPage/dangky/dangky.component';
 import {UserMenusideComponent} from './pages/client/user-menuside/user-menuside.component';
 import {UserExploreComponent} from './pages/client/user-explore/user-explore.component';
 import {UserPlaysongComponent} from './pages/client/user-playsong/user-playsong.component';
+import { UserProfileComponent } from './pages/client/user-profile/user-profile.component';
 
 
 export const routes: Routes = [
-  {path: '', component: Notfound404Component},
+  {path: '', component: UserExploreComponent},
   {path: 'onesound/signin', component: LoginneComponent},
   {path: 'onesound/signup', component: DangkyComponent},
   {path: 'onesound/dangnhap', component: LoginneComponent},
@@ -50,6 +52,7 @@ export const routes: Routes = [
       {path: 'manage/genre/:id', component: ManagegenreAdminComponent},
       {path: 'manage/song', component: ManagesongAdminComponent},
       {path: 'manage/user', component: ManageuserAdminComponent},
+      {path: 'manage/author', component: ManageauthorComponent},
       {path: 'chart', component: ChartComponent},
       {path: 'dashboard', component: BlankComponent},
     ],
@@ -60,6 +63,7 @@ export const routes: Routes = [
     children: [
       {path: 'explore', component: UserExploreComponent},
       {path: 'playsong', component: UserPlaysongComponent},
+      {path: 'profile', component: UserProfileComponent},
     ],
   },
 ];

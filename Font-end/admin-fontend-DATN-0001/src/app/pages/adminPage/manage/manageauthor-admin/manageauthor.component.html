@@ -1,0 +1,220 @@
+<!-- Form Start -->
+<ng-toast></ng-toast>
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-3 text-uppercase">AUTHOR MANAGEMENT</h6>
+
+        <form (ngSubmit)="onSubmit()">
+          <input
+            type="text"
+            class="form-control"
+            id="id"
+            name="id"
+            [(ngModel)]="Author.id"
+            hidden
+          />
+
+          <div class="form-group mb-3">
+            <label for="fullname">Author name</label> <br />
+            <br />
+
+            <input
+              type="text"
+              class="form-control"
+              id="fullname"
+              name="fullname"
+              [(ngModel)]="Author.fullname"
+            />
+            <span
+              *ngIf="errorFieldsArr.includes('fullname')"
+              class="text-warning"
+              >*Please enter the music author name</span
+            >
+            <span
+              *ngIf="errorFieldsArr.includes('existAuthorName')"
+              class="text-warning"
+              >Author name already exists</span
+            >
+          </div>
+          <div class="form-group mb-3">
+            <label for="description">Description</label>
+            <br />
+            <br />
+            <textarea
+              type="text"
+              class="form-control"
+              id="description"
+              rows="5"
+              name="description"
+              [(ngModel)]="Author.description"
+            ></textarea>
+          </div>
+
+          <div class="form-group me-3 mb-3">
+            <label>Image</label>
+            <div class="file-upload">
+              <button
+                class="file-upload-btn"
+                type="button"
+                onclick="$('.file-upload-input').trigger( 'click' )"
+              >
+                Add Image
+              </button>
+              <div class="image-upload-wrap">
+                <input
+                  class="file-upload-input"
+                  type="file"
+                  #fileInput
+                  (change)="onFileSelected($event)"
+                  accept="image/*"
+                />
+
+                <div class="drag-text">
+                  <h3>Drag and drop a file or select add Image</h3>
+                </div>
+              </div>
+              <div class="file-upload-content">
+                <img
+                  class="file-upload-image"
+                  [src]="imageUrl"
+                  alt="{{ imageUrl }}"
+                />
+                <div class="image-title-wrap">
+                  <button
+                    type="button"
+                    (click)="removeUpload()"
+                    class="remove-image"
+                  >
+                    Remove <span class="image-title">Uploaded Image</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center">
+            <button
+              (click)="saveAuthor()"
+              class="btn btn-primary fw-bold"
+              *ngIf="Author.id == null"
+            >
+              Save
+            </button>
+            <button
+              (click)="updateAuthor(Author.id)"
+              class="btn btn-info ms-3 fw-bold"
+              *ngIf="Author.id != null"
+            >
+              Update
+            </button>
+            <button (click)="resetForm()" class="btn btn-warning ms-3 fw-bold">
+              Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-3">AUTHOR LIST</h6>
+        <input
+          type="text"
+          class="form-control mb-4 border-light border-2"
+          style="border-radius: 20px"
+          placeholder="Search"
+        />
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">*</th>
+              <th scope="col">Author name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Image</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody class="align-middle">
+            <tr *ngFor="let item of Authors; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ item.fullname }}</td>
+              <td>{{ item.description }}</td>
+              <td>
+                <img
+                  src="{{ item.image }}"
+                  width="70"
+                  height="70"
+                  alt="{{ item.image }}"
+                />
+              </td>
+
+              <td>
+                <button
+                  (click)="getAuthor(item.id)"
+                  class="btn btn-outline-info me-3"
+                >
+                  Detail
+                </button>
+                <button
+                  (click)="deleteAuthor(item.id)"
+                  class="btn btn-outline-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" style="cursor: pointer" (click)="Page(0)"
+                  >First</a
+                >
+              </li>
+              <li class="page-item" *ngIf="page > 0">
+                <a
+                  class="page-link"
+                  (click)="Page(page - 1)"
+                  style="cursor: pointer"
+                >
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <ng-container *ngFor="let page of visiblePages">
+                <li class="page-item" [ngClass]="{ active: page === page + 1 }">
+                  <a
+                    class="page-link"
+                    (click)="Page(page - 1)"
+                    style="cursor: pointer"
+                    >{{ page }}</a
+                  >
+                </li>
+              </ng-container>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a
+                  class="page-link"
+                  (click)="Page(page + 1)"
+                  style="cursor: pointer"
+                >
+                  <i class="fa fa-chevron-right"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a
+                  class="page-link"
+                  (click)="Page(total - 1)"
+                  style="cursor: pointer"
+                  >Last</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Form End -->

@@ -10,6 +10,7 @@
     height: calc(100vh - var(--player-height));
 }
 
+
 /* Siderbar CSS */
 .app__sidebar {
     width: 240px;
