@@ -31,6 +31,7 @@ export class accountServiceService {
   localStorage?: Storage;
   private apicheckmail = `${this.baseUrl}/users/email`;
   private apiupdateuser = `${this.baseUrl}/users/update`;
+  private apiupdateuseradmin = `${this.baseUrl}/users/update/admin`;
 
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
@@ -70,8 +71,9 @@ export class accountServiceService {
   // }
   updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {
     debugger
-    return this.http.put<account>(`${this.apiupdateuser}/${id}`, account);
+    return this.http.put<account>(`${this.apiupdateuseradmin}/${id}`, account);
   }
+
 
   getUserById(id: number): Observable<account> {
     return this.http.get<account>(`${this.baseUrl}/users/${id}`);
@@ -87,6 +89,7 @@ export class accountServiceService {
   deleteUser(id: number): Observable<Object> {
     return this.http.delete(`${this.baseUrl}/users/${id}`);
   }
+
 
 
   UpdateProfile(updateUserDTO: UpdateUserDTO) {

@@ -36,7 +36,8 @@ export class ManageuserAdminComponent implements OnInit {
   visiblePages: number[] = [];
   localStorage?: Storage;
   page: number = 1;
-  itempage: number = 4;
+  // itempage: number = 2;
+  itempage: number = 1;
   selectedUser: account = createAccount();
 
 
@@ -119,7 +120,7 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(0, 4)
+    this.getAllUsers(0, 1)
 
     this.getAllRole();
 

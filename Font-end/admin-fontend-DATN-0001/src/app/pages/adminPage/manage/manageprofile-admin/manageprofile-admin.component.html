@@ -25,6 +25,12 @@
             <label for="exampleInputEmail1" class="form-label">Birthday</label>
             <input type="date" formControlName="createdDate" class="form-control">
           </div>
+
+          <!-- <div class="mb-3"> -->
+          <!-- <label for="" class="form-label">ROLE</label> -->
+          <input type="text" hidden class="form-control" [value]="userProfileForm.get('role_id')?.value">
+          <!-- </div> -->
+
           <div class="mb-3">
             <label class="form-label">Gender</label> <br>
             <div class="form-check form-check-inline">
@@ -42,7 +48,7 @@
               <label class="form-check-label" for="inlineRadio2">Male </label>
             </div>
           </div>
-          <input class="" type="text" placeholder="asd" [value]="userProfileForm.get('gender')?.value">
+          <input class="" type="text" hidden placeholder="asd" [value]="userProfileForm.get('gender')?.value">
           <div class="mb-3">
             <label class="form-label">Address</label>
             <input type="text" formControlName="address" class="form-control">
@@ -55,7 +61,9 @@
               Image</button>
 
             <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+              <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
+                accept="image/*" />
+
               <div class="drag-text">
                 <h3>Drag and drop a file or select add Image</h3>
               </div>

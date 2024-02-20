@@ -16,10 +16,10 @@
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" [(ngModel)]="Account.email" name="email" id="email" />
           </div>
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label">Phone number</label>
             <input type="text" class="form-control" [(ngModel)]="Account.Phone" name="Phone" />
-          </div>
+          </div> -->
           <div class="mb-3">
             <label for="birthday" class="form-label">Birthday</label>
             <input type="date" class="form-control calendar-icon-white" [(ngModel)]="Account.birthday" name="birthday"
@@ -111,7 +111,7 @@
               <th scope="col">Email</th>
               <th scope="col">Birthday</th>
               <th scope="col">Gender</th>
-              <th scope="col">Phone</th>
+              <!-- <th scope="col">Phone</th> -->
               <th scope="col">Role</th>
               <th scope="col">Image</th>
               <th scope="col">Address</th>
@@ -127,7 +127,7 @@
               <td>{{ item.email }}</td>
               <td>{{ item.birthday }}</td>
               <td>{{ item.gender }}</td>
-              <td>{{ item.Phone }}</td>
+              <!-- <td>{{ item.Phone }}</td> -->
               <td>{{ item.accountRole?.name}}</td>
               <td>{{ item.avatar_url }}</td>
               <td>{{ item.address }}</td>

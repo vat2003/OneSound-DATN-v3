@@ -42,7 +42,8 @@ export class account {
     this.address = address;
     this.avatar_url = avatar_url;
     this.gender = gender;
-    this.createdDate = createdDate ?? new Date();
+    this.createdDate = createdDate;
+    // this.createdDate = createdDate ?? new Date();
     this.birthday = birthday ?? new Date();
     this.Phone = Phone ?? '';
     this.accountRole = accountRole;
