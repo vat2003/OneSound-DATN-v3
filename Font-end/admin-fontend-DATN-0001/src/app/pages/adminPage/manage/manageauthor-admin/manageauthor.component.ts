@@ -1,7 +1,7 @@
 import {Router, ActivatedRoute, RouterLink} from '@angular/router';
 import {AuthorService} from './../../adminEntityService/adminService/author.service';
 import {Author} from './../../adminEntityService/adminEntity/author/author';
-import {FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {Component, ElementRef, Renderer2, OnInit, AfterViewInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-manageauthor',
@@ -33,6 +34,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   errorFieldsArr: String[] = [];
   AuthorsFromData: Author[] = [];
   filterName: string = '';
+  filterOptions!: Observable<string[]>;
   pages: number[] = [];
   page:number=1;
   total: number = 0;
@@ -40,6 +42,29 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   titleAlbum: string[] = [];
   visiblePages: number[] = [];
   localStorage?: Storage;
+  formcontrol = new FormControl('');
+  searchTerm: string = '';
+  filteredAuthors: any[] = [];
+  singerName: string[] = [];
+  private searchTerms = new Subject<string>();
+  // private _FILTER(value: string): any[] {
+  //   const searchTermLowerCase = value.toLowerCase();
+
+  //   // Lọc danh sách tác giả dựa trên từ khóa tìm kiếm
+  //   this.filteredAuthors = this.Authors.filter(author =>
+  //     author.fullname.toLowerCase().includes(searchTermLowerCase)
+  //   );
+
+  //   // Lọc các tùy chọn trong ô tìm kiếm
+  //   return this.singerName.filter(option =>
+  //     option.toLowerCase().includes(searchTermLowerCase)
+  //   );
+  // }
+  private _FILTER(value: string): string[] {
+    const searchValue = value.toLocaleLowerCase();
+    return this.singerName.filter(option => option.toLocaleLowerCase().includes(searchValue));
+  }
+
   constructor(
     private AuthorService: AuthorService,
     private router: Router,
@@ -49,6 +74,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService
   ) {
+    this.filteredAuthors = this.Authors;
   }
   Page(page: number) {
     this.page = page < 0 ? 0 : page;
@@ -71,19 +97,52 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
       .map((_, index) => startPage + index);
   }
 
-  ngAfterViewInit(): void {
-    // this.filterOptions = this.formcontrol.valueChanges.pipe(
-    //   startWith(''), map(value => this._FILTER(value || ''))
-    // )
 
+  search():void {
+    // this.searchTerms.next(this.searchTerm);
+    const searchTermLowerCase = this.searchTerm.toLowerCase();
+
+    // Lọc danh sách tác giả dựa trên từ khóa tìm kiếm
+    // this.Authors=this.Authors.filter(author =>
+    //   author.fullname.toLowerCase().includes(searchTermLowerCase)
+    // );
+
+    this.Authors = this.Authors.filter(author =>
+      author.fullname.toLowerCase().includes(searchTermLowerCase) ||
+      author.description.toLowerCase().includes(searchTermLowerCase)
+    );
+
+
+    if(searchTermLowerCase==''){
+      this.displayDataOnTable(0, 5);
+    }
+  }
+
+  // search() {
+  //   this.searchTerms.next(this.searchTerm);
+  // }
+
+  ngAfterViewInit(): void {
+    this.filterOptions = this.formcontrol.valueChanges.pipe(
+      startWith(''), map(value => this._FILTER(value || ''))
+    );
+    this.search();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     // this.filterOptions = this.formcontrol.valueChanges.pipe(
     //   startWith(''), map(value => this._FILTER(value || ''))
-    // )
+    // );
+    this.search();
   }
 
+  // onKey(event: any): void {
+  //   this.search();
+  // }
+
+  onKey(event: any): void {
+    this.searchTerms.next(event.target.value);
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -91,6 +150,28 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     // this.getAllAuthor();
     this.getAuthor(this.id);
     this.displayDataOnTable(0, 5);
+    this.searchTerms
+    .pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
+    )
+    .subscribe(async (data) => {
+      // Xử lý kết quả tìm kiếm ở đây
+      // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
+      this.imageFile = data.content.map((album: Author) => album.image);
+      this.titleAlbum = data.content.map((album: Author) => album.fullname);
+      this.Authors = data.content;
+
+      for (const album of this.Authors) {
+        if (album.image == null || album.image == '') {
+          continue;
+        }
+        album.image = await this.setImageURLFirebase(album.image);
+      }
+      this.total = data.totalPages;
+      this.visiblePages = this.PageArray(this.page, this.total);
+    });
     // this.getAllAuthor();
   }
   displayDataOnTable(page: number, limit: number) {
@@ -186,6 +267,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         this.Author = new Author();
         this.removeUpload();
         this.loadAuthors();
+        this.reload();
         // this.goToSingerList();
         console.log(data);
         this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 5000});
@@ -227,7 +309,8 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         }
         this.Author = new Author();
         this.removeUpload();
-        this.goToSingerList();
+        // this.goToSingerList();
+        this.reload();
 
         this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
         console.log(data);

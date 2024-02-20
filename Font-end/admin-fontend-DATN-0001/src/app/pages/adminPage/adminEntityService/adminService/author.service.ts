@@ -35,6 +35,19 @@ export class AuthorService {
     return this.http.get<Author>(this.apiUrl + '/' + id);
   }
 
+  getAuthorByName(id: String): Observable<Author> {
+    return this.http.get<Author>(this.apiUrl + '/name/' + id);
+  }
+
+  getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<AuthorResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<AuthorResponse>(`${this.apiUrl}/getAuthorByName/${title}`, { params });
+    // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
+  }
+
+
   createAuthor(author: Author): Observable<Author> {
     return this.http.post<Author>(`${this.apiUrl}`, author);
   }
