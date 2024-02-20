@@ -3,14 +3,23 @@ import {AuthorService} from './../../adminEntityService/adminService/author.serv
 import {Author} from './../../adminEntityService/adminEntity/author/author';
 import {FormControl, FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {Component, ElementRef, Renderer2, OnInit, AfterViewInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Renderer2,
+  OnInit,
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatSelectModule } from '@angular/material/select';
-import { Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatSelectModule} from '@angular/material/select';
+import {Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap} from 'rxjs';
 
 @Component({
   selector: 'app-manageauthor',
@@ -36,7 +45,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   filterName: string = '';
   filterOptions!: Observable<string[]>;
   pages: number[] = [];
-  page:number=1;
+  page: number = 1;
   total: number = 0;
   itempage: number = 4;
   titleAlbum: string[] = [];
@@ -76,6 +85,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   ) {
     this.filteredAuthors = this.Authors;
   }
+
   Page(page: number) {
     this.page = page < 0 ? 0 : page;
     this.localStorage?.setItem('currentProductPage', String(this.page));
@@ -98,7 +108,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
 
-  search():void {
+  search(): void {
     // this.searchTerms.next(this.searchTerm);
     const searchTermLowerCase = this.searchTerm.toLowerCase();
 
@@ -113,7 +123,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     );
 
 
-    if(searchTermLowerCase==''){
+    if (searchTermLowerCase == '') {
       this.displayDataOnTable(0, 5);
     }
   }
@@ -151,29 +161,30 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     this.getAuthor(this.id);
     this.displayDataOnTable(0, 5);
     this.searchTerms
-    .pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
-    )
-    .subscribe(async (data) => {
-      // Xử lý kết quả tìm kiếm ở đây
-      // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
-      this.imageFile = data.content.map((album: Author) => album.image);
-      this.titleAlbum = data.content.map((album: Author) => album.fullname);
-      this.Authors = data.content;
-
-      for (const album of this.Authors) {
-        if (album.image == null || album.image == '') {
-          continue;
-        }
-        album.image = await this.setImageURLFirebase(album.image);
-      }
-      this.total = data.totalPages;
-      this.visiblePages = this.PageArray(this.page, this.total);
-    });
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
+      )
+      .subscribe(async (data) => {
+        // Xử lý kết quả tìm kiếm ở đây
+        // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
+        // this.imageFile = data.content.map((album: Author) => album.image);
+        // this.titleAlbum = data.content.map((album: Author) => album.fullname);
+        // this.Authors = data.content;
+        //
+        // for (const album of this.Authors) {
+        //   if (album.image == null || album.image == '') {
+        //     continue;
+        //   }
+        //   album.image = await this.setImageURLFirebase(album.image);
+        // }
+        // this.total = data.totalPages;
+        // this.visiblePages = this.PageArray(this.page, this.total);
+      });
     // this.getAllAuthor();
   }
+
   displayDataOnTable(page: number, limit: number) {
     this.AuthorService.getCategories(page, limit).subscribe(
       async (data) => {
@@ -182,11 +193,11 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         this.titleAlbum = data.content.map((album: Author) => album.fullname);
         this.Authors = data.content;
 
-        for (const album of this.Authors) {
-          if (album.image == null || album.image == '') {
+        for (const author of this.Authors) {
+          if (author.image == '' || author.image == null) {
             continue;
           }
-          album.image = await this.setImageURLFirebase(album.image);
+          author.image = await this.setImageURLFirebase(author.image);
           // album.albumcreateDate = new Date(album.albumcreateDate);
         }
         this.total = data.totalPages;
@@ -238,7 +249,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   saveAuthor() {
     debugger
     if (this.errorFieldsArr.length || !this.Author.fullname) {
-    // if (this.errorFieldsArr.length !== 0) {
+      // if (this.errorFieldsArr.length !== 0) {
       this.toast.warning({detail: 'Warning Message', summary: 'Name is null', duration: 5000});
       return;
     }
@@ -305,12 +316,14 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     this.AuthorService.updateAuthor(id, this.Author).subscribe(
       async (data) => {
         if (this.imageFile) {
-          await this.firebaseStorage.uploadFile('adminManageImage/author/', this.imageFile);
+          await this.firebaseStorage.uploadFile(
+            'adminManageImage/author/', this.imageFile);
         }
         this.Author = new Author();
+
+        this.goToAuthorList();
         this.removeUpload();
-        // this.goToSingerList();
-        this.reload();
+        // this.reload();
 
         this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
         console.log(data);
@@ -323,6 +336,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     this.AuthorService.getAuthorById(id).subscribe(
       async (data: Author) => {
         this.Author = data;
+        this.setImageUrl = this.Author.image;
         this.fillImage(await this.setImageURLFirebase(this.Author.image));
       },
       (error) => console.log(error)
@@ -330,14 +344,14 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   resetForm() {
-    this.Author= new Author(); // Reset form
+    this.Author = new Author(); // Reset form
     this.removeUpload();
     this.reload();
   }
 
   reload() {
     const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
   }
@@ -348,11 +362,11 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         console.log(data);
         this.Authors = data.content;
 
-        for (const singer of this.Authors) {
-          if (singer.image == null || singer.image == '') {
+        for (const author of this.Authors) {
+          if (author.image == null || author.image == '') {
             continue;
           }
-          singer.image = await this.setImageURLFirebase(singer.image);
+          author.image = await this.setImageURLFirebase(author.image);
         }
 
       }
@@ -366,25 +380,13 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     })
   }
 
-  goToSingerList() {
-    this.getAllAuthor();
+  goToAuthorList() {
+    // this.getAllAuthor();
+    this.loadAuthors();
     this.router.navigate(['/manage/author']);
   }
 
   onSubmit() {
-    // this.saveSinger();
-    // this.goToSingerList();
-    // this.singerService.updateArtist(this.id, this.singer).subscribe(
-    //   (data) => {
-    //     this.goToSingerList();
-    //   },
-    //   (error) => console.log(error)
-    // );
-    // if (this.id) {
-    //   this.updateAuthor(this.id);
-    // } else {
-    //   this.saveAuthor();
-    // }
   }
 
   onFileSelected(event: any) {
@@ -452,6 +454,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
+      this.setImageUrl = 'adminManageImage/author/null.jpg';
       this.removeUpload();
     }
   }
@@ -475,9 +478,23 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
   removeUpload(): void {
     this.imageUrl = '';
-    this.renderer.setProperty(this.el.nativeElement.querySelector('.file-upload-input'), 'value', '');
-    this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'none');
-    this.renderer.setStyle(this.el.nativeElement.querySelector('.image-upload-wrap'), 'display', 'block');
+    this.setImageUrl = '';
+    // this.imageFile = null;
+    this.renderer.setProperty(
+      this.el.nativeElement.querySelector('.file-upload-input'),
+      'value',
+      ''
+    );
+    this.renderer.setStyle(
+      this.el.nativeElement.querySelector('.file-upload-content'),
+      'display',
+      'none'
+    );
+    this.renderer.setStyle(
+      this.el.nativeElement.querySelector('.image-upload-wrap'),
+      'display',
+      'block'
+    );
   }
 
   async setImageURLFirebase(image: string): Promise<string> {

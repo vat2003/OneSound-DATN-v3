@@ -1,12 +1,12 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Genre } from '../../adminEntityService/adminEntity/genre/genre';
-import { GenreServiceService } from '../../adminEntityService/adminService/genre-service.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
-import { error, log } from 'console';
-import { NgToastModule, NgToastService } from "ng-angular-popup";
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Genre} from '../../adminEntityService/adminEntity/genre/genre';
+import {GenreServiceService} from '../../adminEntityService/adminService/genre-service.service';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
+import {error, log} from 'console';
+import {NgToastModule, NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-managegenre-admin',
@@ -27,6 +27,12 @@ export class ManagegenreAdminComponent implements OnInit {
   imageFile: any;
   submitted = false;
   errorFieldsArr: String[] = [];
+  pages: number[] = [];
+  page: number = 1;
+  total: number = 0;
+  itempage: number = 4;
+  visiblePages: number[] = [];
+  localStorage?: Storage;
 
   constructor(
     private GenreService: GenreServiceService,
@@ -39,14 +45,95 @@ export class ManagegenreAdminComponent implements OnInit {
   ) {
   }
 
+  Page(page: number) {
+    this.page = page < 0 ? 0 : page;
+    this.localStorage?.setItem('currentProductPage', String(this.page));
+    // this.displayDataOnTable(this.page, this.itempage);
+    this.getListGenresPage(this.page, this.itempage);
+
+  }
+
+  PageArray(page: number, total: number): number[] {
+    const maxVisiblePages = 6;
+    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
+
+    let startPage = Math.max(page - halfVisiblePages, 1);
+    let endPage = Math.min(startPage + maxVisiblePages - 1, total);
+
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
+    }
+
+    return new Array(endPage - startPage + 1).fill(0)
+      .map((_, index) => startPage + index);
+  }
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getListGenresPage();
+    this.getListGenresPage(0, 4);
     this.loadSingerById();
     this.getGenre(this.id);
   }
 
+  resetFileInput(): void {
+    // Đặt lại giá trị của input file
+    const fileInput: any = document.getElementById('fileInput');
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+
   onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+    const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
+    //Kiểm tra giới hạn kích thước ảnh
+    if (selectedFile.size > maxSizeInBytes) {
+      alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      this.resetFileInput();
+      return;
+    }
+
+    if (selectedFile && !selectedFile.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      this.resetFileInput(); // Hàm này để đặt lại input file sau khi thông báo lỗi
+      return;
+    }
+
+    //Dọc file ảnh
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = () => {
+        const maxW = 800; // chiều rông 800
+        const maxH = 800; // chiều cao 800
+
+        let newW = img.width;
+        let newH = img.height
+
+        if (img.width > maxW) {
+          newW = maxW;
+          newH = (img.height * maxW) / img.width;
+        }
+
+        if (img.height > maxH) {
+          newH = maxH;
+          newW = (img.width * maxH) / img.height;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = newW;
+        canvas.height = newH;
+        const ctx = canvas.getContext('2d');
+
+        ctx?.drawImage(img, 0, 0, newW, newH);
+
+        const resizedImageData = canvas.toDataURL('image/*')
+
+      }
+    }
+
     const archivoSelectcionado: File = event.target.files[0];
     console.log('FILE OBJECT ==> ', archivoSelectcionado);
     if (archivoSelectcionado) {
@@ -118,8 +205,8 @@ export class ManagegenreAdminComponent implements OnInit {
     );
   }
 
-  getListGenresPage() {
-    this.GenreService.getListGenres(0, 10).subscribe(async (data) => {
+  getListGenresPage(page: number, limit: number) {
+    this.GenreService.getListGenres(page, limit).subscribe(async (data) => {
       console.log(data);
       this.GenresFromData = data.content;
       this.Genre = this.GenresFromData;
@@ -130,6 +217,9 @@ export class ManagegenreAdminComponent implements OnInit {
         }
         genre.image = await this.setImageURLFirebase(genre.image);
       }
+      this.total = data.totalPages;
+      this.visiblePages = this.PageArray(this.page, this.total);
+
     });
   }
 
@@ -142,19 +232,19 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   goToSingerList() {
-    this.getListGenresPage();
+    this.getListGenresPage(0, 4);
     this.router.navigate(['/manage/genre']);
   }
 
   saveGenre() {
     debugger
     if (this.errorFieldsArr.length !== 0) {
-      this.toast.warning({ detail: 'Warning Message', summary: 'Name is null', duration: 5000 });
+      this.toast.warning({detail: 'Warning Message', summary: 'Name is null', duration: 5000});
       return;
     }
     if (this.isNameExistsInArray(this.Genree)) {
       // alert('The name of the music genre already exists');
-      this.toast.warning({ detail: 'Warning Message', summary: 'Name is exists', duration: 5000 });
+      this.toast.warning({detail: 'Warning Message', summary: 'Name is exists', duration: 5000});
       this.errorFieldsArr.push('existGenreName');
       return;
     }
@@ -179,18 +269,17 @@ export class ManagegenreAdminComponent implements OnInit {
         //Load lại table
         this.goToSingerList();
         console.log(data);
-        this.toast.success({ detail: 'Success Message', summary: 'Adding successfully', duration: 3000 });
+        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 3000});
       },
       (error) => {
         console.log(error);
-        this.toast.error({ detail: 'Failed Message', summary: 'Adding failed', duration: 3000 });
+        this.toast.error({detail: 'Failed Message', summary: 'Adding failed', duration: 3000});
 
       }
     );
   }
 
   updateGenre(id: number) {
-    console.log('001 === ' + this.Genree.image);
     if (this.imageFile) {
       this.Genree.image = this.setImageUrl;
     }
@@ -198,7 +287,6 @@ export class ManagegenreAdminComponent implements OnInit {
     if (!this.imageFile && !this.setImageUrl) {
       this.Genree.image = 'adminManageImage/genre/null.jpg';
     }
-    console.log('002 === ' + this.Genree.image);
     this.GenreService.updateGenre(id, this.Genree).subscribe(
       async (data) => {
         if (this.imageFile) {
@@ -206,18 +294,17 @@ export class ManagegenreAdminComponent implements OnInit {
             'adminManageImage/genre/',
             this.imageFile
           );
-          console.log('003 === ' + this.Genree.image);
         }
         this.Genree = new Genre();
-        console.log('004 === ' + this.Genree.image);
+
         this.goToSingerList();
         this.removeUpload();
         console.log(data);
-        this.toast.success({ detail: 'Success Message', summary: 'Update successfully', duration: 3000 });
+        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
       },
       (error) => {
         console.log(error)
-        this.toast.error({ detail: 'Failed Message', summary: 'Update failed', duration: 3000 });
+        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
       }
     );
   }
@@ -245,7 +332,7 @@ export class ManagegenreAdminComponent implements OnInit {
       this.GenreService.deleteGenre(id).subscribe((data) => {
         console.log(data);
 
-        this.getListGenresPage();
+        this.getListGenresPage(0, 4);
       });
     }
   }

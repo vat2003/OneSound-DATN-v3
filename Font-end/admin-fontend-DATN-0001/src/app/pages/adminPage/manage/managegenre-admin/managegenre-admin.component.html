@@ -20,8 +20,8 @@
             <label for="description">Description</label>
             <textarea type="text" class="form-control" id="description" rows="5" name="description"
                       [(ngModel)]="Genree.description"></textarea>
-<!--            <input type="text" class="form-control" id="description" name="description"-->
-<!--                   [(ngModel)]="Genree.description">-->
+            <!--            <input type="text" class="form-control" id="description" name="description"-->
+            <!--                   [(ngModel)]="Genree.description">-->
             <span *ngIf="errorFieldsArr.includes('description')" class="text-warning">*Please enter
               the music genre
               description</span>
@@ -67,7 +67,7 @@
       <div class="table-content-wrapper bg-secondary rounded h-100 p-4">
         <h6 class="header-genre-list mb-4">GENRES LIST</h6>
         <input type="search" placeholder="Filter by music genre name" class="form-control mb-3" id="search"
-          name="search" [(ngModel)]="filterName" (ngModelChange)="filterName_Search()">
+               name="search" [(ngModel)]="filterName" (ngModelChange)="filterName_Search()">
 
 
         <table class="table table-hover">
@@ -96,10 +96,56 @@
           </tr>
 
           </tbody>
-
         </table>
 
         <span *ngIf="Genre.length === 0" class="text-warning">No similar names</span>
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" style="cursor: pointer" (click)="Page(0)"
+                >First</a
+                >
+              </li>
+              <li class="page-item" *ngIf="page > 0">
+                <a
+                  class="page-link"
+                  (click)="Page(page - 1)"
+                  style="cursor: pointer"
+                >
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <ng-container *ngFor="let page of visiblePages">
+                <li class="page-item" [ngClass]="{ active: page === page + 1 }">
+                  <a
+                    class="page-link"
+                    (click)="Page(page - 1)"
+                    style="cursor: pointer"
+                  >{{ page }}</a
+                  >
+                </li>
+              </ng-container>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a
+                  class="page-link"
+                  (click)="Page(page + 1)"
+                  style="cursor: pointer"
+                >
+                  <i class="fa fa-chevron-right"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a
+                  class="page-link"
+                  (click)="Page(total - 1)"
+                  style="cursor: pointer"
+                >Last</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
 
