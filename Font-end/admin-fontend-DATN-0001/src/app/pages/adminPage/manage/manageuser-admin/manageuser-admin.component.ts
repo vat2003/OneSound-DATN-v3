@@ -125,6 +125,7 @@ export class ManageuserAdminComponent implements OnInit {
     this.getAllRole();
 
 
+
   }
 
   togglePasswordVisibility() {
