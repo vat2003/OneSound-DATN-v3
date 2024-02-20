@@ -1,12 +1,12 @@
-import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {Genre} from '../../adminEntityService/adminEntity/genre/genre';
-import {GenreServiceService} from '../../adminEntityService/adminService/genre-service.service';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
-import {error, log} from 'console';
-import {NgToastModule, NgToastService} from "ng-angular-popup";
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Genre } from '../../adminEntityService/adminEntity/genre/genre';
+import { GenreServiceService } from '../../adminEntityService/adminService/genre-service.service';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
+import { error, log } from 'console';
+import { NgToastModule, NgToastService } from "ng-angular-popup";
 
 @Component({
   selector: 'app-managegenre-admin',
@@ -149,12 +149,12 @@ export class ManagegenreAdminComponent implements OnInit {
   saveGenre() {
     debugger
     if (this.errorFieldsArr.length !== 0) {
-      this.toast.warning({detail: 'Warning Message', summary: 'Name is null', duration: 5000});
+      this.toast.warning({ detail: 'Warning Message', summary: 'Name is null', duration: 5000 });
       return;
     }
     if (this.isNameExistsInArray(this.Genree)) {
       // alert('The name of the music genre already exists');
-      this.toast.warning({detail: 'Warning Message', summary: 'Name is exists', duration: 5000});
+      this.toast.warning({ detail: 'Warning Message', summary: 'Name is exists', duration: 5000 });
       this.errorFieldsArr.push('existGenreName');
       return;
     }
@@ -179,11 +179,11 @@ export class ManagegenreAdminComponent implements OnInit {
         //Load lại table
         this.goToSingerList();
         console.log(data);
-        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 3000});
+        this.toast.success({ detail: 'Success Message', summary: 'Adding successfully', duration: 3000 });
       },
       (error) => {
         console.log(error);
-        this.toast.error({detail: 'Failed Message', summary: 'Adding failed', duration: 3000});
+        this.toast.error({ detail: 'Failed Message', summary: 'Adding failed', duration: 3000 });
 
       }
     );
@@ -213,11 +213,11 @@ export class ManagegenreAdminComponent implements OnInit {
         this.goToSingerList();
         this.removeUpload();
         console.log(data);
-        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+        this.toast.success({ detail: 'Success Message', summary: 'Update successfully', duration: 3000 });
       },
       (error) => {
         console.log(error)
-        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+        this.toast.error({ detail: 'Failed Message', summary: 'Update failed', duration: 3000 });
       }
     );
   }

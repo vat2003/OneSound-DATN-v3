@@ -54,6 +54,7 @@ export class DangkyComponent {
     if (this.registerForm.valid) {
       // Nếu tất cả các trường hợp lệ, tiến hành đăng ký
       const registerData: Register = {
+
         fullname: this.fullname,
         email: this.email,
         password: this.password,
