@@ -37,7 +37,7 @@ export class ManageuserAdminComponent implements OnInit {
   localStorage?: Storage;
   page: number = 1;
   // itempage: number = 2;
-  itempage: number = 1;
+  itempage: number = 3;
   selectedUser: account = createAccount();
 
 
@@ -120,7 +120,7 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(0, 1)
+    this.getAllUsers(1, 3)
 
     this.getAllRole();
 
@@ -277,11 +277,14 @@ export class ManageuserAdminComponent implements OnInit {
 
       async (data) => {
         this.goToUserList();
-        console.log("thành công");
+        console.log("Update successfully");
+        alert('Update successfully');
       },
       (error) => {
 
-        console.log("thất bại" + error);
+        console.log("FAILED" + error);
+        alert('Update failed');
+
       }
     );
   }
