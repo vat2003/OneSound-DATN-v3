@@ -1,5 +1,6 @@
 <div class="popular_song">
     <div class="h3">
+
         <h3>Explore your vibes</h3>
         <div class="btn_s">
             <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
@@ -145,95 +146,28 @@
 
 <div class="popular_song">
     <div class="h3">
-        <h3>Mixed for you</h3>
+        <h3>Hot Artists</h3>
         <div class="btn_s">
             <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
             <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
         </div>
     </div>
     <div class="pop_song">
-        <li class="songItem">
+        <li class="songItem" *ngFor="let hotArtistitem of hotArtist" (click)="gotoDetailArtist(hotArtistitem)">
             <div class="img_play">
-                <img src="assets/img/client/mix1.jpg" alt="alan" />
+                <img src="{{hotArtistitem.image }}" alt="alan" />
                 <i class="bi fa-solid fa-circle-play" i="1"></i>
             </div>
             <h5>
-                <p class="line-clamp">My mix 1</p>
+                <p class="line-clamp">{{hotArtistitem.fullname}}</p>
 
                 <div class="subtitle line-clamp line-2">
-                    Alan Walker, Taylor Swift, Eddie Thomson,
-                    Kayle
+                    1M follow
                 </div>
             </h5>
         </li>
-        <li class="songItem">
-            <div class="img_play">
-                <img src="assets/img/client/mix2.jpg" alt="alan" />
-                <i class="bi playListPlay bi-play-circle-fill" id="8"></i>
-                <!-- change All id  -->
-            </div>
-            <h5>
-                <p class="line-clamp">My mix 2</p>
 
-                <div class="subtitle line-clamp line-2">
-                    J. Cole, Kaliii, 21 Savage and more
-                </div>
-            </h5>
-        </li>
-        <li class="songItem">
-            <div class="img_play">
-                <img src="assets/img/client/mix3.jpg" alt="alan" />
-                <i class="bi playListPlay bi-play-circle-fill" id="9"></i>
-            </div>
-            <h5>
-                <p class="line-clamp">My mix 3</p>
 
-                <div class="subtitle line-clamp line-2">
-                    Keshi, XG, Joji and more
-                </div>
-            </h5>
-        </li>
-        <li class="songItem">
-            <div class="img_play">
-                <img src="assets/img/client/mix4.jpg" alt="alan" />
-                <i class="bi playListPlay bi-play-circle-fill" id="10"></i>
-            </div>
-            <h5>
-                <p class="line-clamp">My mix 4</p>
-
-                <div class="subtitle line-clamp line-2">
-                    Kendrick Lamar, Logic, Childish Gambino and
-                    more
-                </div>
-            </h5>
-        </li>
-        <li class="songItem">
-            <div class="img_play">
-                <img src="assets/img/client/mix5.jpg" alt="alan" />
-                <i class="bi playListPlay bi-play-circle-fill" id="11"></i>
-            </div>
-            <h5>
-                <p class="line-clamp">My mix 5</p>
-
-                <div class="subtitle line-clamp line-2">
-                    Dove Cameron, Sabrina Carpenter, Taylor
-                    Swift and more
-                </div>
-            </h5>
-        </li>
-        <li class="songItem">
-            <div class="img_play">
-                <img src="assets/img/client/mix6.jpg" alt="alan" />
-                <i class="bi playListPlay bi-play-circle-fill" id="12"></i>
-            </div>
-            <h5>
-                <p class="line-clamp">My mix 6</p>
-
-                <div class="subtitle line-clamp line-2">
-                    ASTN, Daniel Caesar, Omar Apollo and more
-                </div>
-            </h5>
-        </li>
     </div>
 </div>
 
