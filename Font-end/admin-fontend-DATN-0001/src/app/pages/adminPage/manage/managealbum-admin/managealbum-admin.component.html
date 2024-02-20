@@ -128,7 +128,18 @@
 
             </tr>
           </thead>
-          <tbody>
+          <!-- <tbody>
+            <tr *ngFor="let album of albums; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td><img src="{{album.image }}" width="70" height="70" alt="{{album.image}}"></td>
+              <td>{{ album.title}}</td>
+              <td>{{ album.releaseYear}}</td>
+              <td>
+                <button (click)="getAlbum(album.id)" class="btn btn-outline-info w-50">Detail</button>
+                <button (click)="deleteAlbum(album.id)" class="btn btn-outline-danger w-50">Delete</button>
+              </td>
+            </tr> -->
+          <tbody *ngIf="albums.length > 0; else noDataMessage">
             <tr *ngFor="let album of albums; let i = index">
               <th scope="row">{{ i + 1 }}</th>
               <td><img src="{{album.image }}" width="70" height="70" alt="{{album.image}}"></td>
@@ -139,7 +150,16 @@
                 <button (click)="deleteAlbum(album.id)" class="btn btn-outline-danger w-50">Delete</button>
               </td>
             </tr>
+
           </tbody>
+
+          <ng-template #noDataMessage>
+            <tr>
+              <td colspan="4">
+                <p class="text-center text-danger">No data available.</p>
+              </td>
+            </tr>
+          </ng-template>
         </table>
         <div class="d-flex justify-content-center">
           <nav aria-label="Page navigation">

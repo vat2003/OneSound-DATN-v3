@@ -28,9 +28,10 @@ export class AlbumService {
 
   getAllAlbumByAlbumTitle(title: string, page: number, size: number): Observable<AlbumResponse> {
     const params = new HttpParams()
+      .set('title', title.toString())
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.httpClient.get<AlbumResponse>(`${this.baseURL}/getAlbumByTitle/${title}`, { params });
+    return this.httpClient.get<AlbumResponse>(`${this.baseURL}/getAlbumByTitle`, { params });
     // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
   }
 

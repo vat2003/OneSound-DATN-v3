@@ -61,6 +61,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   page: number = 1;
   itempage: number = 4;
   searchTerm: string = '';
+
   private searchTerms = new Subject<string>();
   private _FILTER(value: string): string[] {
     const searchValue = value.toLocaleLowerCase();
@@ -101,11 +102,13 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
     this.searchTerms
       .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
+        debounceTime(500), // Tăng thời gian chờ
+        // Không sử dụng distinctUntilChanged tạm thời
+        // distinctUntilChanged(),
         switchMap((term: string) => this.albumService.getAllAlbumByAlbumTitle(term, 0, 10))
       )
       .subscribe(async (data) => {
+
         // Xử lý kết quả tìm kiếm ở đây
         // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
         this.imageAlbum = data.content.map((album: Album) => album.image);
@@ -119,8 +122,11 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
           album.image = await this.setImageURLFirebase(album.image);
           album.albumcreateDate = new Date(album.albumcreateDate);
         }
+        console.log("album: --->", this.albums);
+
         this.total = data.totalPages;
         this.visiblePages = this.PageArray(this.page, this.total);
+
       });
   }
 
