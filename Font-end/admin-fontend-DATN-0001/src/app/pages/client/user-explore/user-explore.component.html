@@ -153,7 +153,7 @@
         </div>
     </div>
     <div class="pop_song">
-        <li class="songItem" *ngFor="let hotArtistitem of hotArtist">
+        <li class="songItem" *ngFor="let hotArtistitem of hotArtist" (click)="gotoDetailArtist(hotArtistitem)">
             <div class="img_play">
                 <img src="{{hotArtistitem.image }}" alt="alan" />
                 <i class="bi fa-solid fa-circle-play" i="1"></i>

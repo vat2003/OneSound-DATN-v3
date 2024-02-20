@@ -4,6 +4,7 @@ import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/si
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-explore',
@@ -16,7 +17,8 @@ export class UserExploreComponent implements OnInit {
   hotArtist: Singer[] = [];
   constructor(
     private SingerService: SingerService,
-    private firebaseStorage: FirebaseStorageCrudService
+    private firebaseStorage: FirebaseStorageCrudService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.getAllArtist();
@@ -46,5 +48,8 @@ export class UserExploreComponent implements OnInit {
     } else {
       return 'null';
     }
+  }
+  gotoDetailArtist(artist: Singer): void {
+    this.router.navigate(['/onesound/home/profile/', artist.id]);
   }
 }
