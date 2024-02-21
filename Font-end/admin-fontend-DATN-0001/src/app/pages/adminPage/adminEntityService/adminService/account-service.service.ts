@@ -11,11 +11,10 @@ import { UpdateUserForAdmin } from "../adminEntity/DTO/UpdateUserForAdmin";
 
 interface AccountResponse {
   content: account[];
-  pageable: any; // Adjust the type as needed
+  pageable: any; 
   last: boolean;
   totalPages: number;
   totalElements: number;
-  // Add other properties as needed
 }
 
 @Injectable({
@@ -44,17 +43,10 @@ export class accountServiceService {
   ) {
     this.localStorage = document.defaultView?.localStorage;
   }
-  // getAll(): Observable<account[]>{
-  //   return this.http.get<account[]>(`${this.baseUrl}/users`);
-  // }
-
-
 
   login(login: login): Observable<any> {
     return this.http.post(this.apiLogin, login, this.apiConfig);
   }
-
-
 
   register(Register: Register): Observable<any> {
     debugger
@@ -65,10 +57,7 @@ export class accountServiceService {
     return this.http.post<account>(this.apiUsercreate, account, this.apiConfig);
   }
 
-  // updateUser(id: number, account: account): Observable<Object> {
-  //   debugger
-  //   return this.http.put<account>(`${this.apiupdateuser}/${id}`, account);
-  // }
+
   updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {
     debugger
     return this.http.put<account>(`${this.apiupdateuseradmin}/${id}`, account);

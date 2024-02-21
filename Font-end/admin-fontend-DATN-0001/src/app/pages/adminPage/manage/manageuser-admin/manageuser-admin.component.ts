@@ -120,7 +120,7 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(1, 3)
+    this.getAllUsers(0, 3)
 
     this.getAllRole();
 
@@ -248,24 +248,32 @@ export class ManageuserAdminComponent implements OnInit {
         avatar_url: this.Account.avatar_url,
         gender: this.Account.gender,
         password: this.Account.password,
+        active: this.Account.active,
         createdDate: formattedDate,
         accountRole: this.Account.accountRole
       };
 
-      debugger
+      if (UpdateUserForAdmin.active == false) {
+        alert("bị khoá")
+      }else{
+        alert("mở khoá")
+
+      }
+      
+     
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
-          debugger
+         
           console.log(data);
         },
         (error) => {
-          debugger
+         
           console.log(error);
           // Xử lý khi có lỗi xảy ra
         }
       );
     } else {
-      debugger
+     
       // Xử lý khi id là undefined
       console.error("ID is undefined");
     }

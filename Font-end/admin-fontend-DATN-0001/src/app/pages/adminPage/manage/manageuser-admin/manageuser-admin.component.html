@@ -65,6 +65,7 @@
               [(ngModel)]="Account.active" [value]="false" />
             <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
           </div>
+
           <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
           <br />
           <label class="form-label">Avatar</label>
@@ -125,14 +126,14 @@
               <td>{{ i + 1 }}</td>
               <td>{{ item.fullname }}</td>
               <td>{{ item.email }}</td>
-              <td>{{ item.birthday }}</td>
+              <td>{{ item.birthday | date:'yyyy-MM-dd'}}</td>
               <td>{{ item.gender }}</td>
               <!-- <td>{{ item.Phone }}</td> -->
               <td>{{ item.accountRole?.name}}</td>
               <td>{{ item.avatar_url }}</td>
               <td>{{ item.address }}</td>
               <td>{{ item.createdDate | date:'yyyy-MM-dd' }}</td>
-              <td>{{ item.active }}</td>
+              <td>{{ item.active ? 'hoạt động' : 'không hoạt động'}}</td>
               <td>
                 <button (click)="view(item.id!)" class="btn btn-primary">Detail</button>
               </td>

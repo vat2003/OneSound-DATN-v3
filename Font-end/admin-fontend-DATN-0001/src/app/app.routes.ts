@@ -22,6 +22,7 @@ import { UserExploreComponent } from './pages/client/user-explore/user-explore.c
 import { UserPlaysongComponent } from './pages/client/user-playsong/user-playsong.component';
 import { UserProfileComponent } from './pages/client/user-profile/user-profile.component';
 import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
+import { QuenmkComponent } from './pages/adminPage/quenmk/quenmk.component';
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -29,8 +30,8 @@ export const routes: Routes = [
   { path: 'onesound/signup', component: DangkyComponent },
   { path: 'onesound/dangnhap', component: LoginneComponent },
   { path: 'onesound/dangky', component: DangkyComponent },
-  { path: 'onesound/changepassword', component: ChangePasswordComponent },
-  { path: 'onesound/forgotpassword', component: ForgotpasswordComponent },
+  { path: 'onesound/changepassword/:id', component: ChangePasswordComponent },
+  { path: 'onesound/forgotpassword', component: QuenmkComponent },
   { path: 'onesound/admin/image', component: ManageimageAdminComponent },
   { path: 'update-genre/:id', component: ManagegenreAdminComponent },
   { path: 'update-singer/:id', component: ManageartistAdminComponent },
