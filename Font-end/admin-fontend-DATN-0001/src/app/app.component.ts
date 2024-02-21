@@ -52,10 +52,11 @@ export class AppComponent implements OnInit {
           const signin = event.url.includes('signin');
           const signup = event.url.includes('signup');
           const forgotpass = event.url.includes('forgotpassword');
+          const changepass = event.url.includes('changepassword');
           this.adminUserService.setAdminMode(isAdmin);
 
           // Add or remove stylesheets based on the isAdmin condition
-          if (isAdmin || signin || signup || forgotpass) {
+          if (isAdmin || signin || signup || forgotpass || changepass) {
             //Remove USER-CLIENT Css StyleSheet Libraries
             this.removeUserStyle();
             //Remove USER-CLIENT JavaScript Libraries
