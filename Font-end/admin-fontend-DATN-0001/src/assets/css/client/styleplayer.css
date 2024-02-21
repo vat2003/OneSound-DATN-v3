@@ -210,7 +210,7 @@ header .master_play .bar {
     position: relative;
     width: 30%;
     height: 2px;
-    background: rgb(105, 105, 170, 0.1);
+    background: rgb(142, 143, 160);
     margin: 0px 15px 0px 10px;
 }
 
@@ -262,7 +262,8 @@ header .master_play .vol {
     width: 100px;
     height: 2px;
     margin-left: 80px;
-    background: rgb(105, 105, 170, 0.1);
+    /* background: rgb(105, 105, 170, 0.1); */
+    background: rgb(142, 143, 160);
 }
 
 header .master_play .vol i {
@@ -1283,3 +1284,10 @@ button:hover {
     outline: none;
     border-bottom: 1px solid #23f4e4;
 }
+
+
+
+  header .master_play .bar:hover  {
+    background: rgb(193, 181, 181)
+  }
+  
