@@ -1,12 +1,17 @@
-import {NgToastModule, NgToastService} from "ng-angular-popup";
-import {Component, OnInit, Renderer2} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
-import {AdminUserServiceService} from "./services/admin-user-service.service";
-import {filter} from "rxjs";
-import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgToastModule, NgToastService } from 'ng-angular-popup';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
+import { AdminUserServiceService } from './services/admin-user-service.service';
+import { filter } from 'rxjs';
+import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +25,7 @@ import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatInputModule,
     ReactiveFormsModule,
     FormsModule,
-    NgToastModule
+    NgToastModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -34,8 +39,7 @@ export class AppComponent implements OnInit {
     private adminUserService: AdminUserServiceService,
     private renderer: Renderer2,
     private toast: NgToastService
-  ) {
-  }
+  ) {}
 
   // app.component.ts
   ngOnInit() {
@@ -92,27 +96,9 @@ export class AppComponent implements OnInit {
   }
 
   private addUserScript(): void {
+    this.addScript('assets/js/playermusic.js');
+
     // this.addScript('assets/data/themes.js');
-    // this.addScript('assets/data/listThemes.js');
-    // this.addScript('assets/data/songPlaylists.js');
-    // this.addScript('assets/data/playlists.js');
-    // this.addScript('assets/data/albums.js');
-    // this.addScript('assets/data/mvs.js');
-    // this.addScript('assets/data/artists.js');
-    // this.addScript('assets/data/tabExplore/exploreSlides.js');
-    // this.addScript('assets/data/tabExplore/radios.js');
-    // this.addScript('assets/data/tabExplore/labels.js');
-    // this.addScript('assets/data/tabExplore/singerSlides.js');
-    // this.addScript('assets/data/tabExplore/events.js');
-    // this.addScript('assets/data/tabExplore/newPlaylists.js');
-    // this.addScript('assets/data/tabExplore/favArtists.js');
-    // this.addScript('assets/data/tabExplore/brands.js');
-    // this.addScript('assets/data/specialPlaylists.js');
-    // this.addScript('assets/data/normalPlaylists.js');
-    // this.addScript('assets/data/tabCharts/playlistCharts.js');
-    // this.addScript('assets/data/tabFollowing/posts.js');
-    // this.addScript('assets/data/toast.js');
-    // this.addScript('assets/data/main.js');
   }
 
   private addAdminStyle(): void {
@@ -148,44 +134,10 @@ export class AppComponent implements OnInit {
     this.addScript('assets/js/uploadfile.js');
   }
 
-  private removeUserStyle(): void {
-    // this.removeStylesheet(
-    //   'https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css'
-    // );
-    // this.removeStylesheet(
-    //   'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css'
-    // );
-    // this.removeStylesheet(
-    //   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap'
-    // );
-    // this.removeStylesheet('assets/css/grid.css');
-    // this.removeStylesheet('assets/css/base.css');
-    // this.removeStylesheet('assets/css/main.css');
-    // this.removeStylesheet('assets/css/responsive.css');
-  }
+  private removeUserStyle(): void {}
 
   private removeUserScript(): void {
-    // this.removeScript('assets/data/themes.js');
-    // this.removeScript('assets/data/listThemes.js');
-    // this.removeScript('assets/data/songPlaylists.js');
-    // this.removeScript('assets/data/playlists.js');
-    // this.removeScript('assets/data/albums.js');
-    // this.removeScript('assets/data/mvs.js');
-    // this.removeScript('assets/data/artists.js');
-    // this.removeScript('assets/data/tabExplore/exploreSlides.js');
-    // this.removeScript('assets/data/tabExplore/radios.js');
-    // this.removeScript('assets/data/tabExplore/labels.js');
-    // this.removeScript('assets/data/tabExplore/singerSlides.js');
-    // this.removeScript('assets/data/tabExplore/events.js');
-    // this.removeScript('assets/data/tabExplore/newPlaylists.js');
-    // this.removeScript('assets/data/tabExplore/favArtists.js');
-    // this.removeScript('assets/data/tabExplore/brands.js');
-    // this.removeScript('assets/data/specialPlaylists.js');
-    // this.removeScript('assets/data/normalPlaylists.js');
-    // this.removeScript('assets/data/tabCharts/playlistCharts.js');
-    // this.removeScript('assets/data/tabFollowing/posts.js');
-    // this.removeScript('assets/data/toast.js');
-    // this.removeScript('assets/data/main.js');
+    this.removeScript('assets/js/playermusic.js');
   }
 
   private removeAdminStyle(): void {
