@@ -31,6 +31,8 @@ export class accountServiceService {
   private apicheckmail = `${this.baseUrl}/users/email`;
   private apiupdateuser = `${this.baseUrl}/users/update`;
   private apiupdateuseradmin = `${this.baseUrl}/users/update/admin`;
+  // /mess/{mess}/{email}
+  private thongbao = `${this.baseUrl}/users/mess`;
 
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
@@ -43,13 +45,16 @@ export class accountServiceService {
   ) {
     this.localStorage = document.defaultView?.localStorage;
   }
+  hot(message: string, email: string): Observable<any> {
+    debugger
+    return this.http.post(`${this.thongbao}/${message}/${email}`, {});
+  }
 
   login(login: login): Observable<any> {
     return this.http.post(this.apiLogin, login, this.apiConfig);
   }
 
-  register(Register: Register): Observable<any> {
-    debugger
+  register(Register: Register): Observable<any> {    
     return this.http.post(this.apiRegister, Register, this.apiConfig);
   }
 
@@ -58,8 +63,7 @@ export class accountServiceService {
   }
 
 
-  updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {
-    debugger
+  updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {    
     return this.http.put<account>(`${this.apiupdateuseradmin}/${id}`, account);
   }
 
@@ -79,16 +83,13 @@ export class accountServiceService {
     return this.http.delete(`${this.baseUrl}/users/${id}`);
   }
 
-
-
-  UpdateProfile(updateUserDTO: UpdateUserDTO) {
-    debugger
+  UpdateProfile(updateUserDTO: UpdateUserDTO) {    
     var userResponse = this.getUserResponseFromLocalStorage();
     return this.http.put(`${this.apiupdateuser}/${userResponse?.id}`, updateUserDTO, {})
+  
   }
-
-  checkEmailExists(email: string): Observable<boolean> {
-    debugger
+ 
+  checkEmailExists(email: string): Observable<boolean> {    
     const url = `${this.apicheckmail}/${email}`;
     return this.http.get<boolean>(url, this.apiConfig);
   }
@@ -130,6 +131,7 @@ export class accountServiceService {
       console.error('Error saving user response to local storage:', error);
     }
   }
+
 
 
   removeUserFromLocalStorage(): void {

@@ -50,6 +50,8 @@ export class ManageuserAdminComponent implements OnInit {
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
     private RoleService: RoleService,
+    private userService: accountServiceService,
+
   ) {
 
 
@@ -211,16 +213,16 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   view(id: number) {
-    debugger
+    
     this.accountServiceService.getUserById(id).subscribe(
       (data: account) => {
-        debugger
+        
         this.Account = data;
         this.formatDate(this.Account.createdDate)
 
       },
       (error: any) => {
-        debugger
+        
         console.log(error);
       }
     );
@@ -234,9 +236,9 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   updateUser() {
-    debugger
+    
     if (this.Account.id !== undefined) {
-      debugger
+      
       const datePipe = new DatePipe('en-US');
       const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
 
@@ -253,28 +255,61 @@ export class ManageuserAdminComponent implements OnInit {
         accountRole: this.Account.accountRole
       };
 
-      if (UpdateUserForAdmin.active == false) {
-        alert("bị khoá")
-      }else{
-        alert("mở khoá")
-
-      }
-      
-     
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
          
           console.log(data);
         },
-        (error) => {
-         
+        (error) => {         
           console.log(error);
-          // Xử lý khi có lỗi xảy ra
         }
       );
-    } else {
-     
-      // Xử lý khi id là undefined
+
+      if (UpdateUserForAdmin.active == false) {
+        const shouldLock = confirm("Bạn có muốn khoá tài khoản không?");
+        if (shouldLock) {
+          debugger
+          this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Bị  Khoá", UpdateUserForAdmin.email).subscribe(
+            async (data) => {
+              debugger
+              console.log(data);  
+            },
+            (error) => {
+              debugger
+              console.log(error);    
+                   
+            }
+          );
+        }else{
+          console.log("huỷ thao tác khoá");
+          return;
+        }
+       
+      }else{
+        const shouldLock = confirm("Bạn có muốn mở tài khoản không?");
+        if (shouldLock) {
+          debugger
+        this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Được Mở Khoá", UpdateUserForAdmin.email).subscribe(
+          async (data) => {
+            debugger
+                //  this.ngOnInit();
+            console.log(data);
+            return;
+          },
+          (error) => {
+            debugger
+            console.log(error);
+            return;
+          }
+        );
+        }else{
+          alert("huỷ thao tác mở")
+          return
+        }
+        
+      }
+                
+    } else {     
       console.error("ID is undefined");
     }
   }
