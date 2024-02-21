@@ -22,6 +22,7 @@ import { UserExploreComponent } from './pages/client/user-explore/user-explore.c
 import { UserPlaysongComponent } from './pages/client/user-playsong/user-playsong.component';
 import { UserProfileComponent } from './pages/client/user-profile/user-profile.component';
 import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
+import { ReportComponent } from './pages/adminPage/manage/report/report.component';
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -45,6 +46,7 @@ export const routes: Routes = [
       { path: 'manage/genre', component: ManagegenreAdminComponent },
       { path: 'manage/profile', component: ManageprofileAdminComponent },
       { path: 'manage/author', component: ManageauthorComponent },
+      { path: 'manage/report', component:  ReportComponent},
       {
         path: 'manage/genre/update-genre/:id',
         component: ManagegenreAdminComponent,
