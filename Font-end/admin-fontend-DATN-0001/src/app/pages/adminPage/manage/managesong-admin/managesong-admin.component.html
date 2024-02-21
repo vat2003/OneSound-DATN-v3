@@ -5,71 +5,53 @@
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4 text-uppercase">User management</h6>
         <form>
+
           <div class="mb-3">
-            <label class="form-label">ID</label>
-            <input type="text" class="form-control" readonly>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Fullname</label>
+            <label class="form-label">Title</label>
             <input type="text" class="form-control">
           </div>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email</label>
-            <input type="email" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Phone number</label>
-            <input type="text" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Birthday</label>
-            <input type="date" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label" >Gender</label> <br>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                     value="option1">
-              <label class="form-check-label" for="inlineRadio1">Female</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
-                     value="option2">
-              <label class="form-check-label" for="inlineRadio2">Male</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
-                     value="option3" disabled>
-              <label class="form-check-label" for="inlineRadio3">Other (disabled)</label>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Address</label>
-            <input type="text" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control">
-          </div>
-          <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
           <div class="file-upload">
-            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add
+              Image</button>
 
             <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+              <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
+                accept="image/*" />
               <div class="drag-text">
                 <h3>Drag and drop a file or select add Image</h3>
               </div>
             </div>
             <div class="file-upload-content">
-              <img class="file-upload-image" src="#" alt="your image" />
+              <img class="file-upload-image" [src]="imageUrl" alt="your image" />
               <div class="image-title-wrap">
-                <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                <button type="button" (click)="removeUpload()" class="remove-image">Remove <span
+                    class="image-title">Uploaded Image</span>
+                </button>
+              </div>
+            </div>
+            <div class="mt-3">
+              <button class="file-upload-btn" type="button"
+                onclick="$('.file-upload-input-audio').trigger( 'click' )">Add
+                Audio</button>
+
+              <div class="audio-upload-wrap">
+                <input class="file-upload-input-audio" type='file' accept="audio/*" />
+                <div class="drag-text-audio">
+                  <h3>Drag and drop a file or select add Audio</h3>
+                </div>
+              </div>
+              <div class="file-upload-content">
+                <img class="file-upload-audio" src="#" alt="your audio" />
+                <div class="audio-title-wrap">
+                  <button type="button" onclick="removeUpload()" class="remove-file">Remove <span
+                      class="audio-title">Uploaded Audio</span></button>
+                </div>
               </div>
             </div>
           </div>
 
-          <button type="submit" class="btn btn-primary mt-4">Create/Update</button>
+          <button type="submit" (click)="create()" class="btn btn-primary mt-4">Create/Update</button>
           <button type="submit" class="btn btn-danger mt-4">Delete</button>
           <button type="submit" class="btn btn-warning mt-4">Reset</button>
         </form>
@@ -81,22 +63,26 @@
         <h6 class="mb-4">USER LIST</h6>
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Email</th>
-            <th scope="col">FullName</th>
-            <th scope="col">Phone number</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Email</th>
+              <th scope="col">FullName</th>
+              <th scope="col">Phone number</th>
+              <th scope="col">Image</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>jhonemail.com</td>
-            <td>John</td>
-            <td>0328645096</td>
-            <td><button class="btn btn-primary">Detail</button></td>
-          </tr>
+            <tr>
+              <th scope="row">1</th>
+              <td>jhonemail.com</td>
+              <td>John</td>
+              <td>0328645096</td>
+              <td>
+                <img [src]="imageUrl" alt="Image">
+              </td>
+              <td><button class="btn btn-primary">Detail</button></td>
+            </tr>
 
           </tbody>
         </table>

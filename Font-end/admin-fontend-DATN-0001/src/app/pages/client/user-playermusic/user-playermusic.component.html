@@ -1,4 +1,5 @@
 <div class="master_play">
+
     <img src="assets/img/client/whatitis.jpg" alt="Alan" id="poster_master_play" />
     <h5 id="title">
         <p class="line-clamp" id="song-title">
@@ -15,23 +16,29 @@
         </div>
     </h5>
     <div class="icon">
+        <!-- back icon -->
         <i class="fa-solid fa-backward" id="back"></i>
-        <i class="fa-solid fa-play" id="masterPlay"></i>
+
+        <!-- pause - resume icon -->
+        <i class="fa-solid fa-play" id="masterPlay" #masterPlay (click)="pauseMusic()"></i>
+
+        <!-- next icon -->
         <i class="fa-solid fa-forward" id="next"></i>
     </div>
-    <span id="currentStart">0:00</span>
+    <span id="currentStart">{{ currentTime }}</span>
     <div class="bar">
-        <input type="range" id="seek" min="0" value="0" max="100" />
-        <div class="bar2" id="bar2"></div>
-        <div class="dot"></div>
+        <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()" />
+        <div class="bar2" id="bar2" #seek_bar></div>
+        <div class="dot" id="seek_dot" #seek_dot></div>
     </div>
-    <span id="currentEnd">0:00</span>
+    <span id="currentEnd">{{ totalTime }}</span>
 
     <div class="vol">
-        <i class="fa-solid fa-volume-low" id="vol_icon"></i>
-        <input type="range" id="vol" min="0" value="30" max="100" />
-        <div class="vol_bar"></div>
-        <div class="dot" id="vol_dot"></div>
+        <i class="fa-solid fa-volume-low" id="vol_icon" #vol_icon></i>
+        <input type="range" id="vol" #vol min="0" value="30" max="100" />
+        <div class="vol_bar" #vol_bar></div>
+        <div class="dot" id="vol_dot" #vol_dot></div>
+
     </div>
     <div class="mode">
         <div class="mode-type">HIFI</div>
