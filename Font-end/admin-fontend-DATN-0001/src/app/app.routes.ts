@@ -55,7 +55,7 @@ export const routes: Routes = [
         component: ManagegenreAdminComponent,
       },
       { path: 'manage/genre/:id', component: ManagegenreAdminComponent },
-      { path: 'manage/song', component: ManagesongAdminComponent },
+      { path: 'manage/song', component: ManagesongAdminComponent},
       { path: 'manage/user', component: ManageuserAdminComponent },
       { path: 'chart', component: ChartComponent },
       { path: 'dashboard', component: BlankComponent },
