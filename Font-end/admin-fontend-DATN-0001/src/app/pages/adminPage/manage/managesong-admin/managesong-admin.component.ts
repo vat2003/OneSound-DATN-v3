@@ -71,7 +71,7 @@ export class ManagesongAdminComponent {
   private _FILTERAlbum(othervalue: string): string[] {
     const searchValue = othervalue.toLocaleLowerCase();
     return this.albumName.filter(option => option.toLocaleLowerCase().includes(searchValue));
-}
+  }
   constructor( private el: ElementRef,
     private router: Router,
     private route: ActivatedRoute,
@@ -85,11 +85,9 @@ export class ManagesongAdminComponent {
 
 
 ngOnChanges(changes: SimpleChanges): void {
-  debugger
   this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
     startWith(''), map(value => this._FILTER(value || ''))
   )
-  debugger
   this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
     startWith(''), map(value => this._FILTERAlbum(value || ''))
   )
