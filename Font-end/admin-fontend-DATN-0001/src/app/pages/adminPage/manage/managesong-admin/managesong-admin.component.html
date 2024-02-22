@@ -31,7 +31,7 @@
             >
               <mat-option
                 (click)="addSingertoTable(item)"
-                *ngFor="let item of filterOptions | async"
+                *ngFor="let item of filterOptionsSinger | async"
                 value="{{ item }}"
               >
                 {{ item }}
@@ -150,7 +150,7 @@
             <mat-autocomplete autoActiveFirstOption #auto>
               <mat-option
                 (click)="addSingertoTable(item)"
-                *ngFor="let item of filterOptions | async"
+                *ngFor="let item of filterOptionsSinger | async"
                 value="{{ item }}"
                 >{{ item }}</mat-option
               >

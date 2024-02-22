@@ -46,7 +46,7 @@ export class ManagesongAdminComponent {
   authorName: string[] = [];
   authorTable: Author[] = [];
   selectedAuthor: Singer | null = null;
-  filterOptions!: Observable<string[]>;
+  filterOptionsSinger!: Observable<string[]>;
   filterOptionsAlbum!: Observable<string[]>;
   formcontrol = new FormControl('');
   formcontrolAlbum = new FormControl('');
@@ -68,8 +68,8 @@ export class ManagesongAdminComponent {
     const searchValue = value.toLocaleLowerCase();
     return this.authorName.filter(option => option.toLocaleLowerCase().includes(searchValue));
   }
-  private _FILTERAlbum(value: string): string[] {
-    const searchValue = value.toLocaleLowerCase();
+  private _FILTERAlbum(othervalue: string): string[] {
+    const searchValue = othervalue.toLocaleLowerCase();
     return this.albumName.filter(option => option.toLocaleLowerCase().includes(searchValue));
 }
   constructor( private el: ElementRef,
@@ -85,14 +85,13 @@ export class ManagesongAdminComponent {
 
 
 ngOnChanges(changes: SimpleChanges): void {
-  this.filterOptions = this.formcontrol.valueChanges.pipe(
+  debugger
+  this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
     startWith(''), map(value => this._FILTER(value || ''))
   )
+  debugger
   this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
     startWith(''), map(value => this._FILTERAlbum(value || ''))
-  )
-  this.filterOptions = this.formcontrol.valueChanges.pipe(
-    startWith(''), map(value => this._FILTERAuthor(value || ''))
   )
 }
 
@@ -101,15 +100,15 @@ ngOnInit(): void {
   // this.displaySelectedYear();
   this.displaySingerBysearch();
   this.displayAlbumBySearch();
-  this.filterOptions = this.formcontrol.valueChanges.pipe(
+  this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
     startWith(''), map(value => this._FILTER(value || ''))
   )
   this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
     startWith(''), map(value => this._FILTERAlbum(value || ''))
   )
-  this.filterOptions = this.formcontrol.valueChanges.pipe(
-    startWith(''), map(value => this._FILTERAuthor(value || ''))
-  )
+  // this.filterOptions = this.formcontrol.valueChanges.pipe(
+  //   startWith(''), map(value => this._FILTERAuthor(value || ''))
+  // )
   this.searchTerms
       .pipe(
         debounceTime(500), // Tăng thời gian chờ
@@ -122,10 +121,7 @@ ngOnInit(): void {
         // Xử lý kết quả tìm kiếm ở đây
         // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
         this.albums = data.content;
-
-
         console.log("album: --->", this.albums);
-
         this.total = data.totalPages;
         this.visiblePages = this.PageArray(this.page, this.total);
 
@@ -167,24 +163,22 @@ ngOnInit(): void {
     const index = this.singerTable.findIndex(singer => singer.id === idSinger);
     if (index !== -1) {
       const deletedSinger = this.singerTable[index];
-
       this.singerName.push(deletedSinger.fullname);
-
       this.singerTable.splice(index, 1);
       console.log("singerName: ", this.singerName)
-
     }
-    this.filterOptions = this.formcontrol.valueChanges.pipe(
+    this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
     )
-
-
   }
   addAlbumtoTable(albumName: string) {
+    debugger
     const albumExists = this.albumTable.some(album => album.title === albumName);
     if (!albumExists || this.albumTable.length === 0) {
+      debugger
       this.albumService.getAllAlbumsByName(albumName).subscribe(
         async (album: Album) => {
+          debugger
           this.albumTable.push(album);
           console.log(`${albumName} đã được thêm vào bảng.`);
           console.log("Bảng album: ", this.albumTable);
@@ -212,16 +206,13 @@ ngOnInit(): void {
       const deletedSinger = this.albumTable[index];
 
       this.albumName.push(deletedSinger.title);
-
-      this.albumName.splice(index, 1);
-      console.log("AlbumName: ", this.albumName)
+      this.albumTable.splice(index, 1);
+      console.log("Album name deleted: ", this.albumName)
 
     }
     this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
       startWith(''), map(value => this._FILTERAlbum(value || ''))
     )
-
-
   }
 
   // addAlbumtoTable(albumName: string) {
@@ -282,23 +273,6 @@ ngOnInit(): void {
 
   }
 
-  // displayAlbumBySearch() {
-  //   this.albumService.getAllAlbum(0, 6).subscribe(
-  //     async (data) => {
-  //       this.albumName = data.content.map((album: Album) => album.title);
-  //       console.log("List Album", this.albumName);
-  //     }
-  //   );
-  // }
-
-  // displayAlbumBySearch() {
-  //   this.albumService.getAllAlbumNormal().subscribe(
-  //     async (data) => {
-  //       this.albumName = data.map((album: Album) => album.title);
-  //       console.log("List Album", this.albumName);
-  //     }
-  //   );
-  // }
   displayAlbumBySearch() {
     this.albumService.getAllAlbumNormal().subscribe(
       async (data) => {
@@ -360,7 +334,7 @@ ngOnInit(): void {
 
 
   ngAfterViewInit(): void {
-    this.filterOptions = this.formcontrol.valueChanges.pipe(
+    this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
     )
     this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(

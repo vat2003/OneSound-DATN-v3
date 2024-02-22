@@ -31,7 +31,6 @@ export class AlbumService {
   }
 
   getAllAlbumsByName(name: string): Observable<Album> {
-
     return this.httpClient.get<Album>(this.baseURL + '/name/' + name);
   }
 
