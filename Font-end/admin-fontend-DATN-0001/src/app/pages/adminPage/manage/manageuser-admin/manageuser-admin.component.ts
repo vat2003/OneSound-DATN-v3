@@ -40,7 +40,7 @@ export class ManageuserAdminComponent implements OnInit {
   localStorage?: Storage;
   page: number = 1;
   // itempage: number = 2;
-  itempage: number = 3;
+  itempage: number = 1;
   selectedUser: account = createAccount();
 
 
@@ -125,7 +125,7 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(0, 3)
+    this.getAllUsers(0, 100)
 
     this.getAllRole();
 
@@ -216,16 +216,16 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   view(id: number) {
-    
+
     this.accountServiceService.getUserById(id).subscribe(
       (data: account) => {
-        
+
         this.Account = data;
         this.formatDate(this.Account.createdDate)
 
       },
       (error: any) => {
-        
+
         console.log(error);
       }
     );
@@ -239,9 +239,9 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   updateUser() {
-    
+
     if (this.Account.id !== undefined) {
-      
+
       const datePipe = new DatePipe('en-US');
       const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
 
@@ -260,10 +260,10 @@ export class ManageuserAdminComponent implements OnInit {
 
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
-         
+
           console.log(data);
         },
-        (error) => {         
+        (error) => {
           console.log(error);
         }
       );
@@ -275,19 +275,19 @@ export class ManageuserAdminComponent implements OnInit {
           this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Bị  Khoá", UpdateUserForAdmin.email).subscribe(
             async (data) => {
               debugger
-              console.log(data);  
+              console.log(data);
             },
             (error) => {
               debugger
-              console.log(error);    
-                   
+              console.log(error);
+
             }
           );
         }else{
           console.log("huỷ thao tác khoá");
           return;
         }
-       
+
       }else{
         const shouldLock = confirm("Bạn có muốn mở tài khoản không?");
         if (shouldLock) {
@@ -309,10 +309,10 @@ export class ManageuserAdminComponent implements OnInit {
           alert("huỷ thao tác mở")
           return
         }
-        
+
       }
-                
-    } else {     
+
+    } else {
       console.error("ID is undefined");
     }
   }
@@ -371,5 +371,5 @@ export class ManageuserAdminComponent implements OnInit {
           this.getAllUsers(0, 4);
         }
       });
-  }  
+  }
 }

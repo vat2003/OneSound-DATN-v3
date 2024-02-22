@@ -11,7 +11,7 @@ import { UpdateUserForAdmin } from "../adminEntity/DTO/UpdateUserForAdmin";
 
 interface AccountResponse {
   content: account[];
-  pageable: any; 
+  pageable: any;
   last: boolean;
   totalPages: number;
   totalElements: number;
@@ -31,10 +31,10 @@ export class accountServiceService {
   private apicheckmail = `${this.baseUrl}/users/email`;
   private apiupdateuser = `${this.baseUrl}/users/update`;
   private apiupdateuseradmin = `${this.baseUrl}/users/update/admin`;
- 
+
   private thongbao = `${this.baseUrl}/users/mess`;
   private checktoken = `${this.baseUrl}/users/resetPassword/token`;
-
+  private guimail = `${this.baseUrl}/users/forgotPassword`;
 
   private DoiMatKhauCuaQuenMatKhau = `${this.baseUrl}/users/update/pass`;
 
@@ -49,16 +49,22 @@ export class accountServiceService {
   ) {
     this.localStorage = document.defaultView?.localStorage;
   }
-
+  // guimail
   HamDoiMatKhauCuaQuenMatKhau(email: string,login: login): Observable<Object> {
     debugger
     return this.http.put<account>(`${this.DoiMatKhauCuaQuenMatKhau}/${email}`,login, {});
   }
-  
+
+  guimail1(email: string): Observable<any> {
+    debugger
+    return this.http.get<any>(`${this.guimail}/${email}`);
+  }
+
+
   getchecktokem(token: string): Observable<any> {
     return this.http.get<any>(`${this.checktoken}/${token}`);
   }
-  
+
 
   hot(message: string, email: string): Observable<any> {
     debugger
@@ -69,7 +75,7 @@ export class accountServiceService {
     return this.http.post(this.apiLogin, login, this.apiConfig);
   }
 
-  register(Register: Register): Observable<any> {    
+  register(Register: Register): Observable<any> {
     return this.http.post(this.apiRegister, Register, this.apiConfig);
   }
 
@@ -78,7 +84,7 @@ export class accountServiceService {
   }
 
 
-  updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {    
+  updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {
     return this.http.put<account>(`${this.apiupdateuseradmin}/${id}`, account);
   }
 
@@ -98,13 +104,13 @@ export class accountServiceService {
     return this.http.delete(`${this.baseUrl}/users/${id}`);
   }
 
-  UpdateProfile(updateUserDTO: UpdateUserDTO) {    
+  UpdateProfile(updateUserDTO: UpdateUserDTO) {
     var userResponse = this.getUserResponseFromLocalStorage();
     return this.http.put(`${this.apiupdateuser}/${userResponse?.id}`, updateUserDTO, {})
-  
+
   }
- 
-  checkEmailExists(email: string): Observable<boolean> {    
+
+  checkEmailExists(email: string): Observable<boolean> {
     const url = `${this.apicheckmail}/${email}`;
     return this.http.get<boolean>(url, this.apiConfig);
   }
