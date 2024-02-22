@@ -16,10 +16,12 @@
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" [(ngModel)]="Account.email" name="email" id="email" />
           </div>
+
           <!-- <div class="mb-3">
             <label class="form-label">Phone number</label>
             <input type="text" class="form-control" [(ngModel)]="Account.Phone" name="Phone" />
           </div> -->
+
           <div class="mb-3">
             <label for="birthday" class="form-label">Birthday</label>
             <input type="date" class="form-control calendar-icon-white" [(ngModel)]="Account.birthday" name="birthday"
@@ -27,17 +29,16 @@
           </div>
 
 
-
-          <div class="mb-3">
+          <!-- <div class="mb-3">
             <label class="form-label me-3">Role</label>
-            <div class="btn-group" role="group">
-              <ng-container *ngFor="let role of Roles">
-                <input type="radio" class="btn-check" [id]="role.id" [value]="role" name="inlineRadioOptions"
-                  [(ngModel)]="Account.accountRole" [checked]="Account.accountRole?.id === role.id" />
-                <label class="btn btn-outline-primary mx-2" [for]="role.id">{{ role.name }}</label>
-              </ng-container>
-            </div>
-          </div>
+            <div class="btn-group" role="group"> -->
+          <!-- <ng-container *ngFor="let role of Roles">
+            <input type="radio" hidden class="btn-check" [id]="role.id" [value]="role" name="inlineRadioOptions"
+              [(ngModel)]="Account.accountRole" [checked]="Account.accountRole?.id === role.id" />
+            <label class="btn btn-outline-primary mx-2" [for]="role.id">{{ role.name }}</label>
+          </ng-container> -->
+          <!-- </div> -->
+          <!-- </div> -->
 
           <div class="mb-3">
             <label class="form-label">Address</label>

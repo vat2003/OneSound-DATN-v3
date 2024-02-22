@@ -10,6 +10,9 @@ import { Role } from '../../adminEntityService/adminEntity/Role/Role';
 import { UpdateUserForAdmin } from '../../adminEntityService/adminEntity/DTO/UpdateUserForAdmin';
 
 
+import { mergeMap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+
 @Component({
   selector: 'app-manageuser-admin',
   standalone: true,
@@ -353,25 +356,20 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
 
-
-
-
   deleteUser() {
-    alert(JSON.stringify(this.Account.id));
-    var ID = this.Account.id;
-    this.accountServiceService.deleteUser(ID!).subscribe(
-
-      (data) => {
-        console.log(data);
-        this.getAllUsers(0, 4);
-      },
-      (error) => {
-        console.error('Error deleting user:', error);
-      }
-    );
-
-  }
-
-
-
+    this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
+      .pipe(
+        mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
+        catchError(error => {
+          console.error('Error deleting user:', error);
+          return of(null); // Trả về một observable với giá trị là null nếu có lỗi
+        })
+      )
+      .subscribe(data => {
+        if (data !== null) {
+          console.log(data);
+          this.getAllUsers(0, 4);
+        }
+      });
+  }  
 }
