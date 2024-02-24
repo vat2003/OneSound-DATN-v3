@@ -36,6 +36,7 @@ export class UpdateUserForAdmin {
     gender: boolean;
     createdDate?: string; // Change the type to string
     password: string;
+    active!:boolean;
     accountRole?: Role;
   
     constructor(data: any) {
@@ -49,6 +50,7 @@ export class UpdateUserForAdmin {
       this.password = data.password;
       this.createdDate = data.createdDate; // Keep it as is, assuming it's a string from backend
       this.accountRole = data.accountRole; 
+      this.active = data.active
     }
   }
   

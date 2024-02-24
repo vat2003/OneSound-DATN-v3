@@ -10,6 +10,9 @@ import { Role } from '../../adminEntityService/adminEntity/Role/Role';
 import { UpdateUserForAdmin } from '../../adminEntityService/adminEntity/DTO/UpdateUserForAdmin';
 
 
+import { mergeMap, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
+
 @Component({
   selector: 'app-manageuser-admin',
   standalone: true,
@@ -37,7 +40,7 @@ export class ManageuserAdminComponent implements OnInit {
   localStorage?: Storage;
   page: number = 1;
   // itempage: number = 2;
-  itempage: number = 3;
+  itempage: number = 1;
   selectedUser: account = createAccount();
 
 
@@ -50,6 +53,8 @@ export class ManageuserAdminComponent implements OnInit {
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
     private RoleService: RoleService,
+    private userService: accountServiceService,
+
   ) {
 
 
@@ -120,7 +125,7 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(1, 3)
+    this.getAllUsers(0, 100)
 
     this.getAllRole();
 
@@ -211,16 +216,16 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   view(id: number) {
-    debugger
+
     this.accountServiceService.getUserById(id).subscribe(
       (data: account) => {
-        debugger
+
         this.Account = data;
         this.formatDate(this.Account.createdDate)
 
       },
       (error: any) => {
-        debugger
+
         console.log(error);
       }
     );
@@ -234,9 +239,9 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   updateUser() {
-    debugger
+
     if (this.Account.id !== undefined) {
-      debugger
+
       const datePipe = new DatePipe('en-US');
       const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
 
@@ -248,25 +253,66 @@ export class ManageuserAdminComponent implements OnInit {
         avatar_url: this.Account.avatar_url,
         gender: this.Account.gender,
         password: this.Account.password,
+        active: this.Account.active,
         createdDate: formattedDate,
         accountRole: this.Account.accountRole
       };
 
-      debugger
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
-          debugger
+
           console.log(data);
         },
         (error) => {
-          debugger
           console.log(error);
-          // Xử lý khi có lỗi xảy ra
         }
       );
+
+      if (UpdateUserForAdmin.active == false) {
+        const shouldLock = confirm("Bạn có muốn khoá tài khoản không?");
+        if (shouldLock) {
+          debugger
+          this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Bị  Khoá", UpdateUserForAdmin.email).subscribe(
+            async (data) => {
+              debugger
+              console.log(data);
+            },
+            (error) => {
+              debugger
+              console.log(error);
+
+            }
+          );
+        }else{
+          console.log("huỷ thao tác khoá");
+          return;
+        }
+
+      }else{
+        const shouldLock = confirm("Bạn có muốn mở tài khoản không?");
+        if (shouldLock) {
+          debugger
+        this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Được Mở Khoá", UpdateUserForAdmin.email).subscribe(
+          async (data) => {
+            debugger
+                //  this.ngOnInit();
+            console.log(data);
+            return;
+          },
+          (error) => {
+            debugger
+            console.log(error);
+            return;
+          }
+        );
+        }else{
+          alert("huỷ thao tác mở")
+          return
+        }
+
+      }
+
     } else {
-      debugger
-      // Xử lý khi id là undefined
       console.error("ID is undefined");
     }
   }
@@ -310,25 +356,20 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
 
-
-
-
   deleteUser() {
-    alert(JSON.stringify(this.Account.id));
-    var ID = this.Account.id;
-    this.accountServiceService.deleteUser(ID!).subscribe(
-
-      (data) => {
-        console.log(data);
-        this.getAllUsers(0, 4);
-      },
-      (error) => {
-        console.error('Error deleting user:', error);
-      }
-    );
-
+    this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
+      .pipe(
+        mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
+        catchError(error => {
+          console.error('Error deleting user:', error);
+          return of(null); // Trả về một observable với giá trị là null nếu có lỗi
+        })
+      )
+      .subscribe(data => {
+        if (data !== null) {
+          console.log(data);
+          this.getAllUsers(0, 4);
+        }
+      });
   }
-
-
-
 }

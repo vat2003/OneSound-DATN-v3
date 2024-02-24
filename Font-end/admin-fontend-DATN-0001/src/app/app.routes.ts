@@ -23,6 +23,7 @@ import { UserPlaysongComponent } from './pages/client/user-playsong/user-playson
 import { UserProfileComponent } from './pages/client/user-profile/user-profile.component';
 import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
 import { ReportComponent } from './pages/adminPage/manage/report/report.component';
+import { QuenmkComponent } from './pages/adminPage/quenmk/quenmk.component';
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -30,8 +31,8 @@ export const routes: Routes = [
   { path: 'onesound/signup', component: DangkyComponent },
   { path: 'onesound/dangnhap', component: LoginneComponent },
   { path: 'onesound/dangky', component: DangkyComponent },
-  { path: 'onesound/changepassword', component: ChangePasswordComponent },
-  { path: 'onesound/forgotpassword', component: ForgotpasswordComponent },
+  { path: 'onesound/changepassword/:id', component: ChangePasswordComponent },
+  { path: 'onesound/forgotpassword', component: QuenmkComponent },
   { path: 'onesound/admin/image', component: ManageimageAdminComponent },
   { path: 'update-genre/:id', component: ManagegenreAdminComponent },
   { path: 'update-singer/:id', component: ManageartistAdminComponent },
@@ -57,7 +58,7 @@ export const routes: Routes = [
         component: ManagegenreAdminComponent,
       },
       { path: 'manage/genre/:id', component: ManagegenreAdminComponent },
-      { path: 'manage/song', component: ManagesongAdminComponent },
+      { path: 'manage/song', component: ManagesongAdminComponent},
       { path: 'manage/user', component: ManageuserAdminComponent },
       { path: 'chart', component: ChartComponent },
       { path: 'dashboard', component: BlankComponent },
