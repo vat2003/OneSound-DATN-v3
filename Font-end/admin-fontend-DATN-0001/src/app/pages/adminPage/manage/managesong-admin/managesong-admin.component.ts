@@ -1,7 +1,7 @@
 import { Component, ElementRef, Renderer2, SimpleChanges } from '@angular/core';
 import { Album } from '../../adminEntityService/adminEntity/album/album';
 import { Singer } from '../../adminEntityService/adminEntity/singer/singer';
-import { Observable, Subject, debounceTime, map, startWith, switchMap } from 'rxjs';
+import { Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +14,9 @@ import { FirebaseStorageCrudService } from '../../../../services/firebase-storag
 import { SingerService } from '../../adminEntityService/adminService/singer-service.service';
 import { SingerAlbumService } from '../../adminEntityService/adminService/singerAlbum/singer-album.service';
 import { Author } from '../../adminEntityService/adminEntity/author/author';
+import { Genre } from '../../adminEntityService/adminEntity/genre/genre';
+import { GenreServiceService } from '../../adminEntityService/adminService/genre-service.service';
+import { AuthorService } from '../../adminEntityService/adminService/author.service';
 
 @Component({
   selector: 'app-managesong-admin',
@@ -41,15 +44,23 @@ export class ManagesongAdminComponent {
   singerName: string[] = [];
   singerTable: Singer[] = [];
   selectedSinger: Singer | null = null;
+  Genres: Genre[] = [];
+  genreName: string[] = [];
+  genreTable: Genre[] = [];
+  selectedGenre: Genre | null = null;
   selectedAlbum: Album | null = null;
   authors: Author[] = [];
   authorName: string[] = [];
   authorTable: Author[] = [];
-  selectedAuthor: Singer | null = null;
+  selectedAuthor: Author | null = null;
   filterOptionsSinger!: Observable<string[]>;
   filterOptionsAlbum!: Observable<string[]>;
+  filterOptionsGenre!: Observable<string[]>;
+  filterOptionsAuthor!: Observable<string[]>;
   formcontrol = new FormControl('');
   formcontrolAlbum = new FormControl('');
+  formcontrolGenre = new FormControl('');
+  formcontrolAuthor = new FormControl('');
   selectedSingerToTable: Singer | null = null;
   errorFieldsArr: String[] = [];
   pages: number[] = [];
@@ -72,6 +83,11 @@ export class ManagesongAdminComponent {
     const searchValue = othervalue.toLocaleLowerCase();
     return this.albumName.filter(option => option.toLocaleLowerCase().includes(searchValue));
   }
+
+  private _FILTERGenre(othervalue: string): string[] {
+    const searchValue = othervalue.toLocaleLowerCase();
+    return this.genreName.filter(option => option.toLocaleLowerCase().includes(searchValue));
+  }
   constructor( private el: ElementRef,
     private router: Router,
     private route: ActivatedRoute,
@@ -79,6 +95,8 @@ export class ManagesongAdminComponent {
     private albumService: AlbumService,
     private firebaseStorage: FirebaseStorageCrudService,
     private singerService: SingerService,
+    private genreService: GenreServiceService,
+    private AuthorService: AuthorService,
     private singerAlbumService: SingerAlbumService,
     private formBuilder: FormBuilder,
 ) {}
@@ -91,39 +109,39 @@ ngOnChanges(changes: SimpleChanges): void {
   this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
     startWith(''), map(value => this._FILTERAlbum(value || ''))
   )
-}
+  this.filterGenre();
+  this.filterAuthor();
 
+}
+filterGenre(){
+  this.filterOptionsGenre = this.formcontrolGenre.valueChanges.pipe(
+    startWith(''), map(value => this._FILTERGenre(value || ''))
+  )
+}
+filterAuthor(){
+  this.filterOptionsAuthor = this.formcontrolAuthor.valueChanges.pipe(
+    startWith(''), map(value => this._FILTERAuthor(value || ''))
+  )
+}
 ngOnInit(): void {
   this.id = this.route.snapshot.params['id'];
   // this.displaySelectedYear();
   this.displaySingerBysearch();
   this.displayAlbumBySearch();
+  this.displayGenreBySearch();
+  this.displayAuthorBySearch();
   this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
     startWith(''), map(value => this._FILTER(value || ''))
   )
   this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
     startWith(''), map(value => this._FILTERAlbum(value || ''))
   )
+  this.filterGenre();
+  this.filterAuthor();
   // this.filterOptions = this.formcontrol.valueChanges.pipe(
   //   startWith(''), map(value => this._FILTERAuthor(value || ''))
   // )
-  this.searchTerms
-      .pipe(
-        debounceTime(500), // Tăng thời gian chờ
-        // Không sử dụng distinctUntilChanged tạm thời
-        // distinctUntilChanged(),
-        switchMap((term: string) => this.albumService.getAllAlbumByAlbumTitle(term, 0, 10))
-      )
-      .subscribe(async (data) => {
 
-        // Xử lý kết quả tìm kiếm ở đây
-        // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
-        this.albums = data.content;
-        console.log("album: --->", this.albums);
-        this.total = data.totalPages;
-        this.visiblePages = this.PageArray(this.page, this.total);
-
-      });
   }
 
   addSingertoTable(singerName: string) {
@@ -169,17 +187,21 @@ ngOnInit(): void {
       startWith(''), map(value => this._FILTER(value || ''))
     )
   }
+
   addAlbumtoTable(albumName: string) {
-    debugger
     const albumExists = this.albumTable.some(album => album.title === albumName);
     if (!albumExists || this.albumTable.length === 0) {
-      debugger
+      // Gọi API hoặc thực hiện các thao tác khác để lấy thông tin singer từ tên
       this.albumService.getAllAlbumsByName(albumName).subscribe(
-        async (album: Album) => {
-          debugger
-          this.albumTable.push(album);
-          console.log(`${albumName} đã được thêm vào bảng.`);
-          console.log("Bảng album: ", this.albumTable);
+        async (album: Album[]) => {
+          // Thêm singer vào mảng singerTable
+          this.albumTable.push(album[0]);
+
+          // Hiển thị thông báo hoặc thực hiện các công việc khác
+          console.log(`${albumName} đã được thêm vào mảng singerTable.`);
+          console.log("Singer Table: ", this.singerTable);
+
+
           this.albumName = this.albumName.filter(name => name !== albumName);
           this.formcontrolAlbum.setValue('');
           for (const album of this.albumTable) {
@@ -187,31 +209,168 @@ ngOnInit(): void {
               continue;
             }
             album.image = await this.setImageURLFirebase(album.image);
+
           }
         },
         (error) => {
-          console.error(`Không tìm thấy album có tên là ${albumName}.`);
+          // Xử lý lỗi khi không tìm thấy singer
+          console.error(`Không tìm thấy singer có tên là ${albumName}.`);
         }
       );
     } else {
-      console.log(`${albumName} đã tồn tại trong bảng.`);
+      console.log(`${albumName} đã tồn tại trong mảng singerTable.`);
     }
   }
+
 
   deleteAlbumInTable(idSinger: number) {
     const index = this.albumTable.findIndex(singer => singer.id === idSinger);
     if (index !== -1) {
       const deletedSinger = this.albumTable[index];
-
       this.albumName.push(deletedSinger.title);
       this.albumTable.splice(index, 1);
-      console.log("Album name deleted: ", this.albumName)
-
+      console.log("singerName: ", this.albumName)
     }
     this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
       startWith(''), map(value => this._FILTERAlbum(value || ''))
     )
+    this.updateAlbumList();
   }
+  addAuthortoTable(authorName: string) {
+    const albumExists = this.authorTable.some(album => album.fullname === authorName);
+    if (!albumExists || this.authorTable.length === 0) {
+      // Gọi API hoặc thực hiện các thao tác khác để lấy thông tin singer từ tên
+      this.AuthorService.getAuthorByName(authorName).subscribe(
+        async (album: Author[]) => {
+          // Thêm singer vào mảng singerTable
+          this.authorTable.push(album[0]);
+
+          // Hiển thị thông báo hoặc thực hiện các công việc khác
+          console.log(`${authorName} đã được thêm vào mảng singerTable.`);
+          console.log("Singer Table: ", this.authorTable);
+
+
+          this.authorName = this.authorName.filter(name => name !== authorName);
+          this.formcontrolAuthor.setValue('');
+          for (const album of this.authorTable) {
+            if (album.image == null || album.image == '') {
+              continue;
+            }
+            album.image = await this.setImageURLFirebase(album.image);
+
+          }
+        },
+        (error) => {
+          // Xử lý lỗi khi không tìm thấy singer
+          console.error(`Không tìm thấy singer có tên là ${authorName}.`);
+        }
+      );
+    } else {
+      console.log(`${authorName} đã tồn tại trong mảng singerTable.`);
+    }
+  }
+
+
+  deleteAuthorInTable(idSinger: number) {
+    const index = this.authorTable.findIndex(singer => singer.id === idSinger);
+    if (index !== -1) {
+      const deletedSinger = this.authorTable[index];
+      this.authorName.push(deletedSinger.fullname);
+      this.authorTable.splice(index, 1);
+      console.log("Author Name: ", this.authorName)
+    }
+    this.filterOptionsAuthor = this.formcontrolAuthor.valueChanges.pipe(
+      startWith(''), map(value => this._FILTERAuthor(value || ''))
+    )
+    this.displayAuthorBySearch();
+  }
+
+  addGenretoTable(genreName: string) {
+    const albumExists = this.genreTable.some(album => album.name === genreName);
+    if (!albumExists || this.genreTable.length === 0) {
+      // Gọi API hoặc thực hiện các thao tác khác để lấy thông tin singer từ tên
+      this.genreService.getAllGenresByName(genreName).subscribe(
+        async (album: Genre[]) => {
+          // Thêm singer vào mảng singerTable
+          this.genreTable.push(album[0]);
+
+          // Hiển thị thông báo hoặc thực hiện các công việc khác
+          console.log(`${genreName} đã được thêm vào mảng genreTable.`);
+          console.log("Genre Table: ", this.genreTable);
+
+
+          this.genreName = this.genreName.filter(name => name !== genreName);
+          this.formcontrolGenre.setValue('');
+          for (const album of this.genreTable) {
+            if (album.image == null || album.image == '') {
+              continue;
+            }
+            album.image = await this.setImageURLFirebase(album.image);
+
+          }
+        },
+        (error) => {
+          // Xử lý lỗi khi không tìm thấy singer
+          console.error(`Không tìm thấy singer có tên là ${genreName}.`);
+        }
+      );
+    } else {
+      console.log(`${genreName} đã tồn tại trong mảng singerTable.`);
+    }
+  }
+
+
+  deleteGenreInTable(idSinger: number) {
+    const index = this.genreTable.findIndex(singer => singer.id === idSinger);
+    if (index !== -1) {
+      const deletedSinger = this.genreTable[index];
+      this.genreName.push(deletedSinger.name);
+      this.genreTable.splice(index, 1);
+      console.log("singerName: ", this.albumName)
+    }
+    this.filterOptionsGenre = this.formcontrolGenre.valueChanges.pipe(
+      startWith(''), map(value => this._FILTERGenre(value || ''))
+    )
+    this.displayGenreBySearch();
+  }
+
+
+  updateAlbumList() {
+    // Gọi lại hàm để lấy danh sách album mới từ service
+    this.displayAlbumBySearch();
+  }
+
+
+  displayAlbumBySearch() {
+    this.albumService.getAllAlbumNormal().subscribe(
+      async (data) => {
+        // Cập nhật danh sách albumName với dữ liệu mới từ service
+        this.albumName = data.map((album: Album) => album.title);
+        console.log("List Album", this.albumName);
+      }
+    );
+  }
+
+  displayGenreBySearch() {
+    this.genreService.getAllGenres().subscribe(
+      async (data) => {
+        // Cập nhật danh sách albumName với dữ liệu mới từ service
+        this.genreName = data.map((album: Genre) => album.name);
+        console.log("List Genre", this.genreName);
+      }
+    );
+  }
+  displayAuthorBySearch() {
+    this.AuthorService.getAllAuthors().subscribe(
+      async (data) => {
+        // Cập nhật danh sách albumName với dữ liệu mới từ service
+        this.authorName = data.map((album: Author) => album.fullname);
+        console.log("List Author", this.authorName);
+      }
+    );
+  }
+
+
 
   // addAlbumtoTable(albumName: string) {
   //   const albumExists = this.albumTable.some(album => album.title === albumName);
@@ -271,14 +430,6 @@ ngOnInit(): void {
 
   }
 
-  displayAlbumBySearch() {
-    this.albumService.getAllAlbumNormal().subscribe(
-      async (data) => {
-        this.albumName = data.map((album: Album) => album.title);
-        console.log("List Album", this.albumName);
-      }
-    );
-  }
 
 
   onFileSelected(event: any) {
@@ -338,6 +489,9 @@ ngOnInit(): void {
     this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
       startWith(''), map(value => this._FILTERAlbum(value || ''))
     )
+
+    this.filterGenre();
+    this.filterAuthor();
     // this.filterOptions = this.formcontrol.valueChanges.pipe(
     //   startWith(''), map(value => this._FILTERAuthor(value || ''))
     // )
@@ -413,5 +567,10 @@ resetForm(){
 
   create() {
     alert(this.setImageUrl);
+  }
+
+
+  test(){
+
   }
 }

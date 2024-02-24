@@ -24,6 +24,9 @@ export class GenreServiceService {
   getAllGenres(): Observable<Genre[]> {
     return this.httpClient.get<Genre[]>(`${this.baseUrl}`);
   }
+  getAllGenresByName(name:string): Observable<Genre[]> {
+    return this.httpClient.get<Genre[]>(`${this.baseUrl}/name/${name}`);
+  }
 
   getListGenres(page: number, size: number): Observable<GenreResponse> {
     const params = new HttpParams()

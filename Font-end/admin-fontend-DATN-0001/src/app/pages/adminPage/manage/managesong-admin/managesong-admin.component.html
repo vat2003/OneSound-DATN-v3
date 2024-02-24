@@ -109,9 +109,10 @@
               <tbody>
                 <tr *ngFor="let album of albumTable; let i = index">
                   <th scope="row">{{ i + 1 }}</th>
+
                   <td>{{ album.title }}</td>
                   <td>{{ album.description }}</td>
-                  <td>{{ album.releaseYear }}</td>
+
                   <td>
                     <img
                       src="{{ album.image }}"
@@ -132,55 +133,116 @@
               </tbody>
             </table>
           </div>
-
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Author</label>
-            <!-- <input #searchSinger type="text" class="form-control mb-4 border-light border-2"
-              style="border-radius: 20px;" placeholder="Search"> -->
-
+            <label for="exampleInputEmail1" class="form-label">Genre</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
               style="border-radius: 20px"
               placeholder="Search"
               matInput
-              [matAutocomplete]="auto"
-              [formControl]="formcontrol"
+              [matAutocomplete]="autoGenre"
+              [formControl]="formcontrolGenre"
             />
-            <mat-autocomplete autoActiveFirstOption #auto>
+            <mat-autocomplete
+              autoActiveFirstOption
+              #autoGenre="matAutocomplete"
+            >
               <mat-option
-                (click)="addSingertoTable(item)"
-                *ngFor="let item of filterOptionsSinger | async"
+                (click)="addGenretoTable(item)"
+                *ngFor="let item of filterOptionsGenre | async"
                 value="{{ item }}"
-                >{{ item }}</mat-option
               >
+                {{ item }}
+              </mat-option>
             </mat-autocomplete>
-
             <table class="table table-dark">
               <thead>
                 <tr>
                   <th scope="col">No.</th>
-                  <th scope="col">Fullname</th>
+                  <th scope="col">Title</th>
                   <th scope="col">Desc</th>
                   <th scope="col">Image</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let singer of singerTable; let i = index">
+                <tr *ngFor="let album of genreTable; let i = index">
                   <th scope="row">{{ i + 1 }}</th>
-                  <td>{{ singer.fullname }}</td>
-                  <td>{{ singer.description }}</td>
+
+                  <td>{{ album.name }}</td>
+                  <td>{{ album.description }}</td>
+
                   <td>
                     <img
-                      src="{{ singer.image }}"
+                      src="{{ album.image }}"
                       width="70"
                       height="70"
-                      alt="{{ singer.image }}"
+                      alt="{{ album.image }}"
                     />
                   </td>
                   <td>
                     <button
-                      (click)="deleteSingerInTable(singer.id)"
+                      (click)="deleteGenreInTable(album.id)"
+                      class="btn btn-outline-danger w-50"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Author</label>
+            <input
+              type="text"
+              class="form-control mb-4 border-light border-2"
+              style="border-radius: 20px"
+              placeholder="Search"
+              matInput
+              [matAutocomplete]="autoAuthor"
+              [formControl]="formcontrolAuthor"
+            />
+            <mat-autocomplete
+              autoActiveFirstOption
+              #autoAuthor="matAutocomplete"
+            >
+              <mat-option
+                (click)="addAuthortoTable(item)"
+                *ngFor="let item of filterOptionsAuthor | async"
+                value="{{ item }}"
+              >
+                {{ item }}
+              </mat-option>
+            </mat-autocomplete>
+            <table class="table table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Desc</th>
+                  <th scope="col">Image</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let album of authorTable; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
+
+                  <td>{{ album.fullname }}</td>
+                  <td>{{ album.description }}</td>
+
+                  <td>
+                    <img
+                      src="{{ album.image }}"
+                      width="70"
+                      height="70"
+                      alt="{{ album.image }}"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      (click)="deleteAuthorInTable(album.id)"
                       class="btn btn-outline-danger w-50"
                     >
                       Delete
@@ -297,6 +359,9 @@
             <button class="btn btn-primary fw-bold">Save</button>
             <button class="btn btn-info ms-3 fw-bold">Update</button>
             <button class="btn btn-warning ms-3 fw-bold">Reset</button>
+            <button (click)="test()" class="btn btn-warning ms-3 fw-bold">
+              Test
+            </button>
           </div>
         </form>
       </div>
