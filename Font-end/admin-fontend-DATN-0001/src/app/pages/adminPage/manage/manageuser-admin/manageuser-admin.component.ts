@@ -1,17 +1,17 @@
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { account, createAccount } from '../../adminEntityService/adminEntity/account/account';
-import { CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
-import { RoleService } from '../../adminEntityService/adminService/role.service';
-import { Role } from '../../adminEntityService/adminEntity/Role/Role';
-import { UpdateUserForAdmin } from '../../adminEntityService/adminEntity/DTO/UpdateUserForAdmin';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {account, createAccount} from '../../adminEntityService/adminEntity/account/account';
+import {CommonModule, DatePipe, NgOptimizedImage} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
+import {RoleService} from '../../adminEntityService/adminService/role.service';
+import {Role} from '../../adminEntityService/adminEntity/Role/Role';
+import {UpdateUserForAdmin} from '../../adminEntityService/adminEntity/DTO/UpdateUserForAdmin';
 
 
-import { mergeMap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import {mergeMap, catchError} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 @Component({
   selector: 'app-manageuser-admin',
@@ -44,7 +44,6 @@ export class ManageuserAdminComponent implements OnInit {
   selectedUser: account = createAccount();
 
 
-
   constructor(
     private accountServiceService: accountServiceService,
     private router: Router,
@@ -54,7 +53,6 @@ export class ManageuserAdminComponent implements OnInit {
     private firebaseStorage: FirebaseStorageCrudService,
     private RoleService: RoleService,
     private userService: accountServiceService,
-
   ) {
 
 
@@ -103,7 +101,6 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
 
-
   getAllRole() {
 
     this.RoleService.getAllRoles().subscribe(
@@ -125,10 +122,9 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(0, 100)
+    this.getAllUsers(0, 10)
 
     this.getAllRole();
-
 
 
   }
@@ -191,15 +187,9 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
 
-
   onSubmit() {
 
   }
-
-
-
-
-
 
 
   async setImageURLFirebase(image: string): Promise<string> {
@@ -230,6 +220,7 @@ export class ManageuserAdminComponent implements OnInit {
       }
     );
   }
+
   formatDate(date: Date | string | undefined): string {
     if (!date) {
       return '';
@@ -269,10 +260,9 @@ export class ManageuserAdminComponent implements OnInit {
       );
 
       if (UpdateUserForAdmin.active == false) {
-        const shouldLock = confirm("Bạn có muốn khoá tài khoản không?");
+        const shouldLock = window.confirm("Bạn có muốn khoá tài khoản không?");
         if (shouldLock) {
-          debugger
-          this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Bị  Khoá", UpdateUserForAdmin.email).subscribe(
+          this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị  Khoá", UpdateUserForAdmin.email).subscribe(
             async (data) => {
               debugger
               console.log(data);
@@ -283,29 +273,29 @@ export class ManageuserAdminComponent implements OnInit {
 
             }
           );
-        }else{
+        } else {
           console.log("huỷ thao tác khoá");
           return;
         }
 
-      }else{
-        const shouldLock = confirm("Bạn có muốn mở tài khoản không?");
+      } else {
+        const shouldLock = window.confirm("Bạn có muốn mở tài khoản không?");
         if (shouldLock) {
           debugger
-        this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Được Mở Khoá", UpdateUserForAdmin.email).subscribe(
-          async (data) => {
-            debugger
-                //  this.ngOnInit();
-            console.log(data);
-            return;
-          },
-          (error) => {
-            debugger
-            console.log(error);
-            return;
-          }
-        );
-        }else{
+          this.accountServiceService.hot("Tài Khoản Của Bạn Đã Được Mở Khoá", UpdateUserForAdmin.email).subscribe(
+            async (data) => {
+              debugger
+              //  this.ngOnInit();
+              console.log(data);
+              return;
+            },
+            (error) => {
+              debugger
+              console.log(error);
+              return;
+            }
+          );
+        } else {
           alert("huỷ thao tác mở")
           return
         }
@@ -321,7 +311,6 @@ export class ManageuserAdminComponent implements OnInit {
   saveUsers() {
     this.Account.avatar_url = this.setImageUrl;
     this.accountServiceService.createAccount(this.Account).subscribe(
-
       async (data) => {
         this.goToUserList();
         console.log("Update successfully");
@@ -335,10 +324,6 @@ export class ManageuserAdminComponent implements OnInit {
       }
     );
   }
-
-
-
-
 
 
   getUser(id: number) {

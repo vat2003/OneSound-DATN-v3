@@ -1,9 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {NgClass, NgIf} from "@angular/common";
-import {NgToastModule, NgToastService} from "ng-angular-popup";
-import {LoginResponse} from "../adminEntityService/adminEntity/utils/login.response";
-import {Observable} from "rxjs";
 import {ActivatedRoute, RouterLink} from "@angular/router";
 import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
 import { login } from '../adminEntityService/adminEntity/DTO/login';
@@ -18,8 +15,7 @@ import { UpdateUserForAdmin } from '../adminEntityService/adminEntity/DTO/Update
     NgIf,
     ReactiveFormsModule,
     RouterLink,
-    NgClass,
-    NgToastModule
+    NgClass
   ],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
@@ -33,7 +29,7 @@ export class ChangePasswordComponent {
 
 
 
-  constructor(private toast: NgToastService,private route: ActivatedRoute, private userService: accountServiceService) {
+  constructor(private route: ActivatedRoute, private userService: accountServiceService) {
     this.password = '';
     this.retypePassword = '';
     this.userEmail = '';
@@ -59,44 +55,6 @@ export class ChangePasswordComponent {
   toggleShowPassword() {
     this.showPassword = !this.showPassword;
   }
-
-  validation() {
-    if (this.registerForm.invalid) {
-      console.log("Form is invalid");
-      this.toast.warning({detail: 'Warning Message', summary: 'PLEASE FILL UP THE FORM', duration: 5000});
-      // alert("PLEASE FILL UP THE FORM!");
-      return;
-    }
-    if (this.password !== this.retypePassword) {
-      // alert("The password does not match");
-      this.toast.warning({detail: 'Warning Message', summary: 'THE PASSWORD DOES NOT MATCH', duration: 5000});
-      return;
-    }
-  }
-
-  changePass() {
-    // this.validation();
-    const mail = 'anhtaivo@gmail.com';
-    this.updatePassAccount(mail);
-  }
-
-  private updatePassAccount(email: any) {
-    this.userService.checkEmailExists(email).subscribe({
-      next: (emailExists: boolean) => {
-        if (emailExists) {
-          alert('ok');
-        } else {
-          alert("Email does not exist. Please check or register.");
-        }
-      },
-      error: (error) => {
-        console.error(error);
-        alert("Error checking email: " + error.message);
-      }
-    });
-  }
-
-
 
   private extractEmailFromToken(token: string): string {
     const emailStartIndex = token.indexOf('=') + 1;
