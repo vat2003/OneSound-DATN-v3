@@ -24,6 +24,8 @@ import { UserProfileComponent } from './pages/client/user-profile/user-profile.c
 import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
 import { ReportComponent } from './pages/adminPage/manage/report/report.component';
 import { QuenmkComponent } from './pages/adminPage/quenmk/quenmk.component';
+import { AdminGuardFn } from './guards/admin.guard';
+import { AuthGuard, AuthGuardFn } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -36,16 +38,18 @@ export const routes: Routes = [
   { path: 'onesound/admin/image', component: ManageimageAdminComponent },
   { path: 'update-genre/:id', component: ManagegenreAdminComponent },
   { path: 'update-singer/:id', component: ManageartistAdminComponent },
+  
   {
     path: 'onesound/admin',
-    component: HomeComponent,
+    component: HomeComponent,canActivate:[AdminGuardFn],
+    
     children: [
       { path: 'blank', component: BlankComponent },
       { path: '404', component: Notfound404Component },
       { path: 'manage/album', component: ManagealbumAdminComponent },
       { path: 'manage/artist', component: ManageartistAdminComponent },
       { path: 'manage/genre', component: ManagegenreAdminComponent },
-      { path: 'manage/profile', component: ManageprofileAdminComponent },
+      { path: 'manage/profile', component: ManageprofileAdminComponent , canActivate: [AuthGuardFn]},
       { path: 'manage/author', component: ManageauthorComponent },
       { path: 'manage/report', component:  ReportComponent},
       {
@@ -67,7 +71,7 @@ export const routes: Routes = [
   },
   {
     path: 'onesound/home',
-    component: UserMenusideComponent,
+    component: UserMenusideComponent,canActivate: [AuthGuardFn],
     children: [
       { path: '', component: UserExploreComponent },
       { path: 'explore', component: UserExploreComponent },

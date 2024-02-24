@@ -83,7 +83,7 @@ export class ChangePasswordComponent {
 
           };
           debugger
-          this.userService.HamDoiMatKhauCuaQuenMatKhau(this.userEmail,login).subscribe({
+          this.userService.HamDoiMatKhauCuaQuenMatKhau(response.message,login).subscribe({
             next: (response: any) => {
               debugger
               alert("đổi thành công" + response);

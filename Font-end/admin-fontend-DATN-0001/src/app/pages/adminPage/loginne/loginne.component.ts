@@ -54,23 +54,43 @@ export class LoginneComponent implements OnInit {
             email: this.email,
             password: this.password,
           };
-
+          debugger
           this.userService.login(login).subscribe({
+            
             next: (response: LoginResponse) => {
+              
               alert("Login successful!");
+             
               const { token } = response;
               console.log(token);
               this.tokenService.setToken(token);
               this.incorrectLoginAttempts = 0;
 
               this.userService.getUserDetail(token).subscribe({
+                
                 next: (response: any) => {
+                  debugger
                   this.account = {
                     ...response
                   };
                   console.log(response);
                   this.userService.saveUserResponseToLocalStorage(response);
-                  this.router.navigate(['/onesound/admin']);
+                  if (this.account && this.account.accountRole) {
+                    debugger
+                    alert(this.account.accountRole.name); 
+            
+                    if (this.account.accountRole.name === 'admin') {
+                      debugger
+                      this.router.navigate(['/onesound/admin']);
+                    } else if (this.account.accountRole.name === 'user') {
+                      debugger
+                      this.router.navigate(['/onesound/home/explore']);
+    
+                    }
+                  } else {
+                    debugger
+                    alert("Lỗi: Không tìm thấy thông tin vai trò người dùng.");
+                  }
                 },
                 complete: () => {
                 },
@@ -78,6 +98,7 @@ export class LoginneComponent implements OnInit {
                   console.log(error);
                 }
               });
+           
             },
             error: (error) => {
               console.error(error);
@@ -102,6 +123,76 @@ export class LoginneComponent implements OnInit {
       }
     });
   }
+
+  // login() {
+  //   this.userService.checkEmailExists(this.email).subscribe({
+  //     next: (emailExists: boolean) => {
+  //       if (emailExists) {
+  //         const login: login = {
+  //           email: this.email,
+  //           password: this.password,
+  //         };
+  
+  //         this.userService.login(login).subscribe({
+  //           next: (response: LoginResponse) => {
+  //             alert("Login successful!");
+  
+  //             if (this.account && this.account.accountRole) {
+  //               alert(this.account.accountRole.name);
+  
+  //               const redirectTo = this.account.accountRole.name === 'admin' ? '/onesound/admin' : '/';
+  //               this.router.navigate([redirectTo]);
+  //             } else {
+  //               alert("Lỗi: Không tìm thấy thông tin vai trò người dùng.");
+  //             }
+  
+  //             const { token } = response;
+  //             console.log(token);
+  //             this.tokenService.setToken(token);
+  //             this.incorrectLoginAttempts = 0;
+  
+  //             this.userService.getUserDetail(token).subscribe({
+  //               next: (response: any) => {
+  //                 this.account = {
+  //                   ...response
+  //                 };
+  //                 console.log(response);
+  //                 this.userService.saveUserResponseToLocalStorage(response);
+  //               },
+  //               complete: () => {
+  //               },
+  //               error: (error: any) => {
+  //                 console.log(error);
+  //               }
+  //             });
+  //           },
+  //           error: (error) => {
+  //             console.error(error);
+  //             alert("Login failed");
+  //             this.handleLoginFailure();
+  //           },
+  //           complete: () => {
+  //           }
+  //         });
+  //       } else {
+  //         alert("Email does not exist. Please check or register.");
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //       alert("Error checking email: " + error.message);
+  //     }
+  //   });
+  // }
+  
+  // handleLoginFailure() {
+  //   this.incorrectLoginAttempts++;
+  
+  //   if (this.incorrectLoginAttempts >= this.maxIncorrectLoginAttempts) {
+  //     alert("Too many incorrect login attempts. Please try again later.");
+  //     this.router.navigate(['/onesound/dangky']);
+  //   }
+  // }
 
 
 }

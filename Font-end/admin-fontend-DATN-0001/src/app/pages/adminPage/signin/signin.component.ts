@@ -56,50 +56,108 @@ export class SigninComponent implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
+  // login() {    
+  //   debugger
+  //   var login: login = {
+      
+  //     email: this.email,
+  //     password: this.password,
+  //   };    
+  //   this.userService.login(login).subscribe({    
+  //     next: (response: LoginResponse) => {   
+  //       debugger     
+  //       if (this.account && this.account.accountRole) {
+  //         debugger
+  //         if (this.account.accountRole.name === 'admin') {
+  //           debugger
+  //           alert("admin")
+  //           this.router.navigate(['/onesound/admin']);
+  //         } else if (this.account.accountRole.name === 'user') {
+  //           debugger
+  //           alert("user")
+
+  //           this.router.navigate(['/']);
+  //         }
+  //       } else {
+  //         alert("Lỗi: Không tìm thấy thông tin vai trò người dùng.");
+  //       }
+
+  //       const {token} = response;
+  //       console.log(token);
+
+  //       this.tokenService.setToken(token);
+  //       this.userService.getUserDetail(token).subscribe({
+
+  //         next: (response: any) => {            
+  //           this.account = {              
+  //             ...response
+  //           };
+  //           this.userService.saveUserResponseToLocalStorage(response);
+          
+  //         },
+  //         complete: () => {            
+  //         },
+  //         error: (error: any) => {            
+  //           alert("profile thất bại" + error);
+  //           console.log(error);
+  //         }
+  //       });
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //       alert("Đăng nhập thất bại");
+  //     },
+  //     complete: () => {
+  //     }
+  //   });
+  // }
+
   login() {
-    var login: login = {
-      email: this.email,
-      password: this.password,
-    };
+    // const login: login = {
+    //   email: this.email,
+    //   password: this.password,
+    // };
+  
+    // this.userService.login(login).subscribe({
+    //   next: (response: LoginResponse) => {
+    //     if (this.account && this.account.accountRole) {
+    //       alert(this.account.accountRole.name); // Hiển thị vai trò người dùng
+  
+    //       if (this.account.accountRole.name === 'admin') {
+    //         this.router.navigate(['/onesound/admin']);
+    //       } else if (this.account.accountRole.name === 'user') {
+    //         this.router.navigate(['/']);
+    //       }
+    //     } else {
+    //       alert("Lỗi: Không tìm thấy thông tin vai trò người dùng.");
+    //     }
+  
+    //     const { token } = response;
+    //     console.log(token);
+  
+    //     this.tokenService.setToken(token);
+    //     this.userService.getUserDetail(token).subscribe({
+    //       next: (response: any) => {
+    //         this.account = {
+    //           ...response
+    //         };
+    //         this.userService.saveUserResponseToLocalStorage(response);
+    //       },
+    //       error: (error: any) => {
+    //         alert("profile thất bại" + error);
+    //         console.log(error);
+    //       }
+    //     });
+    //   },
+    //   error: (error) => {
+    //     console.error(error);
+    //     alert("Đăng nhập thất bại");
+    //   }
+    // });
 
-    this.userService.login(login).subscribe({
-      next: (response: LoginResponse) => {
-        alert("Đăng nhập thành công! Response: " + response);
-        const {token} = response;
-        console.log(token);
-
-        this.tokenService.setToken(token);
-        this.userService.getUserDetail(token).subscribe({
-
-          next: (response: any) => {
-
-            this.account = {
-              ...response
-            };
-            alert("profile thành công " + response.fullname
-            );
-            console.log(response);
-            this.userService.saveUserResponseToLocalStorage(response);
-
-            this.router.navigate(['/onesound/admin']);
-
-          },
-          complete: () => {
-          },
-          error: (error: any) => {
-            alert("profile thất bại" + error);
-            console.log(error);
-          }
-        });
-      },
-      error: (error) => {
-        console.error(error);
-        alert("Đăng nhập thất bại");
-      },
-      complete: () => {
-      }
-    });
+    alert("ngu")
   }
+  
 
 
 }
