@@ -49,7 +49,7 @@ export const routes: Routes = [
       { path: 'manage/album', component: ManagealbumAdminComponent },
       { path: 'manage/artist', component: ManageartistAdminComponent },
       { path: 'manage/genre', component: ManagegenreAdminComponent },
-      { path: 'manage/profile', component: ManageprofileAdminComponent },
+      // { path: 'manage/profile', component: ManageprofileAdminComponent },
       { path: 'manage/author', component: ManageauthorComponent },
       { path: 'manage/report', component:  ReportComponent},
       {
@@ -77,6 +77,7 @@ export const routes: Routes = [
       { path: 'explore', component: UserExploreComponent },
       { path: 'playsong', component: UserPlaysongComponent },
       { path: 'profile/:id', component: UserProfileComponent },
+      { path: 'profile', component: ManageprofileAdminComponent },
     ],
   },
 ];

@@ -53,6 +53,7 @@ export class AppComponent implements OnInit {
           const signup = event.url.includes('signup');
           const forgotpass = event.url.includes('forgotpassword');
           const changepass = event.url.includes('changepassword');
+          const userProfile = event.url.includes('home/profile');
           this.adminUserService.setAdminMode(isAdmin);
 
           // Add or remove stylesheets based on the isAdmin condition
