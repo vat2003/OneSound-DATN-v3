@@ -38,7 +38,7 @@ export class ManageuserAdminComponent implements OnInit {
   total: number = 0;
   visiblePages: number[] = [];
   localStorage?: Storage;
-  page: number = 1;
+  page: number = 0;
   // itempage: number = 2;
   itempage: number = 1;
   selectedUser: account = createAccount();
@@ -342,19 +342,24 @@ export class ManageuserAdminComponent implements OnInit {
 
 
   deleteUser() {
-    this.accountServiceService.hot("Tài Khoảng Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
-      .pipe(
-        mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
-        catchError(error => {
-          console.error('Error deleting user:', error);
-          return of(null); // Trả về một observable với giá trị là null nếu có lỗi
-        })
-      )
-      .subscribe(data => {
-        if (data !== null) {
-          console.log(data);
-          this.getAllUsers(0, 4);
-        }
-      });
+    const confirm = window.confirm('Are you sure?');
+    if (confirm) {
+      this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
+        .pipe(
+          mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
+          catchError(error => {
+            console.error('Error deleting user:', error);
+            return of(null); // Trả về một observable với giá trị là null nếu có lỗi
+          })
+        )
+        .subscribe(data => {
+          if (data !== null) {
+            console.log(data);
+            this.getAllUsers(0, 10);
+          }
+        });
+    }else {
+      alert('Delete was denied!');
+    }
   }
 }

@@ -33,7 +33,6 @@ export class QuenmkComponent {
       next: (response: any) => {
         debugger
         alert("gui thanh cong" + response);
-
       },
       complete: () => {
         debugger
