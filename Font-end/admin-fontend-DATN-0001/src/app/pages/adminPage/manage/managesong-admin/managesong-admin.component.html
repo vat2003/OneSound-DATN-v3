@@ -290,38 +290,100 @@
                 </button>
               </div>
             </div>
-            <div class="mt-3">
-              <button
-                class="file-upload-btn"
-                type="button"
-                onclick="$('.file-upload-input-audio').trigger( 'click' )"
-              >
-                Add Audio
-              </button>
-
-              <div class="audio-upload-wrap">
-                <input
-                  class="file-upload-input-audio"
-                  type="file"
-                  accept="audio/*"
-                />
-                <div class="drag-text-audio">
-                  <h3>Drag and drop a file or select add Audio</h3>
-                </div>
-              </div>
-              <div class="file-upload-content">
-                <img class="file-upload-audio" src="#" alt="your audio" />
-                <div class="audio-title-wrap">
-                  <button
-                    type="button"
-                    onclick="removeUpload()"
-                    class="remove-file"
-                  >
-                    Remove <span class="audio-title">Uploaded Audio</span>
-                  </button>
+            <div class="daddy mt-3">
+              <div class="container">
+                <div
+                  class="row bg-dark p-3 pb-4 border border-light rounded shadow"
+                >
+                  <!-- Default checked -->
+                  <div class="col-md-12 mb-3">
+                    <div class="custom-control custom-switch">
+                      <input
+                        type="checkbox"
+                        class="custom-control-input"
+                        id="audioUploadSwitch"
+                        (change)="toggleUpload($event)"
+                      />
+                      <label
+                        class="custom-control-label font-weight-dark"
+                        for="audioUploadSwitch"
+                        >Disable upload and use default audio file</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="file-upload-wrapper bg-dark" #fileUploadWrapper>
+                      <div class="card card-body w-100 view file-upload">
+                        <input
+                          type="file"
+                          id="audiofile"
+                          class="file_upload"
+                          (change)="handleFiles($event)"
+                        />
+                        <p class="file-upload-infos-message">
+                          Audio upload - Drag and drop or click
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mx-auto">
+                    <audio id="track" src="" type="audio/mp3" #track></audio>
+                    <div class="player d-none" style="width: 300px" #player>
+                      <div class="progress p-1">
+                        <input
+                          id="timeslider"
+                          #timeslider
+                          class="timeslider"
+                          type="range"
+                          value="0"
+                          min="0"
+                          max="100"
+                          step="0.001"
+                          (input)="handleSeekChange()"
+                        />
+                        <div
+                          class="time d-flex justify-content-around"
+                          style="width: 100%"
+                        >
+                          <span id="currentTime" style="width: 30px">{{
+                            currentTime
+                          }}</span>
+                          <div
+                            id="pause"
+                            #pause
+                            class="control-icon d-none"
+                            (click)="pauseTrack()"
+                          >
+                            <i class="fas fa-pause"></i>
+                          </div>
+                          <div
+                            id="start"
+                            #start
+                            class="control-icon"
+                            (click)="playTrack()"
+                          >
+                            <i class="fas fa-play"></i>
+                          </div>
+                          <div
+                            id="reset"
+                            #reset
+                            class="control-icon"
+                            (click)="resetTrack()"
+                          >
+                            <i class="fas fa-redo-alt"></i>
+                          </div>
+                          <span id="duration" #durationDisplay>{{
+                            totalTime
+                          }}</span>
+                        </div>
+                        <!-- <span><a class="text-decoration-none pt-1 pb-1" href="#" target="_blank">Link</a></span> -->
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
             <div class="mt-3">
               <button
                 class="file-upload-btn"
@@ -359,9 +421,9 @@
             <button class="btn btn-primary fw-bold">Save</button>
             <button class="btn btn-info ms-3 fw-bold">Update</button>
             <button class="btn btn-warning ms-3 fw-bold">Reset</button>
-            <button (click)="test()" class="btn btn-warning ms-3 fw-bold">
+            <!-- <button (click)="test()" class="btn btn-warning ms-3 fw-bold">
               Test
-            </button>
+            </button> -->
           </div>
         </form>
       </div>

@@ -166,23 +166,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         distinctUntilChanged(),
         switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
       )
-      .subscribe(async (data) => {
-        // Xử lý kết quả tìm kiếm ở đây
-        // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
-        // this.imageFile = data.content.map((album: Author) => album.image);
-        // this.titleAlbum = data.content.map((album: Author) => album.fullname);
-        // this.Authors = data.content;
-        //
-        // for (const album of this.Authors) {
-        //   if (album.image == null || album.image == '') {
-        //     continue;
-        //   }
-        //   album.image = await this.setImageURLFirebase(album.image);
-        // }
-        // this.total = data.totalPages;
-        // this.visiblePages = this.PageArray(this.page, this.total);
-      });
-    // this.getAllAuthor();
+
   }
 
   displayDataOnTable(page: number, limit: number) {

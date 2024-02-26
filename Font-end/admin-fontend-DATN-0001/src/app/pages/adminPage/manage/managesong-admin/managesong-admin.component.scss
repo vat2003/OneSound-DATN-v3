@@ -1,0 +1,88 @@
+.progress{
+  flex-wrap: wrap;
+  height: 100%;
+  justify-content: center;
+}
+
+.progress{
+  flex-wrap: wrap;
+  height: 100%;
+  justify-content: center;
+}
+.timeslieder {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 300px;
+  height: 5px;
+  padding: 0;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  margin: 10px 20px;
+}
+
+/*thumb*/
+.timeslieder::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-border-radius: 5px;
+  height: 16px;
+  width: 16px;
+  border-radius: 5px;
+  background: rgb(34, 34, 34);
+  border: 1px solid #c5c5c5;
+}
+
+.control-icon i{
+  color:darkcyan;
+}
+.control-icon {
+  color:black;
+  cursor:pointer;
+  transition: 1s;
+}
+.control-icon:hover {
+  color:black;
+}
+
+/*FILE Upload*/
+// .file-upload {
+//     display: -webkit-box;
+//     display: -webkit-flex;
+//     display: -ms-flexbox;
+//     display: flex;
+//     -webkit-box-pack: center;
+//     -webkit-justify-content: center;
+//     -ms-flex-pack: center;
+//     justify-content: center;
+//     -webkit-box-align: center;
+//     -webkit-align-items: center;
+//     -ms-flex-align: center;
+//     align-items: center;
+//     position: relative;
+//     cursor: pointer;
+//     overflow: hidden;
+//     width: 60%;
+//     max-width: 100%;
+//     min-height: 20px;
+//     padding: 15px 10px;
+//     font-size: 1rem;
+//     text-align: center;
+//     color: #ccc;
+//     transition: 1s;
+// }
+// .file-upload:hover {
+// box-shadow: 0px 0px 65px -10px rgba(102,158,255,1);
+// }
+// .file-upload-wrapper .card.card-body input {
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     bottom: 0;
+//     left: 0;
+//     height: 100%;
+//     width: 100%;
+//     opacity: 0;
+//     cursor: pointer;
+//     z-index: 5;
+// }
