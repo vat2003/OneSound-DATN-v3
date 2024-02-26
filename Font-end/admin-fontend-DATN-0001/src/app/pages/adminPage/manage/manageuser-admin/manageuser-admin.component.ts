@@ -10,7 +10,7 @@ import {Role} from '../../adminEntityService/adminEntity/Role/Role';
 import {UpdateUserForAdmin} from '../../adminEntityService/adminEntity/DTO/UpdateUserForAdmin';
 
 
-import {mergeMap, catchError} from 'rxjs/operators';
+import {mergeMap, catchError, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {Subject, of} from 'rxjs';
 
 @Component({
@@ -130,6 +130,15 @@ export class ManageuserAdminComponent implements OnInit {
     this.getAllRole();
 
 
+    this.searchTerms
+    .pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.accountServiceService.getAllAlbumByAuthorByName(term, 0, 10))
+    )
+    .subscribe(async (data) => {
+     
+    });
   }
 
   togglePasswordVisibility() {

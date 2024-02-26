@@ -22,9 +22,9 @@
           </div>
         </div>
         <div class="ms-3">
-          <h6 class="mb-0">Jhon Doe</h6>
+          <h6 class="mb-0">{{ account?.fullname }}</h6>
           <h6 class="mb-0">{{ account?.email }}</h6>
-          <span>Admin</span>
+          <span>{{ account?.accountRole?.name }}</span>
         </div>
       </div>
       <div class="navbar-nav w-100">
