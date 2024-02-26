@@ -35,8 +35,8 @@ export class AuthorService {
     return this.http.get<Author>(this.apiUrl + '/' + id);
   }
 
-  getAuthorByName(id: String): Observable<Author> {
-    return this.http.get<Author>(this.apiUrl + '/name/' + id);
+  getAuthorByName(id: String): Observable<Author[]> {
+    return this.http.get<Author[]>(`${this.apiUrl}/name/${id}`);
   }
 
   getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<AuthorResponse> {

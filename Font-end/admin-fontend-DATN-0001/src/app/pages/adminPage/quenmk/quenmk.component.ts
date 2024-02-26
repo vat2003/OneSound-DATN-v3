@@ -44,12 +44,12 @@ export class QuenmkComponent {
           debugger
           this.userService.guimail1(this.email).subscribe({
             next: (response: any) => {
-              
+
               debugger
               alert("Email sent successfully, please check email to get confirmation code");
             },
             complete: () => {
-              
+
               debugger
             },
             error: (error: any) => {
@@ -69,9 +69,9 @@ export class QuenmkComponent {
         console.error("Error checking email existence");
       }
     });
-  
-   
+
+
   }
-  
-    
+
+
 }

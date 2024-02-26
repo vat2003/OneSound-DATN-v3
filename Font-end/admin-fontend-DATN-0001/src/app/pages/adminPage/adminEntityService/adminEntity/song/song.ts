@@ -1,22 +1,29 @@
 export class Song {
   id!: number;
+  title: string;
   image: string;
-  lyrics: string;
-  name: string;
   path: string;
-  album_id: number;
+  lyrics: string;
+  releaseDate: Date;
+  description: string;
+
 
   constructor(
-    image: string = '',
-    lyrics: string = '',
-    name: string = '',
-    path: string = '',
-    album_id: number = -1111
+      title: string = '',
+      image: string = '',
+      // releaseDate: number = new Date().getFullYear(),
+      releaseDate: Date = new Date(),
+      description: string = '',
+      path:string='',
+      lyrics:string=''
   ) {
-    this.image = image;
-    this.lyrics = lyrics;
-    this.name = name;
-    this.path = path;
-    this.album_id = album_id;
+      this.title = title;
+      this.image = image;
+      this.releaseDate = releaseDate;
+      // this.albumcreateDate = albumcreateDate;
+      this.description = description;
+      this.path=path;
+      this.lyrics=lyrics;
   }
+
 }

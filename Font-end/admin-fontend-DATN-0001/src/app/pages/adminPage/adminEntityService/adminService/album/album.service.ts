@@ -30,9 +30,15 @@ export class AlbumService {
     return this.httpClient.get<Album[]>(`${this.baseURL}`);
   }
 
-  getAllAlbumsByName(name: string): Observable<Album> {
-    return this.httpClient.get<Album>(this.baseURL + '/name/' + name);
+  getAllAlbumsByName(name: string): Observable<Album[]> {
+    return this.httpClient.get<Album[]>(`${this.baseURL}/name/${name}`);
   }
+
+///album/name/{name}
+
+  // getAllAlbumsByName(name: string): Observable<Album> {
+  //   return this.httpClient.get<Album>(this.baseURL + '/name/' + name);
+  // }
 
   getAllAlbumByAlbumTitle(title: string, page: number, size: number): Observable<AlbumResponse> {
     const params = new HttpParams()

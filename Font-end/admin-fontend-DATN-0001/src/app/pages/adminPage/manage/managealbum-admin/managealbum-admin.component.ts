@@ -678,4 +678,5 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
 
+
 }

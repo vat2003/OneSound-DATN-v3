@@ -166,9 +166,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         distinctUntilChanged(),
         switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
       )
-      .subscribe(async (data) => {
-       
-      });
   }
 
   displayDataOnTable(page: number, limit: number) {
