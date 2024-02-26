@@ -7,6 +7,7 @@ import { account } from '../../adminEntityService/adminEntity/account/account';
 import { TokenService } from '../../adminEntityService/adminService/token.service';
 import { UpdateUserDTO } from '../../adminEntityService/adminEntity/DTO/update.user.dto';
 import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
+import { NgToastModule, NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-manageprofile-admin',
@@ -15,6 +16,7 @@ import { FirebaseStorageCrudService } from '../../../../services/firebase-storag
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    NgToastModule,
   ],
   templateUrl: './manageprofile-admin.component.html',
   styleUrl: './manageprofile-admin.component.scss'
@@ -36,11 +38,13 @@ export class ManageprofileAdminComponent implements OnInit {
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef, private firebaseStorage: FirebaseStorageCrudService,
+    private toast: NgToastService,
 
 
   ) {
     this.userProfileForm = this.formBuilder.group({
-      fullname: [''],
+      // fullname: [''],
+      fullname: ['', [Validators.required, Validators.maxLength(50)]],
       id: [''],
       email: [''],
       address: [''],
@@ -81,7 +85,6 @@ export class ManageprofileAdminComponent implements OnInit {
       gender: this.userProfileForm.get('gender')?.value,
       createdDate: this.userProfileForm.get('createdDate')?.value,
       role_id: this.userProfileForm.get('role_id')?.value
-      // role_id: 1
     };
     // //Trong lúc lưu đối tượng vào Database thì đồng thời Set path và file ảnh lên Firebase
     // if (this.imageFile) {
@@ -91,6 +94,12 @@ export class ManageprofileAdminComponent implements OnInit {
     //   );
     //   updateUserDTO.avatar_url = 'adminManageImage/profile/' + this.imageFile.name;
     //   console.log('UPLOAD IMG FILE ==> adminManageImage/profile/' + this.imageFile.name);
+    if (this.userProfileForm.get('fullname')?.value === null || this.userProfileForm.get('fullname')?.value.trim() === '') {
+      alert('Full name cannot be empty.');
+      return; // Stop the function execution if full name is empty
+    }
+
+
     this.userService.UpdateProfile(updateUserDTO)
       .subscribe({
 
@@ -103,9 +112,14 @@ export class ManageprofileAdminComponent implements OnInit {
           //   );
           // }
           // debugger
+        
           this.router.navigate(['/onesound/dangnhap']);
           console.log(response);
+        
           alert('update profile successfully');
+
+          
+         
         },
         error: (error: any) => {
           debugger

@@ -43,9 +43,6 @@ export class ChangePasswordComponent {
     this.route.queryParams.subscribe(params => {
       this.userEmail = params['a'];
     });
-
-
-
   }
 
   toggleShowRePassword() {
@@ -61,8 +58,74 @@ export class ChangePasswordComponent {
     return token.substring(emailStartIndex);
   }
 
-  register() {
+  // register() {
 
+  //   const url = window.location.href;
+  //   const startIndex = url.indexOf('/changepassword/') + '/changepassword/'.length;
+  //   const endIndex = url.indexOf('?a=');
+
+  //   if (startIndex !== -1 && endIndex !== -1) {
+  //     const test = url.substring(startIndex, endIndex);
+  //     this.tokenn = this.extractEmailFromToken(test);
+
+  //     this.userService.getchecktokem(this.tokenn).subscribe({
+  //       next: (response: any) => {
+  //         debugger
+  //         alert("tokenn  successfully" + this.tokenn);
+  //         console.log(response);
+
+  //         const login: login = {
+  //           email: this.userEmail,
+  //           password: this.password
+
+  //         };
+  //         debugger
+  //         this.userService.HamDoiMatKhauCuaQuenMatKhau(response.message,login).subscribe({
+  //           next: (response: any) => {
+  //             debugger
+  //             alert("đổi thành công" + response);
+  //             console.log(response);
+  //           },
+  //           complete: () => {
+  //             debugger
+  //           },
+  //           error: (error: any) => {
+  //             debugger
+  //             alert("Thất bại" + error);
+  //           }
+  //         });
+
+  //       },
+  //       complete: () => {
+  //         debugger
+  //       },
+  //       error: (error: any) => {
+  //         debugger
+  //         alert("Thất bại" + error);
+  //       }
+  //     });
+
+
+  //   } else {
+  //     console.error('Token not found in the URL.');
+  //   }
+
+
+
+
+  // }
+
+  register() {
+    if (!this.password || !this.retypePassword) {
+      alert("Please enter both password and retype password.");
+      return;
+    }
+    
+    if (this.password !== this.retypePassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+    
     const url = window.location.href;
     const startIndex = url.indexOf('/changepassword/') + '/changepassword/'.length;
     const endIndex = url.indexOf('?a=');
@@ -74,27 +137,24 @@ export class ChangePasswordComponent {
       this.userService.getchecktokem(this.tokenn).subscribe({
         next: (response: any) => {
           debugger
-          alert("tokenn  successfully" + this.tokenn);
+          alert("Token successfully");
           console.log(response);
-
           const login: login = {
             email: this.userEmail,
             password: this.password
-
           };
-          debugger
-          this.userService.HamDoiMatKhauCuaQuenMatKhau(response.message,login).subscribe({
+
+          this.userService.HamDoiMatKhauCuaQuenMatKhau(response.message, login).subscribe({
             next: (response: any) => {
               debugger
-              alert("đổi thành công" + response);
-              console.log(response);
+              alert("Change successful");
             },
             complete: () => {
               debugger
             },
             error: (error: any) => {
               debugger
-              alert("Thất bại" + error);
+              alert("Failed");
             }
           });
 
@@ -104,30 +164,12 @@ export class ChangePasswordComponent {
         },
         error: (error: any) => {
           debugger
-          alert("Thất bại" + error);
+          alert("Failed");
         }
       });
-
-
     } else {
-      // Xử lý trường hợp không tìm thấy đoạn token trong URL
       console.error('Token not found in the URL.');
     }
-
-
-    // if (this.registerForm.invalid) {
-    //   console.log("Form is invalid");
-    //   alert("PLEASE FILL UP THE FORM!");
-    //   return;
-    // }
-
-    // if (this.password !== this.retypePassword) {
-    //   alert("The password does not match");
-    //   return;
-    // }
-
-
-
   }
 
 }

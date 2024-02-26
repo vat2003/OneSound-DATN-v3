@@ -1,3 +1,4 @@
+<ng-toast></ng-toast>
 <div class="container-fluid pt-4 px-4">
   <div class="d-flex align-items-center justify-content-center g-4">
     <div class="col-sm-2 col-xl-6">
@@ -26,22 +27,19 @@
             <input type="date" formControlName="createdDate" class="form-control">
           </div>
 
-          <!-- <div class="mb-3"> -->
-          <!-- <label for="" class="form-label">ROLE</label> -->
+
           <input type="text" hidden class="form-control" [value]="userProfileForm.get('role_id')?.value">
-          <!-- </div> -->
+
 
           <div class="mb-3">
             <label class="form-label">Gender</label> <br>
             <div class="form-check form-check-inline">
-              <!-- <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="true"
-                [checked]="userProfileForm.get('gender')?.value == true"> -->
+
               <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio1" value="true">
               <label class="form-check-label" for="inlineRadio1">Female</label>
             </div>
             <div class="form-check form-check-inline">
-              <!-- <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="false"
-                [checked]="userProfileForm.get('gender')?.value == false"> -->
+
 
               <input class="form-check-input" type="radio" formControlName="gender" id="inlineRadio2" value="false"
                 [checked]="userProfileForm.get('gender')?.value === 'false'">

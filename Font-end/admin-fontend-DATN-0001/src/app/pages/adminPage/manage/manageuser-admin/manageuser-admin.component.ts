@@ -11,7 +11,7 @@ import {UpdateUserForAdmin} from '../../adminEntityService/adminEntity/DTO/Updat
 
 
 import {mergeMap, catchError} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {Subject, of} from 'rxjs';
 
 @Component({
   selector: 'app-manageuser-admin',
@@ -23,7 +23,6 @@ import {of} from 'rxjs';
 })
 export class ManageuserAdminComponent implements OnInit {
   id!: number;
-  // UpdateUserForAdmin: UpdateUserForAdmin =createUpdateUserForAdmin();
   Account: account = createAccount();
   Accounts: account[] = [];
   imageUrl: string = '';
@@ -43,6 +42,12 @@ export class ManageuserAdminComponent implements OnInit {
   itempage: number = 1;
   selectedUser: account = createAccount();
 
+  searchTerm: string = '';
+  titleAlbum: string[] = [];
+
+  private searchTerms = new Subject<string>();
+
+
 
   constructor(
     private accountServiceService: accountServiceService,
@@ -52,7 +57,6 @@ export class ManageuserAdminComponent implements OnInit {
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
     private RoleService: RoleService,
-    private userService: accountServiceService,
   ) {
 
 
@@ -79,7 +83,6 @@ export class ManageuserAdminComponent implements OnInit {
         }
         this.total = data.totalPages;
         this.visiblePages = this.PageArray(this.page, this.total);
-
       }
     );
   }
@@ -309,15 +312,18 @@ export class ManageuserAdminComponent implements OnInit {
 
 
   saveUsers() {
+    debugger
     this.Account.avatar_url = this.setImageUrl;
+   alert(this.Account)
     this.accountServiceService.createAccount(this.Account).subscribe(
       async (data) => {
+        debugger
         this.goToUserList();
         console.log("Update successfully");
         alert('Update successfully');
       },
       (error) => {
-
+        debugger
         console.log("FAILED" + error);
         alert('Update failed');
 
@@ -362,4 +368,24 @@ export class ManageuserAdminComponent implements OnInit {
       alert('Delete was denied!');
     }
   }
+
+  search(): void {
+    const searchTermLowerCase = this.searchTerm.trim().toLowerCase();
+
+    this.Accounts = this.Accounts.filter(singers =>
+      singers.fullname.toLowerCase().includes(searchTermLowerCase) ||
+      singers.email.toLowerCase().includes(searchTermLowerCase)
+    );
+
+
+    if (searchTermLowerCase == '') {
+      this.getAllUsers(0, 100);
+    }
+  }
+
+  onKey(event: any): void {
+    this.searchTerms.next(event.target.value);
+  }
+
+  
 }

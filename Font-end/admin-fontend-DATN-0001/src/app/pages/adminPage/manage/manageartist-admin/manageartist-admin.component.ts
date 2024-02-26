@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-crud.service";
 import {read} from 'node:fs';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
+import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-manageartist-admin',
@@ -30,6 +31,11 @@ export class ManageartistAdminComponent {
   localStorage?: Storage;
   page: number = 1;
   itempage: number = 4;
+  errorFieldsArr: String[] = [];
+  searchTerm: string = '';
+  titleAlbum: string[] = [];
+
+  private searchTerms = new Subject<string>();
 
 
   constructor(
@@ -50,6 +56,16 @@ export class ManageartistAdminComponent {
     this.loadSingers(0, 10);
     this.loadSingerById();
     this.getArtist(this.id);
+
+    this.searchTerms
+    .pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.singerService.getAllAlbumByAuthorByName(term, 0, 10))
+    )
+    .subscribe(async (data) => {
+     
+    });
   }
 
   loadSingers(page: number, limit: number) {
@@ -58,6 +74,9 @@ export class ManageartistAdminComponent {
       async (data) => {
         debugger
         console.log(data);
+        this.imageFile = data.content.map((album: Singer) => album.image);
+        this.titleAlbum = data.content.map((album: Singer) => album.fullname);
+      
         this.singers = data.content;
 
         for (const singer of this.singers) {
@@ -146,15 +165,41 @@ export class ManageartistAdminComponent {
   }
 
   saveSinger() {
+    debugger
+    // this.singer.image = this.setImageUrl;
+    // if (!this.setImageUrl || !this.imageFile) {
+    //   this.singer.image = 'adminManageImage/genre/null.jpg';
+    // }
+    // debugger
+
     this.singer.image = this.setImageUrl;
-    if (!this.setImageUrl || !this.imageFile) {
-      this.singer.image = 'adminManageImage/genre/null.jpg';
+    this.errorFieldsArr = this.validateGenreEmpty(this.singer);
+    if (this.errorFieldsArr.length !== 0) {
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Please complete all information',
+        duration: 5000,
+      });
+      return;
+    }
+    if (this.isNameExistsInArray(this.singer)) {
+      // alert('The name of the music genre already exists');
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Name is exists',
+        duration: 5000,
+      });
+      this.errorFieldsArr.push('existGenreName');
+      return;
     }
     this.singerService.createArtist(this.singer).subscribe(
+      
       async (data) => {
+        debugger
         if (this.imageFile) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
+
         this.singer = new Singer();
         this.removeUpload();
         this.goToSingerList();
@@ -164,6 +209,7 @@ export class ManageartistAdminComponent {
 
       },
       (error) => {
+        debugger
         this.toast.error({detail: 'Error Message', summary: 'Adding failed', duration: 3000});
         console.log(error)
       }
@@ -303,5 +349,40 @@ export class ManageartistAdminComponent {
       return 'null';
     }
   }
+  validateGenreEmpty(valueCheck: any): string[] {
+    const errorFieldsArr: string[] = [];
+    for (const key in valueCheck) {
+      if (valueCheck.hasOwnProperty(key)) {
+        if (!valueCheck[key]) {
+          //valueCheck[key] là giá trị
+          //key là tên thuộc tính
+          errorFieldsArr.push(key);
+        }
+      }
+    }
+    //return nếu không lỗi
+    return errorFieldsArr;
+  }
 
+  isNameExistsInArray(singerCheck: Singer): boolean {
+    return this.singers.some((singer) => singer.fullname === singerCheck.fullname);
+  }
+
+  
+  search(): void {
+    const searchTermLowerCase = this.searchTerm.trim().toLowerCase();
+    this.singers = this.singers.filter(singers =>
+      singers.fullname.toLowerCase().includes(searchTermLowerCase) ||
+      singers.description.toLowerCase().includes(searchTermLowerCase)
+    );
+
+
+    if (searchTermLowerCase == '') {
+      this.loadSingers(0, 5);
+    }
+  }
+
+  onKey(event: any): void {
+    this.searchTerms.next(event.target.value);
+  }
 }

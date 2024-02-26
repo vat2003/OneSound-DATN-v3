@@ -4,6 +4,7 @@
     <div class="col-sm-12 col-xl-12">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4 text-uppercase">User management</h6>
+
         <form (ngSubmit)="onSubmit()">
           <div class="mb-3">
             <input type="text" class="form-control" hidden [(ngModel)]="Account.id" name="id" />
@@ -11,16 +12,12 @@
           <div class="mb-3">
             <label class="form-label">Fullname</label>
             <input type="text" class="form-control" [(ngModel)]="Account.fullname" name="fullname" />
+
           </div>
           <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" [(ngModel)]="Account.email" name="email" id="email" />
           </div>
-
-          <!-- <div class="mb-3">
-            <label class="form-label">Phone number</label>
-            <input type="text" class="form-control" [(ngModel)]="Account.Phone" name="Phone" />
-          </div> -->
 
           <div class="mb-3">
             <label for="birthday" class="form-label">Birthday</label>
@@ -29,16 +26,6 @@
           </div>
 
 
-          <!-- <div class="mb-3">
-            <label class="form-label me-3">Role</label>
-            <div class="btn-group" role="group"> -->
-          <!-- <ng-container *ngFor="let role of Roles">
-            <input type="radio" hidden class="btn-check" [id]="role.id" [value]="role" name="inlineRadioOptions"
-              [(ngModel)]="Account.accountRole" [checked]="Account.accountRole?.id === role.id" />
-            <label class="btn btn-outline-primary mx-2" [for]="role.id">{{ role.name }}</label>
-          </ng-container> -->
-          <!-- </div> -->
-          <!-- </div> -->
 
           <div class="mb-3">
             <label class="form-label">Address</label>
@@ -102,8 +89,11 @@
 
     <div class="col-sm-12 col-xl-12">
       <div class="bg-secondary rounded h-100 p-4">
+        <!-- <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" /> -->
+
         <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
-          placeholder="Search" />
+          placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="search()" (keyup)="onKey($event)" />
         <h6 class="mb-4">USER LIST</h6>
         <table class="table table-hover">
           <thead>

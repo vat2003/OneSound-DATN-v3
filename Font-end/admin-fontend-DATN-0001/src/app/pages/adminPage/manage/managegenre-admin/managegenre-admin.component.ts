@@ -1,25 +1,29 @@
-import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
-import {CommonModule, NgOptimizedImage} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {Genre} from '../../adminEntityService/adminEntity/genre/genre';
-import {GenreServiceService} from '../../adminEntityService/adminService/genre-service.service';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
-import {error, log} from 'console';
-import {NgToastModule, NgToastService} from "ng-angular-popup";
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Genre } from '../../adminEntityService/adminEntity/genre/genre';
+import { GenreServiceService } from '../../adminEntityService/adminService/genre-service.service';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
+import { error, log } from 'console';
+import { NgToastModule, NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-managegenre-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgOptimizedImage, RouterLink, NgToastModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgOptimizedImage,
+    RouterLink,
+    NgToastModule,
+  ],
   templateUrl: './managegenre-admin.component.html',
   styleUrl: './managegenre-admin.component.scss',
 })
 export class ManagegenreAdminComponent implements OnInit {
   id!: number;
   Genre: Genre[] = [];
-  GenresFromData: Genre[] = [];
-  filterName: string = '';
   Genree: Genre = new Genre();
   GenreeByName: any;
   imageUrl: string = '';
@@ -27,13 +31,6 @@ export class ManagegenreAdminComponent implements OnInit {
   imageFile: any;
   submitted = false;
   errorFieldsArr: String[] = [];
-  pages: number[] = [];
-  page: number = 1;
-  total: number = 0;
-  itempage: number = 4;
-  visiblePages: number[] = [];
-  localStorage?: Storage;
-
   constructor(
     private GenreService: GenreServiceService,
     private router: Router,
@@ -42,98 +39,16 @@ export class ManagegenreAdminComponent implements OnInit {
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService
-  ) {
-  }
-
-  Page(page: number) {
-    this.page = page < 0 ? 0 : page;
-    this.localStorage?.setItem('currentProductPage', String(this.page));
-    // this.displayDataOnTable(this.page, this.itempage);
-    this.getListGenresPage(this.page, this.itempage);
-
-  }
-
-  PageArray(page: number, total: number): number[] {
-    const maxVisiblePages = 6;
-    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
-
-    let startPage = Math.max(page - halfVisiblePages, 1);
-    let endPage = Math.min(startPage + maxVisiblePages - 1, total);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
-    }
-
-    return new Array(endPage - startPage + 1).fill(0)
-      .map((_, index) => startPage + index);
-  }
+  ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getListGenresPage(0, 4);
+    this.getListGenresPage();
     this.loadSingerById();
     this.getGenre(this.id);
   }
 
-  resetFileInput(): void {
-    // Đặt lại giá trị của input file
-    const fileInput: any = document.getElementById('fileInput');
-    if (fileInput) {
-      fileInput.value = '';
-    }
-  }
-
   onFileSelected(event: any) {
-    const selectedFile = event.target.files[0];
-    const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
-    //Kiểm tra giới hạn kích thước ảnh
-    if (selectedFile.size > maxSizeInBytes) {
-      alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
-      this.resetFileInput();
-      return;
-    }
-
-    if (selectedFile && !selectedFile.type.startsWith('image/')) {
-      alert('Please select an image file.');
-      this.resetFileInput(); // Hàm này để đặt lại input file sau khi thông báo lỗi
-      return;
-    }
-
-    //Dọc file ảnh
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      const img = new Image();
-      img.src = e.target.result;
-
-      img.onload = () => {
-        const maxW = 800; // chiều rông 800
-        const maxH = 800; // chiều cao 800
-
-        let newW = img.width;
-        let newH = img.height
-
-        if (img.width > maxW) {
-          newW = maxW;
-          newH = (img.height * maxW) / img.width;
-        }
-
-        if (img.height > maxH) {
-          newH = maxH;
-          newW = (img.width * maxH) / img.height;
-        }
-
-        const canvas = document.createElement('canvas');
-        canvas.width = newW;
-        canvas.height = newH;
-        const ctx = canvas.getContext('2d');
-
-        ctx?.drawImage(img, 0, 0, newW, newH);
-
-        const resizedImageData = canvas.toDataURL('image/*')
-
-      }
-    }
-
     const archivoSelectcionado: File = event.target.files[0];
     console.log('FILE OBJECT ==> ', archivoSelectcionado);
     if (archivoSelectcionado) {
@@ -142,14 +57,11 @@ export class ManagegenreAdminComponent implements OnInit {
         this.imageUrl = e.target.result;
         this.fillImage(this.imageUrl);
       };
-      //Set path ảnh theo thư mục
       this.setImageUrl = 'adminManageImage/genre/' + archivoSelectcionado.name;
       this.imageFile = archivoSelectcionado;
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
-      this.setImageUrl = 'adminManageImage/genre/null.jpg';
-
       this.removeUpload();
     }
   }
@@ -177,8 +89,6 @@ export class ManagegenreAdminComponent implements OnInit {
 
   removeUpload(): void {
     this.imageUrl = '';
-    this.setImageUrl = '';
-    // this.imageFile = null;
     this.renderer.setProperty(
       this.el.nativeElement.querySelector('.file-upload-input'),
       'value',
@@ -205,11 +115,10 @@ export class ManagegenreAdminComponent implements OnInit {
     );
   }
 
-  getListGenresPage(page: number, limit: number) {
-    this.GenreService.getListGenres(page, limit).subscribe(async (data) => {
+  getListGenresPage() {
+    this.GenreService.getListGenres(0, 10).subscribe(async (data) => {
       console.log(data);
-      this.GenresFromData = data.content;
-      this.Genre = this.GenresFromData;
+      this.Genre = data.content;
 
       for (const genre of this.Genre) {
         if (genre.image == '' || genre.image == null) {
@@ -217,9 +126,6 @@ export class ManagegenreAdminComponent implements OnInit {
         }
         genre.image = await this.setImageURLFirebase(genre.image);
       }
-      this.total = data.totalPages;
-      this.visiblePages = this.PageArray(this.page, this.total);
-
     });
   }
 
@@ -232,79 +138,88 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   goToSingerList() {
-    this.getListGenresPage(0, 4);
+    this.getListGenresPage();
     this.router.navigate(['/manage/genre']);
   }
 
   saveGenre() {
-    debugger
+    debugger;
+    this.Genree.image = this.setImageUrl;
+    this.errorFieldsArr = this.validateGenreEmpty(this.Genree);
     if (this.errorFieldsArr.length !== 0) {
-      this.toast.warning({detail: 'Warning Message', summary: 'Name is null', duration: 5000});
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Please complete all information',
+        duration: 5000,
+      });
       return;
     }
     if (this.isNameExistsInArray(this.Genree)) {
       // alert('The name of the music genre already exists');
-      this.toast.warning({detail: 'Warning Message', summary: 'Name is exists', duration: 5000});
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Name is exists',
+        duration: 5000,
+      });
       this.errorFieldsArr.push('existGenreName');
       return;
     }
-    //Set path ảnh được chọn từ Func onFileSelected()
-    this.Genree.image = this.setImageUrl;
-    this.errorFieldsArr = this.validateGenreEmpty(this.Genree);
 
-    if (!this.setImageUrl || !this.imageFile) {
-      this.Genree.image = 'adminManageImage/genre/null.jpg';
-    }
     this.GenreService.createGenre(this.Genree).subscribe(
       async (data) => {
-        //Trong lúc lưu đối tượng vào Database thì đồng thời Set path và file ảnh lên Firebase
-        if (this.imageFile) {
+        if (this.Genree.image != null) {
           await this.firebaseStorage.uploadFile(
             'adminManageImage/genre/',
             this.imageFile
           );
         }
-        this.Genree = new Genre();
-        this.removeUpload();
-        //Load lại table
         this.goToSingerList();
         console.log(data);
-        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 3000});
+        this.toast.success({
+          detail: 'Success Message',
+          summary: 'Adding successfully',
+          duration: 3000,
+        });
       },
       (error) => {
         console.log(error);
-        this.toast.error({detail: 'Failed Message', summary: 'Adding failed', duration: 3000});
-
+        this.toast.error({
+          detail: 'Failed Message',
+          summary: 'Adding failed',
+          duration: 3000,
+        });
       }
     );
   }
 
   updateGenre(id: number) {
-    if (this.imageFile) {
-      this.Genree.image = this.setImageUrl;
-    }
-
-    if (!this.imageFile && !this.setImageUrl) {
-      this.Genree.image = 'adminManageImage/genre/null.jpg';
-    }
+    this.Genree.image = this.setImageUrl;
     this.GenreService.updateGenre(id, this.Genree).subscribe(
       async (data) => {
-        if (this.imageFile) {
+        if (this.Genree.image != null && this.Genree.image != 'null') {
           await this.firebaseStorage.uploadFile(
             'adminManageImage/genre/',
             this.imageFile
           );
         }
-        this.Genree = new Genre();
-
         this.goToSingerList();
+        this.Genree = new Genre();
         this.removeUpload();
+        this.goToSingerList();
         console.log(data);
-        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+        this.toast.success({
+          detail: 'Success Message',
+          summary: 'Update successfully',
+          duration: 3000,
+        });
       },
       (error) => {
-        console.log(error)
-        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+        console.log(error);
+        this.toast.error({
+          detail: 'Failed Message',
+          summary: 'Update failed',
+          duration: 3000,
+        });
       }
     );
   }
@@ -313,14 +228,12 @@ export class ManagegenreAdminComponent implements OnInit {
     this.GenreService.getGenre(id).subscribe(
       async (data: Genre) => {
         this.Genree = data;
-        this.setImageUrl = this.Genree.image;
         this.fillImage(await this.setImageURLFirebase(this.Genree.image));
       },
       (error: any) => {
         console.log(error);
       }
     );
-
     // this.Genree = this.router.navigate(['onesound/admin/manage/genre/', id]);
   }
 
@@ -331,8 +244,7 @@ export class ManagegenreAdminComponent implements OnInit {
     if (isConfirmed) {
       this.GenreService.deleteGenre(id).subscribe((data) => {
         console.log(data);
-
-        this.getListGenresPage(0, 4);
+        this.getListGenresPage();
       });
     }
   }
@@ -361,12 +273,6 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   isNameExistsInArray(genreCheck: Genre): boolean {
-    return this.GenresFromData.some((genre) => genre.name === genreCheck.name);
-  }
-
-  filterName_Search() {
-    this.Genre = this.GenresFromData.filter((genre: Genre) => {
-      return genre.name.includes(this.filterName);
-    });
+    return this.Genre.some((genre) => genre.name === genreCheck.name);
   }
 }

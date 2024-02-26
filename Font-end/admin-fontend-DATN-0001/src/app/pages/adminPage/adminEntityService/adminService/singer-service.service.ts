@@ -46,6 +46,13 @@ export class SingerService {
     return this.httpClient.get<SingerResponse>(`${this.baseUrl}/Singers`, { params });
   }
 
+  getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<SingerResponse> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.httpClient.get<SingerResponse>(`${this.baseUrl}/getAuthorByName/${title}`, { params });
+  }
+
 
   createArtist(Singer: Singer): Observable<Object> {
     return this.httpClient.post(`${this.baseUrl}`, Singer);

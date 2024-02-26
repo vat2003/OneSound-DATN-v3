@@ -25,23 +25,53 @@ export class QuenmkComponent {
 
   Quenmk() {
     debugger
-    alert(this.email);
+    if (!this.email) {
+      alert("Please enter email");
+      return;
+    }
 
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    this.userService.guimail1(this.email).subscribe({
-
-      next: (response: any) => {
+    if (!emailPattern.test(this.email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+    debugger
+    this.userService.checkEmailExists(this.email).subscribe({
+      next: (emailExists: boolean) => {
         debugger
-        alert("gui thanh cong" + response);
-      },
-      complete: () => {
-        debugger
+        if (emailExists) {
+          debugger
+          this.userService.guimail1(this.email).subscribe({
+            next: (response: any) => {
+              
+              debugger
+              alert("Email sent successfully, please check email to get confirmation code");
+            },
+            complete: () => {
+              
+              debugger
+            },
+            error: (error: any) => {
+              debugger
+              alert("Email sending failed");
+              console.log(error);
+            }
+          });
+        } else {
+          debugger
+          alert("Could not find email");
+
+        }
       },
       error: (error: any) => {
         debugger
-        alert("profile thất bại" + error);
-        console.log(error);
+        console.error("Error checking email existence");
       }
     });
+  
+   
   }
+  
+    
 }

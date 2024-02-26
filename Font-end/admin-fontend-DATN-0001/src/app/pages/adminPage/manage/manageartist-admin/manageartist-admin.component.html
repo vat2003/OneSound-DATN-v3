@@ -10,13 +10,18 @@
           <div class="form-group mb-3">
             <label for="fullname">Artist name</label>
             <input type="text" class="form-control" id="fullname" name="fullname" [(ngModel)]="singer.fullname">
+
+            <span *ngIf="errorFieldsArr.includes('name')" class="text-warning">*Please enter the
+              music genre name</span>
+            <span *ngIf="errorFieldsArr.includes('existGenreName')" class="text-warning">The name of
+              the music genre
+              already exists</span>
           </div>
           <div class="form-group mb-3">
             <label for="description">Description</label>
             <textarea type="text" class="form-control" id="description" rows="5" name="description"
-                      [(ngModel)]="singer.description"></textarea>
-<!--            <input type="text" class="form-control" id="description" name="description"-->
-<!--                   [(ngModel)]="singer.description">-->
+              [(ngModel)]="singer.description"></textarea>
+
           </div>
 
 
@@ -28,17 +33,17 @@
               </button>
               <div class="image-upload-wrap">
                 <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
-                       accept="image/*"/>
+                  accept="image/*" />
 
                 <div class="drag-text">
                   <h3>Drag and drop a file or select add Image</h3>
                 </div>
               </div>
               <div class="file-upload-content">
-                <img class="file-upload-image" [src]="imageUrl" alt="{{imageUrl}}"/>
+                <img class="file-upload-image" [src]="imageUrl" alt="{{imageUrl}}" />
                 <div class="image-title-wrap">
                   <button type="button" (click)="removeUpload()" class="remove-image">Remove <span
-                    class="image-title">Uploaded Image</span>
+                      class="image-title">Uploaded Image</span>
                   </button>
                 </div>
               </div>
@@ -56,30 +61,32 @@
 
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-3">ARTIST LIST</h6>
+
         <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
-               placeholder="Search"/>
+          placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="search()" (keyup)="onKey($event)" />
         <table class="table table-hover">
+
           <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Arist name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Image</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Arist name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Image</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let singer of singers">
-            <th scope="row">{{ singer.id }}</th>
-            <td>{{ singer.fullname }}</td>
-            <td>{{ singer.description.slice(0, 70) }}</td>
-            <td><img src="{{singer.image }}" width="70" height="70" alt="{{singer.image}}"></td>
+            <tr *ngFor="let singer of singers">
+              <th scope="row">{{ singer.id }}</th>
+              <td>{{ singer.fullname }}</td>
+              <td>{{ singer.description.slice(0, 70) }}</td>
+              <td><img src="{{singer.image }}" width="70" height="70" alt="{{singer.image}}"></td>
 
-            <td>
-              <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-100">Detail</button>
-              <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-100">Delete</button>
-            </td>
-          </tr>
+              <td>
+                <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-100">Detail</button>
+                <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-100">Delete</button>
+              </td>
+            </tr>
 
           </tbody>
         </table>
@@ -117,4 +124,3 @@
   </div>
 </div>
 <!-- Form End -->
-

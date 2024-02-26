@@ -60,6 +60,12 @@ export class accountServiceService {
     return this.http.get<any>(`${this.guimail}/${email}`);
   }
 
+  getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<account> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.httpClient.get<account>(`${this.baseUrl}/getaccountByName/${title}`, { params });
+  }
 
   getchecktokem(token: string): Observable<any> {
     return this.http.get<any>(`${this.checktoken}/${token}`);

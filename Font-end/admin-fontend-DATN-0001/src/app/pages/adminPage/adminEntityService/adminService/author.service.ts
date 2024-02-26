@@ -44,7 +44,6 @@ export class AuthorService {
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get<AuthorResponse>(`${this.apiUrl}/getAuthorByName/${title}`, { params });
-    // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
   }
 
 

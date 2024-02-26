@@ -12,13 +12,12 @@
             <span *ngIf="errorFieldsArr.includes('title')" class="text-warning">*Please enter the
               album title</span>
           </div>
+
           <div class=" mb-3">
             <label for="floatingSelect">Release year</label>
             <select class="form-select year" id="year" name="year" [(ngModel)]="album.releaseYear"
               aria-label="Floating label select example">
-
             </select>
-
           </div>
 
           <div class="mb-3">
@@ -62,7 +61,7 @@
             <label for="exampleInputEmail1" class="form-label">Singer</label>
             <!-- <input #searchSinger type="text" class="form-control mb-4 border-light border-2"
               style="border-radius: 20px;" placeholder="Search"> -->
-              
+
             <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px;"
               placeholder="Search" matInput [matAutocomplete]="auto" [formControl]="formcontrol" />
             <mat-autocomplete autoActiveFirstOption #auto>
@@ -121,22 +120,8 @@
               <th scope="col">IMAGE</th>
               <th scope="col">TITLE</th>
               <th scope="col">RELEASE YEAR</th>
-
-
-
             </tr>
           </thead>
-          <!-- <tbody>
-            <tr *ngFor="let album of albums; let i = index">
-              <th scope="row">{{ i + 1 }}</th>
-              <td><img src="{{album.image }}" width="70" height="70" alt="{{album.image}}"></td>
-              <td>{{ album.title}}</td>
-              <td>{{ album.releaseYear}}</td>
-              <td>
-                <button (click)="getAlbum(album.id)" class="btn btn-outline-info w-50">Detail</button>
-                <button (click)="deleteAlbum(album.id)" class="btn btn-outline-danger w-50">Delete</button>
-              </td>
-            </tr> -->
           <tbody *ngIf="albums.length > 0; else noDataMessage">
             <tr *ngFor="let album of albums; let i = index">
               <th scope="row">{{ i + 1 }}</th>

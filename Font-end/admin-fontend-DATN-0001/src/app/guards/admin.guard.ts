@@ -31,6 +31,7 @@ export class AdminGuard {
       return true;
     } else {
       debugger
+      alert("không phải là admin xin hãy đăng nhập")
       this.router.navigate(['/onesound/signin']);
       return false;
     }

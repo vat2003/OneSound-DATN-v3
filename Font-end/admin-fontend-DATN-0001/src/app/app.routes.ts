@@ -1,7 +1,6 @@
 
 import { Routes } from '@angular/router';
-import { SigninComponent } from './pages/adminPage/signin/signin.component';
-import { SignupComponent } from './pages/adminPage/signup/signup.component';
+  
 import { BlankComponent } from './pages/adminPage/blank/blank.component';
 import { Notfound404Component } from './pages/adminPage/notfound404/notfound404.component';
 import { HomeComponent } from './pages/adminPage/home/home.component';
@@ -12,7 +11,6 @@ import { ManagesongAdminComponent } from './pages/adminPage/manage/managesong-ad
 import { ManageuserAdminComponent } from './pages/adminPage/manage/manageuser-admin/manageuser-admin.component';
 import { ChartComponent } from './pages/adminPage/chart/chart.component';
 import { ManageimageAdminComponent } from './pages/adminPage/manage/manageimage-admin/manageimage-admin.component';
-import { ForgotpasswordComponent } from './pages/adminPage/forgotpassword/forgotpassword.component';
 import { ChangePasswordComponent } from './pages/adminPage/change-password/change-password.component';
 import { ManageprofileAdminComponent } from './pages/adminPage/manage/manageprofile-admin/manageprofile-admin.component';
 import { LoginneComponent } from './pages/adminPage/loginne/loginne.component';
@@ -49,7 +47,7 @@ export const routes: Routes = [
       { path: 'manage/album', component: ManagealbumAdminComponent },
       { path: 'manage/artist', component: ManageartistAdminComponent },
       { path: 'manage/genre', component: ManagegenreAdminComponent },
-      // { path: 'manage/profile', component: ManageprofileAdminComponent },
+      { path: 'manage/profile', component: ManageprofileAdminComponent },
       { path: 'manage/author', component: ManageauthorComponent },
       { path: 'manage/report', component:  ReportComponent},
       {
@@ -77,7 +75,7 @@ export const routes: Routes = [
       { path: 'explore', component: UserExploreComponent },
       { path: 'playsong', component: UserPlaysongComponent },
       { path: 'profile/:id', component: UserProfileComponent },
-      { path: 'profile', component: ManageprofileAdminComponent },
+      // { path: 'profile', component: ManageprofileAdminComponent },
     ],
   },
 ];

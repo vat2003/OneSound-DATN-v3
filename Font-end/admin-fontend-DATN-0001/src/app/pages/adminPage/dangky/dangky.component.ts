@@ -48,13 +48,85 @@ export class DangkyComponent {
   }
 
 
+  // register() {
+  //   debugger
+  //   // Kiểm tra tính hợp lệ của các trường
+  //   if (this.registerForm.valid) {
+  //     // Nếu tất cả các trường hợp lệ, tiến hành đăng ký
+  //     const registerData: Register = {
+
+  //       fullname: this.fullname,
+  //       email: this.email,
+  //       password: this.password,
+  //       retype_password: this.retypePassword,
+  //       gender: this.gender,
+  //       active: this.active,
+  //       createdDate: this.createdDate,
+  //       role_id: 1
+  //     };
+
+  //     // Gửi yêu cầu kiểm tra email tồn tại trước khi đăng ký
+  //     this.userService.checkEmailExists(this.email).subscribe({
+  //       next: (emailExists: boolean) => {
+  //         debugger
+  //         if (emailExists) {
+  //           alert("Email already exists. Please use a different email.");
+  //         } else {
+  //           this.userService.register(registerData).subscribe({
+  //             next: (response: any) => {
+  //               debugger
+  //               alert("Sign up successfully");
+  //               console.log(response);
+  //               this.router.navigate(['onesound/dangnhap']);
+  //               return;
+  //             },
+  //             complete: () => {
+  //               debugger
+  //             },
+  //             error: (error: any) => {
+  //               debugger
+  //               alert("Thất bại");
+  //             }
+  //           });
+  //         }
+  //       },
+  //       error: (error: any) => {
+  //         console.error("Error checking email existence", error);
+  //       }
+  //     });
+
+  //   } else {
+  //     alert("vui lòng không để trống các thông tin người dùng");
+  //   }
+  // }
+
   register() {
     debugger
     // Kiểm tra tính hợp lệ của các trường
     if (this.registerForm.valid) {
-      // Nếu tất cả các trường hợp lệ, tiến hành đăng ký
+      debugger
+      // Kiểm tra xem các trường thông tin có rỗng không
+      if (
+        !this.email ||
+        !this.password ||
+        !this.retypePassword ||
+        !this.fullname||
+        !this.createdDate
+      ) {
+        debugger
+        alert("Vui lòng điền đầy đủ thông tin người dùng.");
+        return;
+      }
+      debugger
+      // Kiểm tra xem mật khẩu có trùng khớp không
+      if (this.password !== this.retypePassword) {
+        alert("Mật khẩu không trùng khớp");
+        return;
+      }
+  
+      // Tạo đối tượng dữ liệu đăng ký
+      debugger
       const registerData: Register = {
-
         fullname: this.fullname,
         email: this.email,
         password: this.password,
@@ -64,41 +136,39 @@ export class DangkyComponent {
         createdDate: this.createdDate,
         role_id: 1
       };
-
+  debugger
       // Gửi yêu cầu kiểm tra email tồn tại trước khi đăng ký
       this.userService.checkEmailExists(this.email).subscribe({
         next: (emailExists: boolean) => {
-          debugger
           if (emailExists) {
-            alert("Email already exists. Please use a different email.");
+            alert("Email đã tồn tại. Vui lòng sử dụng email khác.");
           } else {
+            // Nếu không có vấn đề gì, tiến hành đăng ký
             this.userService.register(registerData).subscribe({
               next: (response: any) => {
-                debugger
-                alert("Sign up successfully");
+                alert("Đăng ký thành công");
                 console.log(response);
                 this.router.navigate(['onesound/dangnhap']);
-                return;
               },
               complete: () => {
-                debugger
               },
               error: (error: any) => {
-                debugger
                 alert("Thất bại");
+                console.error(error);
               }
             });
           }
         },
         error: (error: any) => {
-          console.error("Error checking email existence", error);
+          console.error("Lỗi kiểm tra sự tồn tại của email", error);
         }
       });
-
+  
     } else {
-      alert("vui lòng không để trống các thông tin người dùng");
+      alert("Vui lòng không để trống các thông tin người dùng");
     }
   }
+  
 
 
 
