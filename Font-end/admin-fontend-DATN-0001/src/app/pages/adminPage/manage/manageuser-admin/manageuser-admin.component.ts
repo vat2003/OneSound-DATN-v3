@@ -1,8 +1,8 @@
 import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
-import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {account, createAccount} from '../../adminEntityService/adminEntity/account/account';
 import {CommonModule, DatePipe, NgOptimizedImage} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, NgForm} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
 import {RoleService} from '../../adminEntityService/adminService/role.service';
@@ -22,6 +22,7 @@ import {Subject, of} from 'rxjs';
   styleUrl: './manageuser-admin.component.scss'
 })
 export class ManageuserAdminComponent implements OnInit {
+  @ViewChild('registerForm') registerForm!: NgForm;
   id!: number;
   Account: account = createAccount();
   Accounts: account[] = [];
@@ -41,12 +42,11 @@ export class ManageuserAdminComponent implements OnInit {
   // itempage: number = 2;
   itempage: number = 1;
   selectedUser: account = createAccount();
-
+  createdDate: Date | undefined;
   searchTerm: string = '';
   titleAlbum: string[] = [];
 
   private searchTerms = new Subject<string>();
-
 
 
   constructor(
@@ -131,14 +131,14 @@ export class ManageuserAdminComponent implements OnInit {
 
 
     this.searchTerms
-    .pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap((term: string) => this.accountServiceService.getAllAlbumByAuthorByName(term, 0, 10))
-    )
-    .subscribe(async (data) => {
-     
-    });
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term: string) => this.accountServiceService.getAllAlbumByAuthorByName(term, 0, 10))
+      )
+      .subscribe(async (data) => {
+
+      });
   }
 
   togglePasswordVisibility() {
@@ -241,10 +241,44 @@ export class ManageuserAdminComponent implements OnInit {
     return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
   }
 
+  checkAge() {
+    if (this.createdDate) {
+      const today = new Date();
+      const birthDate = new Date(this.createdDate);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+
+      if (age < 18) {
+        this.registerForm.form.controls['dateOfBirth'].setErrors({'invalidAge': true});
+      } else {
+        this.registerForm.form.controls['dateOfBirth'].setErrors(null);
+      }
+    }
+  }
+
   updateUser() {
+    debugger
+    if (this.registerForm.valid) {
+      if (!this.Account.fullname
+        || !this.Account.email
+        || !this.Account.address
+        || !this.Account.birthday
 
+
+      ) {
+        alert("Vui lòng điền đầy đủ thông tin người dùng.");
+        return;
+      }
+    }
+
+    debugger
     if (this.Account.id !== undefined) {
-
+      if(this.Account.birthday == undefined){
+        alert("Please fill up the form!"); return;
+      }
       const datePipe = new DatePipe('en-US');
       const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
 
@@ -260,7 +294,7 @@ export class ManageuserAdminComponent implements OnInit {
         createdDate: formattedDate,
         accountRole: this.Account.accountRole
       };
-
+      debugger
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
 
@@ -270,11 +304,11 @@ export class ManageuserAdminComponent implements OnInit {
           console.log(error);
         }
       );
-
+      debugger
       if (UpdateUserForAdmin.active == false) {
-        const shouldLock = window.confirm("Bạn có muốn khoá tài khoản không?");
+        const shouldLock = window.confirm("Do you want to block your account?");
         if (shouldLock) {
-          this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị  Khoá", UpdateUserForAdmin.email).subscribe(
+          this.accountServiceService.hot("Your account has been locked", UpdateUserForAdmin.email).subscribe(
             async (data) => {
               debugger
               console.log(data);
@@ -286,15 +320,15 @@ export class ManageuserAdminComponent implements OnInit {
             }
           );
         } else {
-          console.log("huỷ thao tác khoá");
+          console.log("Cancel the lock operation");
           return;
         }
 
       } else {
-        const shouldLock = window.confirm("Bạn có muốn mở tài khoản không?");
+        const shouldLock = window.confirm("Do you want to active this account?");
         if (shouldLock) {
           debugger
-          this.accountServiceService.hot("Tài Khoản Của Bạn Đã Được Mở Khoá", UpdateUserForAdmin.email).subscribe(
+          this.accountServiceService.hot("Your account has been unlocked", UpdateUserForAdmin.email).subscribe(
             async (data) => {
               debugger
               //  this.ngOnInit();
@@ -308,7 +342,7 @@ export class ManageuserAdminComponent implements OnInit {
             }
           );
         } else {
-          alert("huỷ thao tác mở")
+          alert("cancel the open operation")
           return
         }
 
@@ -321,9 +355,11 @@ export class ManageuserAdminComponent implements OnInit {
 
 
   saveUsers() {
+
+
     debugger
     this.Account.avatar_url = this.setImageUrl;
-   alert(this.Account)
+    alert(this.Account)
     this.accountServiceService.createAccount(this.Account).subscribe(
       async (data) => {
         debugger
@@ -373,7 +409,7 @@ export class ManageuserAdminComponent implements OnInit {
             this.getAllUsers(0, 10);
           }
         });
-    }else {
+    } else {
       alert('Delete was denied!');
     }
   }
@@ -396,5 +432,5 @@ export class ManageuserAdminComponent implements OnInit {
     this.searchTerms.next(event.target.value);
   }
 
-  
+
 }

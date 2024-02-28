@@ -1,9 +1,9 @@
-import { NgClass, NgIf } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
-import { Register } from '../adminEntityService/adminEntity/DTO/Register';
+import {NgClass, NgIf} from '@angular/common';
+import {Component, ViewChild} from '@angular/core';
+import {FormsModule, NgForm} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
+import {Register} from '../adminEntityService/adminEntity/DTO/Register';
 
 @Component({
   selector: 'app-dangky',
@@ -110,7 +110,7 @@ export class DangkyComponent {
         !this.email ||
         !this.password ||
         !this.retypePassword ||
-        !this.fullname||
+        !this.fullname ||
         !this.createdDate
       ) {
         debugger
@@ -123,7 +123,7 @@ export class DangkyComponent {
         alert("Mật khẩu không trùng khớp");
         return;
       }
-  
+
       // Tạo đối tượng dữ liệu đăng ký
       debugger
       const registerData: Register = {
@@ -136,7 +136,7 @@ export class DangkyComponent {
         createdDate: this.createdDate,
         role_id: 1
       };
-  debugger
+      debugger
       // Gửi yêu cầu kiểm tra email tồn tại trước khi đăng ký
       this.userService.checkEmailExists(this.email).subscribe({
         next: (emailExists: boolean) => {
@@ -163,13 +163,11 @@ export class DangkyComponent {
           console.error("Lỗi kiểm tra sự tồn tại của email", error);
         }
       });
-  
+
     } else {
       alert("Vui lòng không để trống các thông tin người dùng");
     }
   }
-  
-
 
 
   checkAge() {
@@ -183,7 +181,7 @@ export class DangkyComponent {
       }
 
       if (age < 18) {
-        this.registerForm.form.controls['dateOfBirth'].setErrors({ 'invalidAge': true });
+        this.registerForm.form.controls['dateOfBirth'].setErrors({'invalidAge': true});
       } else {
         this.registerForm.form.controls['dateOfBirth'].setErrors(null);
       }
