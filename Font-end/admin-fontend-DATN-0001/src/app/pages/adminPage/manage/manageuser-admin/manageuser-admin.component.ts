@@ -2,7 +2,7 @@ import {accountServiceService} from '../../adminEntityService/adminService/accou
 import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {account, createAccount} from '../../adminEntityService/adminEntity/account/account';
 import {CommonModule, DatePipe, NgOptimizedImage} from '@angular/common';
-import {FormsModule, NgForm} from '@angular/forms';
+import {FormsModule, NgForm, ReactiveFormsModule} from '@angular/forms';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
 import {RoleService} from '../../adminEntityService/adminService/role.service';
@@ -12,12 +12,13 @@ import {UpdateUserForAdmin} from '../../adminEntityService/adminEntity/DTO/Updat
 
 import {mergeMap, catchError, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {Subject, of} from 'rxjs';
+import {NgToastModule, NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-manageuser-admin',
   standalone: true,
   imports: [CommonModule, FormsModule, NgOptimizedImage,
-    RouterLink],
+    RouterLink, NgToastModule, ReactiveFormsModule],
   templateUrl: './manageuser-admin.component.html',
   styleUrl: './manageuser-admin.component.scss'
 })
@@ -42,9 +43,10 @@ export class ManageuserAdminComponent implements OnInit {
   itempage: number = 1;
   selectedUser: account = createAccount();
   createdDate: Date | undefined;
+  birthday: Date;
   searchTerm: string = '';
   titleAlbum: string[] = [];
-
+  activeStatus: boolean = true;
   private searchTerms = new Subject<string>();
 
 
@@ -56,8 +58,11 @@ export class ManageuserAdminComponent implements OnInit {
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
     private RoleService: RoleService,
+    private toast: NgToastService
   ) {
-
+    this.createdDate = new Date();
+    this.birthday = new Date();
+    this.birthday.setFullYear(this.createdDate.getFullYear() - 18);
 
   }
 
@@ -125,19 +130,11 @@ export class ManageuserAdminComponent implements OnInit {
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.getAllUsers(0, 10);
-
+    this.loadUserById();
+    this.view(this.id);
     this.getAllRole();
+    this.activeStatus = this.registerForm.form.controls['active'].value;
 
-
-    this.searchTerms
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((term: string) => this.accountServiceService.getAllAlbumByAuthorByName(term, 0, 10))
-      )
-      .subscribe(async (data) => {
-
-      });
   }
 
   togglePasswordVisibility() {
@@ -154,28 +151,101 @@ export class ManageuserAdminComponent implements OnInit {
 
   }
 
+  resetFileInput(): void {
+    // Đặt lại giá trị của input file
+    const fileInput: any = document.getElementById('fileInput');
+    if (fileInput) {
+      fileInput.value = '';
+    }
+  }
+
   onFileSelected(event: any) {
+    const selectedFile = event.target.files[0];
+    const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
+    //Kiểm tra giới hạn kích thước ảnh
+    if (selectedFile.size > maxSizeInBytes) {
+      alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      this.resetFileInput();
+      return;
+    }
+
+    if (selectedFile && !selectedFile.type.startsWith('image/')) {
+      alert('Please select an image file.');
+      this.resetFileInput(); // Hàm này để đặt lại input file sau khi thông báo lỗi
+      return;
+    }
+
+    //Dọc file ảnh
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      const img = new Image();
+      img.src = e.target.result;
+
+      img.onload = () => {
+        const maxW = 800; // chiều rông 800
+        const maxH = 800; // chiều cao 800
+
+        let newW = img.width;
+        let newH = img.height
+
+        if (img.width > maxW) {
+          newW = maxW;
+          newH = (img.height * maxW) / img.width;
+        }
+
+        if (img.height > maxH) {
+          newH = maxH;
+          newW = (img.width * maxH) / img.height;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = newW;
+        canvas.height = newH;
+        const ctx = canvas.getContext('2d');
+
+        ctx?.drawImage(img, 0, 0, newW, newH);
+
+        const resizedImageData = canvas.toDataURL('image/*')
+
+      }
+    }
+
     const archivoSelectcionado: File = event.target.files[0];
-    console.log("FILE OBJECT ==> ", archivoSelectcionado);
+    console.log('FILE OBJECT ==> ', archivoSelectcionado);
     if (archivoSelectcionado) {
       const reader = new FileReader();
       reader.onload = (e: any) => {
         this.imageUrl = e.target.result;
         this.fillImage(this.imageUrl);
       };
+      //Set path ảnh theo thư mục
       this.setImageUrl = 'adminManageImage/user/' + archivoSelectcionado.name;
       this.imageFile = archivoSelectcionado;
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
+      this.setImageUrl = 'adminManageImage/user/null.jpg';
+
       this.removeUpload();
     }
   }
 
   fillImage(url: string): void {
-    this.renderer.setStyle(this.el.nativeElement.querySelector('.image-upload-wrap'), 'display', 'none');
-    this.renderer.setAttribute(this.el.nativeElement.querySelector('.file-upload-image'), 'src', url);
-    this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'block');
+    this.renderer.setStyle(
+      this.el.nativeElement.querySelector('.image-upload-wrap'),
+      'display',
+      'none'
+    );
+    this.renderer.setAttribute(
+      this.el.nativeElement.querySelector('.file-upload-image'),
+      'src',
+      url
+    );
+    this.renderer.setStyle(
+      this.el.nativeElement.querySelector('.file-upload-content'),
+      'display',
+      'block'
+    );
     if (url.length == 0) {
       this.removeUpload();
     }
@@ -183,9 +253,24 @@ export class ManageuserAdminComponent implements OnInit {
 
   removeUpload(): void {
     this.imageUrl = '';
-    this.renderer.setProperty(this.el.nativeElement.querySelector('.file-upload-input'), 'value', '');
-    this.renderer.setStyle(this.el.nativeElement.querySelector('.file-upload-content'), 'display', 'none');
-    this.renderer.setStyle(this.el.nativeElement.querySelector('.image-upload-wrap'), 'display', 'block');
+    this.setImageUrl = '';
+
+    // this.imageFile = null;
+    this.renderer.setProperty(
+      this.el.nativeElement.querySelector('.file-upload-input'),
+      'value',
+      ''
+    );
+    this.renderer.setStyle(
+      this.el.nativeElement.querySelector('.file-upload-content'),
+      'display',
+      'none'
+    );
+    this.renderer.setStyle(
+      this.el.nativeElement.querySelector('.image-upload-wrap'),
+      'display',
+      'block'
+    );
   }
 
   loadUserById() {
@@ -211,54 +296,54 @@ export class ManageuserAdminComponent implements OnInit {
     }
   }
 
-  goToUserList() {
-    this.getAllUsers(0, 4);
-    this.router.navigate(['/manage/users']);
+  async goToUserList() {
+    await this.getAllUsers(0, 4);
+    await this.router.navigate(['/manage/users']);
   }
 
   view(id: number) {
 
     this.accountServiceService.getUserById(id).subscribe(
       async (data: account) => {
-        // this.formatDate(data.birthday);
         this.Account = data;
+        this.setImageUrl = this.Account.avatar_url;
         this.formatDate(this.Account.birthday);
         this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
-
       },
       (error: any) => {
-
         console.log(error);
       }
     );
+    // this.formatDate(this.Account.birthday);
   }
 
-  // formatDate(date: Date | string | undefined): string {
-  //   if (!date) {
-  //     return '';
-  //   }
-  //   const formattedDate = typeof date === 'string' ? date : date.toISOString();
-  //   return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
-  // }
   formatDate(date: Date | string | undefined): string {
-    // Kiểm tra xem date có tồn tại không
     if (!date) {
       return '';
     }
-
-    // Kiểm tra xem date có phải là một đối tượng Date hợp lệ không
-    if (!(date instanceof Date)) {
-      // Nếu không phải, kiểm tra xem date có phải là một chuỗi ngày hợp lệ không
-      if (typeof date === 'string' && isNaN(Date.parse(date))) {
-        return '';
-      }
-      // Nếu là chuỗi ngày hợp lệ, chuyển đổi nó thành một đối tượng Date
-      date = new Date(date);
-    }
-
-    // Sử dụng DatePipe để chuyển đổi ngày thành định dạng "yyyy-MM-dd"
-    return new DatePipe('en-US').transform(date, 'MM/dd/yyyy') || '';
+    const formattedDate = typeof date === 'string' ? date : date.toISOString();
+    return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
   }
+
+  // formatDate(date: Date | string | undefined): string {
+  //   // Kiểm tra xem date có tồn tại không
+  //   if (!date) {
+  //     return '';
+  //   }
+  //
+  //   // Kiểm tra xem date có phải là một đối tượng Date hợp lệ không
+  //   if (!(date instanceof Date)) {
+  //     // Nếu không phải, kiểm tra xem date có phải là một chuỗi ngày hợp lệ không
+  //     if (typeof date === 'string' && isNaN(Date.parse(date))) {
+  //       return '';
+  //     }
+  //     // Nếu là chuỗi ngày hợp lệ, chuyển đổi nó thành một đối tượng Date
+  //     date = new Date(date);
+  //   }
+  //
+  //   // Sử dụng DatePipe để chuyển đổi ngày thành định dạng "yyyy-MM-dd"
+  //   return new DatePipe('en-US').transform(date, 'MM/dd/yyyy') || '';
+  // }
 
 
   checkAge() {
@@ -283,20 +368,14 @@ export class ManageuserAdminComponent implements OnInit {
     debugger
     if (this.registerForm.valid) {
       if (!this.Account.fullname
-        || !this.Account.email
       ) {
-        alert("Vui lòng điền đầy đủ thông tin người dùng.");
+        alert("Please fill up the form");
         return;
       }
     }
 
     debugger
     if (this.Account.id !== undefined) {
-      // if (this.Account.birthday == undefined) {
-      //   alert("Please fill up the form!");
-      //   return;
-      // }
-      this.Account.avatar_url = this.setImageUrl;
       const datePipe = new DatePipe('en-US');
       const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
 
@@ -308,22 +387,42 @@ export class ManageuserAdminComponent implements OnInit {
         avatar_url: this.Account.avatar_url,
         gender: this.Account.gender,
         password: this.Account.password,
+        birthday: this.registerForm.form.controls['birthday'].value,
         active: this.Account.active,
         createdDate: formattedDate,
-        accountRole: this.Account.accountRole
+        accountRole: this.Account.accountRole,
       };
+      // this.setActiveStatus(this.Account.id);
+      if (!UpdateUserForAdmin.fullname
+      ) {
+        // alert("Please fill up the form");
+        this.toast.warning({detail: 'Validate warning', summary: 'Fullname not be null', duration: 5000})
+        return;
+      }
+      if (this.imageFile) {
+        UpdateUserForAdmin.avatar_url = this.setImageUrl;
+      }
+
+      if (!this.imageFile && !this.setImageUrl) {
+        UpdateUserForAdmin.avatar_url = 'adminManageImage/user/null.jpg';
+      }
+
       debugger
+      // UpdateUserForAdmin.birthday = this.registerForm.form.controls['birthday'].value;
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
+          alert('asdfasd'+UpdateUserForAdmin.birthday)
+          alert(this.registerForm.form.controls['birthday'].value)
           debugger
-          if (this.Account.avatar_url != null && this.Account.avatar_url != 'null') {
+          if (this.imageFile) {
             await this.firebaseStorage.uploadFile(
               'adminManageImage/user/',
               this.imageFile
             );
-            await this.getAllUsers(0, 10);
+
           }
-          alert('Update user successfully!');
+          this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+          await this.getAllUsers(0, 10);
           this.Account = createAccount();
           this.removeUpload();
 
@@ -331,46 +430,37 @@ export class ManageuserAdminComponent implements OnInit {
 
         },
         (error) => {
-          alert('Update user failed!')
+          this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
           console.log(error);
+          return;
         }
       );
+      //
 
-    } else {
-      console.error("ID is undefined");
-    }
-
-  }
-
-  setActiveStatus(UpdateUserForAdmin: account) {
-    debugger
-    const activeStatus = this.registerForm.form.controls['active'].value;
-    if (UpdateUserForAdmin.active != activeStatus) {
-      const shouldLock = window.confirm("Do you want to block your account?");
-      if (shouldLock) {
-        this.accountServiceService.hot("Your account has been locked", UpdateUserForAdmin.email).subscribe(
+      if (UpdateUserForAdmin.active == false) {
+        // const shouldLock = window.confirm("Bạn có muốn khoá tài khoản không?");
+        // if (shouldLock) {
+        this.accountServiceService.hot("Your Account Has Been Locked", UpdateUserForAdmin.email).subscribe(
           async (data) => {
             debugger
             console.log(data);
-            alert('Update user successfully!')
           },
           (error) => {
             debugger
-            alert('Update user failed!')
             console.log(error);
 
           }
         );
-      } else {
-        console.log("Cancel the lock operation");
-        return;
-      }
+        // } else {
+        //   console.log("Cancel block operation");
+        //   return;
+        // }
 
-    } else {
-      const shouldLock = window.confirm("Do you want to active this account?");
-      if (shouldLock) {
+      } else {
+        // const shouldLock = window.confirm("Bạn có muốn mở tài khoản không?");
+        // if (shouldLock) {
         debugger
-        this.accountServiceService.hot("Your account has been unlocked", UpdateUserForAdmin.email).subscribe(
+        this.accountServiceService.hot("Your Account Has Been Unlocked", UpdateUserForAdmin.email).subscribe(
           async (data) => {
             debugger
             //  this.ngOnInit();
@@ -383,13 +473,21 @@ export class ManageuserAdminComponent implements OnInit {
             return;
           }
         );
-      } else {
-        alert("cancel the open operation")
-        return
+        // } else {
+        //   alert("huỷ thao tác mở")
+        //   return
+        // }
+
       }
 
+      //
+
+    } else {
+      console.error("ID is undefined");
     }
+
   }
+
 
   saveUsers() {
 
@@ -425,7 +523,6 @@ export class ManageuserAdminComponent implements OnInit {
         console.log(error);
       }
     )
-    // this.Genree = this.router.navigate(['onesound/admin/manage/genre/', id]);
   }
 
 

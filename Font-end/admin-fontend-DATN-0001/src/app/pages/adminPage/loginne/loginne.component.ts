@@ -29,7 +29,7 @@ export class LoginneComponent implements OnInit {
   account?: account | null;
   showPassword: boolean = false;
   incorrectLoginAttempts: number = 0;
-  maxIncorrectLoginAttempts: number = 5; 
+  maxIncorrectLoginAttempts: number = 5;
 
   constructor(private router: Router,
     private userService: accountServiceService,
@@ -56,18 +56,18 @@ export class LoginneComponent implements OnInit {
           };
           debugger
           this.userService.login(login).subscribe({
-            
+
             next: (response: LoginResponse) => {
-              
+
               alert("Login successful!");
-             
+
               const { token } = response;
               console.log(token);
               this.tokenService.setToken(token);
               this.incorrectLoginAttempts = 0;
 
               this.userService.getUserDetail(token).subscribe({
-                
+
                 next: (response: any) => {
                   debugger
                   this.account = {
@@ -77,15 +77,16 @@ export class LoginneComponent implements OnInit {
                   this.userService.saveUserResponseToLocalStorage(response);
                   if (this.account && this.account.accountRole) {
                     debugger
-                    alert(this.account.accountRole.name); 
-            
+                    alert(this.account.accountRole.name);
+
                     if (this.account.accountRole.name === 'admin') {
                       debugger
                       this.router.navigate(['/onesound/admin']);
+                      window.onload;
                     } else if (this.account.accountRole.name === 'user') {
                       debugger
                       this.router.navigate(['/onesound/home/explore']);
-    
+
                     }
                   } else {
                     debugger
@@ -98,7 +99,7 @@ export class LoginneComponent implements OnInit {
                   console.log(error);
                 }
               });
-           
+
             },
             error: (error) => {
               console.error(error);

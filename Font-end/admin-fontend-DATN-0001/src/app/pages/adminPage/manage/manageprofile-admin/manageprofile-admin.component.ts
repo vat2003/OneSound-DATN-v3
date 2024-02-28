@@ -1,13 +1,22 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, Renderer2, ElementRef } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { account } from '../../adminEntityService/adminEntity/account/account';
-import { TokenService } from '../../adminEntityService/adminService/token.service';
-import { UpdateUserDTO } from '../../adminEntityService/adminEntity/DTO/update.user.dto';
-import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
-import { NgToastModule, NgToastService } from 'ng-angular-popup';
+import {CommonModule, DatePipe} from '@angular/common';
+import {ChangeDetectorRef, Component, OnInit, Renderer2, ElementRef} from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {account} from '../../adminEntityService/adminEntity/account/account';
+import {TokenService} from '../../adminEntityService/adminService/token.service';
+import {UpdateUserDTO} from '../../adminEntityService/adminEntity/DTO/update.user.dto';
+import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
+import {NgToastModule, NgToastService} from 'ng-angular-popup';
 
 @Component({
   selector: 'app-manageprofile-admin',
@@ -39,8 +48,6 @@ export class ManageprofileAdminComponent implements OnInit {
     private renderer: Renderer2,
     private el: ElementRef, private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService,
-
-
   ) {
     this.userProfileForm = this.formBuilder.group({
       // fullname: [''],
@@ -49,22 +56,24 @@ export class ManageprofileAdminComponent implements OnInit {
       email: [''],
       address: [''],
       createdDate: [''],
+      birthday: [''],
       gender: true,
       avatar_url: [''],
       role_id: 1
-    }, {
-    });
+    }, {});
   }
+
   ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
 
     const datePipe = new DatePipe('en-US');
-    const formattedDate = datePipe.transform(this.account?.createdDate, 'yyyy-MM-dd') ?? '';
+    const formattedDate = datePipe.transform(this.account?.birthday, 'yyyy-MM-dd') ?? '';
 
     this.userProfileForm.patchValue({
       fullname: this.account?.fullname ?? '',
       id: this.account?.id ?? '',
       email: this.account?.email ?? '',
+      birthday: formattedDate,
       address: this.account?.address ?? '',
       avatar_url: this.account?.avatar_url ?? '',
       gender: this.account?.gender ?? true,
@@ -72,6 +81,20 @@ export class ManageprofileAdminComponent implements OnInit {
       role_id: this.account?.accountRole
     });
 
+    // this.setImage(this.userProfileForm.value);
+
+  }
+
+  async setImage(avatar_url: string) {
+    this.fillImage(await this.setImageURLFirebase(avatar_url));
+  }
+
+  async setImageURLFirebase(image: string): Promise<string> {
+    if (image != null) {
+      return await this.firebaseStorage.getFile(image);
+    } else {
+      return 'null';
+    }
   }
 
   save() {
@@ -84,6 +107,7 @@ export class ManageprofileAdminComponent implements OnInit {
       avatar_url: this.userProfileForm.get('avatar_url')?.value,
       gender: this.userProfileForm.get('gender')?.value,
       createdDate: this.userProfileForm.get('createdDate')?.value,
+      birthday: this.userProfileForm.get('birthday')?.value,
       role_id: this.userProfileForm.get('role_id')?.value
     };
     // //Trong lúc lưu đối tượng vào Database thì đồng thời Set path và file ảnh lên Firebase
@@ -112,14 +136,13 @@ export class ManageprofileAdminComponent implements OnInit {
           //   );
           // }
           // debugger
-        
+
           this.router.navigate(['/onesound/dangnhap']);
           console.log(response);
-        
+
           alert('update profile successfully');
 
-          
-         
+
         },
         error: (error: any) => {
           debugger
@@ -148,6 +171,7 @@ export class ManageprofileAdminComponent implements OnInit {
       this.removeUpload();
     }
   }
+
   fillImage(url: string): void {
     this.renderer.setStyle(
       this.el.nativeElement.querySelector('.image-upload-wrap'),

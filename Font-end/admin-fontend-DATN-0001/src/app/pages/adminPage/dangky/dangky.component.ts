@@ -122,10 +122,9 @@ export class DangkyComponent {
       debugger
       // Kiểm tra xem mật khẩu có trùng khớp không
       if (this.password !== this.retypePassword) {
-        alert("Mật khẩu không trùng khớp");
+        alert("The password does not match");
         return;
       }
-
       // Tạo đối tượng dữ liệu đăng ký
       debugger
       const registerData: Register = {
@@ -184,9 +183,9 @@ export class DangkyComponent {
       }
 
       if (age < 18) {
-        this.registerForm.form.controls['dateOfBirth'].setErrors({'invalidAge': true});
+        this.registerForm.form.controls['birthday'].setErrors({'invalidAge': true});
       } else {
-        this.registerForm.form.controls['dateOfBirth'].setErrors(null);
+        this.registerForm.form.controls['birthday'].setErrors(null);
       }
     }
   }

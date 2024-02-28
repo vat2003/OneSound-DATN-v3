@@ -75,7 +75,7 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody *ngIf="singers.length > 0; else noDataMessage">
             <tr *ngFor="let singer of singers">
               <th scope="row">{{ singer.id }}</th>
               <td>{{ singer.fullname }}</td>
@@ -89,6 +89,13 @@
             </tr>
 
           </tbody>
+          <ng-template #noDataMessage>
+            <tr>
+              <td colspan="4">
+                <p class="text-center text-danger">No data available.</p>
+              </td>
+            </tr>
+          </ng-template>
         </table>
         <div class="d-flex justify-content-center">
           <nav aria-label="Page navigation">

@@ -41,12 +41,12 @@
         </div>
 
         <div class="form-item">
-          <div class="login-form-inner-title">Enter your date</div>
-          <input type="date" placeholder="Enter your birthday" name="dateOfBirth"  [(ngModel)]="birthday" required
+          <div class="login-form-inner-title">Enter your date of birth</div>
+          <input type="date" placeholder="Enter your birthday" name="birthday"  [(ngModel)]="birthday" required
             id="date-of-birth" (input)="registerForm.form.markAsTouched(); checkAge()" />
           <div class="divider-nospace"></div>
 
-          <p class="text-danger" style="color: red;" *ngIf="registerForm.controls['dateOfBirth']?.hasError('invalidAge')
+          <p class="text-danger" style="color: red;" *ngIf="registerForm.controls['birthday']?.hasError('invalidAge')
                         && registerForm.form.touched">
             You must be at least 18 years old
           </p>

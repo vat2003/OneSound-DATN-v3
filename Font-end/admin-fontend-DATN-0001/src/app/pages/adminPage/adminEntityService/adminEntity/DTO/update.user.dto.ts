@@ -7,6 +7,7 @@ export class UpdateUserDTO {
   gender: boolean;
   createdDate?: Date;
   role_id: number = 1;
+  birthday?:Date;
 
 
   constructor(data: any) {
@@ -17,6 +18,7 @@ export class UpdateUserDTO {
     this.avatar_url = data.avatar_url;
     this.gender = data.gender;
     this.createdDate = data.createdDate;
+    this.birthday = data.birthday;
     this.role_id = data.role_id || 2;
   }
 }

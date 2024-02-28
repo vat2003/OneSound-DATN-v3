@@ -13,7 +13,7 @@ import { Role } from "../Role/Role";
 //     accountRole?: Role;
 
 //     constructor(data: any) {
-//         // this.id = data.id; 
+//         // this.id = data.id;
 //         this.fullname = data.fullname;
 //         this.email = data.email;
 //         this.Phone = data.Phone;
@@ -21,8 +21,8 @@ import { Role } from "../Role/Role";
 //         this.avatar_url = data.avatar_url;
 //         this.gender = data.gender;
 //         this.password = data.password;
-//         this.createdDate = data.createdDate; 
-//         this.accountRole = data.accountRole; 
+//         this.createdDate = data.createdDate;
+//         this.accountRole = data.accountRole;
 //     }
 // }
 
@@ -38,9 +38,10 @@ export class UpdateUserForAdmin {
     password: string;
     active!:boolean;
     accountRole?: Role;
-  
+    birthday: Date;
+
     constructor(data: any) {
-      this.id = data.id; 
+      this.id = data.id;
       this.fullname = data.fullname;
       this.email = data.email;
       this.Phone = data.Phone;
@@ -49,8 +50,8 @@ export class UpdateUserForAdmin {
       this.gender = data.gender;
       this.password = data.password;
       this.createdDate = data.createdDate; // Keep it as is, assuming it's a string from backend
-      this.accountRole = data.accountRole; 
-      this.active = data.active
+      this.accountRole = data.accountRole;
+      this.active = data.active;
+      this.birthday = data.birthday;
     }
   }
-  

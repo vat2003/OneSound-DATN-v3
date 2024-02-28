@@ -38,8 +38,8 @@ export class account {
     this.address = address;
     this.avatar_url = avatar_url;
     this.gender = gender;
-    this.createdDate = createdDate;
-    this.birthday = birthday ?? new Date();
+    this.createdDate = createdDate ?? new Date();
+    this.birthday = birthday;
     this.Phone = Phone ?? '';
     this.accountRole = accountRole;
     this.passwordResetToken = passwordResetToken;
