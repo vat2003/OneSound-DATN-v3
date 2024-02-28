@@ -1,0 +1,142 @@
+<!-- Form Start -->
+<div class="container-fluid pt-4 px-4">
+  <div class="row g-4">
+
+
+    <div class="col-sm-12 col-xl-12 row">
+
+      <div class="bg-secondary rounded h-100 p-4">
+        <!-- ---Bat dau thiet ke-- -->
+        <div class="col-md-4">
+          <h1>User statistics</h1>
+        </div>
+        <!-- <div class=" row">
+
+          <div class="col-md-4">
+            <input type="date" name="date" [(ngModel)]="date" (keyup)="dateAlert()"
+              class="form-control mb-4 border-light border-2" style="border-radius: 20px" placeholder="Date" />
+          </div>
+          <div class="col-md-4">
+            <select class="bg-dark form-control mb-4 border-light border-2" style="border-radius: 20px" name="" id="">
+              <option value="">loc men</option>
+              <option value="">loc men</option>
+              <option value="">loc men</option>
+            </select>
+
+          </div>
+        </div> -->
+        <!-- ---Bat dau thiet-- -->
+        <!-- <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" /> -->
+        <h6 class="mb-4">USER LIST</h6>
+        <table class="table table-hover text-center ">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th (click)="sortByCreatedId()"> Quantity <i class="fas fa-sort"></i> </th>
+              <th (click)="sortByCreatedDate()"> Create Date <i class=" fas fa-sort"></i></th>
+              <!-- <th scope="col">Fullname</th>
+              <th scope="col">Email</th>
+              <th scope="col">Birthday</th>
+              <th scope="col">Gender</th>
+ 
+              <th scope="col">Role</th>
+              <th scope="col">Image</th>
+              <th scope="col">Address</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Active</th> -->
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of countUser | paginate: { itemsPerPage: pageSize, currentPage: p,  id: 'CountUser' }, let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ item.id }}</td>
+              <td (click)="getAllUserByDate(item.createDate )">{{ item.createDate | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center">
+          <pagination-controls (pageChange)="p = $event" id="CountUser"></pagination-controls>
+        </div>
+
+        <h6 class="mb- mt-3">USER LIST BY CREATION DATE</h6>
+        <div class="col-md-2">
+          <input type="date" name="date" [(ngModel)]="date" placeholder="Date" (change)="showDate()"
+            class="form-control form-control mb-4 border-light border-2 datepicker" style="border-radius: 20px"
+            [min]="minDate" [max]="maxDate">
+
+
+
+
+
+
+          <!-- <mat-form-field>
+            <input matInput [(ngModel)]="date" [matDatepicker]="picker" name="date" placeholder="Date"
+              (dateChange)="onDateChange()">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field> -->
+
+
+
+        </div>
+
+        <table class="table table-hover text-center ">
+          <thead>
+            <tr>
+              <th>No.</th>
+              <!-- <th (click)="sortByCreatedId()"> Quantity <i class="fas fa-sort"></i> </th>
+              <th (click)="sortByCreatedDate()"> Create Date <i class=" fas fa-sort"></i></th> -->
+              <th scope="col">Fullname</th>
+              <th scope="col">Email</th>
+              <th scope="col">Birthday</th>
+              <th scope="col">Gender</th>
+
+              <th scope="col">Role</th>
+              <th scope="col">Created Date</th>
+              <th scope="col">Active</th>
+
+            </tr>
+          </thead>
+          <tbody *ngIf="check!=1;else mess">
+            <tr
+              *ngFor="let item of user | paginate: { itemsPerPage: pageSize, currentPage: pU,  id: 'UserId' }, let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <!-- <td>{{ item.id }}</td>
+              <td>{{ item.createDate | date: 'dd/MM/yyyy' }}</td> -->
+
+
+              <td>{{item.fullname}}</td>
+              <td>{{item.email}}</td>
+              <td>{{item.birthday}}</td>
+
+              <td>{{item.gender}}</td>
+              <td>{{item.accountRole?.name}}</td>
+              <td>{{item.createdDate | date: 'dd/MM/yyyy'}}</td>
+              <td>{{item.active ? 'Acctive': 'Inactive'}}</td>
+
+
+            </tr>
+
+          </tbody>
+          <ng-template #mess>
+            <tr>
+              <td colspan="7">
+                <p class="fs-4 text-center text-danger">{{errorm}}</p>
+              </td>
+            </tr>
+          </ng-template>
+        </table>
+        <div class="text-center" *ngIf="user.length > 0">
+          <pagination-controls (pageChange)="pU = $event" id="UserId"></pagination-controls>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+</div>
+<!-- Form End -->

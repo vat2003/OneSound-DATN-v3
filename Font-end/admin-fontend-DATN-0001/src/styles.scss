@@ -29,7 +29,8 @@ $admin-fontend-DATN-0001-theme: mat.define-light-theme((color: (primary: $admin-
 // that you are using.
 @include mat.all-component-themes($admin-fontend-DATN-0001-theme);
 
-
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
 
 
 /* You can add global styles to this file, and also import other style files */
@@ -52,9 +53,20 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+
   @font-face {
     font-family: "Roboto";
     src: url("assets/fonts/Roboto-Black.ttf") format("truetype");
   }
 
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }

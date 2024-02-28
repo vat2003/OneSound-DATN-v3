@@ -22,10 +22,12 @@ import { UserExploreComponent } from './pages/client/user-explore/user-explore.c
 import { UserPlaysongComponent } from './pages/client/user-playsong/user-playsong.component';
 import { UserProfileComponent } from './pages/client/user-profile/user-profile.component';
 import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
-import { ReportComponent } from './pages/adminPage/manage/report/report.component';
 import { QuenmkComponent } from './pages/adminPage/quenmk/quenmk.component';
 import { AdminGuardFn } from './guards/admin.guard';
 import { AuthGuard, AuthGuardFn } from './guards/auth.guard';
+import { ReportComponent } from './pages/adminPage/manage/statictical/report/report.component';
+import { StaticticalComponent } from './pages/adminPage/manage/statictical/statictical/statictical.component';
+import { CountAccessComponent } from './pages/adminPage/manage/statictical/count-access/count-access.component';
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -41,7 +43,7 @@ export const routes: Routes = [
 
   {
     path: 'onesound/admin',
-    component: HomeComponent,canActivate:[AdminGuardFn],
+    component: HomeComponent,
 
     children: [
       { path: 'blank', component: BlankComponent },
@@ -51,7 +53,13 @@ export const routes: Routes = [
       { path: 'manage/genre', component: ManagegenreAdminComponent },
       // { path: 'manage/profile', component: ManageprofileAdminComponent },
       { path: 'manage/author', component: ManageauthorComponent },
-      { path: 'manage/report', component:  ReportComponent},
+      {
+        path: 'manage/statictical', component: StaticticalComponent,
+        children: [
+          { path: 'report', component: ReportComponent },
+          { path: 'count-access', component: CountAccessComponent },
+        ]
+      },
       {
         path: 'manage/genre/update-genre/:id',
         component: ManagegenreAdminComponent,
@@ -62,7 +70,7 @@ export const routes: Routes = [
         component: ManagegenreAdminComponent,
       },
       { path: 'manage/genre/:id', component: ManagegenreAdminComponent },
-      { path: 'manage/song', component: ManagesongAdminComponent},
+      { path: 'manage/song', component: ManagesongAdminComponent },
       { path: 'manage/user', component: ManageuserAdminComponent },
       { path: 'chart', component: ChartComponent },
       { path: 'dashboard', component: BlankComponent },
@@ -71,7 +79,7 @@ export const routes: Routes = [
   },
   {
     path: 'onesound/home',
-    component: UserMenusideComponent,canActivate: [AuthGuardFn],
+    component: UserMenusideComponent,
     children: [
       { path: '', component: UserExploreComponent },
       { path: 'explore', component: UserExploreComponent },
