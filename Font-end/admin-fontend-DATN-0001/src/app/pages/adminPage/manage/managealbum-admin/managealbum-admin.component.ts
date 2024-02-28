@@ -63,7 +63,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   searchTerm: string = '';
 
   private searchTerms = new Subject<string>();
-  
+
   private _FILTER(value: string): string[] {
     const searchValue = value.toLocaleLowerCase();
     return this.singerName.filter(option => option.toLocaleLowerCase().includes(searchValue));
