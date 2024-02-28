@@ -39,7 +39,6 @@ export class ManageuserAdminComponent implements OnInit {
   visiblePages: number[] = [];
   localStorage?: Storage;
   page: number = 0;
-  // itempage: number = 2;
   itempage: number = 1;
   selectedUser: account = createAccount();
   createdDate: Date | undefined;
@@ -69,7 +68,7 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
 
-  getAllUsers(page: number, limit: number) {
+  async getAllUsers(page: number, limit: number) {
     this.accountServiceService.getPages(page, limit).subscribe(
       async (data) => {
         console.log(data);
@@ -125,7 +124,7 @@ export class ManageuserAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(0, 10)
+    this.getAllUsers(0, 10);
 
     this.getAllRole();
 
@@ -220,10 +219,11 @@ export class ManageuserAdminComponent implements OnInit {
   view(id: number) {
 
     this.accountServiceService.getUserById(id).subscribe(
-      (data: account) => {
-
+      async (data: account) => {
+        // this.formatDate(data.birthday);
         this.Account = data;
-        this.formatDate(this.Account.createdDate)
+        this.formatDate(this.Account.birthday);
+        this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
 
       },
       (error: any) => {
@@ -233,13 +233,33 @@ export class ManageuserAdminComponent implements OnInit {
     );
   }
 
+  // formatDate(date: Date | string | undefined): string {
+  //   if (!date) {
+  //     return '';
+  //   }
+  //   const formattedDate = typeof date === 'string' ? date : date.toISOString();
+  //   return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
+  // }
   formatDate(date: Date | string | undefined): string {
+    // Kiểm tra xem date có tồn tại không
     if (!date) {
       return '';
     }
-    const formattedDate = typeof date === 'string' ? date : date.toISOString();
-    return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
+
+    // Kiểm tra xem date có phải là một đối tượng Date hợp lệ không
+    if (!(date instanceof Date)) {
+      // Nếu không phải, kiểm tra xem date có phải là một chuỗi ngày hợp lệ không
+      if (typeof date === 'string' && isNaN(Date.parse(date))) {
+        return '';
+      }
+      // Nếu là chuỗi ngày hợp lệ, chuyển đổi nó thành một đối tượng Date
+      date = new Date(date);
+    }
+
+    // Sử dụng DatePipe để chuyển đổi ngày thành định dạng "yyyy-MM-dd"
+    return new DatePipe('en-US').transform(date, 'MM/dd/yyyy') || '';
   }
+
 
   checkAge() {
     if (this.createdDate) {
@@ -264,10 +284,6 @@ export class ManageuserAdminComponent implements OnInit {
     if (this.registerForm.valid) {
       if (!this.Account.fullname
         || !this.Account.email
-        || !this.Account.address
-        || !this.Account.birthday
-
-
       ) {
         alert("Vui lòng điền đầy đủ thông tin người dùng.");
         return;
@@ -276,9 +292,11 @@ export class ManageuserAdminComponent implements OnInit {
 
     debugger
     if (this.Account.id !== undefined) {
-      if(this.Account.birthday == undefined){
-        alert("Please fill up the form!"); return;
-      }
+      // if (this.Account.birthday == undefined) {
+      //   alert("Please fill up the form!");
+      //   return;
+      // }
+      this.Account.avatar_url = this.setImageUrl;
       const datePipe = new DatePipe('en-US');
       const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
 
@@ -297,62 +315,81 @@ export class ManageuserAdminComponent implements OnInit {
       debugger
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
+          debugger
+          if (this.Account.avatar_url != null && this.Account.avatar_url != 'null') {
+            await this.firebaseStorage.uploadFile(
+              'adminManageImage/user/',
+              this.imageFile
+            );
+            await this.getAllUsers(0, 10);
+          }
+          alert('Update user successfully!');
+          this.Account = createAccount();
+          this.removeUpload();
 
           console.log(data);
+
         },
         (error) => {
+          alert('Update user failed!')
           console.log(error);
         }
       );
-      debugger
-      if (UpdateUserForAdmin.active == false) {
-        const shouldLock = window.confirm("Do you want to block your account?");
-        if (shouldLock) {
-          this.accountServiceService.hot("Your account has been locked", UpdateUserForAdmin.email).subscribe(
-            async (data) => {
-              debugger
-              console.log(data);
-            },
-            (error) => {
-              debugger
-              console.log(error);
-
-            }
-          );
-        } else {
-          console.log("Cancel the lock operation");
-          return;
-        }
-
-      } else {
-        const shouldLock = window.confirm("Do you want to active this account?");
-        if (shouldLock) {
-          debugger
-          this.accountServiceService.hot("Your account has been unlocked", UpdateUserForAdmin.email).subscribe(
-            async (data) => {
-              debugger
-              //  this.ngOnInit();
-              console.log(data);
-              return;
-            },
-            (error) => {
-              debugger
-              console.log(error);
-              return;
-            }
-          );
-        } else {
-          alert("cancel the open operation")
-          return
-        }
-
-      }
 
     } else {
       console.error("ID is undefined");
     }
+
   }
 
+  setActiveStatus(UpdateUserForAdmin: account) {
+    debugger
+    const activeStatus = this.registerForm.form.controls['active'].value;
+    if (UpdateUserForAdmin.active != activeStatus) {
+      const shouldLock = window.confirm("Do you want to block your account?");
+      if (shouldLock) {
+        this.accountServiceService.hot("Your account has been locked", UpdateUserForAdmin.email).subscribe(
+          async (data) => {
+            debugger
+            console.log(data);
+            alert('Update user successfully!')
+          },
+          (error) => {
+            debugger
+            alert('Update user failed!')
+            console.log(error);
+
+          }
+        );
+      } else {
+        console.log("Cancel the lock operation");
+        return;
+      }
+
+    } else {
+      const shouldLock = window.confirm("Do you want to active this account?");
+      if (shouldLock) {
+        debugger
+        this.accountServiceService.hot("Your account has been unlocked", UpdateUserForAdmin.email).subscribe(
+          async (data) => {
+            debugger
+            //  this.ngOnInit();
+            console.log(data);
+            return;
+          },
+          (error) => {
+            debugger
+            console.log(error);
+            return;
+          }
+        );
+      } else {
+        alert("cancel the open operation")
+        return
+      }
+
+    }
+  }
 
   saveUsers() {
 

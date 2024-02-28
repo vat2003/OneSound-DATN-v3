@@ -1,6 +1,6 @@
 
 import { Routes } from '@angular/router';
-  
+
 import { BlankComponent } from './pages/adminPage/blank/blank.component';
 import { Notfound404Component } from './pages/adminPage/notfound404/notfound404.component';
 import { HomeComponent } from './pages/adminPage/home/home.component';
@@ -40,10 +40,10 @@ export const routes: Routes = [
   {
     path: 'onesound/admin',
     component: HomeComponent,canActivate:[AdminGuardFn],
-
     children: [
       { path: 'blank', component: BlankComponent },
       { path: '404', component: Notfound404Component },
+      // { path: '', component: Notfound404Component },
       { path: 'manage/album', component: ManagealbumAdminComponent },
       { path: 'manage/artist', component: ManageartistAdminComponent },
       { path: 'manage/genre', component: ManagegenreAdminComponent },

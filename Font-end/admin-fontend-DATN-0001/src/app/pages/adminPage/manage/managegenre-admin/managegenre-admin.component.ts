@@ -1,12 +1,12 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Genre } from '../../adminEntityService/adminEntity/genre/genre';
-import { GenreServiceService } from '../../adminEntityService/adminService/genre-service.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
-import { error, log } from 'console';
-import { NgToastModule, NgToastService } from 'ng-angular-popup';
+import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {Genre} from '../../adminEntityService/adminEntity/genre/genre';
+import {GenreServiceService} from '../../adminEntityService/adminService/genre-service.service';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
+import {error, log} from 'console';
+import {NgToastModule, NgToastService} from 'ng-angular-popup';
 
 @Component({
   selector: 'app-managegenre-admin',
@@ -31,6 +31,7 @@ export class ManagegenreAdminComponent implements OnInit {
   imageFile: any;
   submitted = false;
   errorFieldsArr: String[] = [];
+
   constructor(
     private GenreService: GenreServiceService,
     private router: Router,
@@ -39,7 +40,8 @@ export class ManagegenreAdminComponent implements OnInit {
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -250,11 +252,6 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   onSubmit() {
-    // if (this.id) {
-    //   this.updateGender(this.id);
-    // } else {
-    //   this.saveGenre();
-    // }
   }
 
   validateGenreEmpty(valueCheck: any): string[] {

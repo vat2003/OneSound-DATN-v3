@@ -1,5 +1,5 @@
-import { PasswordResetToken } from "../PasswordResetToken/PasswordResetToken";
-import { Role } from "../Role/Role";
+import {PasswordResetToken} from "../PasswordResetToken/PasswordResetToken";
+import {Role} from "../Role/Role";
 
 export class account {
   id?: number;
@@ -8,13 +8,11 @@ export class account {
   email: string;
   active: boolean;
   createdDate?: Date;
-  // date: string;
   address: string;
   avatar_url: string;
   Phone: string;
   gender: boolean;
   birthday?: Date;
-
   accountRole?: Role;
   passwordResetToken?: PasswordResetToken;
 
@@ -22,7 +20,6 @@ export class account {
     password: string = '',
     fullname: string = '',
     email: string,
-    // date: string = '',
     active: boolean = true,
     address: string = '',
     avatar_url: string = '',
@@ -32,7 +29,6 @@ export class account {
     Phone: string = '',
     accountRole?: Role,
     passwordResetToken?: PasswordResetToken,
-
   ) {
     // Initialize all properties
     this.password = password;
@@ -43,16 +39,15 @@ export class account {
     this.avatar_url = avatar_url;
     this.gender = gender;
     this.createdDate = createdDate;
-    // this.createdDate = createdDate ?? new Date();
     this.birthday = birthday ?? new Date();
     this.Phone = Phone ?? '';
     this.accountRole = accountRole;
     this.passwordResetToken = passwordResetToken;
-    // this.date = date;
   }
 
 
 }
+
 export function createAccount(
   accountData: Partial<account> = {}
 ): account {
@@ -60,7 +55,6 @@ export function createAccount(
     password = '',
     fullname = '',
     email = '',
-    // date='',
     active = true,
     address = '',
     avatar_url = '',
