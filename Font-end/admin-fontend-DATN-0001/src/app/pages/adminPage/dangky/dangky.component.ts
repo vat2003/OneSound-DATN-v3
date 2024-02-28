@@ -27,6 +27,7 @@ export class DangkyComponent {
   fullname: string;
   active: boolean;
   createdDate: Date;
+  birthday: Date;
 
   isEmailValid: boolean = true;
 
@@ -39,7 +40,8 @@ export class DangkyComponent {
     this.gender = true;
     this.active = true;
     this.createdDate = new Date();
-    this.createdDate.setFullYear(this.createdDate.getFullYear() - 18);
+    this.birthday = new Date();
+    this.birthday.setFullYear(this.createdDate.getFullYear() - 18);
 
   }
 
@@ -111,7 +113,7 @@ export class DangkyComponent {
         !this.password ||
         !this.retypePassword ||
         !this.fullname ||
-        !this.createdDate
+        !this.birthday
       ) {
         debugger
         alert("Vui lòng điền đầy đủ thông tin người dùng.");
@@ -134,6 +136,7 @@ export class DangkyComponent {
         gender: this.gender,
         active: this.active,
         createdDate: this.createdDate,
+        birthday: this.birthday,
         role_id: 1
       };
       debugger
@@ -173,7 +176,7 @@ export class DangkyComponent {
   checkAge() {
     if (this.createdDate) {
       const today = new Date();
-      const birthDate = new Date(this.createdDate);
+      const birthDate = new Date(this.birthday);
       let age = today.getFullYear() - birthDate.getFullYear();
       const monthDiff = today.getMonth() - birthDate.getMonth();
       if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
