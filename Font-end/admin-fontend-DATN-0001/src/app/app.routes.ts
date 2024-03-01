@@ -51,10 +51,10 @@ export const routes: Routes = [
       { path: 'manage/album', component: ManagealbumAdminComponent },
       { path: 'manage/artist', component: ManageartistAdminComponent },
       { path: 'manage/genre', component: ManagegenreAdminComponent },
-      // { path: 'manage/profile', component: ManageprofileAdminComponent },
+      { path: 'manage/profile', component: ManageprofileAdminComponent },
       { path: 'manage/author', component: ManageauthorComponent },
       {
-        path: 'manage/statictical', component: StaticticalComponent,
+        path: 'manage/statistical', component: StaticticalComponent,
         children: [
           { path: 'report', component: ReportComponent },
           { path: 'count-access', component: CountAccessComponent },
