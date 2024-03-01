@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {accountServiceService} from "../adminEntityService/adminService/account-service.service";
 import {TokenService} from "../adminEntityService/adminService/token.service";
 
@@ -11,6 +11,7 @@ import {TokenService} from "../adminEntityService/adminService/token.service";
   standalone: true,
   imports: [
     FormsModule,
+    RouterLink,
   ],
 })
 export class QuenmkComponent {
