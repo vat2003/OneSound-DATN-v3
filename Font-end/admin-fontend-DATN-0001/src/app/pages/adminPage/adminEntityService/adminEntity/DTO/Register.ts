@@ -8,7 +8,7 @@ export class Register {
     birthday: Date;
     gender:boolean;
     active: boolean;
-    role_id: number = 7;
+    role_id: number = 1;
 
     constructor(data: any) {
         this.fullname = data.fullname;
@@ -19,6 +19,6 @@ export class Register {
         this.createdDate = data.createdDate;
         this.birthday = data.birthday;
         this.active = data.active || false;
-        this.role_id = data.role_id || 7;
+        this.role_id = data.role_id || 1;
     }
 }

@@ -34,6 +34,6 @@ export const appConfig: ApplicationConfig = {
         provideStorage(() => getStorage())
     ]),
     provideAnimations(),
-    provideAnimations(), provideAnimationsAsync()
+    provideAnimations(), provideAnimationsAsync(), provideAnimationsAsync()
 ]
 };
