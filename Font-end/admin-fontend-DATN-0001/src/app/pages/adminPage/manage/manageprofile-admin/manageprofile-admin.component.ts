@@ -8,6 +8,7 @@ import { TokenService } from '../../adminEntityService/adminService/token.servic
 import { UpdateUserDTO } from '../../adminEntityService/adminEntity/DTO/update.user.dto';
 import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
 import { NgToastModule, NgToastService } from 'ng-angular-popup';
+import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 
 @Component({
   selector: 'app-manageprofile-admin',
@@ -18,6 +19,7 @@ import { NgToastModule, NgToastService } from 'ng-angular-popup';
     ReactiveFormsModule,
     NgToastModule,
   ],
+
   templateUrl: './manageprofile-admin.component.html',
   styleUrl: './manageprofile-admin.component.scss'
 })
@@ -43,7 +45,7 @@ export class ManageprofileAdminComponent implements OnInit {
 
   ) {
     this.userProfileForm = this.formBuilder.group({
-      // fullname: [''],
+
       fullname: ['', [Validators.required, Validators.maxLength(50)]],
       id: [''],
       email: [''],
@@ -71,6 +73,9 @@ export class ManageprofileAdminComponent implements OnInit {
       createdDate: formattedDate,
       role_id: this.account?.accountRole
     });
+
+    console.log(this.userProfileForm);
+  
 
   }
 

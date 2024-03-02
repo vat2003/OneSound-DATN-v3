@@ -4,6 +4,8 @@ export class Singer {
   fullname: string;
   description: string;
   image: string;
+  // singerAlbums: SingerAlbum[]; // Thêm một mảng singerAlbums
+  // songSinger: SongSinger[];
 
   constructor(
     fullname: string = '',

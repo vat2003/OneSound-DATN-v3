@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SingerAlbum } from '../../adminEntity/singerAlbum/singer-album';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 

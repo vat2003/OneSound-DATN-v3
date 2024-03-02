@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {NgClass, NgIf} from "@angular/common";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
 import { login } from '../adminEntityService/adminEntity/DTO/login';
 import { UpdateUserDTO } from '../adminEntityService/adminEntity/DTO/update.user.dto';
@@ -29,7 +29,7 @@ export class ChangePasswordComponent {
 
 
 
-  constructor(private route: ActivatedRoute, private userService: accountServiceService) {
+  constructor(private route: ActivatedRoute, private userService: accountServiceService,private router: Router) {
     this.password = '';
     this.retypePassword = '';
     this.userEmail = '';
@@ -148,6 +148,8 @@ export class ChangePasswordComponent {
             next: (response: any) => {
               debugger
               alert("Change successful");
+              this.router.navigate(['onesound/signin']);
+
             },
             complete: () => {
               debugger

@@ -7,6 +7,9 @@ import { login } from '../adminEntityService/adminEntity/DTO/login';
 import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
 import { TokenService } from '../adminEntityService/adminService/token.service';
 import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.response';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig, SocialUser } from 'angularx-social-login';
+import { Register } from '../adminEntityService/adminEntity/DTO/Register';
+
 
 @Component({
   selector: 'app-loginne',
@@ -15,6 +18,26 @@ import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.res
     RouterLink,
     CommonModule,
     FormsModule
+  ],
+  providers: [
+    SocialAuthService,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('423644450056-m6dpvi9ilk7hp8vbiul7egjr1dte9j8o.apps.googleusercontent.com'),
+            scope: 'email,public_profile'
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('881207913434756')
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
   ],
 
   templateUrl: './loginne.component.html',
@@ -31,15 +54,69 @@ export class LoginneComponent implements OnInit {
   incorrectLoginAttempts: number = 0;
   maxIncorrectLoginAttempts: number = 5; 
 
+  user: SocialUser | undefined;
+
+
   constructor(private router: Router,
     private userService: accountServiceService,
     private tokenService: TokenService,
+    private authService: SocialAuthService,
   ) {
   }
 
   ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+    });
   }
+
+
+  loginWithFacebook(): void {
+    debugger
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+
+
+    // Subscribe to authState observable
+    this.authService.authState.subscribe((user) => {
+      debugger
+      console.log(user) + "<----------------";
+      console.log(user) + "<----------------";
+      console.log(user) + "<----------------";
+      // const registerData: Register = {
+      //   fullname: this.user?.firstName,
+      //   email: this.email,
+      //   password: this.password,
+      //   retype_password: this.retypePassword,
+      //   gender: this.gender,
+      //   active: this.active,
+      //   createdDate: this.createdDate,
+      //   role_id: 1
+      // };
+    });
+
+    
+    // this.userService.register(registerData).subscribe({
+    //   next: (response: any) => {
+    //     alert("Đăng ký thành công");
+    //     console.log(response);
+    //     this.router.navigate(['onesound/dangnhap']);
+    //   },
+    //   complete: () => {
+    //   },
+    //   error: (error: any) => {
+    //     alert("Thất bại");
+    //     console.error(error);
+    //   }
+    // });
+  }
+  
+
+  // loginWithGoogle(): void {
+  //   debugger
+  //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  // }
+
 
   dangky() {
     this.router.navigate(['onesound/signup']);
