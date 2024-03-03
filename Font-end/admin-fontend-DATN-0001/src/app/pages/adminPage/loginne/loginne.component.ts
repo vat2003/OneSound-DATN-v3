@@ -54,62 +54,62 @@ export class LoginneComponent implements OnInit {
   incorrectLoginAttempts: number = 0;
   maxIncorrectLoginAttempts: number = 5; 
 
-  user: SocialUser | undefined;
+  // user: SocialUser | undefined;
 
 
   constructor(private router: Router,
     private userService: accountServiceService,
     private tokenService: TokenService,
-    private authService: SocialAuthService,
+    // private authService: SocialAuthService,
   ) {
   }
 
   ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
-    this.authService.authState.subscribe((user) => {
-      this.user = user;
-    });
-  }
-
-
-  loginWithFacebook(): void {
-    debugger
-    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-
-
-    // Subscribe to authState observable
-    this.authService.authState.subscribe((user) => {
-      debugger
-      console.log(user) + "<----------------";
-      console.log(user) + "<----------------";
-      console.log(user) + "<----------------";
-      // const registerData: Register = {
-      //   fullname: this.user?.firstName,
-      //   email: this.email,
-      //   password: this.password,
-      //   retype_password: this.retypePassword,
-      //   gender: this.gender,
-      //   active: this.active,
-      //   createdDate: this.createdDate,
-      //   role_id: 1
-      // };
-    });
-
-    
-    // this.userService.register(registerData).subscribe({
-    //   next: (response: any) => {
-    //     alert("Đăng ký thành công");
-    //     console.log(response);
-    //     this.router.navigate(['onesound/dangnhap']);
-    //   },
-    //   complete: () => {
-    //   },
-    //   error: (error: any) => {
-    //     alert("Thất bại");
-    //     console.error(error);
-    //   }
+    // this.authService.authState.subscribe((user) => {
+    //   this.user = user;
     // });
   }
+
+
+  // loginWithFacebook(): void {
+  //   debugger
+  //   this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+
+
+  //   // Subscribe to authState observable
+  //   this.authService.authState.subscribe((user) => {
+  //     debugger
+  //     console.log(user) + "<----------------";
+  //     console.log(user) + "<----------------";
+  //     console.log(user) + "<----------------";
+  //     // const registerData: Register = {
+  //     //   fullname: this.user?.firstName,
+  //     //   email: this.email,
+  //     //   password: this.password,
+  //     //   retype_password: this.retypePassword,
+  //     //   gender: this.gender,
+  //     //   active: this.active,
+  //     //   createdDate: this.createdDate,
+  //     //   role_id: 1
+  //     // };
+  //   });
+
+    
+  //   // this.userService.register(registerData).subscribe({
+  //   //   next: (response: any) => {
+  //   //     alert("Đăng ký thành công");
+  //   //     console.log(response);
+  //   //     this.router.navigate(['onesound/dangnhap']);
+  //   //   },
+  //   //   complete: () => {
+  //   //   },
+  //   //   error: (error: any) => {
+  //   //     alert("Thất bại");
+  //   //     console.error(error);
+  //   //   }
+  //   // });
+  // }
   
 
   // loginWithGoogle(): void {

@@ -27,14 +27,9 @@
         </button>
         <div class="form-item-or">or</div>
 
-
-        <button class="login-button-social" (click)="loginWithFacebook()">
-          <i class="fa-brands fa-facebook"></i><span>Continue with Facebook</span>
-        </button>
-        <!-- 
-        <button class="login-button-social" (click)="loginWithGoogle()">
-          <i class="fa-brands fa-google"></i><span>Continue with Google</span>
-        </button> -->
+        <a [href]="'http://localhost:8080/oauth2/authorization/google'" class="google btn"><i
+            class="fa fa-google fa-fw"></i> Login with
+          Google+</a>
 
 
 

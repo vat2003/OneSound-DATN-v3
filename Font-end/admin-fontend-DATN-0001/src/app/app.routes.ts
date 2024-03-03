@@ -24,6 +24,7 @@ import { ReportComponent } from './pages/adminPage/manage/report/report.componen
 import { QuenmkComponent } from './pages/adminPage/quenmk/quenmk.component';
 import { AdminGuardFn } from './guards/admin.guard';
 import { AuthGuard, AuthGuardFn } from './guards/auth.guard';
+import { SomeComponentComponent } from './pages/adminPage/some-component/some-component.component';
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -36,10 +37,12 @@ export const routes: Routes = [
   { path: 'onesound/admin/image', component: ManageimageAdminComponent },
   { path: 'update-genre/:id', component: ManagegenreAdminComponent },
   { path: 'update-singer/:id', component: ManageartistAdminComponent },
+  { path: 'oauth2/authorization/google', component: SomeComponentComponent },
+
 
   {
     path: 'onesound/admin',
-    component: HomeComponent,canActivate:[AdminGuardFn],
+    component: HomeComponent,
 
     children: [
       { path: 'blank', component: BlankComponent },
@@ -69,7 +72,7 @@ export const routes: Routes = [
   },
   {
     path: 'onesound/home',
-    component: UserMenusideComponent,canActivate: [AuthGuardFn],
+    component: UserMenusideComponent,
     children: [
       { path: '', component: UserExploreComponent },
       { path: 'explore', component: UserExploreComponent },
