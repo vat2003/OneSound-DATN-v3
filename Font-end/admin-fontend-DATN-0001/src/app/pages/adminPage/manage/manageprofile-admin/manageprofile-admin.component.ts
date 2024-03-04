@@ -8,7 +8,6 @@ import { TokenService } from '../../adminEntityService/adminService/token.servic
 import { UpdateUserDTO } from '../../adminEntityService/adminEntity/DTO/update.user.dto';
 import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
 import { NgToastModule, NgToastService } from 'ng-angular-popup';
-import { FacebookLoginProvider, GoogleLoginProvider } from 'angularx-social-login';
 
 @Component({
   selector: 'app-manageprofile-admin',
@@ -75,7 +74,7 @@ export class ManageprofileAdminComponent implements OnInit {
     });
 
     console.log(this.userProfileForm);
-  
+
 
   }
 
@@ -117,14 +116,14 @@ export class ManageprofileAdminComponent implements OnInit {
           //   );
           // }
           // debugger
-        
+
           this.router.navigate(['/onesound/dangnhap']);
           console.log(response);
-        
+
           alert('update profile successfully');
 
-          
-         
+
+
         },
         error: (error: any) => {
           debugger

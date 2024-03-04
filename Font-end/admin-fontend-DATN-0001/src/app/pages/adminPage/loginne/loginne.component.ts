@@ -1,14 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormsModule, NgForm, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { account } from '../adminEntityService/adminEntity/account/account';
-import { login } from '../adminEntityService/adminEntity/DTO/login';
-import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
-import { TokenService } from '../adminEntityService/adminService/token.service';
-import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.response';
-import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig, SocialUser } from 'angularx-social-login';
-import { Register } from '../adminEntityService/adminEntity/DTO/Register';
+import {CommonModule} from '@angular/common';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormsModule, NgForm, Validators} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {account} from '../adminEntityService/adminEntity/account/account';
+import {login} from '../adminEntityService/adminEntity/DTO/login';
+import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
+import {TokenService} from '../adminEntityService/adminService/token.service';
+import {LoginResponse} from '../adminEntityService/adminEntity/utils/login.response';
+import {Register} from '../adminEntityService/adminEntity/DTO/Register';
+import {routes} from "../../../app.routes";
 
 
 @Component({
@@ -19,26 +19,26 @@ import { Register } from '../adminEntityService/adminEntity/DTO/Register';
     CommonModule,
     FormsModule
   ],
-  providers: [
-    SocialAuthService,
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('423644450056-m6dpvi9ilk7hp8vbiul7egjr1dte9j8o.apps.googleusercontent.com'),
-            scope: 'email,public_profile'
-          },
-          {
-            id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider('881207913434756')
-          },
-        ],
-      } as SocialAuthServiceConfig,
-    },
-  ],
+  // providers: [
+  //     SocialAuthService,
+  //   {
+  //     provide: 'SocialAuthServiceConfig',
+  //     useValue: {
+  //       autoLogin: false,
+  //       providers: [
+  //         {
+  //           id: GoogleLoginProvider.PROVIDER_ID,
+  //           provider: new GoogleLoginProvider('423644450056-m6dpvi9ilk7hp8vbiul7egjr1dte9j8o.apps.googleusercontent.com'),
+  //           scope: 'email,public_profile'
+  //         },
+  //         {
+  //           id: FacebookLoginProvider.PROVIDER_ID,
+  //           provider: new FacebookLoginProvider('881207913434756')
+  //         },
+  //       ],
+  //     } as SocialAuthServiceConfig,
+  //   },
+  // ],
 
   templateUrl: './loginne.component.html',
   styleUrl: './loginne.component.scss'
@@ -52,15 +52,15 @@ export class LoginneComponent implements OnInit {
   account?: account | null;
   showPassword: boolean = false;
   incorrectLoginAttempts: number = 0;
-  maxIncorrectLoginAttempts: number = 5; 
+  maxIncorrectLoginAttempts: number = 5;
 
   // user: SocialUser | undefined;
 
 
   constructor(private router: Router,
-    private userService: accountServiceService,
-    private tokenService: TokenService,
-    // private authService: SocialAuthService,
+              private userService: accountServiceService,
+              private tokenService: TokenService,
+              // private authService: SocialAuthService,
   ) {
   }
 
@@ -95,7 +95,7 @@ export class LoginneComponent implements OnInit {
   //     // };
   //   });
 
-    
+
   //   // this.userService.register(registerData).subscribe({
   //   //   next: (response: any) => {
   //   //     alert("Đăng ký thành công");
@@ -110,7 +110,7 @@ export class LoginneComponent implements OnInit {
   //   //   }
   //   // });
   // }
-  
+
 
   // loginWithGoogle(): void {
   //   debugger
@@ -133,18 +133,18 @@ export class LoginneComponent implements OnInit {
           };
           debugger
           this.userService.login(login).subscribe({
-            
+
             next: (response: LoginResponse) => {
-              
+
               alert("Login successful!");
-             
-              const { token } = response;
+
+              const {token} = response;
               console.log(token);
               this.tokenService.setToken(token);
               this.incorrectLoginAttempts = 0;
 
               this.userService.getUserDetail(token).subscribe({
-                
+
                 next: (response: any) => {
                   debugger
                   this.account = {
@@ -154,15 +154,15 @@ export class LoginneComponent implements OnInit {
                   this.userService.saveUserResponseToLocalStorage(response);
                   if (this.account && this.account.accountRole) {
                     debugger
-                    alert(this.account.accountRole.name); 
-            
+                    alert(this.account.accountRole.name);
+
                     if (this.account.accountRole.name === 'admin') {
                       debugger
                       this.router.navigate(['/onesound/admin']);
                     } else if (this.account.accountRole.name === 'user') {
                       debugger
                       this.router.navigate(['/onesound/home/explore']);
-    
+
                     }
                   } else {
                     debugger
@@ -175,7 +175,7 @@ export class LoginneComponent implements OnInit {
                   console.log(error);
                 }
               });
-           
+
             },
             error: (error) => {
               console.error(error);
@@ -199,6 +199,13 @@ export class LoginneComponent implements OnInit {
         alert("Please do not leave blank");
       }
     });
+  }
+
+  loginByGoogle() {
+    window.location.href = ('http://localhost:8080/oauth2/authorization/google');
+    // window.location.href = ('http://localhost:8080/api/v1/users/test');
+
+
   }
 
 
