@@ -36,6 +36,8 @@ export class FirebaseStorageCrudService {
       })
   }
 
+
+
   async getAllFiles(folderPath: string): Promise<any> {
     // const folderPath = 'archivos'; // Specify the folder path you want to list files from
     const folderRef = ref(this.storage, folderPath);

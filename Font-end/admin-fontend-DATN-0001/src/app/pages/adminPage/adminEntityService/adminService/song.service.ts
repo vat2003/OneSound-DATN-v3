@@ -1,3 +1,4 @@
+import { Album } from './../adminEntity/album/album';
 import { Injectable } from '@angular/core';
 import { Song } from '../adminEntity/song/song';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -39,16 +40,16 @@ export class SongService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.httpClient.get<SongResponse>(`${this.baseUrl}/Songs`, { params });
+    return this.httpClient.get<SongResponse>(`${this.baseUrl}/getall`, { params });
   }
 
 
   createSong(Song: Song): Observable<Object> {
-    return this.httpClient.post(`${this.baseUrl}`, Song);
+    return this.httpClient.post(`${this.baseUrl}/create`, Song);
   }
 
   getSongById(id: number): Observable<Song> {
-    return this.httpClient.get<Song>(`${this.baseUrl}/${id}`);
+    return this.httpClient.get<Song>(`${this.baseUrl}/getbyid/${id}`);
   }
 
   updateSong(id: number, Song: Song): Observable<Object> {
@@ -57,6 +58,6 @@ export class SongService {
 
   deleteSong(id: number): Observable<Object> {
     console.log(`${this.baseUrl}/${id}`);
-    return this.httpClient.delete(`${this.baseUrl}/${id}`);
+    return this.httpClient.delete(`${this.baseUrl}/delete/${id}`);
   }
 }

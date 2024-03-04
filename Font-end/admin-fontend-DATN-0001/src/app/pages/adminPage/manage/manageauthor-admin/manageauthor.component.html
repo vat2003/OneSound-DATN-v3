@@ -153,7 +153,10 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody class="align-middle">
+          <tbody
+            class="align-middle"
+            *ngIf="Authors && Authors.length > 0; else noDataMessage"
+          >
             <tr *ngFor="let item of Authors; let i = index">
               <th scope="row">{{ i + 1 }}</th>
               <td>{{ item.fullname }}</td>
@@ -183,6 +186,13 @@
               </td>
             </tr>
           </tbody>
+          <ng-template #noDataMessage>
+            <tr>
+              <td colspan="4">
+                <p class="text-center text-danger">No data available.</p>
+              </td>
+            </tr>
+          </ng-template>
         </table>
         <div class="d-flex justify-content-center">
           <nav aria-label="Page navigation">
