@@ -27,7 +27,7 @@ import {StaticticalComponent} from './pages/adminPage/manage/statictical/statict
 import {CountAccessComponent} from './pages/adminPage/manage/statictical/count-access/count-access.component';
 import {ProfileComponent} from "./pages/adminPage/manage/profile/profile.component";
 import {FeedbackComponent} from "./pages/adminPage/manage/feedback/feedback.component";
-import {UserResultSearchComponent} from './pages/client/user-result-search/user-result-search.component';
+import {UserResultSearchComponent} from "./pages/client/user-result-search/user-result-search.component";
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},

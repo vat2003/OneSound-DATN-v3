@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {FormsModule, NgForm, ReactiveFormsModule} from "@angular/forms";
 import {NgClass, NgIf} from "@angular/common";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
 import { login } from '../adminEntityService/adminEntity/DTO/login';
 import { UpdateUserDTO } from '../adminEntityService/adminEntity/DTO/update.user.dto';
@@ -29,7 +29,7 @@ export class ChangePasswordComponent {
 
 
 
-  constructor(private route: ActivatedRoute, private userService: accountServiceService) {
+  constructor(private route: ActivatedRoute,private router: Router, private userService: accountServiceService) {
     this.password = '';
     this.retypePassword = '';
     this.userEmail = '';
@@ -58,74 +58,17 @@ export class ChangePasswordComponent {
     return token.substring(emailStartIndex);
   }
 
-  // register() {
-
-  //   const url = window.location.href;
-  //   const startIndex = url.indexOf('/changepassword/') + '/changepassword/'.length;
-  //   const endIndex = url.indexOf('?a=');
-
-  //   if (startIndex !== -1 && endIndex !== -1) {
-  //     const test = url.substring(startIndex, endIndex);
-  //     this.tokenn = this.extractEmailFromToken(test);
-
-  //     this.userService.getchecktokem(this.tokenn).subscribe({
-  //       next: (response: any) => {
-  //         debugger
-  //         alert("tokenn  successfully" + this.tokenn);
-  //         console.log(response);
-
-  //         const login: login = {
-  //           email: this.userEmail,
-  //           password: this.password
-
-  //         };
-  //         debugger
-  //         this.userService.HamDoiMatKhauCuaQuenMatKhau(response.message,login).subscribe({
-  //           next: (response: any) => {
-  //             debugger
-  //             alert("đổi thành công" + response);
-  //             console.log(response);
-  //           },
-  //           complete: () => {
-  //             debugger
-  //           },
-  //           error: (error: any) => {
-  //             debugger
-  //             alert("Thất bại" + error);
-  //           }
-  //         });
-
-  //       },
-  //       complete: () => {
-  //         debugger
-  //       },
-  //       error: (error: any) => {
-  //         debugger
-  //         alert("Thất bại" + error);
-  //       }
-  //     });
-
-
-  //   } else {
-  //     console.error('Token not found in the URL.');
-  //   }
-
-
-
-
-  // }
-
   register() {
     if (!this.password || !this.retypePassword) {
       alert("Please enter both password and retype password.");
       return;
     }
-    
+
     if (this.password !== this.retypePassword) {
       alert("Passwords do not match.");
       return;
     }
-    
+
     const url = window.location.href;
     const startIndex = url.indexOf('/changepassword/') + '/changepassword/'.length;
     const endIndex = url.indexOf('?a=');
@@ -148,6 +91,7 @@ export class ChangePasswordComponent {
             next: (response: any) => {
               debugger
               alert("Change successful");
+              this.router.navigate(['/onesound/signin']);
             },
             complete: () => {
               debugger

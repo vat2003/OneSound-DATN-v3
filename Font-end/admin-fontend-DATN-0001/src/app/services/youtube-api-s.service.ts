@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,8 @@ export class YoutubeApiSService {
   // private apiKey = '';
   private apiUrl = 'https://www.googleapis.com/youtube/v3/search';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   searchVideos(query: string): Observable<any> {
     const params = {
@@ -22,7 +23,6 @@ export class YoutubeApiSService {
       videoCaption: 'closedCaption',
       q: query,
     };
-
-    return this.http.get(this.apiUrl, { params });
+    return this.http.get(this.apiUrl, {params});
   }
 }
