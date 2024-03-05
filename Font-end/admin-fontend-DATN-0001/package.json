@@ -27,6 +27,7 @@
     "@angular/youtube-player": "^17.0.0",
     "@auth0/angular-jwt": "^5.2.0",
     "angular": "^1.8.3",
+    "angularx-social-login": "^4.1.0",
     "class-validator": "^0.14.1",
     "express": "^4.18.2",
     "jquery": "^3.7.1",

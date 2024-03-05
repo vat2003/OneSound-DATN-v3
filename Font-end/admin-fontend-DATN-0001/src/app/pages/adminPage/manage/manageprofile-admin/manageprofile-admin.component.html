@@ -12,6 +12,18 @@
             <input readonly type="email" formControlName="email" class="form-control text-dark">
           </div>
 
+
+          <div class="mb-3">
+            <label for="avatar_url" class="form-label">Avatar</label>
+            <img [src]="userProfileForm.get('avatar_url')?.value" width="70" height="70" alt="Avatar"
+              class="img-fluid mb-2">
+          </div>
+
+          <img [src]="userProfileForm.get('avatar_url')?.value" width="70" height="70">
+
+
+
+
           <div class="mb-3">
             <label for="fullname" class="form-label">Full name</label>
             <input type="text" formControlName="fullname" class="form-control" id="fullname"

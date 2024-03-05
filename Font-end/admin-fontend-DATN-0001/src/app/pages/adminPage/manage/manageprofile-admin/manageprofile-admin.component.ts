@@ -27,6 +27,7 @@ import {NgToastModule, NgToastService} from 'ng-angular-popup';
     ReactiveFormsModule,
     NgToastModule,
   ],
+
   templateUrl: './manageprofile-admin.component.html',
   styleUrl: './manageprofile-admin.component.scss'
 })
@@ -50,7 +51,7 @@ export class ManageprofileAdminComponent implements OnInit {
     private toast: NgToastService,
   ) {
     this.userProfileForm = this.formBuilder.group({
-      // fullname: [''],
+
       fullname: ['', [Validators.required, Validators.maxLength(50)]],
       id: [''],
       email: [''],
@@ -95,6 +96,9 @@ export class ManageprofileAdminComponent implements OnInit {
     } else {
       return 'null';
     }
+    console.log(this.userProfileForm);
+
+
   }
 
   save() {

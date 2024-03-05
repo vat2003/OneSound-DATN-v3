@@ -8,16 +8,15 @@
         <div class="form-item">
           <div class="login-form-inner-title">Enter your email</div>
           <input type="text" placeholder="Enter your email" name="email-register" id="" [(ngModel)]="email"
-                 #emailInput="ngModel" [ngClass]="{'is-invalid': emailInput.invalid && emailInput.touched}"
-                 required email/>
+                 #emailInput="ngModel" [ngClass]="{'is-invalid': emailInput.invalid && emailInput.touched}" required
+                 email/>
           <p class="text-danger" style="color: red;" *ngIf="!emailInput.valid && emailInput.touched">Please
             enter a valid email address</p>
         </div>
 
         <div class="form-item">
           <div class="login-form-inner-title">Enter your password</div>
-          <input type="password" placeholder="Enter your password" name="password-regis" id=""
-                 [(ngModel)]="password"/>
+          <input type="password" placeholder="Enter your password" name="password-regis" id="" [(ngModel)]="password"/>
           <p class="text-danger" style="color: red;"
              *ngIf="password.length < 6 && registerForm.controls['password-regis'].touched">Password must be
             at least 6 characters long</p>
@@ -28,14 +27,23 @@
           Continue
         </button>
         <div class="form-item-or">or</div>
-        <button class="login-button-social">
-          <i class="fa-brands fa-facebook"></i><span>Continue with Facebook</span>
-        </button>
-        <button class="login-button-social">
-          <i class="fa-brands fa-apple"></i><span>Continue with Apple</span>
-        </button>
 
-        <button class="signup-button" (click)="dangky()">
+        <a [href]="'http://localhost:8080/oauth2/authorization/google'" class="btn btn-outline-primary text-white w-100 py-2"><i
+          class="fa fa-google fa-fw"></i> Login with
+          Google+</a>
+
+        <!--        <button class="login-button-social">-->
+        <!--          <i class="fa-brands fa-google"></i><span>Continue with Google</span>-->
+        <!--        </button>-->
+
+        <!--        <a [href]="'http://localhost:8080/oauth2/authorization/google'">-->
+        <!--          <button class="login-button-social">-->
+        <!--            <i class="fa-brands fa-google"></i><span>Continue with Google</span>-->
+        <!--          </button>-->
+        <!--        </a>-->
+
+
+        <button class="login-button" (click)="dangky()">
           <a class="">
             Create Account</a>
         </button>

@@ -22,11 +22,12 @@ import {ManageauthorComponent} from './pages/adminPage/manage/manageauthor-admin
 import {QuenmkComponent} from './pages/adminPage/quenmk/quenmk.component';
 import {AdminGuardFn} from './guards/admin.guard';
 import {AuthGuard, AuthGuardFn} from './guards/auth.guard';
-import {ReportComponent} from './pages/adminPage/manage/statictical/report/report.component';
-import {StaticticalComponent} from './pages/adminPage/manage/statictical/statictical/statictical.component';
-import {CountAccessComponent} from './pages/adminPage/manage/statictical/count-access/count-access.component';
+import {SomeComponentComponent} from './pages/adminPage/some-component/some-component.component';
 import {ProfileComponent} from "./pages/adminPage/manage/profile/profile.component";
 import {FeedbackComponent} from "./pages/adminPage/manage/feedback/feedback.component";
+import {CountAccessComponent} from "./pages/adminPage/manage/statictical/count-access/count-access.component";
+import {ReportComponent} from "./pages/adminPage/manage/statictical/report/report.component";
+import {StaticticalComponent} from "./pages/adminPage/manage/statictical/statictical/statictical.component";
 import {UserResultSearchComponent} from "./pages/client/user-result-search/user-result-search.component";
 
 export const routes: Routes = [
@@ -40,11 +41,13 @@ export const routes: Routes = [
   {path: 'onesound/admin/image', component: ManageimageAdminComponent},
   {path: 'update-genre/:id', component: ManagegenreAdminComponent},
   {path: 'update-singer/:id', component: ManageartistAdminComponent},
+  {path: 'oauth2/authorization/google', component: SomeComponentComponent},
   {path: 'onesound/profile', component: ProfileComponent},
   {path: 'onesound/feedback', component: FeedbackComponent},
+
   {
     path: 'onesound/admin',
-    component: HomeComponent, canActivate: [AdminGuardFn],
+    component: HomeComponent,
     children: [
       {path: 'blank', component: BlankComponent},
       {path: '404', component: Notfound404Component},

@@ -33,6 +33,13 @@ export class SingerService {
     // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
   }
 
+  // getAllArtistsByAlbumId(id: number): Observable<Singer[]> {
+
+  //   return this.httpClient.get<Singer[]>(`${this.baseUrl}/getAllByAlbumId/${id}`);
+  //   // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
+  // }
+
+  
   getAllArtistsByAlbumId(id: number): Observable<Singer[]> {
 
     return this.httpClient.get<Singer[]>(`${this.baseUrl}/getAllByAlbumId/${id}`);
