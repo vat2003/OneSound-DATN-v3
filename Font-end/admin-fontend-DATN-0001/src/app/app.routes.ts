@@ -1,6 +1,5 @@
-
 import { Routes } from '@angular/router';
-  
+
 import { BlankComponent } from './pages/adminPage/blank/blank.component';
 import { Notfound404Component } from './pages/adminPage/notfound404/notfound404.component';
 import { HomeComponent } from './pages/adminPage/home/home.component';
@@ -22,8 +21,9 @@ import { UserProfileComponent } from './pages/client/user-profile/user-profile.c
 import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
 import { ReportComponent } from './pages/adminPage/manage/report/report.component';
 import { QuenmkComponent } from './pages/adminPage/quenmk/quenmk.component';
-import { AdminGuardFn } from './guards/admin.guard';
-import { AuthGuard, AuthGuardFn } from './guards/auth.guard';
+import { UserResultSearchComponent } from './pages/client/user-result-search/user-result-search.component';
+// import { AdminGuardFn } from './guards/admin.guard';
+// import { AuthGuard, AuthGuardFn } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -39,7 +39,8 @@ export const routes: Routes = [
 
   {
     path: 'onesound/admin',
-    component: HomeComponent,canActivate:[AdminGuardFn],
+    component: HomeComponent,
+    // canActivate: [AdminGuardFn],
 
     children: [
       { path: 'blank', component: BlankComponent },
@@ -49,7 +50,7 @@ export const routes: Routes = [
       { path: 'manage/genre', component: ManagegenreAdminComponent },
       { path: 'manage/profile', component: ManageprofileAdminComponent },
       { path: 'manage/author', component: ManageauthorComponent },
-      { path: 'manage/report', component:  ReportComponent},
+      { path: 'manage/report', component: ReportComponent },
       {
         path: 'manage/genre/update-genre/:id',
         component: ManagegenreAdminComponent,
@@ -60,21 +61,23 @@ export const routes: Routes = [
         component: ManagegenreAdminComponent,
       },
       { path: 'manage/genre/:id', component: ManagegenreAdminComponent },
-      { path: 'manage/song', component: ManagesongAdminComponent},
+      { path: 'manage/song', component: ManagesongAdminComponent },
       { path: 'manage/user', component: ManageuserAdminComponent },
       { path: 'chart', component: ChartComponent },
       { path: 'dashboard', component: BlankComponent },
-
     ],
   },
   {
     path: 'onesound/home',
-    component: UserMenusideComponent,canActivate: [AuthGuardFn],
+    component: UserMenusideComponent,
+    // canActivate: [AuthGuardFn],
     children: [
       { path: '', component: UserExploreComponent },
       { path: 'explore', component: UserExploreComponent },
       { path: 'playsong', component: UserPlaysongComponent },
       { path: 'profile/:id', component: UserProfileComponent },
+      { path: 'search/:keyword', component: UserResultSearchComponent },
+
       // { path: 'profile', component: ManageprofileAdminComponent },
     ],
   },

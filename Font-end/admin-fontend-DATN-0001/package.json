@@ -24,6 +24,7 @@
     "@angular/platform-server": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@angular/ssr": "^17.0.9",
+    "@angular/youtube-player": "^17.0.0",
     "@auth0/angular-jwt": "^5.2.0",
     "class-validator": "^0.14.1",
     "express": "^4.18.2",
