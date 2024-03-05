@@ -9,16 +9,15 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
 import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
-import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-user-playermusic',
+  selector: 'app-user-player-audio',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, RouterOutlet],
-  templateUrl: './user-playermusic.component.html',
-  styleUrls: ['./user-playermusic.component.scss'],
+  imports: [CommonModule, FormsModule],
+  templateUrl: './user-player-audio.component.html',
+  styleUrl: './user-player-audio.component.scss',
 })
-export class UserPlayermusicComponent implements OnInit {
+export class UserPlayerAudioComponent implements OnInit {
   @ViewChild('masterPlay') masterPlay!: ElementRef<HTMLElement>;
   @ViewChild('seek') seek!: ElementRef<HTMLInputElement>;
   @ViewChild('seek_bar') seek_bar!: ElementRef<HTMLElement>;

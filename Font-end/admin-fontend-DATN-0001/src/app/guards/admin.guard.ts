@@ -14,9 +14,9 @@ import { account } from '../pages/adminPage/adminEntityService/adminEntity/accou
 export class AdminGuard {
   account?:account | null;
   constructor(
-    private tokenService: TokenService, 
+    private tokenService: TokenService,
     private router: Router,
-    private accountServiceService:accountServiceService 
+    private accountServiceService:accountServiceService
   ) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -24,8 +24,8 @@ export class AdminGuard {
     const isTokenExpired = this.tokenService.isTokenExpired();
     const isUserIdValid = this.tokenService.getUserId() > 0;
     this.account = this.accountServiceService.getUserResponseFromLocalStorage();
-    const isAdmin = this.account?.accountRole?.name === 'admin';  
-    
+    const isAdmin = this.account?.accountRole?.name === 'admin';
+
     if (!isTokenExpired && isUserIdValid && isAdmin) {
       debugger
       return true;
@@ -35,11 +35,11 @@ export class AdminGuard {
       this.router.navigate(['/onesound/signin']);
       return false;
     }
-  }  
+  }
 }
 
 export const AdminGuardFn: CanActivateFn = (
-  next: ActivatedRouteSnapshot, 
+  next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): boolean => {
   debugger

@@ -1,27 +1,28 @@
-import { Injectable } from '@angular/core';
-import { 
-  ActivatedRouteSnapshot, 
-  RouterStateSnapshot, 
-  CanActivateFn, 
+import {Injectable} from '@angular/core';
+import {
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  CanActivateFn,
 } from '@angular/router';
-import { Router } from '@angular/router'; // Đảm bảo bạn đã import Router ở đây.
-import { inject } from '@angular/core';
-import { TokenService } from '../pages/adminPage/adminEntityService/adminService/token.service';
+import {Router} from '@angular/router'; // Đảm bảo bạn đã import Router ở đây.
+import {inject} from '@angular/core';
+import {TokenService} from '../pages/adminPage/adminEntityService/adminService/token.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard {  
+export class AuthGuard {
   constructor(
-    private tokenService: TokenService, 
-    private router: Router,    
-  ) {}
+    private tokenService: TokenService,
+    private router: Router,
+  ) {
+  }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     debugger
     const isTokenExpired = this.tokenService.isTokenExpired();
     const isUserIdValid = this.tokenService.getUserId() > 0;
-    
+
     if (!isTokenExpired && isUserIdValid) {
       debugger
       return true;
@@ -37,4 +38,3 @@ export const AuthGuardFn: CanActivateFn = (next: ActivatedRouteSnapshot, state: 
   debugger
   return inject(AuthGuard).canActivate(next, state);
 }
-

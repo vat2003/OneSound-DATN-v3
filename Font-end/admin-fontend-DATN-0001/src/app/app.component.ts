@@ -12,6 +12,7 @@ import {filter} from 'rxjs';
 import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
     NgToastModule,
+    HttpClientModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -126,9 +128,9 @@ export class AppComponent implements OnInit {
 
   private addFeebackStyle(): void {
 
-  this.addStylesheet('https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css');
-  this.addStylesheet('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
-  this.addStylesheet('https://fonts.googleapis.com/css2?family=Pacifico&amp;family=Quicksand&amp;display=swap');
+    this.addStylesheet('https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css');
+    this.addStylesheet('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+    this.addStylesheet('https://fonts.googleapis.com/css2?family=Pacifico&amp;family=Quicksand&amp;display=swap');
     this.addStylesheet('assets/css/feedbackstyle.scss');
   }
 

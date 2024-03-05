@@ -27,6 +27,7 @@ import {StaticticalComponent} from './pages/adminPage/manage/statictical/statict
 import {CountAccessComponent} from './pages/adminPage/manage/statictical/count-access/count-access.component';
 import {ProfileComponent} from "./pages/adminPage/manage/profile/profile.component";
 import {FeedbackComponent} from "./pages/adminPage/manage/feedback/feedback.component";
+import {UserResultSearchComponent} from './pages/client/user-result-search/user-result-search.component';
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -78,12 +79,15 @@ export const routes: Routes = [
   },
   {
     path: 'onesound/home',
-    component: UserMenusideComponent, canActivate: [AuthGuardFn],
+    component: UserMenusideComponent,
+    // canActivate: [AuthGuardFn],
     children: [
       {path: '', component: UserExploreComponent},
       {path: 'explore', component: UserExploreComponent},
       {path: 'playsong', component: UserPlaysongComponent},
       {path: 'profile/:id', component: UserProfileComponent},
+      {path: 'search/:keyword', component: UserResultSearchComponent},
+
       // { path: 'profile', component: ManageprofileAdminComponent },
     ],
   },

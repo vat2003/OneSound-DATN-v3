@@ -47,8 +47,10 @@ export class LoginneComponent implements OnInit {
   }
 
   login() {
+    debugger
     this.userService.checkEmailExists(this.email).subscribe({
       next: (emailExists: boolean) => {
+        debugger
         if (emailExists) {
           var login: login = {
             email: this.email,
