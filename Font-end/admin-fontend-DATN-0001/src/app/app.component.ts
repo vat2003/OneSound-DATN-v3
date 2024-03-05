@@ -1,17 +1,17 @@
-import { NgToastModule, NgToastService } from 'ng-angular-popup';
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgToastModule, NgToastService} from 'ng-angular-popup';
+import {Component, OnInit, Renderer2} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {
   NavigationEnd,
   Router,
   RouterLink,
   RouterOutlet,
 } from '@angular/router';
-import { AdminUserServiceService } from './services/admin-user-service.service';
-import { filter } from 'rxjs';
-import { MatFormField, MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {AdminUserServiceService} from './services/admin-user-service.service';
+import {filter} from 'rxjs';
+import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -39,7 +39,8 @@ export class AppComponent implements OnInit {
     private adminUserService: AdminUserServiceService,
     private renderer: Renderer2,
     private toast: NgToastService
-  ) {}
+  ) {
+  }
 
   // app.component.ts
   ngOnInit() {
@@ -53,8 +54,42 @@ export class AppComponent implements OnInit {
           const signup = event.url.includes('signup');
           const forgotpass = event.url.includes('forgotpassword');
           const changepass = event.url.includes('changepassword');
-          const userProfile = event.url.includes('home/profile');
+          // const userProfile = event.url.includes('home/profile');
+          const userProfile = event.url.includes('profile');
+          const userFeedback = event.url.includes('feedback');
           this.adminUserService.setAdminMode(isAdmin);
+
+          if (userProfile) {
+            //Remove USER-CLIENT Css StyleSheet Libraries
+            this.removeUserStyle();
+            //Remove USER-CLIENT JavaScript Libraries
+            this.removeUserScript();
+
+            //Remove ADMIN Css StyleSheet Libraries
+            this.removeAdminStyle();
+            //Remove ADMIN JavaScript Libraries
+            this.removeAdminScript();
+
+            this.addProfileStyle();
+          }
+
+          if (userFeedback) {
+            //Remove USER-CLIENT Css StyleSheet Libraries
+            this.removeUserStyle();
+            //Remove USER-CLIENT JavaScript Libraries
+            this.removeUserScript();
+
+            //Remove ADMIN Css StyleSheet Libraries
+            this.removeAdminStyle();
+            //Remove ADMIN JavaScript Libraries
+            this.removeAdminScript();
+
+            this.removeProfile();
+
+            this.addFeebackStyle();
+            this.addFeebackScript()
+
+          }
 
           // Add or remove stylesheets based on the isAdmin condition
           if (isAdmin || signin || signup || forgotpass || changepass) {
@@ -80,6 +115,28 @@ export class AppComponent implements OnInit {
           }
         }
       });
+  }
+
+  private removeProfile(): void {
+    this.removeStylesheet('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css');
+    this.removeStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+    this.removeStylesheet('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
+    this.removeStylesheet('assets/css/profile.css');
+  }
+
+  private addFeebackStyle(): void {
+
+  this.addStylesheet('https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css');
+  this.addStylesheet('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+  this.addStylesheet('https://fonts.googleapis.com/css2?family=Pacifico&amp;family=Quicksand&amp;display=swap');
+    this.addStylesheet('assets/css/feedbackstyle.scss');
+  }
+
+  private addProfileStyle(): void {
+    this.addStylesheet('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css');
+    this.addStylesheet('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+    this.addStylesheet('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
+    this.addStylesheet('assets/css/profile.css');
   }
 
   private addUserStyle(): void {
@@ -136,10 +193,15 @@ export class AppComponent implements OnInit {
     this.addScript('assets/js/uploadfile.js');
   }
 
-  private removeUserStyle(): void {}
+  private removeUserStyle(): void {
+  }
 
   private removeUserScript(): void {
     this.removeScript('assets/js/playermusic.js');
+  }
+
+  private removeProfileStyle(): void {
+    this.removeStylesheet('assets/css/profile.css');
   }
 
   private removeAdminStyle(): void {
@@ -233,5 +295,12 @@ export class AppComponent implements OnInit {
         this.renderer.removeChild(document.body, existingScript);
       }
     }
+  }
+
+  private addFeebackScript() {
+    this.addScript('https://code.jquery.com/jquery-3.3.1.slim.min.js');
+    this.addScript('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js');
+    this.addScript('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
+    this.addScript('https://unpkg.com/feather-icons');
   }
 }

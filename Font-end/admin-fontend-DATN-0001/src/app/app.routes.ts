@@ -25,6 +25,8 @@ import {AuthGuard, AuthGuardFn} from './guards/auth.guard';
 import {ReportComponent} from './pages/adminPage/manage/statictical/report/report.component';
 import {StaticticalComponent} from './pages/adminPage/manage/statictical/statictical/statictical.component';
 import {CountAccessComponent} from './pages/adminPage/manage/statictical/count-access/count-access.component';
+import {ProfileComponent} from "./pages/adminPage/manage/profile/profile.component";
+import {FeedbackComponent} from "./pages/adminPage/manage/feedback/feedback.component";
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -37,6 +39,8 @@ export const routes: Routes = [
   {path: 'onesound/admin/image', component: ManageimageAdminComponent},
   {path: 'update-genre/:id', component: ManagegenreAdminComponent},
   {path: 'update-singer/:id', component: ManageartistAdminComponent},
+  {path: 'onesound/profile', component: ProfileComponent},
+  {path: 'onesound/feedback', component: FeedbackComponent},
   {
     path: 'onesound/admin',
     component: HomeComponent, canActivate: [AdminGuardFn],
@@ -54,6 +58,7 @@ export const routes: Routes = [
       {path: 'manage/genre', component: ManagegenreAdminComponent},
       {path: 'manage/profile', component: ManageprofileAdminComponent},
       {path: 'manage/author', component: ManageauthorComponent},
+
       {
         path: 'manage/statistical', component: StaticticalComponent,
         children: [
