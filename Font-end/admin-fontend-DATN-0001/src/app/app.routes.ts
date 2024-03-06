@@ -83,15 +83,18 @@ export const routes: Routes = [
   {
     path: 'onesound/home',
     component: UserMenusideComponent,
-    // canActivate: [AuthGuardFn],
+    canActivate: [AuthGuardFn],
     children: [
       {path: '', component: UserExploreComponent},
       {path: 'explore', component: UserExploreComponent},
       {path: 'playsong', component: UserPlaysongComponent},
       {path: 'profile/:id', component: UserProfileComponent},
+    ],
+  }, {
+    path: 'onesound/home',
+    component: UserMenusideComponent,
+    children: [
       {path: 'search/:keyword', component: UserResultSearchComponent},
-
-      // { path: 'profile', component: ManageprofileAdminComponent },
     ],
   },
 ];
