@@ -1,13 +1,14 @@
-import { Inject, Injectable } from "@angular/core";
-import { login } from "../adminEntity/DTO/login";
-import { Observable, catchError } from "rxjs";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { DOCUMENT } from "@angular/common";
-import { HttpUtilService } from "./http.util.service";
-import { account } from "../adminEntity/account/account";
-import { Register } from "../adminEntity/DTO/Register";
-import { UpdateUserDTO } from "../adminEntity/DTO/update.user.dto";
-import { UpdateUserForAdmin } from "../adminEntity/DTO/UpdateUserForAdmin";
+import {Inject, Injectable} from "@angular/core";
+import {login} from "../adminEntity/DTO/login";
+import {Observable, catchError} from "rxjs";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {DOCUMENT} from "@angular/common";
+import {HttpUtilService} from "./http.util.service";
+import {account} from "../adminEntity/account/account";
+import {Register} from "../adminEntity/DTO/Register";
+import {UpdateUserDTO} from "../adminEntity/DTO/update.user.dto";
+import {UpdateUserForAdmin} from "../adminEntity/DTO/UpdateUserForAdmin";
+import {Feedback} from "../adminEntity/DTO/Feedback";
 
 interface AccountResponse {
   content: account[];
@@ -35,7 +36,7 @@ export class accountServiceService {
   private thongbao = `${this.baseUrl}/users/mess`;
   private checktoken = `${this.baseUrl}/users/resetPassword/token`;
   private guimail = `${this.baseUrl}/users/forgotPassword`;
-
+  private Feedback = `${this.baseUrl}/users/feed`;
   private DoiMatKhauCuaQuenMatKhau = `${this.baseUrl}/users/update/pass`;
 
   private apiConfig = {
@@ -49,10 +50,17 @@ export class accountServiceService {
   ) {
     this.localStorage = document.defaultView?.localStorage;
   }
-  // guimail
-  HamDoiMatKhauCuaQuenMatKhau(email: string,login: login): Observable<Object> {
+
+  EmailFeedBack(Feedback: Feedback): Observable<Object> {
     debugger
-    return this.http.put<account>(`${this.DoiMatKhauCuaQuenMatKhau}/${email}`,login, {});
+    return this.http.post<account>(`${this.Feedback}`, Feedback, {});
+  }
+
+
+  // guimail
+  HamDoiMatKhauCuaQuenMatKhau(email: string, login: login): Observable<Object> {
+    debugger
+    return this.http.put<account>(`${this.DoiMatKhauCuaQuenMatKhau}/${email}`, login, {});
   }
 
   guimail1(email: string): Observable<any> {
@@ -64,7 +72,7 @@ export class accountServiceService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.httpClient.get<account>(`${this.baseUrl}/getaccountByName/${title}`, { params });
+    return this.httpClient.get<account>(`${this.baseUrl}/getaccountByName/${title}`, {params});
   }
 
   getchecktokem(token: string): Observable<any> {
@@ -103,7 +111,7 @@ export class accountServiceService {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/users/page`, { params });
+    return this.httpClient.get<AccountResponse>(`${this.baseUrl}/users/page`, {params});
   }
 
   deleteUser(id: number): Observable<Object> {
@@ -158,7 +166,6 @@ export class accountServiceService {
       console.error('Error saving user response to local storage:', error);
     }
   }
-
 
 
   removeUserFromLocalStorage(): void {

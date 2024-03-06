@@ -89,12 +89,14 @@ export const routes: Routes = [
       {path: 'explore', component: UserExploreComponent},
       {path: 'playsong', component: UserPlaysongComponent},
       {path: 'profile/:id', component: UserProfileComponent},
+      {path: 'profile', component: ProfileComponent},
     ],
   }, {
     path: 'onesound/home',
     component: UserMenusideComponent,
     children: [
       {path: 'search/:keyword', component: UserResultSearchComponent},
+      {path: 'feedback', component: FeedbackComponent},
     ],
   },
 ];
