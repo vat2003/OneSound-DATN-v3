@@ -35,11 +35,12 @@
 
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Artist</label>
+            <!-- Input cho Singer -->
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
               style="border-radius: 20px"
-              placeholder="Search"
+              placeholder="Search Singer"
               matInput
               [matAutocomplete]="autoSinger"
               [formControl]="formcontrol"
@@ -51,11 +52,12 @@
               <mat-option
                 (click)="addSingertoTable(item)"
                 *ngFor="let item of filterOptionsSinger | async"
-                value="{{ item }}"
+                [value]="item"
               >
                 {{ item }}
               </mat-option>
             </mat-autocomplete>
+
             <!-- Table display for singers -->
             <table class="table table-dark">
               <thead>
@@ -98,7 +100,7 @@
               type="text"
               class="form-control mb-4 border-light border-2"
               style="border-radius: 20px"
-              placeholder="Search"
+              placeholder="Search Album"
               matInput
               [matAutocomplete]="autoAlbum"
               [formControl]="formcontrolAlbum"
@@ -110,7 +112,7 @@
               <mat-option
                 (click)="addAlbumtoTable(item)"
                 *ngFor="let item of filterOptionsAlbum | async"
-                value="{{ item }}"
+                [value]="item"
               >
                 {{ item }}
               </mat-option>
@@ -158,7 +160,7 @@
               type="text"
               class="form-control mb-4 border-light border-2"
               style="border-radius: 20px"
-              placeholder="Search"
+              placeholder="Search Genre"
               matInput
               [matAutocomplete]="autoGenre"
               [formControl]="formcontrolGenre"
@@ -170,7 +172,7 @@
               <mat-option
                 (click)="addGenretoTable(item)"
                 *ngFor="let item of filterOptionsGenre | async"
-                value="{{ item }}"
+                [value]="item"
               >
                 {{ item }}
               </mat-option>
@@ -222,6 +224,7 @@
               matInput
               [matAutocomplete]="autoAuthor"
               [formControl]="formcontrolAuthor"
+              [matAutocompleteDisabled]="!autoAuthor"
             />
             <mat-autocomplete
               autoActiveFirstOption
@@ -230,11 +233,12 @@
               <mat-option
                 (click)="addAuthortoTable(item)"
                 *ngFor="let item of filterOptionsAuthor | async"
-                value="{{ item }}"
+                [value]="item"
               >
                 {{ item }}
               </mat-option>
             </mat-autocomplete>
+
             <table class="table table-dark">
               <thead>
                 <tr>
@@ -456,12 +460,17 @@
             </div> -->
           </div>
           <div class="text-center">
-            <button class="btn btn-primary fw-bold" (click)="createSong()">
+            <button
+              class="btn btn-primary fw-bold"
+              (click)="createSong()"
+              *ngIf="song.id == null"
+            >
               Save
             </button>
             <button
               class="btn btn-info ms-3 fw-bold"
               (click)="updateSong(song.id)"
+              *ngIf="song.id != null"
             >
               Update
             </button>
@@ -477,6 +486,15 @@
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4">SONG LIST</h6>
+        <input
+          type="text"
+          class="form-control mb-4 border-light border-2"
+          style="border-radius: 20px"
+          placeholder="Search"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="search()"
+          (keyup)="onKey($event)"
+        />
         <table class="table table-hover">
           <thead>
             <tr>
