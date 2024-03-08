@@ -294,7 +294,6 @@
               </div>
             </div>
 
-
             <div class="file-upload-content">
               <img
                 class="file-upload-image"
@@ -460,7 +459,12 @@
             <button class="btn btn-primary fw-bold" (click)="createSong()">
               Save
             </button>
-            <button class="btn btn-info ms-3 fw-bold">Update</button>
+            <button
+              class="btn btn-info ms-3 fw-bold"
+              (click)="updateSong(song.id)"
+            >
+              Update
+            </button>
             <button class="btn btn-warning ms-3 fw-bold">Reset</button>
             <!-- <button (click)="test()" class="btn btn-warning ms-3 fw-bold">
               Test

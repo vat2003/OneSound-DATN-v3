@@ -16,12 +16,12 @@ export class SongAuthorService {
   //   return this.httpClient.post<SongAuthor>(`${this.baseURL}/create`, body);
   // }
 
-  getAllAuthorBySong(id:number):Observable<SongAuthor[]> {
+  getAllAuthorBySong(id:number):Observable<any[]> {
     return this.httpClient.get<SongAuthor[]>(`${this.baseURL}/get-by-song/${id}`);
   }
 
-  createSongAuthor(singerId: number, albumId: number): Observable<Object> {
-    const body = { singerId, albumId };
+  createSongAuthor(songId: number, authorId: number): Observable<Object> {
+    const body = { songId, authorId };
     return this.httpClient.post(`${this.baseURL}/create`, body);
   }
 
