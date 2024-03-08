@@ -29,6 +29,7 @@ import {CountAccessComponent} from "./pages/adminPage/manage/statictical/count-a
 import {ReportComponent} from "./pages/adminPage/manage/statictical/report/report.component";
 import {StaticticalComponent} from "./pages/adminPage/manage/statictical/statictical/statictical.component";
 import {UserResultSearchComponent} from "./pages/client/user-result-search/user-result-search.component";
+import {CaptchaComponent} from "./pages/captcha/captcha.component";
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -44,9 +45,12 @@ export const routes: Routes = [
   {path: 'oauth2/authorization/google', component: SomeComponentComponent},
   {path: 'onesound/profile', component: ProfileComponent},
   {path: 'onesound/feedback', component: FeedbackComponent},
+  {path: 'onesound/captcha', component: CaptchaComponent},
 
   {
     path: 'onesound/admin',
+    canActivate: [AdminGuardFn],
+
     component: HomeComponent,
     children: [
       {path: 'blank', component: BlankComponent},
@@ -56,7 +60,7 @@ export const routes: Routes = [
       {path: 'manage/user', component: ManageuserAdminComponent},
       {path: 'chart', component: ChartComponent},
       {path: 'dashboard', component: BlankComponent},
-      // { path: '', component: Notfound404Component },
+      { path: '', component: ReportComponent },
       {path: 'manage/album', component: ManagealbumAdminComponent},
       {path: 'manage/artist', component: ManageartistAdminComponent},
       {path: 'manage/genre', component: ManagegenreAdminComponent},
