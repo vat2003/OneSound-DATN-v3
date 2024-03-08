@@ -1,6 +1,6 @@
 export class Song {
   id!: number;
-  title: string;
+  name: string;
   image: string;
   path: string;
   lyrics: string;
@@ -9,21 +9,51 @@ export class Song {
 
 
   constructor(
-      title: string = '',
-      image: string = '',
-      // releaseDate: number = new Date().getFullYear(),
-      releaseDate: Date = new Date(),
-      description: string = '',
-      path:string='',
-      lyrics:string=''
+    name: string = '',
+    image: string = '',
+    // releaseDate: number = new Date().getFullYear(),
+    releaseDate: Date = new Date(),
+    description: string = '',
+    path: string = '',
+    lyrics: string = ''
   ) {
-      this.title = title;
-      this.image = image;
-      this.releaseDate = releaseDate;
-      // this.albumcreateDate = albumcreateDate;
-      this.description = description;
-      this.path=path;
-      this.lyrics=lyrics;
+    this.name = name;
+    this.image = image;
+    this.releaseDate = releaseDate;
+    // this.albumcreateDate = albumcreateDate;
+    this.description = description;
+    this.path = path;
+    this.lyrics = lyrics;
   }
 
 }
+
+// export class Song {
+//   id!: number;
+//   title: string;
+//   image: string;
+//   path: string;
+//   lyrics: string;
+//   releaseDate: Date;
+//   description: string;
+//
+//
+//   constructor(
+//       title: string = '',
+//       image: string = '',
+//       // releaseDate: number = new Date().getFullYear(),
+//       releaseDate: Date = new Date(),
+//       description: string = '',
+//       path:string='',
+//       lyrics:string=''
+//   ) {
+//       this.title = title;
+//       this.image = image;
+//       this.releaseDate = releaseDate;
+//       // this.albumcreateDate = albumcreateDate;
+//       this.description = description;
+//       this.path=path;
+//       this.lyrics=lyrics;
+//   }
+//
+// }
