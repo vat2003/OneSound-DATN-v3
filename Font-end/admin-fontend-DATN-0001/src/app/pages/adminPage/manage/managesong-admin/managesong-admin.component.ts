@@ -1345,6 +1345,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   deleteSong(id: number) {
     const isConfirmed = window.confirm('Are you sure you want to delete this song?');
     if (isConfirmed) {
+      
       this.SongService.deleteSong(id).subscribe(data => {
         this.displayDataOnTable(0, 10);
         this.toast.warning({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
