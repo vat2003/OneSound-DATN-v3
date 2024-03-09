@@ -29,6 +29,30 @@
         <!-- <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
           placeholder="Search" /> -->
         <h6 class="mb-4">USER LIST</h6>
+
+        <div class="d-flex justify-content-center">
+          <div class="col-md-2 me-5">
+            <input type="date" name="date" [(ngModel)]="dateCountUser1" placeholder="Date"
+              class=" form-control form-control mb-4 border-light border-2 datepicker" style="border-radius: 20px"
+              [min]="minDate" [max]="maxDate">
+          </div>
+
+          <h2>---</h2>
+
+
+          <div class="col-md-2 ms-5">
+            <input type="date" name="date" [(ngModel)]="dateCountUser2" placeholder="Date"
+              class=" form-control form-control mb-4 border-light border-2 datepicker" style="border-radius: 20px"
+              [min]="minDate" [max]="maxDate">
+          </div>
+
+          <div>
+            <button class="ms-5 border-light border-2 btn btn-outline-light rounded-pill"
+              (click)="getCountUserBetweenDate()">Search</button>
+          </div>
+        </div>
+
+
         <table class="table table-hover text-center ">
           <thead>
             <tr>
@@ -61,26 +85,56 @@
           <pagination-controls (pageChange)="p = $event" id="CountUser"></pagination-controls>
         </div>
 
+
+        <div style="display: block;">
+          <div>Line Chart</div>
+          <canvas baseChart height="100px" [type]="'line'" [data]="lineChartData" [options]="lineChartOptions"
+            [legend]="lineChartLegend">
+          </canvas>
+        </div>
+
+        <!-- <div style="display: block;">
+          <div>Bar Chart</div>
+          <canvas baseChart height="100px" [type]="'bar'" [data]="barChartData" [options]="BarChartOptions"
+            [legend]="BarChartLegend">
+          </canvas>
+        </div> -->
+
+
         <h6 class="mb- mt-3">USER LIST BY CREATION DATE</h6>
-        <div class="col-md-2">
-          <input type="date" name="date" [(ngModel)]="date" placeholder="Date" (change)="showDate()"
-            class="form-control form-control mb-4 border-light border-2 datepicker" style="border-radius: 20px"
-            [min]="minDate" [max]="maxDate">
+        <div class="d-flex justify-content-around">
+          <div class="col-md-2">
+            <input type="date" name="date" [(ngModel)]="date" placeholder="Date" (change)="showDate()"
+              class=" form-control form-control mb-4 border-light border-2 datepicker" style="border-radius: 20px"
+              [min]="minDate" [max]="maxDate">
+          </div>
 
+          <div class="  col-md-2">
+            <label for="floatingSelect">Day</label>
+            <select class="form-select day" id="day" name="day" [(ngModel)]="day"
+              aria-label="Floating label select example" (change)="getUserByOption()">
 
+            </select>
 
+          </div>
 
+          <div class="  col-md-2">
+            <label for="floatingSelect">Month</label>
+            <select class="form-select month" id="month" name="month" [(ngModel)]="month"
+              aria-label="Floating label select example" (change)="getUserByOption()">
 
+            </select>
 
-          <!-- <mat-form-field>
-            <input matInput [(ngModel)]="date" [matDatepicker]="picker" name="date" placeholder="Date"
-              (dateChange)="onDateChange()">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field> -->
+          </div>
 
+          <div class="  col-md-2">
+            <label for="floatingSelect">Year</label>
+            <select class="form-select year" id="year" name="year" [(ngModel)]="year"
+              aria-label="Floating label select example" (change)="getUserByOption()">
 
+            </select>
 
+          </div>
         </div>
 
         <table class="table table-hover text-center ">
@@ -112,7 +166,7 @@
               <td>{{item.email}}</td>
               <td>{{item.birthday}}</td>
 
-              <td>{{item.gender}}</td>
+              <td>{{item.gender ? 'Male' : 'Female'}}</td>
               <td>{{item.accountRole?.name}}</td>
               <td>{{item.createdDate | date: 'dd/MM/yyyy'}}</td>
               <td>{{item.active ? 'Acctive': 'Inactive'}}</td>
@@ -138,5 +192,7 @@
 
 
   </div>
+
+
 </div>
 <!-- Form End -->
