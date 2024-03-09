@@ -423,6 +423,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       console.log("singerName: ", this.singerName)
 
     }
+    
     this.filterOptions = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
     )

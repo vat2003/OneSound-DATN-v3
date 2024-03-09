@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 // import { RecaptchaModule } from 'ng-recaptcha';
 // import { NgxCaptchaModule } from 'ngx-captcha';
 
@@ -21,7 +21,8 @@ export class CaptchaComponent {
   protected aFormGroup!: FormGroup;
 
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder) {
+  }
 
 
   ngOnInit(): void {
