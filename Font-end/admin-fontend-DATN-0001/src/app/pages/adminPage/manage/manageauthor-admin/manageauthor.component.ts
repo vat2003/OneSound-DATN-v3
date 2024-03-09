@@ -84,6 +84,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     private toast: NgToastService
   ) {
     this.filteredAuthors = this.Authors;
+
   }
 
   Page(page: number) {

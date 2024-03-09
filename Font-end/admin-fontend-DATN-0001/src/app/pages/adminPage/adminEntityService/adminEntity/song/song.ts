@@ -1,29 +1,36 @@
+import {Album} from "../album/album";
+
 export class Song {
   id!: number;
   name: string;
   image: string;
   path: string;
   lyrics: string;
-  releaseDate: Date;
+  release: Date;
   description: string;
-
+  dateTemp: string;
+  album: Album;
 
   constructor(
     name: string = '',
     image: string = '',
-    // releaseDate: number = new Date().getFullYear(),
-    releaseDate: Date = new Date(),
+    // release: number = new Date().getFullYear(),
+    release: Date = new Date(),
     description: string = '',
     path: string = '',
-    lyrics: string = ''
+    lyrics: string = '',
+    album: Album = new Album(),
+    dateTemp: string = ''
   ) {
     this.name = name;
     this.image = image;
-    this.releaseDate = releaseDate;
+    this.release = release;
     // this.albumcreateDate = albumcreateDate;
     this.description = description;
     this.path = path;
     this.lyrics = lyrics;
+    this.album = album;
+    this.dateTemp = dateTemp;
   }
 
 }

@@ -86,3 +86,42 @@
 //     cursor: pointer;
 //     z-index: 5;
 // }
+/* Thay đổi màu nền của p-calendar */
+:host ::ng-deep .p-calendar .p-calendar-header {
+  background-color: white;
+}
+
+/* Định dạng cho file upload wrapper */
+.file-upload-wrapper {
+  background-color: #333; /* Màu nền */
+  color: #fff; /* Màu chữ */
+  border: 1px solid #666; /* Viền */
+}
+
+/* Định dạng cho message */
+.file-upload-infos-message {
+  color: #ccc; /* Màu chữ */
+}
+
+/* Định dạng cho audio player */
+.player {
+  background-color: #222; /* Màu nền */
+  color: #fff; /* Màu chữ */
+  border-radius: 5px; /* Bo góc */
+}
+
+/* Định dạng cho progress bar */
+.progress {
+  background-color: #333; /* Màu nền */
+  border-radius: 5px; /* Bo góc */
+}
+
+/* Định dạng cho control icons */
+.control-icon {
+  color: #fff; /* Màu chữ */
+}
+
+/* Định dạng cho duration display */
+#duration {
+  color: #ccc; /* Màu chữ */
+}

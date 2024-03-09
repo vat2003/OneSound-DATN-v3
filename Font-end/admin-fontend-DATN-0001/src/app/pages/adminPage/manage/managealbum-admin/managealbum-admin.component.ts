@@ -435,12 +435,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //---------------create album---------------------------
 
   createAlbum() {
-
-
     const img = this.setImageUrl;
-
-
-
     const duplicateIamge = this.imageAlbum.some(image => image === this.setImageUrl);
     const duplicateTitle = this.titleAlbum.some(title => title == this.album.title);
     this.album.image = this.setImageUrl;

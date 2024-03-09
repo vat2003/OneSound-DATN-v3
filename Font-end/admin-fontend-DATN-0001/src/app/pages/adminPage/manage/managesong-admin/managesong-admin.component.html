@@ -1,33 +1,41 @@
 <!-- Form Start -->
+<ng-toast></ng-toast>
 <div class="container-fluid pt-4 px-4">
   <div class="row g-4">
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-4 text-uppercase">Song management</h6>
         <form>
-
           <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              [(ngModel)]="song.name"
+            />
           </div>
-
-          <div class="file-upload">
-            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add
-              Image
-            </button>
-
-            <div class="image-upload-wrap">
-              <input class="file-upload-input" type='file' #fileInput (change)="onFileSelected($event)"
-                     accept="image/*"/>
-              <input type="text" class="form-control"/>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Release</label>
-              <input type="date" class="form-control calendar-icon-white"/>
-            </div>
-          </div>
+          <input
+            type="text"
+            class="form-control"
+            name="id"
+            [(ngModel)]="song.id"
+            hidden
+          />
           <div class="mb-3">
-            <label class="form-label">Artist</label>
+            <label class="form-label">Release</label>
+            <input
+              type="date"
+              class="form-control calendar-icon-white"
+              name="release"
+              id="release"
+              [(ngModel)]="song.release"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Artist</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
@@ -86,7 +94,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Album</label>
+            <label for="exampleInputEmail1" class="form-label">Album</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
@@ -111,7 +119,7 @@
             <table class="table table-dark">
               <thead>
               <tr>
-                <th scope="col">No.</th>
+                <!-- <th scope="col">No.</th> -->
                 <th scope="col">Title</th>
                 <th scope="col">Desc</th>
                 <th scope="col">Release</th>
@@ -120,7 +128,7 @@
               </thead>
               <tbody>
               <tr *ngFor="let album of albumTable; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
+                <!-- <th scope="row">{{ i + 1 }}</th> -->
 
                 <td>{{ album.title }}</td>
                 <td>{{ album.description }}</td>
@@ -146,7 +154,7 @@
             </table>
           </div>
           <div class="mb-3">
-            <label class="form-label">Genre</label>
+            <label for="exampleInputEmail1" class="form-label">Genre</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
@@ -163,7 +171,8 @@
               <mat-option
                 (click)="addGenretoTable(item)"
                 *ngFor="let item of filterOptionsGenre | async"
-                value="{{ item }}">
+                value="{{ item }}"
+              >
                 {{ item }}
               </mat-option>
             </mat-autocomplete>
@@ -205,7 +214,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="form-label">Author</label>
+            <label for="exampleInputEmail1" class="form-label">Author</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
@@ -285,6 +294,7 @@
                 <h3>Drag and drop a file or select add Image</h3>
               </div>
             </div>
+
             <div class="file-upload-content">
               <img
                 class="file-upload-image"
@@ -307,7 +317,7 @@
                   class="row bg-dark p-3 pb-4 border border-light rounded shadow"
                 >
                   <!-- Default checked -->
-                  <div class="col-md-12 mb-3">
+                  <!-- <div class="col-md-12 mb-3">
                     <div class="custom-control custom-switch">
                       <input
                         type="checkbox"
@@ -318,18 +328,25 @@
                       <label
                         class="custom-control-label font-weight-dark"
                         for="audioUploadSwitch"
-                      >Disable upload and use default audio file</label
+                        >Disable upload and use default audio file</label
                       >
                     </div>
-                  </div>
+                  </div> -->
+
                   <div class="col-md-12">
-                    <div class="file-upload-wrapper bg-dark" #fileUploadWrapper>
-                      <div class="card card-body w-100 view file-upload">
+                    <div
+                      class="file-upload-wrapper bg-dark text-center"
+                      #fileUploadWrapper
+                    >
+                      <div
+                        class="card card-body w-100 view file-upload bg-dark text-center"
+                      >
                         <input
                           type="file"
                           id="audiofile"
                           class="file_upload"
                           (change)="handleFiles($event)"
+                          accept="audio/*"
                         />
                         <p class="file-upload-infos-message">
                           Audio upload - Drag and drop or click
@@ -338,7 +355,18 @@
                     </div>
                   </div>
                   <div class="mx-auto">
-                    <audio id="track" src="" type="audio/mp3" #track></audio>
+                    <audio
+                      id="track"
+                      [src]="audioUrl"
+                      type="audio/mp3"
+                      #track
+                    ></audio>
+                    <!-- <audio
+                      id="track"
+                      src="adminManageAudio/song/yt1s.com - One Of The Girls.mp3"
+                      type="audio/mp3"
+                      #track
+                    ></audio> -->
                     <div class="player d-none" style="width: 300px" #player>
                       <div class="progress p-1">
                         <input
@@ -395,42 +423,17 @@
               </div>
             </div>
 
-            <div class="mt-3">
-              <button
-                class="file-upload-btn"
-                type="button"
-                onclick="$('.file-upload-input-audio').trigger( 'click' )"
-              >
-                Add Lyrics
-              </button>
-
-              <div class="audio-upload-wrap">
-                <input
-                  class="file-upload-input-audio"
-                  type="file"
-                  accept="audio/*"
-                />
-                <div class="drag-text-audio">
-                  <h3>Drag and drop a file or select add Lyrics</h3>
-                </div>
-              </div>
-              <div class="file-upload-content">
-                <img class="file-upload-audio" src="#" alt="your audio"/>
-                <div class="audio-title-wrap">
-                  <button
-                    type="button"
-                    onclick="removeUpload()"
-                    class="remove-file"
-                  >
-                    Remove <span class="audio-title">Uploaded Lyrics</span>
-                  </button>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="text-center">
-            <button class="btn btn-primary fw-bold">Save</button>
-            <button class="btn btn-info ms-3 fw-bold">Update</button>
+            <button class="btn btn-primary fw-bold" (click)="createSong()">
+              Save
+            </button>
+            <button
+              class="btn btn-info ms-3 fw-bold"
+              (click)="updateSong(song.id)"
+            >
+              Update
+            </button>
             <button class="btn btn-warning ms-3 fw-bold">Reset</button>
             <!-- <button (click)="test()" class="btn btn-warning ms-3 fw-bold">
               Test
@@ -447,28 +450,98 @@
           <thead>
           <tr>
             <th scope="col">*</th>
-            <th scope="col">Title</th>
             <th scope="col">Image</th>
-            <th scope="col">Artist</th>
+            <th scope="col">Title</th>
+            <!-- <th scope="col">Artist</th> -->
             <th scope="col">Release</th>
             <th scope="col">Action</th>
           </tr>
           </thead>
-          <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>jhonemail.com</td>
-            <td>John</td>
-            <td>0328645096</td>
+          <tbody *ngIf="songs && songs.length > 0; else noDataMessage">
+          <tr *ngFor="let album of this.songs; let i = index">
+            <th scope="row">{{ i + 1 }}</th>
             <td>
-              <img [src]="imageUrl" alt="Image"/>
+              <img
+                src="{{ album.image }}"
+                width="70"
+                height="70"
+                alt="{{ album.image }}"
+              />
             </td>
+            <td>{{ album.name }}</td>
+            <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
             <td>
-              <button class="btn btn-primary">Detail</button>
+              <button
+                (click)="getSong(album.id)"
+                class="btn btn-outline-info me-3"
+              >
+                Detail
+              </button>
+              <button
+                (click)="deleteSong(album.id)"
+                class="btn btn-outline-danger"
+              >
+                Delete
+              </button>
             </td>
           </tr>
           </tbody>
+
+          <ng-template #noDataMessage>
+            <tr>
+              <td colspan="4">
+                <p class="text-center text-danger">No data available.</p>
+              </td>
+            </tr>
+          </ng-template>
         </table>
+        <div class="d-flex justify-content-center">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item" *ngIf="page > 0">
+                <a class="page-link" style="cursor: pointer" (click)="Page(0)"
+                >First</a
+                >
+              </li>
+              <li class="page-item" *ngIf="page > 0">
+                <a
+                  class="page-link"
+                  (click)="Page(page - 1)"
+                  style="cursor: pointer"
+                >
+                  <i class="fa fa-chevron-left"></i>
+                </a>
+              </li>
+              <ng-container *ngFor="let page of visiblePages">
+                <li class="page-item" [ngClass]="{ active: page === page + 1 }">
+                  <a
+                    class="page-link"
+                    (click)="Page(page - 1)"
+                    style="cursor: pointer"
+                  >{{ page }}</a
+                  >
+                </li>
+              </ng-container>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a
+                  class="page-link"
+                  (click)="Page(page + 1)"
+                  style="cursor: pointer"
+                >
+                  <i class="fa fa-chevron-right"></i>
+                </a>
+              </li>
+              <li class="page-item" *ngIf="page < total - 1">
+                <a
+                  class="page-link"
+                  (click)="Page(total - 1)"
+                  style="cursor: pointer"
+                >Last</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </div>
   </div>
