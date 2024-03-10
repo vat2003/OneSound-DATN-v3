@@ -1,47 +1,64 @@
 <div class="container">
-  <!-- Form to create a new playlist -->
-  <h2 class="text-warning">TITLE: {{this.data.song.name}}</h2>
-  <h2 class="text-warning">TITLE: {{this.account?.fullname}}</h2>
+  <h1 class="text-warning">TITLE: {{ data.song.id }}</h1>
+
   <hr>
-  <div class="form-group">
-    <label for="playlistName">Playlist Name:</label>
-    <input type="text" id="playlistName" placeholder="Enter playlist name">
-    <button class="m-3">Create New Playlist</button>
-  </div>
-  <hr>
-  <table>
+  <div style="width: 400px;"></div>
+
+  <table class="table table-striped table-hover">
     <thead>
-    <tr>
-      <th>Action</th>
-      <th>Playlist</th>
-    </tr>
+      <tr>
+        <th>Action</th>
+        <th>Playlist</th>
+        <th>ID Playlist</th>
+        <th>ID Song</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let playlist of PlaylistTable">
+        <td>
+          <button class="btn btn-success" (click)="addPlaySong(playlist)">
+            {{ playlistSongMap[playlist.id ?? 0] ? 'Remove' : 'Add' }}
+          </button>
+        </td>
+        <td>
+          <a class="btn-link" (click)="timname(playlist.id)">{{ playlist.name }}</a>
+        </td>
+        <td>{{ playlist.id }}</td>
+        <td>{{ currentSongId }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>
-        <button>Add</button>
-      </td>
-      <td class="playlistCol">Playlist 1</td>
-    </tr>
-    <tr>
-      <td>
-        <button>Add</button>
-      </td>
-      <td>Playlist 2</td>
-    </tr>
-    <tr>
-      <td>
-        <button>Add</button>
-      </td>
-      <td>Playlist 3</td>
-    </tr>
-    <tr>
-      <td>
-        <button>Add</button>
-      </td>
-      <td>Playlist 4</td>
-    </tr>
+      <tr *ngFor="let song of songsInPlaylist">
+        <td>{{ song.song.id }}</td>
+        <td>{{ song.song.name }}</td>
+        <td>{{ song.song.image }}</td>
+        <td>{{ song.song.album.title }}</td>
+      </tr>
     </tbody>
   </table>
 
+
+
+
+  <hr>
+  <div *ngIf="showForm">
+    <div class="form-group">
+      <label for="playlistName">Playlist Name:</label>
+      <input type="text" id="playlistName" placeholder="Enter playlist name" [(ngModel)]="playlistName">
+      <button class="m-3" (click)="Playlist()">Create New Playlist</button>
+    </div>
+  </div>
+
+  <button (click)="toggleForm()">Toggle Form</button>
+  <hr>
 </div>

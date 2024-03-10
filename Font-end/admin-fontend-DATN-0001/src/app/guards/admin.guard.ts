@@ -20,17 +20,17 @@ export class AdminGuard {
   ) {}
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    debugger
+    
     const isTokenExpired = this.tokenService.isTokenExpired();
     const isUserIdValid = this.tokenService.getUserId() > 0;
     this.account = this.accountServiceService.getUserResponseFromLocalStorage();
     const isAdmin = this.account?.accountRole?.name === 'admin';
 
     if (!isTokenExpired && isUserIdValid && isAdmin) {
-      debugger
+      
       return true;
     } else {
-      debugger
+      
       alert("không phải là admin xin hãy đăng nhập")
       this.router.navigate(['/onesound/signin']);
       return false;
@@ -42,6 +42,6 @@ export const AdminGuardFn: CanActivateFn = (
   next: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ): boolean => {
-  debugger
+  
   return inject(AdminGuard).canActivate(next, state);
 }

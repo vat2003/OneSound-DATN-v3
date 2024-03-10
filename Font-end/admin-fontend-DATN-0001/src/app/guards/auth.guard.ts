@@ -19,15 +19,15 @@ export class AuthGuard {
   }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    debugger
+    
     const isTokenExpired = this.tokenService.isTokenExpired();
     const isUserIdValid = this.tokenService.getUserId() > 0;
 
     if (!isTokenExpired && isUserIdValid) {
-      debugger
+      
       return true;
     } else {
-      debugger
+      
       this.router.navigate(['/onesound/signin']);
       return false;
     }
@@ -35,6 +35,6 @@ export class AuthGuard {
 }
 
 export const AuthGuardFn: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
-  debugger
+  
   return inject(AuthGuard).canActivate(next, state);
 }
