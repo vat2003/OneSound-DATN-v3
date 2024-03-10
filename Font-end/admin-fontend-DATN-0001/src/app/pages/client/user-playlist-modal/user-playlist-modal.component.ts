@@ -137,40 +137,55 @@ export class UserPlaylistModalComponent implements OnInit {
             id: this.account?.id || 0
         }
     };
+    if (playlist.name == null) {
+      alert("vui lòng không được để trống tên playlist")
+    }else{
+      this.playlistService.getPlaylistByName(playlist.name)
+      .subscribe(
+          (existingPlaylist: Playlist | null) => {
+              if (existingPlaylist) {
+                  alert("tên playlist đã tồn tại , xin hãy nhập tên playlist khác")
+              } else {
+                  this.playlistService.createPlaylist(playlist)
+                      .subscribe(
+                          (createdPlaylist: Playlist) => {
+                              console.log('Playlist created successfully:', createdPlaylist);
+                          },
+                          (error) => {
+                              console.error('Error creating playlist:', error);
+                          }
+                      );
+              }
+          },
+          (error) => {
+              console.error('Error checking playlist name:', error);
+          }
+      );
+    }
 
-    this.playlistService.getPlaylistByName(playlist.name)
-        .subscribe(
-            (existingPlaylist: Playlist | null) => {
-                if (existingPlaylist) {
-                    alert("tên playlist đã tồn tại , xin hãy nhập tên playlist khác")
-                } else {
-                    this.playlistService.createPlaylist(playlist)
-                        .subscribe(
-                            (createdPlaylist: Playlist) => {
-                                console.log('Playlist created successfully:', createdPlaylist);
-                            },
-                            (error) => {
-                                console.error('Error creating playlist:', error);
-                            }
-                        );
-                }
-            },
-            (error) => {
-                console.error('Error checking playlist name:', error);
-            }
-        );
+    
 }
 
   removeSongFromPlaylist(playlistId: number, songId: number): void {
     this.playlistSongService.removeSongFromPlaylist(playlistId, songId).subscribe(
       () => {
         console.log('Song removed from playlist successfully.');
-        // Handle success here, if needed
       },
       (error) => {
         console.error('Failed to remove song from playlist:', error);
-        // Handle error here, if needed
       }
     );
   }
+  deletePlayList(playlist: Playlist): void {
+    this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
+      () => {
+        console.log('Song removed from playlist successfully.');
+      },
+      (error) => {
+        console.error('Failed to remove song from playlist:', error);
+      }
+    );
+  }
+
+
 }

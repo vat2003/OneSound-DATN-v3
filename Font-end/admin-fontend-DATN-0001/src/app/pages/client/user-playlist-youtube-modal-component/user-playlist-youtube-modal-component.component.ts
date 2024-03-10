@@ -121,7 +121,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     debugger
     if (id !== undefined) {
       debugger
-      this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
+      this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
         (songs: any[]) => {
           debugger
           this.songsInPlaylist = songs;
@@ -167,5 +167,16 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
                 console.error('Error checking playlist name:', error);
             }
         );
+}
+
+deletePlayList(playlist: Playlist): void {
+  this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
+    () => {
+      console.log('Song removed from playlist successfully.');
+    },
+    (error) => {
+      console.error('Failed to remove song from playlist:', error);
+    }
+  );
 }
 }

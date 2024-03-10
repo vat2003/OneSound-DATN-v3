@@ -31,15 +31,23 @@ export class PlaylistYoutubeService {
   }
 
   addYoutubeToPlaylist(playlistId: number, youtubeId: string): Observable<object> {
-    debugger
+    
     const requestBody = {
       
       playlistId: playlistId,
       youtubeId: youtubeId
     };
-    debugger
+    
     return this.httpClient.post(`${this.apiUrl}/PlaylistYoutube`, requestBody);
   }
+ 
+
+  getListPlaylistYoutubeid(playlistId: number): Observable<PlaylistYoutube[]> {
+    
+    return this.httpClient.get<PlaylistYoutube[]>(`${this.apiUrl}/PlaylistYoutube/playlist/${playlistId}`);
+  }
+
+
 
   removeYoutubeFromPlaylist(playlistId: number, youtubeId: string): Observable<object> {
     return this.httpClient.delete(`${this.apiUrl}/PlaylistYoutube/${playlistId}/${youtubeId}`);

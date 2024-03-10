@@ -12,17 +12,13 @@
         <th>Playlist</th>
         <th>ID Playlist</th>
         <th>ID Song</th>
+        <th>Action</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let playlist of PlaylistTable">
-        <!-- <td>
-          <button class="btn btn-success" (click)="addPlaylistYoutube(playlist)">
-            Add
-          </button>
 
-        </td> -->
         <td>
           <button *ngIf="!playlistSongMap[playlist.id ?? 0]" class="btn btn-success"
             (click)="addPlaylistYoutube(playlist)">
@@ -38,6 +34,9 @@
         </td>
         <td>{{ playlist.id }}</td>
         <td>{{ this.data.youtubeId }}</td>
+        <td> <button class="btn btn-danger" style="background-color: red;" (click)="deletePlayList(playlist)">
+            Drop
+          </button></td>
       </tr>
 
     </tbody>
@@ -51,11 +50,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let song of songsInPlaylist">
-        <td>{{ song.song.id }}</td>
-        <td>{{ song.song.name }}</td>
-        <td>{{ song.song.image }}</td>
-        <td>{{ song.song.album.title }}</td>
+      <tr *ngFor="let y of songsInPlaylist">
+        <td>{{ y.playlist.id }}</td>
+        <td>{{ y.youtube.id }}</td>
+        <td>{{ y.youtube | json }}</td>
       </tr>
     </tbody>
   </table>

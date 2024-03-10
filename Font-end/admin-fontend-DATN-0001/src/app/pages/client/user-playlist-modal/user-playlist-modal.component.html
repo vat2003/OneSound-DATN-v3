@@ -11,6 +11,7 @@
         <th>Playlist</th>
         <th>ID Playlist</th>
         <th>ID Song</th>
+        <th>Action</th>
       </tr>
     </thead>
 
@@ -30,6 +31,9 @@
         </td>
         <td>{{ playlist.id }}</td>
         <td>{{ currentSongId }}</td>
+        <td> <button class="btn btn-danger" style="background-color: red;" (click)="deletePlayList(playlist)">
+            Drop
+          </button></td>
       </tr>
 
     </tbody>
