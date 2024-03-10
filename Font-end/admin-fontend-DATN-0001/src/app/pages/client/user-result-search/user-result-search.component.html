@@ -22,10 +22,9 @@
                     </div>
                 </td>
                 <td *ngIf="video.snippet"> {{ video.snippet.channelTitle }}</td>
-                <!-- <td *ngIf="video.snippet"></td> -->
-                <!-- <td>3:15</td> -->
+
                 <td>
-                    <i class="fa-solid fa-plus"></i>&nbsp;&nbsp;
+                    <i class="fa-solid fa-plus" (click)="openDialog(video.id.videoId)"></i>&nbsp;&nbsp;
                     <i class="fa-regular fa-heart"></i>
                 </td>
             </tr>

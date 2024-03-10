@@ -6,7 +6,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
   providedIn: 'root',
 })
 export class YoutubeApiSService {
-  private apiKey = 'AIzaSyBFAwfG8w01MikmR1RQCdfusLN-aHuh3CE';
+  private apiKey = 'AIzaSyBVzax734o1qla2LPzP46gW1zBRbAUGMEU';
   // private apiKey = '';
   private apiUrl = 'https://www.googleapis.com/youtube/v3/search';
 

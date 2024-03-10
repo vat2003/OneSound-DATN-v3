@@ -34,6 +34,10 @@ export class PlayListSongService {
       findSongInPlaylist(playlistId: number, songId: number): Observable<PlaylistSong> {
         return this.http.get<PlaylistSong>(`${this.apiUrl}/PlaylistSong/${playlistId}/${songId}`);
       }
+
+      removeSongFromPlaylist(playlistId: number, songId: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/PlaylistSong/${playlistId}/${songId}`);
+      }
     
    
 }

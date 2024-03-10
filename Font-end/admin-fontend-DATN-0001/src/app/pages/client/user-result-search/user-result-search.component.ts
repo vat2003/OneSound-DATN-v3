@@ -5,6 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { YoutubeApiSService } from '../../../services/youtube-api-s.service';
 import { DataGlobalService } from '../../../services/data-global.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UserPlaylistYoutubeModalComponentComponent } from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
+import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
+import { Youtube } from '../../adminPage/adminEntityService/adminEntity/DTO/youtube';
+import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
 
 @Component({
   selector: 'app-user-result-search',
@@ -22,7 +27,10 @@ export class UserResultSearchComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private youtubeService: YoutubeApiSService,
-    private dataGlobal: DataGlobalService
+    private dataGlobal: DataGlobalService,
+    private matDialog: MatDialog,
+    private PlaylistYoutubeService: PlaylistYoutubeService,
+
   ) {}
   ngOnInit(): void {
     debugger
@@ -55,4 +63,35 @@ export class UserResultSearchComponent implements OnInit {
     this.dataGlobal.changeId(video);
     this.dataGlobal.setItem('songHeardLast', video);
   }
+  openDialog(videoId: string) {
+    this.PlaylistYoutubeService.createYt(videoId).subscribe(
+      () => {
+        console.log('Song added to playlist successfully.');
+        // Open the dialog after successfully adding the song to the playlist
+        const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
+          data: { youtubeId: videoId } 
+        });
+      },
+      error => {
+        console.error('Failed to add song to the playlist:', error);
+      }
+    );
+  }
+
+  // openDialog(videoId: string) {
+    
+  //   this.PlaylistYoutubeService.createYt(videoId).subscribe(
+  //     () => 
+  //     {
+  //       console.log('Song added to playlist successfully.');
+  //     },
+  //     error => {
+        
+  //       console.error('Failed to add song to the playlist:', error);
+  //     }
+  //   );
+  //   const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
+  //     data: { youtubeId: videoId } 
+  //   });
+  // }
 }

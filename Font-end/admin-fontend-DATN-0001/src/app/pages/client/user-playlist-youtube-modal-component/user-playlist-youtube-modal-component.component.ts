@@ -1,69 +1,103 @@
-
 import { Component, Inject, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
-import { FormControl, FormsModule } from "@angular/forms";
-import { CommonModule, NgIf } from "@angular/common";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Song } from "../../adminPage/adminEntityService/adminEntity/song/song";
-import { account } from "../../adminPage/adminEntityService/adminEntity/account/account";
-import { accountServiceService } from "../../adminPage/adminEntityService/adminService/account-service.service";
-import { MatInputModule } from '@angular/material/input';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Playlist } from '../../adminPage/PlaylistSong/Playlist';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Youtube } from '../../adminPage/adminEntityService/adminEntity/DTO/youtube';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { playlistService } from '../../adminPage/adminEntityService/adminService/playlistService.service';
+import { FormControl, FormsModule } from '@angular/forms';
+import { Playlist } from '../../adminPage/PlaylistSong/Playlist';
+import { CommonModule, NgIf } from '@angular/common';
 import { PlayListSongService } from '../../adminPage/adminEntityService/adminService/PlayListSongService.service';
-import { PlaylistSong } from '../../adminPage/PlaylistSong/PlaylistSong';
+import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import { PlaylistYoutube } from '../../adminPage/adminEntityService/adminEntity/DTO/PlaylistYoutube';
 
 @Component({
-  selector: 'app-user-playlist-modal',
+  selector: 'app-user-playlist-youtube-modal-component',
   standalone: true,
   imports: [
     CommonModule, 
     FormsModule,
     NgIf
   ],
-  templateUrl: './user-playlist-modal.component.html',
-  styleUrl: './user-playlist-modal.component.scss',
+  templateUrl: './user-playlist-youtube-modal-component.component.html',
+  styleUrls: ['./user-playlist-youtube-modal-component.component.scss'],
   schemas: [NO_ERRORS_SCHEMA]
+
 })
-export class UserPlaylistModalComponent implements OnInit {
+export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
   account?: account | null;
   formcontrol = new FormControl('');
   PlaylistTable: Playlist[] = [];
-  PlaylistSongTable: PlaylistSong[] = [];
   showForm = false;
-  currentSongId: number | undefined; 
   songsInPlaylist: any[] = [];
   playlistName: string = '';
   playlistSongMap: { [playlistId: number]: boolean } = {};
+  currentSongId: string | undefined; 
 
 
-  
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { youtubeId: string },
+  private userService: accountServiceService,
+  private playlistService: playlistService,
+  private playlistSongService: PlayListSongService,
+  private PlaylistYoutubeService: PlaylistYoutubeService,
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { song: Song },
-              private userService: accountServiceService,
-              private playlistService: playlistService,
-              private playlistSongService: PlayListSongService,
-  ) {
+
+  ) {}
+
+
+  addPlaylistYoutube(playlist: Playlist){
+    debugger
+    const playlistId: number | undefined = playlist.id;
+    const YoutubeId: string | undefined = this.data.youtubeId;
+    debugger
+    // Check if playlistId and songId are defined before proceeding
+    if (playlistId !== undefined && YoutubeId !== undefined) {
+      debugger
+      this.PlaylistYoutubeService.addYoutubeToPlaylist(playlistId, YoutubeId).subscribe(
+        () => 
+        {
+          debugger
+          console.log('Song added to playlist successfully.');
+        },
+        error => {
+          debugger
+          console.error('Failed to add song to the playlist:', error);
+        }
+      );
+    } else {
+      debugger
+      console.error('Invalid playlistId or songId.');
+    }
+  }
+  removePlaylistYoutube(playlistId: number, YoutubeId: string): void{
+    this.PlaylistYoutubeService.removeYoutubeFromPlaylist(playlistId, YoutubeId).subscribe(
+      () => {
+        console.log('Song removed from playlist successfully.');
+        // Handle success here, if needed
+      },
+      (error) => {
+        console.error('Failed to remove song from playlist:', error);
+        // Handle error here, if needed
+      }
+    );
   }
 
-  toggleForm() {
-    this.showForm = !this.showForm;
-  }
+ 
 
   ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
-    this.currentSongId = this.data.song.id;
+    this.currentSongId = this.data.youtubeId;
+
     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(
       (playlists: Playlist[]) => {
         this.PlaylistTable = playlists;
-        console.log( this.PlaylistTable);
-        
-        this.formcontrol.setValue('');        
+        this.formcontrol.setValue('');  
+
         playlists.forEach((playlist) => {
           if (playlist.id !== undefined) {
-            this.playlistSongService.findSongInPlaylist(playlist.id, this.currentSongId ?? 0).subscribe(
-              (playlistSong: PlaylistSong) => {
-                this.playlistSongMap[playlist.id ?? 0] = playlistSong !== null;
+            this.PlaylistYoutubeService.findYoutubeInPlaylist(playlist.id, this.currentSongId || '').subscribe(
+              (PlaylistYoutube: PlaylistYoutube) => {
+                this.playlistSongMap[playlist.id ?? 0] = PlaylistYoutube !== null;
               },
               (error) => {
                 console.error(`Error fetching song in playlist ${playlist.id}:`, error);
@@ -71,41 +105,18 @@ export class UserPlaylistModalComponent implements OnInit {
             );
           }
         });
-        
+         
+
       },
       (error) => {
         console.error('Error fetching songs from the playlist:', error);
       }
     );
   }
-  
 
-  addPlaySong(playlist: Playlist) {
-    const playlistId: number | undefined = playlist.id;
-    const songId: number | undefined = this.currentSongId;
-  
-    // Check if playlistId and songId are defined before proceeding
-    if (playlistId !== undefined && songId !== undefined) {
-      
-      this.playlistSongService.addSongToPlaylist(playlistId, songId).subscribe(
-        () => 
-        {
-          console.log('Song added to playlist successfully.');
-        },
-        error => {
-          
-          console.error('Failed to add song to the playlist:', error);
-        }
-      );
-    } else {
-      
-      console.error('Invalid playlistId or songId.');
-    }
+  toggleForm() {
+    this.showForm = !this.showForm;
   }
-
-
-  
-
   timname(id: number | undefined) {
     debugger
     if (id !== undefined) {
@@ -126,9 +137,6 @@ export class UserPlaylistModalComponent implements OnInit {
       console.error('Playlist ID is undefined.');
     }
   }
-
-
-
   Playlist(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
     const playlist: Playlist = {
@@ -160,17 +168,4 @@ export class UserPlaylistModalComponent implements OnInit {
             }
         );
 }
-
-  removeSongFromPlaylist(playlistId: number, songId: number): void {
-    this.playlistSongService.removeSongFromPlaylist(playlistId, songId).subscribe(
-      () => {
-        console.log('Song removed from playlist successfully.');
-        // Handle success here, if needed
-      },
-      (error) => {
-        console.error('Failed to remove song from playlist:', error);
-        // Handle error here, if needed
-      }
-    );
-  }
 }

@@ -19,9 +19,14 @@ export class playlistService {
       debugger    
       return this.http.post<Playlist>(`${this.apiUrl}/Playlist`, Playlist);
   }
-  getPlaylistsByUserId(userId: number): Observable<Playlist[]> {
-    return this.http.get<Playlist[]>(`${this.apiUrl}/Playlist/user/${userId}`);
-  }
+
+    getPlaylistsByUserId(userId: number): Observable<Playlist[]> {
+      return this.http.get<Playlist[]>(`${this.apiUrl}/Playlist/user/${userId}`);
+    }
+
+    getPlaylistByName(name: string): Observable<Playlist> {
+      return this.http.get<Playlist>(`${this.apiUrl}/Playlist/${name}`);
+    }
   
   
 }

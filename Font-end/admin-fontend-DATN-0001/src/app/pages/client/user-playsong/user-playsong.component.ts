@@ -25,8 +25,7 @@ export class UserPlaysongComponent implements OnInit {
 
   openDialog(songInput: Song) {
     const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
-      // width: '350px',
-      data: {song: songInput} // Truyền ID vào data
+      data: {song: songInput} 
     });
   }
 

@@ -1,5 +1,6 @@
-<div class="container">
-  <h1 class="text-warning">TITLE: {{ data.song.id }}</h1>
+<div class="container ">
+  <h1 class=" text-warning">TITLE: {{ this.data.youtubeId }}</h1>
+  <h1 class=" text-warning">TITLE: {{ this.account?.id }}</h1>
 
   <hr>
   <div style="width: 400px;"></div>
@@ -16,12 +17,19 @@
 
     <tbody>
       <tr *ngFor="let playlist of PlaylistTable">
+        <!-- <td>
+          <button class="btn btn-success" (click)="addPlaylistYoutube(playlist)">
+            Add
+          </button>
+
+        </td> -->
         <td>
-          <button *ngIf="!playlistSongMap[playlist.id ?? 0]" class="btn btn-success" (click)="addPlaySong(playlist)">
+          <button *ngIf="!playlistSongMap[playlist.id ?? 0]" class="btn btn-success"
+            (click)="addPlaylistYoutube(playlist)">
             Add
           </button>
           <button *ngIf="playlistSongMap[playlist.id ?? 0]" class="btn btn-danger"
-            (click)="removeSongFromPlaylist(playlist.id ?? 0,currentSongId ?? 0)">
+            (click)="removePlaylistYoutube(playlist.id ?? 0,this.data.youtubeId)">
             Remove
           </button>
         </td>
@@ -29,7 +37,7 @@
           <a class="btn-link" (click)="timname(playlist.id)">{{ playlist.name }}</a>
         </td>
         <td>{{ playlist.id }}</td>
-        <td>{{ currentSongId }}</td>
+        <td>{{ this.data.youtubeId }}</td>
       </tr>
 
     </tbody>
