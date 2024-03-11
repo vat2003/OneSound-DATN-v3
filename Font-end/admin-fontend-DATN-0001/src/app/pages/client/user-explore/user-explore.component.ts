@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
 import { Router } from '@angular/router';
+import { StaticticalService } from '../../adminPage/adminEntityService/adminService/statictical/statictical.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-user-explore',
@@ -18,18 +20,34 @@ export class UserExploreComponent implements OnInit {
   constructor(
     private SingerService: SingerService,
     private firebaseStorage: FirebaseStorageCrudService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private statisticsService: StaticticalService
+  ) { }
+  index: number = 0;
   ngOnInit(): void {
     this.getAllArtist();
+    this.recordVisit()
   }
+
+
+
+  recordVisit() {
+    this.statisticsService.recordVisit().subscribe((res) => {
+      console.log(res);
+
+    }, error => {
+      console.log('error record visit ');
+
+    }
+    )
+  }
+
+
 
   getAllArtist(): void {
     this.SingerService.getAllArtists().subscribe(async (data) => {
       this.hotArtist = data;
       console.log(this.hotArtist);
-
-      debugger;
       console.log(data);
       this.hotArtist = data;
 

@@ -1,1 +1,85 @@
-<a class="btn btn-success " (click)="showIp()"></a>
+<!-- Form Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+
+
+        <div class="col-sm-12 col-xl-12 row">
+
+            <div class="bg-secondary rounded h-100 p-4">
+                <!-- ---Bat dau thiet ke-- -->
+                <div class="col-md-4">
+                    <h1>User statistics</h1>
+                </div>
+                <h4 class="mb-4">USER LIST</h4>
+                <table class="table table-hover text-center ">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th> Quantity <i class="fas fa-sort"></i> </th>
+                            <th> Date <i class=" fas fa-sort"></i></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let item of listVisit | paginate: { itemsPerPage: pageSize, currentPage: p,  id: 'CountUser' }, let i = index">
+                            <th scope="row">{{ i + 1 }}</th>
+                            <td>{{ item.visit }}</td>
+                            <td>{{ item.date | date: 'dd/MM/yyyy' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <pagination-controls (pageChange)="p = $event" id="CountUser"></pagination-controls>
+                </div>
+                <div class="text-center">
+
+                </div>
+
+
+
+                <h6 class="mb- mt-3">USER LIST BY CREATION DATE</h6>
+                <div class="col-md-2">
+                    <!-- <mat-form-field>
+              <input matInput [(ngModel)]="date" [matDatepicker]="picker" name="date" placeholder="Date"
+                (dateChange)="onDateChange()">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field> -->
+
+
+
+                </div>
+
+                <table class="table table-hover text-center ">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <!-- <th (click)="sortByCreatedId()"> Quantity <i class="fas fa-sort"></i> </th>
+                <th (click)="sortByCreatedDate()"> Create Date <i class=" fas fa-sort"></i></th> -->
+                            <th scope="col">Fullname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Birthday</th>
+                            <th scope="col">Gender</th>
+
+                            <th scope="col">Role</th>
+                            <th scope="col">Created Date</th>
+                            <th scope="col">Active</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- Form End -->
