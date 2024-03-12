@@ -1,5 +1,5 @@
 
-import { Component, Inject, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, NO_ERRORS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormsModule } from "@angular/forms";
 import { CommonModule, NgIf } from "@angular/common";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
@@ -12,6 +12,7 @@ import { Playlist } from '../../adminPage/PlaylistSong/Playlist';
 import { playlistService } from '../../adminPage/adminEntityService/adminService/playlistService.service';
 import { PlayListSongService } from '../../adminPage/adminEntityService/adminService/PlayListSongService.service';
 import { PlaylistSong } from '../../adminPage/PlaylistSong/PlaylistSong';
+import { PlaylistInteractionService } from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
 
 @Component({
   selector: 'app-user-playlist-modal',
@@ -22,6 +23,7 @@ import { PlaylistSong } from '../../adminPage/PlaylistSong/PlaylistSong';
     NgIf
   ],
   templateUrl: './user-playlist-modal.component.html',
+
   styleUrl: './user-playlist-modal.component.scss',
   schemas: [NO_ERRORS_SCHEMA]
 })
@@ -43,6 +45,7 @@ export class UserPlaylistModalComponent implements OnInit {
               private userService: accountServiceService,
               private playlistService: playlistService,
               private playlistSongService: PlayListSongService,
+              private playlistInteractionService: PlaylistInteractionService
   ) {
   }
 
@@ -50,15 +53,15 @@ export class UserPlaylistModalComponent implements OnInit {
     this.showForm = !this.showForm;
   }
 
-  ngOnInit(): void {
-    this.account = this.userService.getUserResponseFromLocalStorage();
-    this.currentSongId = this.data.song.id;
+
+  private updatePlaylists(): void {
     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(
       (playlists: Playlist[]) => {
         this.PlaylistTable = playlists;
-        console.log( this.PlaylistTable);
-        
-        this.formcontrol.setValue('');        
+        console.log(this.PlaylistTable);
+  
+        this.formcontrol.setValue('');
+
         playlists.forEach((playlist) => {
           if (playlist.id !== undefined) {
             this.playlistSongService.findSongInPlaylist(playlist.id, this.currentSongId ?? 0).subscribe(
@@ -71,20 +74,31 @@ export class UserPlaylistModalComponent implements OnInit {
             );
           }
         });
-        
       },
-      (error) => {
+      (error) => {                
         console.error('Error fetching songs from the playlist:', error);
       }
     );
-  }
+    }
+
+    ngOnInit(): void {
+      this.playlistInteractionService.playlistUpdated$.subscribe(() => {
+        this.updatePlaylists();
+      });
+    
+      this.account = this.userService.getUserResponseFromLocalStorage();
+      this.currentSongId = this.data.song.id;
+    
+      this.updatePlaylists();
+    }
+
+ 
   
 
   addPlaySong(playlist: Playlist) {
     const playlistId: number | undefined = playlist.id;
     const songId: number | undefined = this.currentSongId;
   
-    // Check if playlistId and songId are defined before proceeding
     if (playlistId !== undefined && songId !== undefined) {
       
       this.playlistSongService.addSongToPlaylist(playlistId, songId).subscribe(
@@ -92,15 +106,14 @@ export class UserPlaylistModalComponent implements OnInit {
         {
           console.log('Song added to playlist successfully.');
         },
-        error => {
-          
+        error => {          
           console.error('Failed to add song to the playlist:', error);
         }
       );
-    } else {
-      
+    } else {      
       console.error('Invalid playlistId or songId.');
     }
+    this.playlistInteractionService.updatePlaylist();
   }
 
 
@@ -129,53 +142,79 @@ export class UserPlaylistModalComponent implements OnInit {
 
 
 
+  // Playlist(): void {
+  //   this.account = this.userService.getUserResponseFromLocalStorage();
+  //   const playlist: Playlist = {
+  //       name: this.playlistName,
+  //       user_id: {
+  //           id: this.account?.id || 0
+  //       }
+  //   };
+  //   if (playlist.name == null) {
+  //     alert("vui lòng không được để trống tên playlist")
+  //   }else{
+  //     this.playlistService.getPlaylistByName(playlist.name)
+  //     .subscribe(
+  //         (existingPlaylist: Playlist | null) => {
+  //             if (existingPlaylist) {
+  //                 alert("tên playlist đã tồn tại , xin hãy nhập tên playlist khác")
+  //             } else {
+  //                 this.playlistService.createPlaylist(playlist)
+  //                     .subscribe(
+  //                         (createdPlaylist: Playlist) => {
+  //                             console.log('Playlist created successfully:', createdPlaylist);
+  //                         },
+  //                         (error) => {
+  //                             console.error('Error creating playlist:', error);
+  //                         }
+  //                     );
+  //             }
+  //         },
+  //         (error) => {
+  //             console.error('Error checking playlist name:', error);
+  //         }
+  //     );
+  //   }  
+  // }
   Playlist(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
     const playlist: Playlist = {
-        name: this.playlistName,
-        user_id: {
-            id: this.account?.id || 0
-        }
+      name: this.playlistName,
+      user_id: {
+        id: this.account?.id || 0
+      }
     };
     if (playlist.name == null) {
-      alert("vui lòng không được để trống tên playlist")
-    }else{
-      this.playlistService.getPlaylistByName(playlist.name)
-      .subscribe(
-          (existingPlaylist: Playlist | null) => {
-              if (existingPlaylist) {
-                  alert("tên playlist đã tồn tại , xin hãy nhập tên playlist khác")
-              } else {
-                  this.playlistService.createPlaylist(playlist)
-                      .subscribe(
-                          (createdPlaylist: Playlist) => {
-                              console.log('Playlist created successfully:', createdPlaylist);
-                          },
-                          (error) => {
-                              console.error('Error creating playlist:', error);
-                          }
-                      );
+      alert("Vui lòng không để trống tên playlist");
+    } else {
+      this.playlistService.getPlaylistByName(playlist.name).subscribe(
+        (existingPlaylist: Playlist | null) => {
+          if (existingPlaylist) {
+            alert("Tên playlist đã tồn tại, vui lòng nhập tên playlist khác");
+          } else {
+            this.playlistService.createPlaylist(playlist).subscribe(
+              (createdPlaylist: Playlist) => {
+                console.log('Playlist created successfully:', createdPlaylist);
+                
+                this.PlaylistTable.push(createdPlaylist);
+              },
+              (error) => {
+                console.error('Error creating playlist:', error);
               }
-          },
-          (error) => {
-              console.error('Error checking playlist name:', error);
+            );
           }
+        },
+        (error) => {
+          console.error('Error checking playlist name:', error);
+        }
       );
     }
-
-    
-}
-
-  removeSongFromPlaylist(playlistId: number, songId: number): void {
-    this.playlistSongService.removeSongFromPlaylist(playlistId, songId).subscribe(
-      () => {
-        console.log('Song removed from playlist successfully.');
-      },
-      (error) => {
-        console.error('Failed to remove song from playlist:', error);
-      }
-    );
   }
+  
+
+
+
+  
   deletePlayList(playlist: Playlist): void {
     this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
       () => {
@@ -187,5 +226,50 @@ export class UserPlaylistModalComponent implements OnInit {
     );
   }
 
+
+
+  toggleAddRemove(playlist: Playlist): void {
+    debugger
+    const playlistId: number | undefined = playlist.id;
+    const songId: number | undefined = this.currentSongId;
+
+    if (playlistId !== undefined && songId !== undefined) {
+      debugger
+        if (!this.playlistSongMap[playlistId]) {
+            this.playlistSongService.addSongToPlaylist(playlistId, songId).subscribe(
+                () => {
+                  debugger
+                    console.log('Song added to playlist successfully.');
+                    this.playlistSongMap[playlistId] = true;
+                    this.playlistInteractionService.updatePlaylist();
+
+                },
+                (error) => {
+                  debugger
+                    console.error('Failed to add song to the playlist:', error);
+                }
+            );
+        } else {
+          debugger
+            this.playlistSongService.removeSongFromPlaylist(playlistId, songId).subscribe(
+                () => {
+                  debugger
+                    console.log('Song removed from playlist successfully.');
+                    this.playlistSongMap[playlistId] = false;
+                    this.playlistInteractionService.updatePlaylist();
+                },
+                (error) => {
+                  debugger
+                    console.error('Failed to remove song from playlist:', error);
+                }
+            );
+        }
+    } else {
+        console.error('Invalid playlistId or songId.');
+    }
+}
+
+
+  
 
 }

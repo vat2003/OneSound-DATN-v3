@@ -45,27 +45,20 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
   ) {}
 
 
-  addPlaylistYoutube(playlist: Playlist){
-    debugger
+  addPlaylistYoutube(playlist: Playlist){    
     const playlistId: number | undefined = playlist.id;
-    const YoutubeId: string | undefined = this.data.youtubeId;
-    debugger
-    // Check if playlistId and songId are defined before proceeding
-    if (playlistId !== undefined && YoutubeId !== undefined) {
-      debugger
+    const YoutubeId: string | undefined = this.data.youtubeId;    
+    if (playlistId !== undefined && YoutubeId !== undefined) {      
       this.PlaylistYoutubeService.addYoutubeToPlaylist(playlistId, YoutubeId).subscribe(
         () => 
-        {
-          debugger
+        {          
           console.log('Song added to playlist successfully.');
         },
-        error => {
-          debugger
+        error => {          
           console.error('Failed to add song to the playlist:', error);
         }
       );
-    } else {
-      debugger
+    } else {      
       console.error('Invalid playlistId or songId.');
     }
   }
@@ -73,11 +66,10 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     this.PlaylistYoutubeService.removeYoutubeFromPlaylist(playlistId, YoutubeId).subscribe(
       () => {
         console.log('Song removed from playlist successfully.');
-        // Handle success here, if needed
+     
       },
       (error) => {
         console.error('Failed to remove song from playlist:', error);
-        // Handle error here, if needed
       }
     );
   }
@@ -117,23 +109,18 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
   toggleForm() {
     this.showForm = !this.showForm;
   }
-  timname(id: number | undefined) {
-    debugger
-    if (id !== undefined) {
-      debugger
+  timname(id: number | undefined) {    
+    if (id !== undefined) {      
       this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
-        (songs: any[]) => {
-          debugger
+        (songs: any[]) => {          
           this.songsInPlaylist = songs;
           console.log('Songs in playlist:', this.songsInPlaylist);
         },
-        error => {
-          debugger
+        error => {          
           console.error('Failed to fetch songs from the playlist:', error);
         }
       );
-    } else {
-      debugger
+    } else {      
       console.error('Playlist ID is undefined.');
     }
   }

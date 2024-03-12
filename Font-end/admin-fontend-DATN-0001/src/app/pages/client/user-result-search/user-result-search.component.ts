@@ -10,6 +10,7 @@ import { UserPlaylistYoutubeModalComponentComponent } from '../user-playlist-you
 import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
 import { Youtube } from '../../adminPage/adminEntityService/adminEntity/DTO/youtube';
 import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import { PlaylistInteractionService } from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
 
 @Component({
   selector: 'app-user-result-search',
@@ -30,13 +31,16 @@ export class UserResultSearchComponent implements OnInit {
     private dataGlobal: DataGlobalService,
     private matDialog: MatDialog,
     private PlaylistYoutubeService: PlaylistYoutubeService,
+    private playlistInteractionService: PlaylistInteractionService
 
   ) {}
   ngOnInit(): void {
-    debugger
-    this.get_keyword_from_searchinput();
-    this.search();
+    this.playlistInteractionService.playlistUpdated$.subscribe(() => {
+      this.get_keyword_from_searchinput();
+      this.search();
+    });
   }
+
 
   get_keyword_from_searchinput() {
     debugger
@@ -67,7 +71,6 @@ export class UserResultSearchComponent implements OnInit {
     this.PlaylistYoutubeService.createYt(videoId).subscribe(
       () => {
         console.log('Song added to playlist successfully.');
-        // Open the dialog after successfully adding the song to the playlist
         const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
           data: { youtubeId: videoId } 
         });
@@ -78,20 +81,5 @@ export class UserResultSearchComponent implements OnInit {
     );
   }
 
-  // openDialog(videoId: string) {
-    
-  //   this.PlaylistYoutubeService.createYt(videoId).subscribe(
-  //     () => 
-  //     {
-  //       console.log('Song added to playlist successfully.');
-  //     },
-  //     error => {
-        
-  //       console.error('Failed to add song to the playlist:', error);
-  //     }
-  //   );
-  //   const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
-  //     data: { youtubeId: videoId } 
-  //   });
-  // }
+
 }
