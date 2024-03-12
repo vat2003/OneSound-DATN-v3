@@ -42,7 +42,12 @@
     </div>
     <div class="mode">
         <div class="mode-type">HIFI</div>
-        <i class="fa-regular fa-heart"></i>
+        <i class="favorite fa-heart"
+            [ngClass]="{'fa-solid': selectedVideo.isFav === true, 'fa-regular': selectedVideo.isFav === false}"
+            [ngStyle]="{'color': selectedVideo.isFav === true ? 'rgb(212, 15, 15)' : ''}"
+            (click)="favorite(selectedVideo)">
+        </i>
+
         <i class="fa-solid fa-ellipsis"></i>
         <i class="fa-solid fa-bars"></i>
         <i class="fa-solid fa-square-arrow-up-right"></i>

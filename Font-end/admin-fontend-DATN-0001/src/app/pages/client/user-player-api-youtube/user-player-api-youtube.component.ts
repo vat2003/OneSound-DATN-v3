@@ -16,10 +16,15 @@ import { YoutubeApiSService } from '../../../services/youtube-api-s.service';
 import { Subscription } from 'rxjs';
 import { DataGlobalService } from '../../../services/data-global.service';
 import { log } from 'node:console';
+import { FavoriteService } from '../../../services/favorite-service/favorite.service';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
+import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
+import { Youtube } from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
 @Component({
   selector: 'app-user-player-api-youtube',
   standalone: true,
-  imports: [YouTubePlayerModule, HttpClientModule],
+  imports: [YouTubePlayerModule, HttpClientModule, CommonModule],
   templateUrl: './user-player-api-youtube.component.html',
   styleUrl: './user-player-api-youtube.component.scss',
 })
@@ -41,18 +46,21 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   currentTime: string = '0:00';
   totalTime: string = '0:00';
   private updateInterval?: number;
-
+  acc?: account | null;
   selectedVideo: any;
-
+  favList: any[] = [];
   constructor(
     private youtubeService: YoutubeApiSService,
-    private dataGlobal: DataGlobalService
+    private dataGlobal: DataGlobalService,
+    private favYoutube: FavoriteService,
+    private userService: accountServiceService
   ) {}
 
   ngOnInit() {
     // this.selectedVideo = this.dataGlobal.getItem('songHeardLastTimeYoutube');
     // this.videoId = this.selectedVideo.id.videoId;
-
+    this.getAllYoutubeFavByUser();
+    this.acc = this.userService.getUserResponseFromLocalStorage();
     this.dataGlobal.YtGlobalId.subscribe((video) => {
       if (video == null || video == undefined) {
         this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
@@ -160,6 +168,50 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
 
       this.volBar.nativeElement.style.width = `${newVolume}%`;
       this.volDot.nativeElement.style.left = `${newVolume}%`;
+    }
+  }
+
+  getAllYoutubeFavByUser() {
+    if (this.acc && this.acc.id) {
+      this.favYoutube.getAllFavYoutubeByUser(this.acc.id).subscribe((data) => {
+        this.favList = data;
+
+        this.checkFav();
+      });
+    }
+  }
+
+  checkFav() {
+    let found = this.favList.find(
+      (fav) => fav.youtube.id === this.selectedVideo.id.videoId
+    );
+    // Nếu tồn tại, gán isFav = true, ngược lại gán isFav = false
+    this.selectedVideo.isFav = found ? true : false;
+  }
+
+  favorite(youtubeitem: any) {
+    let youtubeId = youtubeitem.id.videoId;
+    let favyt = new FavoriteYoutbe(this.acc?.id, youtubeId);
+    let youtube = new Youtube(youtubeId);
+    if (
+      this.acc == null ||
+      this.acc == undefined ||
+      this.acc === null ||
+      this.acc === undefined
+    ) {
+      alert('Please log in to use this feature');
+      return;
+    }
+    if (youtubeitem.isFav) {
+      if (!confirm('Are you sure you want to unlike?')) {
+        return;
+      }
+      youtubeitem.isFav = false;
+      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {});
+    } else {
+      youtubeitem.isFav = true;
+      this.favYoutube.createYt(youtube).subscribe((data) => {});
+      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
     }
   }
 }
