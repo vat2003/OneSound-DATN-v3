@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { StaticticalService } from '../../../adminEntityService/adminService/statictical/statictical.service';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CountUserByDate } from '../../../adminEntityService/adminEntity/DTO/count-user-by-date';
@@ -6,8 +6,10 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { account } from '../../../adminEntityService/adminEntity/account/account';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { ChartConfiguration, ChartData, ChartEvent, ChartOptions } from 'chart.js';
 import { log } from 'console';
+import { BarChartComponent } from '../others/bar-chart/bar-chart.component';
+import { get } from 'http';
 
 @Component({
   selector: 'app-report',
@@ -17,6 +19,7 @@ import { log } from 'console';
     NgxPaginationModule,
     FormsModule,
     NgChartsModule,
+    BarChartComponent
 
   ],
   providers: [DatePipe],
@@ -25,6 +28,8 @@ import { log } from 'console';
   styleUrl: './report.component.css'
 })
 export class ReportComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+
   quantityUsers!: number;
   minDate: string;
   maxDate: string
@@ -50,7 +55,8 @@ export class ReportComponent implements OnInit {
   day!: number;
   month!: number;
   year!: number;
-
+  barYear!: number;
+  countUserOrderByMonth: any[] = [];
 
   constructor(
     private staticticalService: StaticticalService,
@@ -65,11 +71,12 @@ export class ReportComponent implements OnInit {
     // Format minDate và maxDate dưới dạng yyyy-MM-dd
     this.minDate = minDate.toISOString().split('T')[0];
     this.maxDate = maxDate.toISOString().split('T')[0];
-
-
+    this.barYear = new Date().getFullYear();
+    this.getDataBarchart(new Date().getFullYear());
 
 
   }
+
 
   showDate() {
     const selectedTimestamp = new Date(this.date).getTime();
@@ -121,6 +128,9 @@ export class ReportComponent implements OnInit {
     this.displaySelectedMonth();
     this.displaySelectedDay();
     this.displaySelectedYear();
+    this.displaySelectedYearOfBarChart()
+    this.getDataBarchart(this.barYear);
+
   }
 
   getLabel() {
@@ -166,18 +176,74 @@ export class ReportComponent implements OnInit {
 
   //-----------------------------------------------
 
-  //Bar chart
-  barChartData: ChartConfiguration<'bar'>['data'] = {
+
+  //-----------------------------------------------|
+  //----------------Bar chart----------------------|
+  //-----------------------------------------------|
+
+  public barChartOptions: ChartConfiguration<'bar'>['options'] = {
+    // We use these empty structures as placeholders for dynamic theming.
+    responsive: false
+  };
+  public barChartType = 'bar' as const;
+
+  public barChartData: ChartData<'bar'> = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-    datasets: [{
-      data: [47, 0, 6]
-    }]
+    datasets: [
+      { data: [2, 5, 7, 9], label: 'Series A' }
+    ],
   };
 
-  public BarChartOptions: ChartOptions<'bar'> = {
-    responsive: true,
-  };
-  public BarChartLegend = true;
+  // events
+  public chartClicked({
+    event,
+    active,
+  }: {
+    event?: ChartEvent;
+    active?: object[];
+  }): void {
+    console.log(event, active);
+  }
+
+  public chartHovered({
+    event,
+    active,
+  }: {
+    event?: ChartEvent;
+    active?: object[];
+  }): void {
+    console.log(event, active);
+  }
+
+  changeUserData() {
+    this.getDataBarchart(this.barYear);
+  }
+
+
+
+  getDataBarchart(year: number) {
+    this.staticticalService.getCountUserByYearOrderByMonth(year).subscribe((res) => {
+      this.countUserOrderByMonth = res.map(item => item.count);
+    })
+    return this.countUserOrderByMonth;
+  }
+
+
+  displaySelectedYearOfBarChart() {
+    const yaerSelect: HTMLSelectElement | null = this.el.nativeElement.querySelector(".barYear");
+    if (yaerSelect) {
+      const currentYear: number = new Date().getFullYear();
+      const startYear: number = 2000;
+
+      for (let year: number = currentYear; year >= startYear; year--) {
+        const option: HTMLOptionElement = this.renderer.createElement("option");
+        this.renderer.setProperty(option, 'value', year.toString());
+        this.renderer.setProperty(option, 'text', year.toString());
+        this.renderer.appendChild(yaerSelect, option);
+      }
+    }
+  }
+
 
 
 

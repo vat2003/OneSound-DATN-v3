@@ -92,13 +92,49 @@
             [legend]="lineChartLegend">
           </canvas>
         </div>
-
-        <!-- <div style="display: block;">
+        <!-- 
+        <div style="display: block;">
           <div>Bar Chart</div>
+          <div class="  col-md-2">
+            <label for="floatingSelect">Year</label>
+            <select class="form-select barYear" id="barYear" name="barYear" [(ngModel)]="barYear"
+              aria-label="Floating label select example" (change)="randomize()">
+
+            </select>
+            <button mat-button mat-raised-button (click)="randomize()">change</button>
+
+          </div>
+
           <canvas baseChart height="100px" [type]="'bar'" [data]="barChartData" [options]="BarChartOptions"
             [legend]="BarChartLegend">
           </canvas>
+
+         
+
         </div> -->
+
+        <!-- <canvas height="500px" width="1000px" baseChart [data]="barChartData" [options]="barChartOptions"
+          [type]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+        </canvas>
+
+        <button mat-button mat-raised-button color="primary">
+          Update
+        </button> -->
+
+        <div class="  col-md-2">
+          <label for="floatingSelect">Year</label>
+          <select class="form-select barYear" id="barYear" name="barYear" [(ngModel)]="barYear"
+            aria-label="Floating label select example" (change)="changeUserData()">
+
+          </select>
+
+
+        </div>
+
+
+        <app-bar-chart [userData]="countUserOrderByMonth"></app-bar-chart>
+
+
 
 
         <h6 class="mb- mt-3">USER LIST BY CREATION DATE</h6>
