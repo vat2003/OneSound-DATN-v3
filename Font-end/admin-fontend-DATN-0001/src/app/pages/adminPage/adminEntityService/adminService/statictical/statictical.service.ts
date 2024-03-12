@@ -63,6 +63,10 @@ export class StaticticalService {
     return this.httpClient.get<account[]>(`${this.baseURL}/statictical/get-user-by-option-date/${day}/${month}/${year}`)
   }
 
+  getCountUserByYearOrderByMonth(year: number) {
+    return this.httpClient.get<any[]>(`${this.baseURL}/statictical/get-count-user-by-year/${year}`)
+
+  }
 
 
 
