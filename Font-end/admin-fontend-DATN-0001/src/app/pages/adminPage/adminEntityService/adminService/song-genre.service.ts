@@ -12,8 +12,8 @@ export class SongGenreService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // createSongGenre(singerId: number, albumId: number): Observable<SongGenre> {
-  //   const body = { singerId, albumId };
+  // createSongGenre(GenreId: number, albumId: number): Observable<SongGenre> {
+  //   const body = { GenreId, albumId };
   //   return this.httpClient.post<SongGenre>(`${this.baseURL}/create`, body);
   // }
 
@@ -21,9 +21,8 @@ export class SongGenreService {
     return this.httpClient.get<SongGenre[]>(`${this.baseURL}/get-by-song/${id}`);
   }
 
-  createSongGenre(singerId: number, albumId: number): Observable<Object> {
-
-    const body = { singerId, albumId };
+  createSongGenre(songId: number, genreId: number): Observable<Object> {
+    const body = { songId, genreId };
     return this.httpClient.post(`${this.baseURL}/create`, body);
   }
 
@@ -33,9 +32,11 @@ export class SongGenreService {
   }
 
   deleteAllSongGenreByGenreId(albumId: number): Observable<Object> {
+
     return this.httpClient.delete(`${this.baseURL}/delete-by-Genre/${albumId}`);
   }
   deleteAllSongGenreBySongId(albumId: number): Observable<Object> {
+
     return this.httpClient.delete(`${this.baseURL}/delete-by-song/${albumId}`);
   }
 }

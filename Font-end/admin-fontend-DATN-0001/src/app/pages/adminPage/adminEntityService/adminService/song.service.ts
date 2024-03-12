@@ -53,7 +53,7 @@ export class SongService {
   }
 
   updateSong(id: number, Song: Song): Observable<Object> {
-    return this.httpClient.put(`${this.baseUrl}/${id}`, Song);
+    return this.httpClient.put(`${this.baseUrl}/update/${id}`, Song);
   }
 
   deleteSong(id: number): Observable<Object> {
