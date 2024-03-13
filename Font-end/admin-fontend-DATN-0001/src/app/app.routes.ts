@@ -49,7 +49,7 @@ export const routes: Routes = [
 
   {
     path: 'onesound/admin',
-    canActivate: [AdminGuardFn],
+    // canActivate: [AdminGuardFn],
 
     component: HomeComponent,
     children: [
