@@ -45,53 +45,34 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
   ) {}
 
 
-  addPlaylistYoutube(playlist: Playlist){    
-    const playlistId: number | undefined = playlist.id;
-    const YoutubeId: string | undefined = this.data.youtubeId;    
-    if (playlistId !== undefined && YoutubeId !== undefined) {      
-      this.PlaylistYoutubeService.addYoutubeToPlaylist(playlistId, YoutubeId).subscribe(
-        () => 
-        {          
-          console.log('Song added to playlist successfully.');
-        },
-        error => {          
-          console.error('Failed to add song to the playlist:', error);
-        }
-      );
-    } else {      
-      console.error('Invalid playlistId or songId.');
-    }
-  }
-  removePlaylistYoutube(playlistId: number, YoutubeId: string): void{
-    this.PlaylistYoutubeService.removeYoutubeFromPlaylist(playlistId, YoutubeId).subscribe(
-      () => {
-        console.log('Song removed from playlist successfully.');
-     
-      },
-      (error) => {
-        console.error('Failed to remove song from playlist:', error);
-      }
-    );
-  }
+
 
  
 
   ngOnInit(): void {
+    debugger
+ 
     this.account = this.userService.getUserResponseFromLocalStorage();
     this.currentSongId = this.data.youtubeId;
 
     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(
       (playlists: Playlist[]) => {
+        debugger
         this.PlaylistTable = playlists;
         this.formcontrol.setValue('');  
 
         playlists.forEach((playlist) => {
+          debugger
           if (playlist.id !== undefined) {
+            debugger
             this.PlaylistYoutubeService.findYoutubeInPlaylist(playlist.id, this.currentSongId || '').subscribe(
               (PlaylistYoutube: PlaylistYoutube) => {
+                debugger
                 this.playlistSongMap[playlist.id ?? 0] = PlaylistYoutube !== null;
               },
-              (error) => {
+              (error) =>
+               {
+                debugger
                 console.error(`Error fetching song in playlist ${playlist.id}:`, error);
               }
             );
@@ -156,14 +137,79 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
         );
 }
 
-deletePlayList(playlist: Playlist): void {
-  this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
-    () => {
-      console.log('Song removed from playlist successfully.');
-    },
-    (error) => {
-      console.error('Failed to remove song from playlist:', error);
+  deletePlayList(playlist: Playlist): void {
+    this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
+      () => {
+        console.log('Song removed from playlist successfully.');
+      },
+      (error) => {
+        console.error('Failed to remove song from playlist:', error);
+      }
+    );
+  }
+
+  // addPlaylistYoutube(playlist: Playlist){    
+  //   const playlistId: number | undefined = playlist.id;
+  //   const YoutubeId: string | undefined = this.data.youtubeId;    
+  //   if (playlistId !== undefined && YoutubeId !== undefined) {      
+  //     this.PlaylistYoutubeService.addYoutubeToPlaylist(playlistId, YoutubeId).subscribe(
+  //       () => 
+  //       {          
+  //         console.log('Song added to playlist successfully.');
+  //       },
+  //       error => {          
+  //         console.error('Failed to add song to the playlist:', error);
+  //       }
+  //     );
+  //   } else {      
+  //     console.error('Invalid playlistId or songId.');
+  //   }
+  // }
+
+   
+  // removePlaylistYoutube(playlistId: number, YoutubeId: string): void{
+  //   this.PlaylistYoutubeService.removeYoutubeFromPlaylist(playlistId, YoutubeId).subscribe(
+  //     () => {
+  //       console.log('Song removed from playlist successfully.');
+     
+  //     },
+  //     (error) => {
+  //       console.error('Failed to remove song from playlist:', error);
+  //     }
+  //   );
+  // }
+
+  toggleAddRemove(playlist: Playlist): void {
+    debugger
+    const playlistId: number | undefined = playlist.id;
+    const YoutubeId: string | undefined = this.data.youtubeId;  
+
+    if (playlistId !== undefined && YoutubeId !== undefined) {
+      debugger
+        if (!this.playlistSongMap[playlistId]) {
+          this.PlaylistYoutubeService.addYoutubeToPlaylist(playlistId, YoutubeId).subscribe(
+            () => 
+            {          
+              console.log('Song added to playlist successfully.');
+            },
+            error => {          
+              console.error('Failed to add song to the playlist:', error);
+            }
+          );
+        } else {
+          debugger
+          this.PlaylistYoutubeService.removeYoutubeFromPlaylist(playlistId, YoutubeId).subscribe(
+      () => {
+        console.log('Song removed from playlist successfully.');
+     
+      },
+      (error) => {
+        console.error('Failed to remove song from playlist:', error);
+      }
+    );
+        }
+    } else {
+        console.error('Invalid playlistId or songId.');
     }
-  );
-}
+  }
 }

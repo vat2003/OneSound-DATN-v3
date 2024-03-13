@@ -1,0 +1,29 @@
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>TITLE</th>
+            <th>ARTIST</th>
+            <th>LISTS</th>
+            <th>TIME</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="list-songs-detail">
+        <tr *ngFor="let playlist of Playlist">
+
+            <td>
+                <div class="table-title">
+                    <div class="line-clamp">{{ playlist.name }}</div>
+                </div>
+            </td>
+            <td>Keshi</td>
+            <td>POP</td>
+            <td>3:15</td>
+            <td>
+                <i class="fa-solid fa-plus" (click)="deletePlayList(playlist)"></i>&nbsp;&nbsp;
+            </td>
+
+        </tr>
+    </tbody>
+</table>

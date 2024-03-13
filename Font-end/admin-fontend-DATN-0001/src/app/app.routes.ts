@@ -30,6 +30,7 @@ import {ReportComponent} from "./pages/adminPage/manage/statictical/report/repor
 import {StaticticalComponent} from "./pages/adminPage/manage/statictical/statictical/statictical.component";
 import {UserResultSearchComponent} from "./pages/client/user-result-search/user-result-search.component";
 import {CaptchaComponent} from "./pages/captcha/captcha.component";
+import { UserplaylistComponent } from './pages/client/userplaylist/userplaylist.component';
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -94,6 +95,7 @@ export const routes: Routes = [
       {path: 'playsong', component: UserPlaysongComponent},
       {path: 'profile/:id', component: UserProfileComponent},
       {path: 'profile', component: ProfileComponent},
+      {path: 'Playlists', component: UserplaylistComponent},
     ],
   }, {
     path: 'onesound/home',

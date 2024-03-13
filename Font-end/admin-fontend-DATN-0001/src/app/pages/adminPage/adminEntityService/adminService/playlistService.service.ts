@@ -27,6 +27,9 @@ export class playlistService {
     getPlaylistByName(name: string): Observable<Playlist> {
       return this.http.get<Playlist>(`${this.apiUrl}/Playlist/${name}`);
     }
+    getPlaylistByid(id: number): Observable<Playlist> {
+      return this.http.get<Playlist>(`${this.apiUrl}/Playlist/id/${id}`);
+    }
   
   
 }

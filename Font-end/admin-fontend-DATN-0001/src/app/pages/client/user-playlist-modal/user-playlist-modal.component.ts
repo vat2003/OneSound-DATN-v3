@@ -45,7 +45,8 @@ export class UserPlaylistModalComponent implements OnInit {
               private userService: accountServiceService,
               private playlistService: playlistService,
               private playlistSongService: PlayListSongService,
-              private playlistInteractionService: PlaylistInteractionService
+              private playlistInteractionService: PlaylistInteractionService,
+         
   ) {
   }
 
@@ -100,19 +101,25 @@ export class UserPlaylistModalComponent implements OnInit {
     const songId: number | undefined = this.currentSongId;
   
     if (playlistId !== undefined && songId !== undefined) {
-      
+        debugger
       this.playlistSongService.addSongToPlaylist(playlistId, songId).subscribe(
-        () => 
+        (Playlist: Playlist) => 
         {
+          debugger
           console.log('Song added to playlist successfully.');
+        
         },
-        error => {          
+        error => {        
+          debugger  
           console.error('Failed to add song to the playlist:', error);
         }
       );
     } else {      
+      debugger
       console.error('Invalid playlistId or songId.');
     }
+
+
     this.playlistInteractionService.updatePlaylist();
   }
 
@@ -142,40 +149,7 @@ export class UserPlaylistModalComponent implements OnInit {
 
 
 
-  // Playlist(): void {
-  //   this.account = this.userService.getUserResponseFromLocalStorage();
-  //   const playlist: Playlist = {
-  //       name: this.playlistName,
-  //       user_id: {
-  //           id: this.account?.id || 0
-  //       }
-  //   };
-  //   if (playlist.name == null) {
-  //     alert("vui lòng không được để trống tên playlist")
-  //   }else{
-  //     this.playlistService.getPlaylistByName(playlist.name)
-  //     .subscribe(
-  //         (existingPlaylist: Playlist | null) => {
-  //             if (existingPlaylist) {
-  //                 alert("tên playlist đã tồn tại , xin hãy nhập tên playlist khác")
-  //             } else {
-  //                 this.playlistService.createPlaylist(playlist)
-  //                     .subscribe(
-  //                         (createdPlaylist: Playlist) => {
-  //                             console.log('Playlist created successfully:', createdPlaylist);
-  //                         },
-  //                         (error) => {
-  //                             console.error('Error creating playlist:', error);
-  //                         }
-  //                     );
-  //             }
-  //         },
-  //         (error) => {
-  //             console.error('Error checking playlist name:', error);
-  //         }
-  //     );
-  //   }  
-  // }
+
   Playlist(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
     const playlist: Playlist = {
@@ -184,6 +158,7 @@ export class UserPlaylistModalComponent implements OnInit {
         id: this.account?.id || 0
       }
     };
+  
     if (playlist.name == null) {
       alert("Vui lòng không để trống tên playlist");
     } else {
@@ -194,9 +169,36 @@ export class UserPlaylistModalComponent implements OnInit {
           } else {
             this.playlistService.createPlaylist(playlist).subscribe(
               (createdPlaylist: Playlist) => {
-                console.log('Playlist created successfully:', createdPlaylist);
-                
                 this.PlaylistTable.push(createdPlaylist);
+  
+                console.log('Created Playlist Information:', createdPlaylist);
+  
+                this.playlistService.getPlaylistByid(createdPlaylist.id || 0).subscribe(
+                  (fetchedPlaylist: Playlist | null) => {
+                    if (fetchedPlaylist) {
+                      console.log('Fetched Playlist Information:', fetchedPlaylist);
+
+                      this.playlistSongService.addSongToPlaylist(fetchedPlaylist.id ?? 0, this.currentSongId ?? 0).subscribe(
+                        () => {
+                          debugger
+                            console.log('Song added to playlist successfully.');
+                            this.playlistSongMap[fetchedPlaylist.id ?? 0] = true;
+                            this.playlistInteractionService.updatePlaylist();
+        
+                        },
+                        (error) => {
+                          debugger
+                            console.error('Failed to add song to the playlist:', error);
+                        }
+                    );
+                    } else {
+                      console.error('Failed to fetch playlist information.');
+                    }
+                  },
+                  (error) => {
+                    console.error('Error fetching playlist information:', error);
+                  }
+                );
               },
               (error) => {
                 console.error('Error creating playlist:', error);
@@ -210,6 +212,8 @@ export class UserPlaylistModalComponent implements OnInit {
       );
     }
   }
+  
+
   
 
 
@@ -267,7 +271,7 @@ export class UserPlaylistModalComponent implements OnInit {
     } else {
         console.error('Invalid playlistId or songId.');
     }
-}
+  }
 
 
   

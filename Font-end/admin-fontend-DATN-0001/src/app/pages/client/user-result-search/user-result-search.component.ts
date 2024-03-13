@@ -67,6 +67,7 @@ export class UserResultSearchComponent implements OnInit {
     this.dataGlobal.changeId(video);
     this.dataGlobal.setItem('songHeardLast', video);
   }
+  
   openDialog(videoId: string) {
     this.PlaylistYoutubeService.createYt(videoId).subscribe(
       () => {
