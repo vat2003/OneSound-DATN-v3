@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FavoriteYoutbe } from '../../pages/adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
 import { Youtube } from '../../pages/adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
+import { FavoriteSong } from '../../pages/adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,7 @@ export class FavoriteService {
   private urlYoutube = 'http://localhost:8080/api/v1/youtube';
   constructor(private httpClient: HttpClient) {}
 
+  // youtube
   getAllFavoriteYoutube(): Observable<FavoriteYoutbe[]> {
     return this.httpClient.get<FavoriteYoutbe[]>(`${this.urlFavoriteYoutube}`);
   }
@@ -41,6 +43,32 @@ export class FavoriteService {
   getAllFavYoutubeByUser(userId: number): Observable<FavoriteYoutbe[]> {
     return this.httpClient.get<FavoriteYoutbe[]>(
       `${this.urlFavoriteYoutube}/${userId}`
+    );
+  }
+
+  //song vật lý -----------------------------------------------------------
+  getAllFavoriteSong(): Observable<FavoriteSong[]> {
+    return this.httpClient.get<FavoriteSong[]>(`${this.urlFavoriteSong}`);
+  }
+
+  addFavoriteSong(favSong: FavoriteSong): Observable<Object> {
+    return this.httpClient.post(`${this.urlFavoriteSong}`, favSong);
+  }
+
+  deleteFavoriteSong(favSong: FavoriteSong): Observable<Object> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: favSong,
+    };
+
+    return this.httpClient.delete(`${this.urlFavoriteSong}`, options);
+  }
+
+  getAllFavSongByUser(userId: number): Observable<FavoriteSong[]> {
+    return this.httpClient.get<FavoriteSong[]>(
+      `${this.urlFavoriteSong}/${userId}`
     );
   }
 }

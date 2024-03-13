@@ -32,7 +32,6 @@ export class Song {
     this.album = album;
     this.dateTemp = dateTemp;
   }
-
 }
 
 // export class Song {

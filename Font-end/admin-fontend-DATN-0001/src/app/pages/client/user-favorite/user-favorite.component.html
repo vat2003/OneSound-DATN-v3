@@ -1,0 +1,86 @@
+<div class="popular_song">
+    <div class="h3">
+
+        <h3>Your favorite albums</h3>
+        <div class="btn_s">
+            <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
+            <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+        </div>
+    </div>
+    <div class="pop_song" id="list-categories">
+        <li class="songItem">
+            <div class="img_play">
+                <img src="assets/img/client/explore/hiphop.png" alt="alan" />
+                <i class="bi fa-solid fa-circle-play" i="1"></i>
+            </div>
+            <h5>
+                <p class="line-clamp">HIPHOP: Best of 2023</p>
+
+                <div class="subtitle line-clamp line-2">
+                    Created by: QMUSIC
+                </div>
+            </h5>
+        </li>
+
+    </div>
+</div>
+
+<div class="suggested-new-tracks">
+    <div class="h3">
+        <h3>Your favorite songs</h3>
+
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>TITLE</th>
+                <th>ARTIST</th>
+                <!-- <th>LISTS</th>
+                <th>TIME</th> -->
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="list-songs">
+            <tr *ngFor="let video of favListYoutubes">
+                <td>
+                    <img [src]="video.youtube.thumbnails" [alt]="video.youtube.title" />
+
+                    <i class="bi fa-solid fa-circle-play"></i>
+                </td>
+                <td>
+                    <div class="table-title">
+                        <div class="line-clamp">{{ video.youtube.title }}</div>
+                    </div>
+                </td>
+                <td>{{ video.youtube.channelTitle }}</td>
+                <!-- <td>POP</td>
+                <td>3:15</td> -->
+                <td>
+                    <!-- <i class="fa-solid fa-plus"></i>&nbsp;&nbsp; -->
+                    <i class="fa-solid fa-heart" style="color: rgb(212, 15, 15) ;" (click)="deleFavYoutube(video)"></i>
+                </td>
+            </tr>
+            <tr *ngFor="let song of favListSongs">
+                <td>
+                    <img src="assets/img/client/keshi.jpg" alt="" />
+                    <i class="bi fa-solid fa-circle-play"></i>
+                </td>
+                <td>
+                    <div class="table-title">
+                        <div class="line-clamp">{{song.song.name}}</div>
+                        <!-- <span class="table-song-type">MASTER</span> -->
+                    </div>
+                </td>
+                <td>Keshi</td>
+                <!-- <td>POP</td>
+                <td>3:15</td> -->
+                <td>
+                    <!-- <i class="fa-solid fa-plus"></i>&nbsp;&nbsp; -->
+                    <i class="fa-solid fa-heart" style="color: rgb(212, 15, 15) ;" (click)="deleFavSong(song)"></i>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
