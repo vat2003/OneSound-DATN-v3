@@ -7,7 +7,6 @@ export class Song {
   releaseDate: Date;
   description: string;
 
-
   constructor(
     name: string = '',
     image: string = '',
@@ -25,7 +24,6 @@ export class Song {
     this.path = path;
     this.lyrics = lyrics;
   }
-
 }
 
 // export class Song {

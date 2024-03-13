@@ -54,6 +54,7 @@ export class UserResultSearchComponent implements OnInit {
     this.youtubeService.searchVideos(this.query).subscribe(
       (response) => {
         this.results = response.items;
+        console.log(this.results[0]);
       },
       (error) => {
         console.log('Error tìm kiếmm:', error);
@@ -79,7 +80,14 @@ export class UserResultSearchComponent implements OnInit {
   favorite(youtubeitem: any) {
     let youtubeId = youtubeitem.id.videoId;
     let favyt = new FavoriteYoutbe(this.acc?.id, youtubeId);
-    let youtube = new Youtube(youtubeId);
+    let youtube = new Youtube(
+      youtubeitem.id.videoId,
+      youtubeitem.snippet.title,
+      youtubeitem.snippet.description,
+      youtubeitem.snippet.thumbnails.high.url,
+      youtubeitem.snippet.channelTitle,
+      youtubeitem.snippet.publishTime
+    );
     if (
       this.acc == null ||
       this.acc == undefined ||
