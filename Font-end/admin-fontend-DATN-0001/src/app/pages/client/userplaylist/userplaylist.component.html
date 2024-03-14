@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody id="list-songs-detail">
-        <tr *ngFor="let playlist of Playlist">
+        <tr *ngFor="let playlist of playlists">
 
             <td>
                 <div class="table-title">
@@ -17,7 +17,7 @@
 
             <td>
 
-                <i class="fa-solid fa-trash-alt" (click)="deletePlayList(playlist)"></i> &nbsp;&nbsp;
+                <i class="fa-solid fa-trash-alt" (click)="deletePlaylist(playlist)"></i> &nbsp;&nbsp;
 
             </td>
 

@@ -26,7 +26,7 @@ export class UserPlaysongComponent implements OnInit {
   songs: any[] = [];
   acc?: account | null;
   favListSongs: any[] = [];
-  // songs: Song[] = [];
+
   constructor(
     private matDialog: MatDialog,
     private SongService: SongService,
@@ -79,7 +79,6 @@ export class UserPlaysongComponent implements OnInit {
   checkFav() {
     for (let song of this.songs) {
       let found = this.favListSongs.find((fav) => fav.song.id === song.id);
-      // Nếu tồn tại, gán isFav = true, ngược lại gán isFav = false
       song.isFav = found ? true : false;
     }
   }

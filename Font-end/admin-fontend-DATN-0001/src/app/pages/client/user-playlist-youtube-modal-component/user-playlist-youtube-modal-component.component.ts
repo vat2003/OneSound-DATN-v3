@@ -1,5 +1,5 @@
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
@@ -41,7 +41,8 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     private playlistService: playlistService,
     private playlistSongService: PlayListSongService,
     private PlaylistYoutubeService: PlaylistYoutubeService,
-    private playlistInteractionService: PlaylistInteractionService
+    private playlistInteractionService: PlaylistInteractionService,
+    private cdr: ChangeDetectorRef 
   ) {}
 
     ngOnInit(): void {
@@ -95,6 +96,8 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
       this.addSongToPlaylist(playlistId, youtubeId);
     }
     this.loadPlaylists(); 
+    this.cdr.detectChanges();
+
   }
 
   addSongToPlaylist(playlistId: number, youtubeId: string): void {
@@ -172,7 +175,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
               this.PlaylistTable.push(createdPlaylist);
               this.playlistSongMap[createdPlaylist.id ?? 0] = true;
               console.log('Created Playlist Information:', createdPlaylist);
-              this.addSongToNewPlaylist(createdPlaylist.id ?? 0); // Thêm bài hát vào playlist mới tạo
+              this.addSongToNewPlaylist(createdPlaylist.id ?? 0); 
             },
             (error) => {
               console.error('Error creating playlist:', error);
@@ -211,7 +214,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
   }
 
   reloadComponent(): void {
-    window.location.reload();
+    // window.location.reload();
   }
 }
 
