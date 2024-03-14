@@ -9,7 +9,7 @@
           The best HIP-HOP tracks of 2023, so far,
           from J.Cole to Eminem.(Cover: ....)
         </p>
-        <p>30 TRACKS (4:30:20)</p>
+        <p>{{ this.playlists.length }} PLAYLISTS</p>
       </div>
     </div>
   </div>
@@ -36,16 +36,19 @@
     </div>
 
     <div class="pop_song" id="list-categories">
-      <li class="songItem">
+      <span *ngIf="playlists.length === 0" class="text-warning" style="color: yellow"
+      >There are no playlist here</span
+      >
+      <li class="songItem" *ngFor="let playlist of playlists">
         <div class="img_play">
           <img src="assets/img/client/explore/hiphop.png" alt="alan"/>
           <i class="bi fa-solid fa-circle-play" i="1"></i>
         </div>
         <h5>
-          <p class="line-clamp">HIPHOP: Best of 2023</p>
+          <p class="line-clamp">{{ playlist.name }}</p>
 
           <div class="subtitle line-clamp line-2">
-            Created by: QMUSIC
+            Created by: {{ this.acc?.fullname }}
           </div>
         </h5>
       </li>
