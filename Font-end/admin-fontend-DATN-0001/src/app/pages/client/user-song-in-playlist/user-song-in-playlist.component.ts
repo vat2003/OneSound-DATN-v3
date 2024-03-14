@@ -75,6 +75,7 @@ export class UserSongInPlaylistComponent {
     this.PlaylistSongService.getAllSongsInPlaylist(42).subscribe((data) => {
         this.songs = data;
         this.songsfromdata = data;
+        console.log(data)
     })
 
   }
