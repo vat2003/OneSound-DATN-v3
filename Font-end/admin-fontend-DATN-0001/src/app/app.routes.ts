@@ -31,6 +31,7 @@ import { StaticticalComponent } from './pages/adminPage/manage/statictical/stati
 import { UserResultSearchComponent } from './pages/client/user-result-search/user-result-search.component';
 import { CaptchaComponent } from './pages/captcha/captcha.component';
 import { UserFavoriteComponent } from './pages/client/user-favorite/user-favorite.component';
+import {UserPlaylistFormComponent} from "./pages/client/user-playlist-form/user-playlist-form.component";
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -97,6 +98,7 @@ export const routes: Routes = [
       { path: 'profile/:id', component: UserProfileComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'favorite', component: UserFavoriteComponent },
+      { path: 'user/playlist', component: UserPlaylistFormComponent },
     ],
   },
   {
