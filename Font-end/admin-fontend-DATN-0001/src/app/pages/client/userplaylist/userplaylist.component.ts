@@ -1,68 +1,4 @@
-// import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-// import { playlistService } from '../../adminPage/adminEntityService/adminService/playlistService.service';
-// import { PlayListSongService } from '../../adminPage/adminEntityService/adminService/PlayListSongService.service';
-// import { Playlist } from '../../adminPage/PlaylistSong/Playlist';
-// import { CommonModule, NgIf } from '@angular/common';
-// import { FormsModule } from '@angular/forms';
-// import { Router } from '@angular/router';
-// import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-// import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 
-// @Component({
-//   selector: 'app-userplaylist',
-//   templateUrl: './userplaylist.component.html',
-//   standalone: true,
-//   imports: [
-//     CommonModule, 
-//     NgIf
-//   ],
-//   styleUrls: ['./userplaylist.component.scss']
-// })
-// export class UserplaylistComponent implements OnInit {
-//   Playlist: Playlist[] = [];
-//   account?: account | null;
-
-
-
-//   constructor(
-//     private playlistService: playlistService,
-//     private playlistSongService: PlayListSongService,
-//     private router: Router,
-//     private cdr: ChangeDetectorRef,
-//     private userService: accountServiceService,
-
-//   ) { }
-
-//   ngOnInit(): void {
-//     this.getAllSongs();
-//   }
-
-//   getAllSongs(): void {
-//     this.account = this.userService.getUserResponseFromLocalStorage();
-//     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(
-//       (playlists: Playlist[]) => {
-//         this.Playlist = playlists;
-//         console.log(this.Playlist);
-     
-//       },
-//       (error) => {                
-//         console.error('Error fetching songs from the playlist:', error);
-//       }
-//     );
-//   }
-
-//   deletePlayList(playlist: Playlist): void {    
-//     this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
-//       () => {          
-//         window.location.reload();
-//       },
-//       (error) => {
-//         console.error('Failed to remove song from playlist:', error);
-//       }
-//     );     
-    
-//   }
-// }
 
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Playlist } from '../../adminPage/PlaylistSong/Playlist';
@@ -71,6 +7,8 @@ import { account } from '../../adminPage/adminEntityService/adminEntity/account/
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { playlistService } from '../../adminPage/adminEntityService/adminService/playlistService.service';
 import { PlayListSongService } from '../../adminPage/adminEntityService/adminService/PlayListSongService.service';
+import { PlaylistSong } from '../../adminPage/PlaylistSong/PlaylistSong';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-userplaylist',
@@ -84,25 +22,82 @@ import { PlayListSongService } from '../../adminPage/adminEntityService/adminSer
 })
 export class UserplaylistComponent implements OnInit {
   playlists: Playlist[] = [];
+  PlaylistSong: PlaylistSong[] = [];
   account?: account | null;
-
+  songsInPlaylist: any[] = [];
+   firstPlaylistId : number | undefined;
   constructor(
     private playlistService: playlistService,
     private playlistSongService: PlayListSongService,
     private cdr: ChangeDetectorRef,
     private userService: accountServiceService,
+    private router: Router // Inject Router
+
   ) { }
 
   ngOnInit(): void {
+        this.account = this.userService.getUserResponseFromLocalStorage();
     this.getAllPlaylists();
+    // this.getAllPlaylistsong()
   }
 
+  timname(id: number | undefined) {
+    if (id !== undefined) {
+      this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
+        (PlaylistSong: PlaylistSong[]) => {
+          this.PlaylistSong = PlaylistSong;
+          console.log('Songs in playlist:', this.PlaylistSong);
+        },
+        error => {
+          
+          console.error('Failed to fetch songs from the playlist:', error);
+        }
+      );
+    } else {
+      
+      console.error('Playlist ID is undefined.');
+    }
+  }
+  // timname(id: number | undefined) {
+  //   if (id !== undefined) {
+  //     this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
+  //       (songs: any[]) => {
+  //         this.songsInPlaylist = songs;
+  //         console.log('Songs in playlist:', this.songsInPlaylist);
+  //       },
+  //       error => {
+          
+  //         console.error('Failed to fetch songs from the playlist:', error);
+  //       }
+  //     );
+  //   } else {
+      
+  //     console.error('Playlist ID is undefined.');
+  //   }
+  // }
+
   getAllPlaylists(): void {
-    this.account = this.userService.getUserResponseFromLocalStorage();
     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(
       (playlists: Playlist[]) => {
+        
         this.playlists = playlists;
+        this.firstPlaylistId = this.playlists[0].id;
+
         console.log(this.playlists);
+        console.log(this.firstPlaylistId +"<0000000000000000");
+      },
+      (error) => {                
+        console.error('Error fetching playlists:', error);
+      }
+    );
+  }
+  getAllPlaylistsong(): void {
+    this.playlistSongService.getAllSongToPlaylist().subscribe(
+      (PlaylistSong: PlaylistSong[]) => {
+        debugger
+        console.log(PlaylistSong);
+        
+        this.PlaylistSong = PlaylistSong;
       },
       (error) => {                
         console.error('Error fetching playlists:', error);
@@ -121,5 +116,31 @@ export class UserplaylistComponent implements OnInit {
       }
     );     
   }
+
+  removeSongFromPlaylist(id: number, idsong: number): void {
+    if (this.firstPlaylistId !== undefined) {
+      this.playlistSongService.removeSongFromPlaylist(id, idsong).subscribe(
+        () => {
+          // Cập nhật mảng songsInPlaylist sau khi xóa
+          this.songsInPlaylist = this.songsInPlaylist.filter(song => song.id !== id);
+  
+          // Cập nhật mảng PlaylistSong sau khi xóa
+          this.PlaylistSong = this.PlaylistSong.filter(p => p.playlistId !== this.firstPlaylistId || p.songId !== id);
+  
+          // Gọi lại detectChanges để cập nhật giao diện
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          console.error('Failed to remove song from playlist:', error);
+        }
+      );
+    } else {
+      console.error('First playlist ID is undefined.');
+    }
+  }
+  
+  
+  
+  
 }
 

@@ -11,16 +11,34 @@
 
             <td>
                 <div class="table-title">
-                    <div class="line-clamp">{{ playlist.name }}</div>
+                    <div class="line-clamp" (click)="timname(playlist.id)">{{ playlist.id }}</div>
+                    <div class="line-clamp" (click)="timname(playlist.id)">{{ playlist.name }}</div>
                 </div>
             </td>
 
             <td>
-
                 <i class="fa-solid fa-trash-alt" (click)="deletePlaylist(playlist)"></i> &nbsp;&nbsp;
-
             </td>
 
+        </tr>
+    </tbody>
+</table>
+
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let song of PlaylistSong">
+
+            <td>{{ song.playlist?.id}}</td>
+            <td>{{ song.song?.name}}</td>
+            <td>{{ song.song?.album?.title}}</td>
+            <td>{{ song.song?.image}}</td>
         </tr>
     </tbody>
 </table>

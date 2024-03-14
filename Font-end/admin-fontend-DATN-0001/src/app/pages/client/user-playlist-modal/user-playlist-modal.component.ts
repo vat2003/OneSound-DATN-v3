@@ -56,18 +56,23 @@ export class UserPlaylistModalComponent implements OnInit {
 
 
   updatePlaylists(): void {
+    debugger
     const userId = this.account?.id ?? 0;
     this.playlistService.getPlaylistsByUserId(userId).subscribe(
       (playlists: Playlist[]) => {
+        debugger
         this.PlaylistTable = playlists;
         this.formcontrol.setValue('');
         playlists.forEach((playlist) => {
+          debugger
           const playlistId = playlist.id ?? 0;
           this.playlistSongService.findSongInPlaylist(playlistId, this.currentSongId ?? 0).subscribe(
             (playlistSong: PlaylistSong) => {
+              debugger
               this.playlistSongMap[playlistId] = playlistSong !== null;
             },
             (error) => {
+              debugger
               console.error(`Error fetching song in playlist ${playlistId}:`, error);
             }
           );
@@ -168,7 +173,7 @@ export class UserPlaylistModalComponent implements OnInit {
             this.playlistService.createPlaylist(playlist).subscribe(
               (createdPlaylist: Playlist) => {
                 this.PlaylistTable.push(createdPlaylist);
-
+                this.playlistName = '';
                 console.log('Created Playlist Information:', createdPlaylist);
 
                 this.playlistService.getPlaylistByid(createdPlaylist.id || 0).subscribe(

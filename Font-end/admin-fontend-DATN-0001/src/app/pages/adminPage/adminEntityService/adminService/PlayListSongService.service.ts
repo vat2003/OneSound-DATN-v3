@@ -37,18 +37,12 @@ export class PlayListSongService {
 
       removeSongFromPlaylist(playlistId: number, songId: number): Observable<any> {
         debugger
+        
         return this.http.delete(`${this.apiUrl}/PlaylistSong/${playlistId}/${songId}`);
       }
 
       removePlaylist(playlistId: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/Playlist/${playlistId}`);
       }
-
-
-
-
-
-
-
 }
 
