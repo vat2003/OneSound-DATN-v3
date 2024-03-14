@@ -21,6 +21,10 @@ import { account } from '../../adminPage/adminEntityService/adminEntity/account/
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
 import { Youtube } from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
+import { UserPlaylistModalComponent } from '../user-playlist-modal/user-playlist-modal.component';
+import { MatDialog } from '@angular/material/dialog';
+import { UserPlaylistYoutubeModalComponentComponent } from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
+import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
 @Component({
   selector: 'app-user-player-api-youtube',
   standalone: true,
@@ -53,7 +57,9 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     private youtubeService: YoutubeApiSService,
     private dataGlobal: DataGlobalService,
     private favYoutube: FavoriteService,
-    private userService: accountServiceService
+    private userService: accountServiceService,
+    private matDialog: MatDialog,
+    private PlaylistYoutubeService: PlaylistYoutubeService,
   ) {}
 
   ngOnInit() {
@@ -146,6 +152,29 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
       this.seek_bar.nativeElement.style.width = `${seekValue}%`;
     }
   }
+
+  openDialog() {
+
+    this.PlaylistYoutubeService.createYt(this.videoId).subscribe(
+      () => {
+        console.log('Song added to playlist successfully.');
+        const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
+          data: { youtubeId: this.videoId }, // Truyền videoId qua data
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+
+        });
+
+      },
+      error => {
+        console.error('Failed to add song to the playlist:', error);
+      }
+    );
+    alert(this.videoId)
+  }
+
+
 
   setVolume() {
     if (this.player) {

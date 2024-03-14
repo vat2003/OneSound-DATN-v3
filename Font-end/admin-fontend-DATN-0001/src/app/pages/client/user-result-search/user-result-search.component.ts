@@ -1,16 +1,24 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { YoutubeApiSService } from '../../../services/youtube-api-s.service';
-import { DataGlobalService } from '../../../services/data-global.service';
-import { AdminUserServiceService } from '../../../services/admin-user-service.service';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
-import { FavoriteService } from '../../../services/favorite-service/favorite.service';
-import { Youtube } from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {YoutubeApiSService} from '../../../services/youtube-api-s.service';
+import {DataGlobalService} from '../../../services/data-global.service';
+import {AdminUserServiceService} from '../../../services/admin-user-service.service';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {FavoriteYoutbe} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
+import {FavoriteService} from '../../../services/favorite-service/favorite.service';
+import {Youtube} from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
+import {PlaylistYoutubeService} from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import {
+  PlaylistInteractionService
+} from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  UserPlaylistYoutubeModalComponentComponent
+} from "../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component";
 
 @Component({
   selector: 'app-user-result-search',
@@ -26,6 +34,7 @@ export class UserResultSearchComponent implements OnInit {
   acc?: account | null;
 
   favList: any[] = [];
+
   // selectedVideo!: any;
 
   constructor(
@@ -33,15 +42,25 @@ export class UserResultSearchComponent implements OnInit {
     private youtubeService: YoutubeApiSService,
     private dataGlobal: DataGlobalService,
     private userService: accountServiceService,
-    private favYoutube: FavoriteService
-  ) {}
+    private favYoutube: FavoriteService,
+    private matDialog: MatDialog,
+    private PlaylistYoutubeService: PlaylistYoutubeService,
+    private playlistInteractionService: PlaylistInteractionService
+  ) {
+  }
+
   ngOnInit(): void {
     //debugger;
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.getAllYoutubeFavByUser();
     this.get_keyword_from_searchinput();
     this.search();
+    this.playlistInteractionService.playlistUpdated$.subscribe(() => {
+      this.get_keyword_from_searchinput();
+      this.search();
+    });
   }
+
 
   get_keyword_from_searchinput() {
     //debugger;
@@ -77,6 +96,7 @@ export class UserResultSearchComponent implements OnInit {
       });
     }
   }
+
   favorite(youtubeitem: any) {
     let youtubeId = youtubeitem.id.videoId;
     let favyt = new FavoriteYoutbe(this.acc?.id, youtubeId);
@@ -102,11 +122,14 @@ export class UserResultSearchComponent implements OnInit {
         return;
       }
       youtubeitem.isFav = false;
-      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {});
+      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {
+      });
     } else {
       youtubeitem.isFav = true;
-      this.favYoutube.createYt(youtube).subscribe((data) => {});
-      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
+      this.favYoutube.createYt(youtube).subscribe((data) => {
+      });
+      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {
+      });
     }
   }
 
@@ -121,4 +144,20 @@ export class UserResultSearchComponent implements OnInit {
       result.isFav = found ? true : false;
     }
   }
+
+  openDialog(videoId: string) {
+    this.PlaylistYoutubeService.createYt(videoId).subscribe(
+      () => {
+        console.log('Song added to playlist successfully.');
+        const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
+          data: {youtubeId: videoId}
+        });
+      },
+      error => {
+        console.error('Failed to add song to the playlist:', error);
+      }
+    );
+  }
+
+
 }

@@ -4,8 +4,7 @@
     <h5 id="title">
         <p class="line-clamp" id="song-title">
             {{selectedVideo.snippet.title }}
-            <!-- <i class="fa-regular fa-heart"></i>
-            <i class="fa-solid fa-ellipsis"></i> -->
+
         </p>
 
         <div class="subtitle line-clamp" id="artist-name">
@@ -16,13 +15,11 @@
         </div>
     </h5>
     <div class="icon">
-        <!-- back icon -->
         <i class="fa-solid fa-backward" id="back"></i>
 
-        <!-- pause - resume icon -->
         <i class="fa-solid fa-play" id="masterPlay" #masterPlay (click)="pauseMusic()"></i>
 
-        <!-- next icon -->
+
         <i class="fa-solid fa-forward" id="next"></i>
     </div>
     <span id="currentStart">{{ currentTime }}</span>
@@ -50,7 +47,7 @@
 
         <i class="fa-solid fa-ellipsis"></i>
         <i class="fa-solid fa-bars"></i>
-        <i class="fa-solid fa-square-arrow-up-right"></i>
+        <i class="fa-solid fa-square-arrow-up-right" (click)="openDialog()"></i>
     </div>
     <youtube-player #player [playerVars]="{autoplay:0}" [width]="1" [height]="1" [videoId]="videoId"></youtube-player>
 

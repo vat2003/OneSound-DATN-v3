@@ -1,0 +1,82 @@
+<div class="container ">
+  <h1 class=" text-warning">TITLE: {{ this.data.youtubeId }}</h1>
+  <h1 class=" text-warning">TITLE: {{ this.account?.id }}</h1>
+
+  <hr>
+  <div style="width: 400px;"></div>
+
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Action</th>
+        <th>Playlist</th>
+        <th>ID Playlist</th>
+        <th>ID Song</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let playlist of PlaylistTable">
+
+        <!-- <td>
+          <button *ngIf="!playlistSongMap[playlist.id ?? 0]" class="btn btn-success"
+            (click)="addPlaylistYoutube(playlist)">
+            Add
+          </button>
+          <button *ngIf="playlistSongMap[playlist.id ?? 0]" class="btn btn-danger"
+            (click)="removePlaylistYoutube(playlist.id ?? 0,this.data.youtubeId)">
+            Remove
+          </button>
+        </td> -->
+
+        <td>
+          <input #viet type="checkbox" class="checkbox" [ngClass]="{'added': playlistSongMap[playlist.id ?? 0]}"
+            (change)="toggleAddRemove(playlist)" [checked]="playlistSongMap[playlist.id ?? 0]">
+          <span *ngIf="viet.checked">Đã Thêm</span>
+          <span *ngIf="!viet.checked">Thêm</span>
+        </td>
+        <td>
+          <a class="btn-link" (click)="timname(playlist.id)">{{ playlist.name }}</a>
+        </td>
+        <td>{{ playlist.id }}</td>
+        <td>{{ this.data.youtubeId }}</td>
+        <td> <button class="btn btn-danger" style="background-color: red;" (click)="deletePlayList(playlist)">
+            Drop
+          </button></td>
+      </tr>
+
+    </tbody>
+
+  </table>
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let y of songsInPlaylist">
+        <td>{{ y.playlist.id }}</td>
+        <td>{{ y.youtube.id }}</td>
+        <td>{{ y.youtube | json }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+
+  <hr>
+  <div *ngIf="showForm">
+    <div class="form-group">
+      <label for="playlistName">Playlist Name:</label>
+      <input type="text" id="playlistName" placeholder="Enter playlist name" [(ngModel)]="playlistName">
+      <button class="m-3" (click)="Playlist()">Create New Playlist</button>
+    </div>
+  </div>
+
+  <button (click)="toggleForm()">Toggle Form</button>
+  <hr>
+</div>

@@ -27,22 +27,22 @@ export class TokenService {
 }   
 
 isTokenExpired(): boolean { 
-  debugger
+  
   if(this.getToken() == null) {
-    debugger
+    
       return false;
   }       
   return this.jwtHelperService.isTokenExpired(this.getToken()!);
 }
 
 getUserId(): number {
-  debugger
+  
   let token = this.getToken();
   if (!token) {
-    debugger
+    
       return 0;
   }
-  debugger
+  
   let userObject = this.jwtHelperService.decodeToken(token);
   console.log(userObject);
   

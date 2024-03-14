@@ -1,36 +1,37 @@
 import { Routes } from '@angular/router';
 
-import { BlankComponent } from './pages/adminPage/blank/blank.component';
-import { Notfound404Component } from './pages/adminPage/notfound404/notfound404.component';
-import { HomeComponent } from './pages/adminPage/home/home.component';
-import { ManagealbumAdminComponent } from './pages/adminPage/manage/managealbum-admin/managealbum-admin.component';
-import { ManageartistAdminComponent } from './pages/adminPage/manage/manageartist-admin/manageartist-admin.component';
-import { ManagegenreAdminComponent } from './pages/adminPage/manage/managegenre-admin/managegenre-admin.component';
-import { ManagesongAdminComponent } from './pages/adminPage/manage/managesong-admin/managesong-admin.component';
-import { ManageuserAdminComponent } from './pages/adminPage/manage/manageuser-admin/manageuser-admin.component';
-import { ChartComponent } from './pages/adminPage/chart/chart.component';
-import { ManageimageAdminComponent } from './pages/adminPage/manage/manageimage-admin/manageimage-admin.component';
-import { ChangePasswordComponent } from './pages/adminPage/change-password/change-password.component';
-import { ManageprofileAdminComponent } from './pages/adminPage/manage/manageprofile-admin/manageprofile-admin.component';
-import { LoginneComponent } from './pages/adminPage/loginne/loginne.component';
-import { DangkyComponent } from './pages/adminPage/dangky/dangky.component';
-import { UserMenusideComponent } from './pages/client/user-menuside/user-menuside.component';
-import { UserExploreComponent } from './pages/client/user-explore/user-explore.component';
-import { UserPlaysongComponent } from './pages/client/user-playsong/user-playsong.component';
-import { UserProfileComponent } from './pages/client/user-profile/user-profile.component';
-import { ManageauthorComponent } from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
-import { QuenmkComponent } from './pages/adminPage/quenmk/quenmk.component';
-import { AdminGuardFn } from './guards/admin.guard';
-import { AuthGuard, AuthGuardFn } from './guards/auth.guard';
-import { SomeComponentComponent } from './pages/adminPage/some-component/some-component.component';
-import { ProfileComponent } from './pages/adminPage/manage/profile/profile.component';
-import { FeedbackComponent } from './pages/adminPage/manage/feedback/feedback.component';
-import { CountAccessComponent } from './pages/adminPage/manage/statictical/count-access/count-access.component';
-import { ReportComponent } from './pages/adminPage/manage/statictical/report/report.component';
-import { StaticticalComponent } from './pages/adminPage/manage/statictical/statictical/statictical.component';
-import { UserResultSearchComponent } from './pages/client/user-result-search/user-result-search.component';
-import { CaptchaComponent } from './pages/captcha/captcha.component';
-import { UserFavoriteComponent } from './pages/client/user-favorite/user-favorite.component';
+import {BlankComponent} from './pages/adminPage/blank/blank.component';
+import {Notfound404Component} from './pages/adminPage/notfound404/notfound404.component';
+import {HomeComponent} from './pages/adminPage/home/home.component';
+import {ManagealbumAdminComponent} from './pages/adminPage/manage/managealbum-admin/managealbum-admin.component';
+import {ManageartistAdminComponent} from './pages/adminPage/manage/manageartist-admin/manageartist-admin.component';
+import {ManagegenreAdminComponent} from './pages/adminPage/manage/managegenre-admin/managegenre-admin.component';
+import {ManagesongAdminComponent} from './pages/adminPage/manage/managesong-admin/managesong-admin.component';
+import {ManageuserAdminComponent} from './pages/adminPage/manage/manageuser-admin/manageuser-admin.component';
+import {ChartComponent} from './pages/adminPage/chart/chart.component';
+import {ManageimageAdminComponent} from './pages/adminPage/manage/manageimage-admin/manageimage-admin.component';
+import {ChangePasswordComponent} from './pages/adminPage/change-password/change-password.component';
+import {ManageprofileAdminComponent} from './pages/adminPage/manage/manageprofile-admin/manageprofile-admin.component';
+import {LoginneComponent} from './pages/adminPage/loginne/loginne.component';
+import {DangkyComponent} from './pages/adminPage/dangky/dangky.component';
+import {UserMenusideComponent} from './pages/client/user-menuside/user-menuside.component';
+import {UserExploreComponent} from './pages/client/user-explore/user-explore.component';
+import {UserPlaysongComponent} from './pages/client/user-playsong/user-playsong.component';
+import {UserProfileComponent} from './pages/client/user-profile/user-profile.component';
+import {ManageauthorComponent} from './pages/adminPage/manage/manageauthor-admin/manageauthor.component';
+import {QuenmkComponent} from './pages/adminPage/quenmk/quenmk.component';
+import {AdminGuardFn} from './guards/admin.guard';
+import {AuthGuard, AuthGuardFn} from './guards/auth.guard';
+import {SomeComponentComponent} from './pages/adminPage/some-component/some-component.component';
+import {ProfileComponent} from "./pages/adminPage/manage/profile/profile.component";
+import {FeedbackComponent} from "./pages/adminPage/manage/feedback/feedback.component";
+import {CountAccessComponent} from "./pages/adminPage/manage/statictical/count-access/count-access.component";
+import {ReportComponent} from "./pages/adminPage/manage/statictical/report/report.component";
+import {StaticticalComponent} from "./pages/adminPage/manage/statictical/statictical/statictical.component";
+import {UserResultSearchComponent} from "./pages/client/user-result-search/user-result-search.component";
+import {CaptchaComponent} from "./pages/captcha/captcha.component";
+import { UserplaylistComponent } from './pages/client/userplaylist/userplaylist.component';
+import {UserFavoriteComponent} from "./pages/client/user-favorite/user-favorite.component";
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -97,6 +98,7 @@ export const routes: Routes = [
       { path: 'profile/:id', component: UserProfileComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'favorite', component: UserFavoriteComponent },
+      {path: 'Playlists', component: UserplaylistComponent},
     ],
   },
   {

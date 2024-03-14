@@ -11,6 +11,8 @@ import { accountServiceService } from '../../adminPage/adminEntityService/adminS
 import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { PlaylistInteractionService } from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-user-playsong',
@@ -24,16 +26,27 @@ export class UserPlaysongComponent implements OnInit {
   songs: any[] = [];
   acc?: account | null;
   favListSongs: any[] = [];
+  // songs: Song[] = [];
   constructor(
     private matDialog: MatDialog,
     private SongService: SongService,
     private userService: accountServiceService,
-    private favSong: FavoriteService
+    private favSong: FavoriteService, private songService: SongService
+    , private playlistInteractionService: PlaylistInteractionService
   ) {}
+
 
   openDialog(songInput: Song) {
     const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
-      data: { song: songInput },
+      data: { song: songInput }
+    });
+
+    dialogRef.afterOpened().subscribe(() => {
+      this.getAllSongs();
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
     });
   }
 
@@ -42,6 +55,8 @@ export class UserPlaysongComponent implements OnInit {
     this.getAllSongs();
     this.getAllSongFavByUser();
   }
+
+
 
   getAllSongs(): void {
     this.SongService.getAllSongs().subscribe((data) => {
@@ -92,4 +107,6 @@ export class UserPlaysongComponent implements OnInit {
       this.favSong.addFavoriteSong(favS).subscribe((data) => {});
     }
   }
+
 }
+

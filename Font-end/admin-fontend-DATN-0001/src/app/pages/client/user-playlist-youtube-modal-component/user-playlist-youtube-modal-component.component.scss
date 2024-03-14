@@ -1,0 +1,66 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212; /* Màu nền tối */
+    color: #fff; /* Màu chữ trắng */
+  }
+  
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e; /* Màu nền container */
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Đổ bóng */
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #333; /* Màu viền input */
+    border-radius: 3px;
+    box-sizing: border-box;
+    background-color: #333; /* Màu nền input */
+    color: #fff; /* Màu chữ trắng */
+  }
+  
+  button {
+    padding: 8px 15px;
+    background-color: #007bff; /* Màu nền button */
+    color: #fff; /* Màu chữ trắng */
+    border: none;
+    border-radius: 3px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Màu hover của button */
+  }
+  
+  
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+  }
+  
+  td, th {
+    //border: 1px solid #dddddd;
+    //text-align: center;
+  }
+  .playlistCol{
+    width: 100%;
+  }
+  
+  
+  

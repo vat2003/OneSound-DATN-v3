@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Playlist } from "../adminEntity/Playlist/Playlist";
+import { Playlist } from "../../PlaylistSong/Playlist";
 import { Observable } from "rxjs";
-import { PlaylistSong } from "../adminEntity/Playlist/PlaylistSong";
+import { PlaylistSong } from "../../PlaylistSong/PlaylistSong";
 
 @Injectable({
     providedIn: 'root'
@@ -17,12 +17,12 @@ export class PlayListSongService {
     }
 
     addSongToPlaylist(playlistId: number, songId: number): Observable<any> {
-        
+      debugger
         const requestBody = {
           playlist: playlistId,
           song: songId
         };
-    
+
         return this.http.post(`${this.apiUrl}/PlaylistSong`, requestBody);
       }
 
@@ -30,7 +30,25 @@ export class PlayListSongService {
         debugger
         return this.http.get<PlaylistSong[]>(`${this.apiUrl}/PlaylistSong/playlist/${playlistId}`);
       }
-    
-   
+
+      findSongInPlaylist(playlistId: number, songId: number): Observable<PlaylistSong> {
+        return this.http.get<PlaylistSong>(`${this.apiUrl}/PlaylistSong/${playlistId}/${songId}`);
+      }
+
+      removeSongFromPlaylist(playlistId: number, songId: number): Observable<any> {
+        debugger
+        return this.http.delete(`${this.apiUrl}/PlaylistSong/${playlistId}/${songId}`);
+      }
+
+      removePlaylist(playlistId: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/Playlist/${playlistId}`);
+      }
+
+
+
+
+
+
+
 }
 
