@@ -32,6 +32,7 @@ import {UserResultSearchComponent} from "./pages/client/user-result-search/user-
 import {CaptchaComponent} from "./pages/captcha/captcha.component";
 import { UserplaylistComponent } from './pages/client/userplaylist/userplaylist.component';
 import {UserFavoriteComponent} from "./pages/client/user-favorite/user-favorite.component";
+import {UserPlaylistFormComponent} from "./pages/client/user-playlist-form/user-playlist-form.component";
 
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
@@ -99,6 +100,7 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'favorite', component: UserFavoriteComponent },
       {path: 'Playlists', component: UserplaylistComponent},
+      { path: 'user/playlist', component: UserPlaylistFormComponent },
     ],
   },
   {
