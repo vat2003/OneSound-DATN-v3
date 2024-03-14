@@ -1,12 +1,9 @@
 <table>
     <thead>
         <tr>
-            <th></th>
-            <th>TITLE</th>
-            <th>ARTIST</th>
-            <th>LISTS</th>
-            <th>TIME</th>
-            <th></th>
+            <th>Playlist</th>
+
+            <th>Acc</th>
         </tr>
     </thead>
     <tbody id="list-songs-detail">
@@ -17,11 +14,11 @@
                     <div class="line-clamp">{{ playlist.name }}</div>
                 </div>
             </td>
-            <td>Keshi</td>
-            <td>POP</td>
-            <td>3:15</td>
+
             <td>
-                <i class="fa-solid fa-plus" (click)="deletePlayList(playlist)"></i>&nbsp;&nbsp;
+
+                <i class="fa-solid fa-trash-alt" (click)="deletePlayList(playlist)"></i> &nbsp;&nbsp;
+
             </td>
 
         </tr>

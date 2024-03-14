@@ -157,7 +157,6 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
 
     this.PlaylistYoutubeService.createYt(this.videoId).subscribe(
       () => {
-        console.log('Song added to playlist successfully.');
         const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
           data: { youtubeId: this.videoId }, // Truyền videoId qua data
         });
@@ -171,7 +170,6 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
         console.error('Failed to add song to the playlist:', error);
       }
     );
-    alert(this.videoId)
   }
 
 

@@ -18,32 +18,19 @@
 
     <tbody>
       <tr *ngFor="let playlist of PlaylistTable">
-
-        <!-- <td>
-          <button *ngIf="!playlistSongMap[playlist.id ?? 0]" class="btn btn-success"
-            (click)="addPlaylistYoutube(playlist)">
-            Add
-          </button>
-          <button *ngIf="playlistSongMap[playlist.id ?? 0]" class="btn btn-danger"
-            (click)="removePlaylistYoutube(playlist.id ?? 0,this.data.youtubeId)">
-            Remove
-          </button>
-        </td> -->
-
         <td>
           <input #viet type="checkbox" class="checkbox" [ngClass]="{'added': playlistSongMap[playlist.id ?? 0]}"
             (change)="toggleAddRemove(playlist)" [checked]="playlistSongMap[playlist.id ?? 0]">
           <span *ngIf="viet.checked">Đã Thêm</span>
           <span *ngIf="!viet.checked">Thêm</span>
         </td>
+
         <td>
-          <a class="btn-link" (click)="timname(playlist.id)">{{ playlist.name }}</a>
+          <a class="btn-link">{{ playlist.name }}</a>
         </td>
         <td>{{ playlist.id }}</td>
         <td>{{ this.data.youtubeId }}</td>
-        <td> <button class="btn btn-danger" style="background-color: red;" (click)="deletePlayList(playlist)">
-            Drop
-          </button></td>
+
       </tr>
 
     </tbody>

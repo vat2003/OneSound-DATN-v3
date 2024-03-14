@@ -219,16 +219,6 @@ export class UserPlaylistModalComponent implements OnInit {
 
 
 
-  deletePlayList(playlist: Playlist): void {
-    this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
-      () => {
-        console.log('Song removed from playlist successfully.');
-      },
-      (error) => {
-        console.error('Failed to remove song from playlist:', error);
-      }
-    );
-  }
 
 
 
@@ -258,7 +248,7 @@ export class UserPlaylistModalComponent implements OnInit {
         this.playlistSongService.removeSongFromPlaylist(playlistId, songId).subscribe(
           () => {
             debugger
-            console.log('Song removed from playlist successfully.');
+            console.log('');
             this.playlistSongMap[playlistId] = false;
             this.playlistInteractionService.updatePlaylist();
           },
