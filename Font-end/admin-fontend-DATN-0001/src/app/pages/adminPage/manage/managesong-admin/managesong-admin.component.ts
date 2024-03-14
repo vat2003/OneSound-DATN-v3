@@ -1008,10 +1008,8 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               this.singerService.getArtistById(song.singer.id).subscribe((datasinger) => {
                 if (datasinger) {
                   console.log("Dữ liệu t2: ", datasinger);
-                  const singerNameIndex = this.singerTable.findIndex((singer: Singer) => singer.fullname === datasinger.fullname);
-                  if (singerNameIndex !== -1) {
-                    // fullname tồn tại trong singerTable, hãy xóa nó
-                    this.singerTable.splice(singerNameIndex, 1);
+                  if(this.singerTable.length>0){
+                    this.singerTable.splice(0, this.singerTable.length);
                   }
                   this.singerTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.singerTable);
@@ -1038,10 +1036,13 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               this.AuthorService.getAuthorById(song.author.id).subscribe((datasinger) => {
                 if (datasinger) {
                   console.log("Dữ liệu t2: ", datasinger);
-                  const singerNameIndex = this.authorTable.findIndex((singer: Author) => singer.fullname === datasinger.fullname);
-                  if (singerNameIndex !== -1) {
-                    // fullname tồn tại trong singerTable, hãy xóa nó
-                    this.authorTable.splice(singerNameIndex, 1);
+                  // const singerNameIndex = this.authorTable.findIndex((singer: Author) => singer.fullname === datasinger.fullname);
+                  // if (singerNameIndex !== -1) {
+                  //   // fullname tồn tại trong singerTable, hãy xóa nó
+                  //   this.authorTable.splice(singerNameIndex, 1);
+                  // }
+                  if(this.authorTable.length>0){
+                    this.authorTable.splice(0, this.authorTable.length);
                   }
                   this.authorTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.authorTable);
@@ -1067,10 +1068,8 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               this.genreService.getGenre(song.genre.id).subscribe((datasinger) => {
                 if (datasinger) {
                   console.log("Dữ liệu t2: ", datasinger);
-                  const singerNameIndex = this.genreTable.findIndex((singer: Genre) => singer.name === datasinger.name);
-                  if (singerNameIndex !== -1) {
-                    // fullname tồn tại trong singerTable, hãy xóa nó
-                    this.genreTable.splice(singerNameIndex, 1);
+                  if(this.genreTable.length>0){
+                    this.genreTable.splice(0, this.genreTable.length);
                   }
                   this.genreTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.genreTable);
@@ -1352,10 +1351,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       alert("Please select a song to update.");
       return;
     }
-
     // Gọi API để cập nhật bài hát
     this.SongService.updateSong(id,this.song).subscribe(async (data: any) => {
-      try {
+      // try {
         console.log("Updating song...");
 
         // Upload hình ảnh nếu có
@@ -1380,6 +1378,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
           this.SongSingerService.createSongSinger(songId, singerId).subscribe(
             () => {
               console.log(`Updated SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+              alert('song singer update')
             },
             (error) => {
               console.log(`Failed to update SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
@@ -1389,9 +1388,10 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
         // Cập nhật thông tin thể loại
         for (const genreId of genreIds) {
-          this.SongGenreService.createSongGenre(songId, genreId).subscribe(
+          this.SongGenreService.updateSongGenre(songId, genreId).subscribe(
             () => {
               console.log(`Updated SongGenre for genre with ID ${genreId} and song with ID ${songId}`);
+              alert('genre update')
             },
             (error) => {
               console.log(`Failed to update SongGenre for genre with ID ${genreId} and song with ID ${songId}`);
@@ -1404,6 +1404,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
           this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
             () => {
               console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+              alert('author update')
             },
             (error) => {
               console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
@@ -1415,10 +1416,10 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         this.displayDataOnTable(0, 10);
         this.reload();
         console.log("Update song successful!");
-      } catch (error) {
-        console.error("Error occurred while updating song:", error);
-        alert("Failed to update song. Please try again later." + error);
-      }
+      // } catch (error) {
+      //   console.error("Error occurred while updating song:", error);
+      //   alert("Failed to update song. Please try again later." + error);
+      // }
     }, (error) => {
       console.error("Update song failed:", error);
       alert("Failed to update song. Please try again later.");

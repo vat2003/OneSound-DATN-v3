@@ -1,6 +1,5 @@
 <div class="popular_song">
   <div class="h3">
-
     <h3>Explore your vibes</h3>
     <div class="btn_s">
       <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
@@ -8,139 +7,26 @@
     </div>
   </div>
   <div class="pop_song" id="list-categories">
-    <li class="songItem">
+    <li
+      class="songItem"
+      *ngFor="let item of albums"
+      (click)="gotoDetailAlbum(item)"
+    >
       <div class="img_play">
-        <img src="assets/img/client/explore/hiphop.png" alt="alan" />
+        <img
+          src="{{ item.image }}"
+          alt="alan"
+          style="height: 180px; object-fit: cover"
+        />
         <i class="bi fa-solid fa-circle-play" i="1"></i>
       </div>
       <h5>
-        <p class="line-clamp">HIPHOP: Best of 2023</p>
+        <p class="line-clamp">{{ item.title }}</p>
 
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
+        <div class="subtitle line-clamp line-2">{{ item.releaseYear }}</div>
       </h5>
     </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/electronic.png" alt="alan" />
-        <i class="bi playListPlay bi-play-circle-fill" id="8"></i>
-        <!-- change All id  -->
-      </div>
-      <h5>
-        <p class="line-clamp">
-          Electronic: Best of 2023
-        </p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/indie.png" alt="alan" />
-        <i class="bi playListPlay bi-play-circle-fill" id="9"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">Indie: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/jazz.png" alt="alan" />
-        <i class="bi playListPlay bi-play-circle-fill" id="10"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">Jazz: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/metal.png" alt="alan" />
-        <i class="bi playListPlay bi-play-circle-fill" id="11"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">Metal: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/pop.png" alt="alan" />
-        <i class="bi playListPlay bi-play-circle-fill" id="12"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">POP: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/randb.png" alt="alan" />
-        <i class="bi playListPlay bi-play-circle-fill" id="13"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">R&B: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/rising.png" alt="alan" />
-        <i class="bi fa-solid fa-circle-play"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">RISING: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/rock.png" alt="alan" />
-        <i class="bi fa-solid fa-circle-play"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">Rock: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
-    <li class="songItem">
-      <div class="img_play">
-        <img src="assets/img/client/explore/viral.png" alt="alan" />
-        <i class="bi fa-solid fa-circle-play"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">Viral: Best of 2023</p>
-
-        <div class="subtitle line-clamp line-2">
-          Created by: QMUSIC
-        </div>
-      </h5>
-    </li>
+    <!--  -->
   </div>
 </div>
 
@@ -153,21 +39,25 @@
     </div>
   </div>
   <div class="pop_song">
-    <li class="songItem" *ngFor="let hotArtistitem of hotArtist" (click)="gotoDetailArtist(hotArtistitem)">
+    <li
+      class="songItem"
+      *ngFor="let hotArtistitem of hotArtist"
+      (click)="gotoDetailArtist(hotArtistitem)"
+    >
       <div class="img_play">
-        <img src="{{hotArtistitem.image }}" alt="alan" />
+        <img
+          src="{{ hotArtistitem.image }}"
+          alt="alan"
+          style="height: 180px; object-fit: cover"
+        />
         <i class="bi fa-solid fa-circle-play" i="1"></i>
       </div>
       <h5>
-        <p class="line-clamp">{{hotArtistitem.fullname}}</p>
+        <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
 
-        <div class="subtitle line-clamp line-2">
-          1M follow
-        </div>
+        <div class="subtitle line-clamp line-2">1M follow</div>
       </h5>
     </li>
-
-
   </div>
 </div>
 
@@ -180,17 +70,17 @@
   </div>
   <table>
     <thead>
-    <tr>
-      <th></th>
-      <th>TITLE</th>
-      <th>ARTIST</th>
-      <th>LISTS</th>
-      <th>TIME</th>
-      <th></th>
-    </tr>
+      <tr>
+        <th></th>
+        <th>TITLE</th>
+        <th>ARTIST</th>
+        <th>LISTS</th>
+        <th>TIME</th>
+        <th></th>
+      </tr>
     </thead>
     <tbody id="list-songs">
-    <!-- <tr>
+      <!-- <tr>
         <td>
             <img src="assets/img/client/keshi.jpg" alt="" />
             <i class="bi fa-solid fa-circle-play" ></i>
@@ -326,9 +216,7 @@
       <h5>
         <p class="line-clamp">Speak Now</p>
 
-        <div class="subtitle line-clamp line-2">
-          Taylor Swift
-        </div>
+        <div class="subtitle line-clamp line-2">Taylor Swift</div>
       </h5>
     </li>
     <li class="songItem">
@@ -338,13 +226,9 @@
         <!-- change All id  -->
       </div>
       <h5>
-        <p class="line-clamp">
-          Conway The Machine Present
-        </p>
+        <p class="line-clamp">Conway The Machine Present</p>
 
-        <div class="subtitle line-clamp line-2">
-          Conway The Machine
-        </div>
+        <div class="subtitle line-clamp line-2">Conway The Machine</div>
       </h5>
     </li>
     <li class="songItem">
@@ -355,9 +239,7 @@
       <h5>
         <p class="line-clamp">Sunburn</p>
 
-        <div class="subtitle line-clamp line-2">
-          Dominice Fike
-        </div>
+        <div class="subtitle line-clamp line-2">Dominice Fike</div>
       </h5>
     </li>
     <li class="songItem">
@@ -366,13 +248,9 @@
         <i class="bi playListPlay bi-play-circle-fill" id="10"></i>
       </div>
       <h5>
-        <p class="line-clamp">
-          Down The Spiral Of A Soul
-        </p>
+        <p class="line-clamp">Down The Spiral Of A Soul</p>
 
-        <div class="subtitle line-clamp line-2">
-          A life Divided
-        </div>
+        <div class="subtitle line-clamp line-2">A life Divided</div>
       </h5>
     </li>
     <li class="songItem">
@@ -383,9 +261,7 @@
       <h5>
         <p class="line-clamp">Reflections Revisited</p>
 
-        <div class="subtitle line-clamp line-2">
-          ILUITEQ
-        </div>
+        <div class="subtitle line-clamp line-2">ILUITEQ</div>
       </h5>
     </li>
     <li class="songItem">
@@ -394,13 +270,9 @@
         <i class="bi playListPlay bi-play-circle-fill" id="12"></i>
       </div>
       <h5>
-        <p class="line-clamp">
-          Mistakes & Contradictions
-        </p>
+        <p class="line-clamp">Mistakes & Contradictions</p>
 
-        <div class="subtitle line-clamp line-2">
-          Eyelar
-        </div>
+        <div class="subtitle line-clamp line-2">Eyelar</div>
       </h5>
     </li>
   </div>
