@@ -56,7 +56,7 @@ export class UserMenusideComponent implements OnInit {
   }
 
   async message() {
-    await this.toast.warning({detail: 'Warning Message', summary: 'Please login', duration: 5000});
+    this.toast.warning({detail: 'Warning Message', summary: 'Please login', duration: 5000});
   }
 
 
