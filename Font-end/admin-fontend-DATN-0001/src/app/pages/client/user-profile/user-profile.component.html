@@ -4,13 +4,18 @@
       <div class="artist__header">
         <div class="artist__info">
           <div class="profile__img">
-            <img src="{{singer.image}}" alt="G-Eazy"/>
+            <img src="{{ singer.image }}" alt="G-Eazy" />
           </div>
 
           <div class="artist__info__meta">
             <div class="artist__info__type">Artist</div>
 
-            <div class="artist__info__name">{{ singer.fullname }}</div>
+            <div
+              class="artist__info__name"
+              style="font-size: 25px; font-weight: bolder"
+            >
+              {{ singer.fullname }}
+            </div>
 
             <div class="artist__info__actions">
               <button class="button-dark">
@@ -36,12 +41,23 @@
         <div class="artist__navigation">
           <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
-              <a href="#artist-overview" aria-controls="artist-overview" role="tab" data-toggle="tab">Overview</a>
+              <a
+                href="#artist-overview"
+                aria-controls="artist-overview"
+                role="tab"
+                data-toggle="tab"
+                >Overview</a
+              >
             </li>
 
             <li role="presentation">
-              <a href="#related-artists" aria-controls="related-artists" role="tab" data-toggle="tab">Related
-                Artists</a>
+              <a
+                href="#related-artists"
+                aria-controls="related-artists"
+                role="tab"
+                data-toggle="tab"
+                >Related Artists</a
+              >
             </li>
 
             <!--<li role="presentation">
@@ -49,19 +65,28 @@
             </li>-->
           </ul>
 
-          <div class="artist__navigation__friends">
+          <!-- <div class="artist__navigation__friends">
             <a href="#">
-              <img src="http://zblogged.com/wp-content/uploads/2015/11/17.jpg" alt=""/>
+              <img
+                src="http://zblogged.com/wp-content/uploads/2015/11/17.jpg"
+                alt=""
+              />
             </a>
 
             <a href="#">
-              <img src="http://zblogged.com/wp-content/uploads/2015/11/5.png" alt=""/>
+              <img
+                src="http://zblogged.com/wp-content/uploads/2015/11/5.png"
+                alt=""
+              />
             </a>
 
             <a href="#">
-              <img src="http://cdn.devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg" alt=""/>
+              <img
+                src="http://cdn.devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg"
+                alt=""
+              />
             </a>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -76,8 +101,10 @@
 
                 <div class="latest-release">
                   <div class="latest-release__art">
-                    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                         alt="When It's Dark Out"/>
+                    <img
+                      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
+                      alt="When It's Dark Out"
+                    />
                   </div>
 
                   <div class="latest-release__song">
@@ -100,107 +127,24 @@
                 <div class="section-title">Popular</div>
 
                 <div class="tracks">
-                  <div class="track">
+                  <div class="track" *ngFor="let song of songs; let i = index">
                     <div class="track__art">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                           alt="When It's Dark Out"/>
+                      <img [src]="song.image" alt="When It's Dark Out" />
                     </div>
 
-                    <div class="track__number">1</div>
+                    <div class="track__number">{{ i + 1 }}</div>
 
                     <div class="track__added">
                       <i class="ion-checkmark-round added"></i>
                     </div>
 
-                    <div class="track__title">Me, Myself & I</div>
+                    <div class="track__title">{{ song.title }}</div>
 
                     <div class="track__explicit">
                       <span class="label">Explicit</span>
                     </div>
 
                     <div class="track__plays">147,544,165</div>
-                  </div>
-
-                  <div class="track">
-                    <div class="track__art">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/tth.jpg" alt="These Things Happen"/>
-                    </div>
-
-                    <div class="track__number">2</div>
-
-                    <div class="track__added">
-                      <i class="ion-plus not-added"></i>
-                    </div>
-
-                    <div class="track__title">I Mean It</div>
-
-                    <div class="track__explicit">
-                      <span class="label">Explicit</span>
-                    </div>
-
-                    <div class="track__plays">74,568,782</div>
-                  </div>
-
-                  <div class="track">
-                    <div class="track__art">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                           alt="When It's Dark Out"/>
-                    </div>
-
-                    <div class="track__number">3</div>
-
-                    <div class="track__added">
-                      <i class="ion-checkmark-round added"></i>
-                    </div>
-
-                    <div class="track__title">Calm Down</div>
-
-                    <div class="track__explicit">
-                      <span class="label">Explicit</span>
-                    </div>
-
-                    <div class="track__plays">13,737,506</div>
-                  </div>
-
-                  <div class="track">
-                    <div class="track__art">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                           alt="When It's Dark Out"/>
-                    </div>
-
-                    <div class="track__number">4</div>
-
-                    <div class="track__added">
-                      <i class="ion-plus not-added"></i>
-                    </div>
-
-                    <div class="track__title">Some Kind Of Drug</div>
-
-                    <div class="track__explicit">
-                      <span class="label">Explicit</span>
-                    </div>
-
-                    <div class="track__plays">12,234,881</div>
-                  </div>
-
-                  <div class="track">
-                    <div class="track__art">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/tth.jpg" alt="These Things Happen"/>
-                    </div>
-
-                    <div class="track__number">5</div>
-
-                    <div class="track__added">
-                      <i class="ion-checkmark-round added"></i>
-                    </div>
-
-                    <div class="track__title">Let's Get Lost</div>
-
-                    <div class="track__explicit">
-                      <span class="label">Explicit</span>
-                    </div>
-
-                    <div class="track__plays">40,882,954</div>
                   </div>
                 </div>
 
@@ -211,61 +155,15 @@
               <div class="overview__related">
                 <div class="section-title">Related Artists</div>
 
-                <div class="related-artists">
+                <div class="related-artists" *ngFor="let item of singers">
                   <a href="#" class="related-artist">
                     <span class="related-artist__img">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/hoodie.jpg" alt="Hoodie Allen"/>
+                      <img [src]="item.image" alt="{{ item.fullname }}" />
                     </span>
 
-                    <span class="related-artist__name">Hoodie Allen</span>
-                  </a>
-
-                  <a href="#" class="related-artist">
-                    <span class="related-artist__img">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/mikestud.jpg" alt="Mike Stud"/>
-                    </span>
-
-                    <span class="related-artist__name">Mike Stud</span>
-                  </a>
-
-                  <a href="#" class="related-artist">
-                    <span class="related-artist__img">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/drake.jpeg" alt="Drake"/>
-                    </span>
-
-                    <span class="related-artist__name">Drake</span>
-                  </a>
-
-                  <a href="#" class="related-artist">
-                    <span class="related-artist__img">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/jcole.jpg" alt="J. Cole"/>
-                    </span>
-
-                    <span class="related-artist__name">J. Cole</span>
-                  </a>
-
-                  <a href="#" class="related-artist">
-                    <span class="related-artist__img">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/bigsean.jpg" alt="Big Sean"/>
-                    </span>
-
-                    <span class="related-artist__name">Big Sean</span>
-                  </a>
-
-                  <a href="#" class="related-artist">
-                    <span class="related-artist__img">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/wiz.jpeg" alt="Wiz Khalifa"/>
-                    </span>
-
-                    <span class="related-artist__name">Wiz Khalifa</span>
-                  </a>
-
-                  <a href="#" class="related-artist">
-                    <span class="related-artist__img">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/yonas.jpg" alt="Yonas"/>
-                    </span>
-
-                    <span class="related-artist__name">Yonas</span>
+                    <span class="related-artist__name">{{
+                      item.fullname
+                    }}</span>
                   </a>
                 </div>
               </div>
@@ -284,8 +182,10 @@
                 <div class="album">
                   <div class="album__info">
                     <div class="album__info__art">
-                      <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                           alt="When It's Dark Out"/>
+                      <img
+                        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
+                        alt="When It's Dark Out"
+                      />
                     </div>
 
                     <div class="album__info__meta">
@@ -714,9 +614,12 @@
           <div role="tabpanel" class="tab-pane" id="related-artists">
             <div class="media-cards">
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/hoodie.jpg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
@@ -724,9 +627,12 @@
               </div>
 
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/mikestud_large.jpg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
@@ -734,9 +640,12 @@
               </div>
 
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/drake_large.jpg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
@@ -744,9 +653,12 @@
               </div>
 
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/jcole_large.jpg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
@@ -754,9 +666,12 @@
               </div>
 
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/bigSean_large.jpg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
@@ -764,9 +679,12 @@
               </div>
 
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/wiz.jpeg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
@@ -774,9 +692,12 @@
               </div>
 
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/yonas.jpg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
@@ -784,9 +705,12 @@
               </div>
 
               <div class="media-card">
-                <div class="media-card__image" style="
+                <div
+                  class="media-card__image"
+                  style="
                     background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/childish.jpg);
-                  ">
+                  "
+                >
                   <i class="ion-ios-play"></i>
                 </div>
 
