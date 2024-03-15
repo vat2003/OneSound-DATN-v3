@@ -180,6 +180,83 @@ export class LoginneComponent implements OnInit {
     //   }
     // });
   }
+  // login() {
+  //   this.userService.checkEmailExists(this.email).subscribe({
+  //     next: (emailExists: boolean) => {
+  //       if (emailExists) {
+  //         var login: login = {
+  //           email: this.email,
+  //           password: this.password,
+  //         };
+  //         debugger
+  //         this.userService.login(login).subscribe({
+
+  //           next: (response: LoginResponse) => {
+
+  //             alert("Login successful!");
+
+  //             const {token} = response;
+  //             console.log(token);
+  //             this.tokenService.setToken(token);
+  //             this.incorrectLoginAttempts = 0;
+
+  //             this.userService.getUserDetail(token).subscribe({
+
+  //               next: (response: any) => {
+  //                 debugger
+  //                 this.account = {
+  //                   ...response
+  //                 };
+  //                 console.log(response);
+  //                 this.userService.saveUserResponseToLocalStorage(response);
+  //                 if (this.account && this.account.accountRole) {
+  //                   debugger
+  //                   alert(this.account.accountRole.name);
+
+  //                   if (this.account.accountRole.name === 'admin') {
+  //                     debugger
+  //                     this.router.navigate(['/onesound/admin']);
+  //                   } else if (this.account.accountRole.name === 'user') {
+  //                     debugger
+  //                     this.router.navigate(['/onesound/home/explore']);
+
+  //                   }
+  //                 } else {
+  //                   debugger
+  //                   alert("Error: User role information not found.");
+  //                 }
+  //               },
+  //               complete: () => {
+  //               },
+  //               error: (error: any) => {
+  //                 console.log(error);
+  //               }
+  //             });
+
+  //           },
+  //           error: (error) => {
+  //             console.error(error);
+  //             alert("Wrong password, please check again");
+  //             this.incorrectLoginAttempts++;
+
+  //             if (this.incorrectLoginAttempts >= this.maxIncorrectLoginAttempts) {
+  //               alert("Too many incorrect login attempts. Please try again later.");
+  //               this.router.navigate(['/onesound/dangky']);
+  //             }
+  //           },
+  //           complete: () => {
+  //           }
+  //         });
+  //       } else {
+  //         alert("Email does not exist. Please check or register.");
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error(error);
+  //       alert("Please do not leave blank");
+  //     }
+  //   });
+  // }
 
   loginByGoogle() {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';

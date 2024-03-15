@@ -32,7 +32,7 @@ export class SongService {
 
   getAllSongsByAlbumId(id: number): Observable<Song[]> {
 
-    return this.httpClient.get<Song[]>(`${this.baseUrl}/getAllByAlbumId/${id}`);
+    return this.httpClient.get<Song[]>(`${this.baseUrl}/albumId/${id}`);
     // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
   }
 

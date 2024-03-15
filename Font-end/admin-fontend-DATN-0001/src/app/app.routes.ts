@@ -51,7 +51,7 @@ export const routes: Routes = [
 
   {
     path: 'onesound/admin',
-    // canActivate: [AdminGuardFn],
+    canActivate: [AdminGuardFn],
 
     component: HomeComponent,
     children: [
@@ -99,6 +99,7 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'favorite', component: UserFavoriteComponent },
       {path: 'Playlists', component: UserplaylistComponent},
+      {path: 'album/:id', component: UserPlaysongComponent},
     ],
   },
   {

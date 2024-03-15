@@ -21,6 +21,10 @@ export class SongSingerService {
     return this.httpClient.get<SongSinger[]>(`${this.baseURL}/get-by-song/${id}`);
   }
 
+  getAllSongBySinger(id:number):Observable<any[]> {
+    return this.httpClient.get<SongSinger[]>(`${this.baseURL}/get-by-singer/${id}`);
+  }
+
   createSongSinger(songId: number, singerId: number): Observable<Object> {
     const body = { songId, singerId };
     return this.httpClient.post(`${this.baseURL}/create`, body);

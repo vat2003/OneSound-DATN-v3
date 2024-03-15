@@ -26,6 +26,11 @@ export class SongGenreService {
     return this.httpClient.post(`${this.baseURL}/create`, body);
   }
 
+  updateSongGenre(songId: number, genreId: number): Observable<Object> {
+    const body = { songId, genreId };
+    return this.httpClient.put(`${this.baseURL}/update`, body);
+  }
+
   deleteSongGenre(albumId: number): Observable<Object> {
 
     return this.httpClient.delete(`${this.baseURL}/delete/${albumId}`);
