@@ -2,7 +2,6 @@
     <thead>
         <tr>
             <th>Playlist</th>
-
             <th>Acc</th>
         </tr>
     </thead>
@@ -11,8 +10,9 @@
 
             <td>
                 <div class="table-title">
-                    <div class="line-clamp" (click)="timname(playlist.id)">{{ playlist.id }}</div>
-                    <div class="line-clamp" (click)="timname(playlist.id)">{{ playlist.name }}</div>
+                    <!-- <div class="line-clamp" (click)="timname(playlist.id)">{{ playlist.id }}</div>
+                    <div class="line-clamp" (click)="timname(playlist.id)">{{ playlist.name }}</div> -->
+                    <div class="line-clamp" (click)="a(playlist.id)">{{ playlist.name }}</div>
                 </div>
             </td>
 
@@ -26,12 +26,7 @@
 
 
 <table class="table table-striped table-hover">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-        </tr>
-    </thead>
+
     <tbody>
         <tr *ngFor="let song of PlaylistSong">
 

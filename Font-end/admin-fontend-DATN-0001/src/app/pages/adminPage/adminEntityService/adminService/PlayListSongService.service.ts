@@ -36,8 +36,7 @@ export class PlayListSongService {
       }
 
       removeSongFromPlaylist(playlistId: number, songId: number): Observable<any> {
-        debugger
-        
+        debugger        
         return this.http.delete(`${this.apiUrl}/PlaylistSong/${playlistId}/${songId}`);
       }
 
