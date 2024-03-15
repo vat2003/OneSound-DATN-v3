@@ -4,12 +4,10 @@ import { Playlist } from "../../PlaylistSong/Playlist";
 import { Observable } from "rxjs";
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 export class playlistService {
-    private apiUrl = 'http://localhost:8080/api/v1';
-    constructor(private http: HttpClient) { }
-
+  private apiUrl = 'http://localhost:8080/api/v1';
 
     getAllPlaylist(): Observable<Playlist[]> {
         return this.http.get<Playlist[]>(this.apiUrl + '/Playlist');
@@ -20,7 +18,7 @@ export class playlistService {
       return this.http.post<Playlist>(`${this.apiUrl}/Playlist`, Playlist);
   }
 
-    getPlaylistsByUserId(userId: number): Observable<Playlist[]> {
+  getPlaylistsByUserId(userId: number): Observable<Playlist[]> {
       return this.http.get<Playlist[]>(`${this.apiUrl}/Playlist/user/${userId}`);
     }
 
@@ -30,6 +28,14 @@ export class playlistService {
     getPlaylistByid(id: number): Observable<Playlist> {
       return this.http.get<Playlist>(`${this.apiUrl}/Playlist/id/${id}`);
     }
+  constructor(private http: HttpClient) {
+  }
+
+  getByUser(_account: any): Observable<Playlist[]> {
+    return this.http.get<Playlist[]>(`${this.apiUrl}/Playlist/user/${_account}`);
+  }
+
+
 
 
 }
