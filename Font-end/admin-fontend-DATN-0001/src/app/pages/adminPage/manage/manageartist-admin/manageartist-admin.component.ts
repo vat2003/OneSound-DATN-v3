@@ -139,7 +139,9 @@ export class ManageartistAdminComponent {
         if (this.imageFile) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
-        this.singer = new Singer();
+        // this.singer = new Singer();
+
+        // this.singer = new Singer();
         this.removeUpload();
         this.goToSingerList();
         console.log(data);
@@ -200,7 +202,7 @@ export class ManageartistAdminComponent {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
 
-        this.singer = new Singer();
+        // this.singer = new Singer();
         this.removeUpload();
         this.goToSingerList();
         console.log(data);

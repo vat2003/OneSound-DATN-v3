@@ -154,11 +154,25 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   }
 
   openDialog() {
+    debugger
+    this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
+    console.log(this.selectedVideo);
 
-    this.PlaylistYoutubeService.createYt(this.videoId).subscribe(
+    const Youtube: Youtube = {  
+      id:  this.selectedVideo.id.videoId,
+      title: this.selectedVideo.snippet.title,
+      description: this.selectedVideo.snippet.description,
+      thumbnails:   this.selectedVideo.snippet.thumbnails.high.url,
+      channelTitle: this.selectedVideo.snippet.channelTitle,
+      publishTime:  this.selectedVideo.snippet.publishTime
+    }
+      console.log(Youtube);
+
+
+    this.PlaylistYoutubeService.createYt(Youtube).subscribe(
       () => {
         const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
-          data: { youtubeId: this.videoId }, // Truyền videoId qua data
+          data: { youtubeId: this.videoId },
         });
 
         dialogRef.afterClosed().subscribe(result => {

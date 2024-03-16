@@ -132,13 +132,14 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     );
   }
 
-  timname(id: number): void {
+  timname(id: number): void {    
     this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
-      (songs: any[]) => {
+      
+      (songs: any[]) => {        
         this.songsInPlaylist = songs;
         console.log('Songs in playlist:', this.songsInPlaylist);
       },
-      error => {
+      error => {        
         console.error('Failed to fetch songs from the playlist:', error);
       }
     );

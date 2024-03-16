@@ -32,7 +32,7 @@ export class UserResultSearchComponent implements OnInit {
   query: string = '';
   results: any[] = [];
   acc?: account | null;
-
+  // Youtube!: Youtube;
   favList: any[] = [];
 
   // selectedVideo!: any;
@@ -145,12 +145,24 @@ export class UserResultSearchComponent implements OnInit {
     }
   }
 
-  openDialog(videoId: string) {
-    this.PlaylistYoutubeService.createYt(videoId).subscribe(
+  openDialog(youtubeitem: any) {
+
+   
+    debugger
+    const Youtube: Youtube = {
+      id:  youtubeitem.id.videoId,
+      title: youtubeitem.snippet.title,
+      description: youtubeitem.snippet.description,
+      thumbnails:   youtubeitem.snippet.thumbnails.high.url,
+      channelTitle: youtubeitem.snippet.channelTitle,
+      publishTime:  youtubeitem.snippet.publishTime
+    
+    };    
+    this.PlaylistYoutubeService.createYt(Youtube).subscribe(
       () => {
         console.log('Song added to playlist successfully.');
         const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
-          data: {youtubeId: videoId}
+          data: {youtubeId: Youtube.id}
         });
       },
       error => {

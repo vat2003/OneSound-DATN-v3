@@ -34,7 +34,7 @@ import { UserplaylistComponent } from './pages/client/userplaylist/userplaylist.
 import {UserFavoriteComponent} from "./pages/client/user-favorite/user-favorite.component";
 import {UserPlaylistFormComponent} from "./pages/client/user-playlist-form/user-playlist-form.component";
 import {UserSongInPlaylistComponent} from "./pages/client/user-song-in-playlist/user-song-in-playlist.component";
-
+import { PlayListSongComponent } from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },
   { path: 'onesound/signin', component: LoginneComponent },
@@ -104,6 +104,8 @@ export const routes: Routes = [
       {path: 'album/:id', component: UserPlaysongComponent},
       { path: 'user/playlist', component: UserPlaylistFormComponent },
       { path: 'user/playlist/:id', component: UserSongInPlaylistComponent },
+      // {path: 'PlayListSong/:id', component: PlayListSongComponent},
+      { path: 'PlayListSong/:id', component: PlayListSongComponent }
     ],
   },
   {

@@ -25,7 +25,8 @@ export class UserplaylistComponent implements OnInit {
   PlaylistSong: PlaylistSong[] = [];
   account?: account | null;
   songsInPlaylist: any[] = [];
-   firstPlaylistId : number | undefined;
+  firstPlaylistId : number | undefined;
+
   constructor(
     private playlistService: playlistService,
     private playlistSongService: PlayListSongService,
@@ -41,6 +42,14 @@ export class UserplaylistComponent implements OnInit {
     // this.getAllPlaylistsong()
   }
 
+  a(id: number | undefined){
+    if (id !== undefined) {      
+      this.router.navigate(['onesound/home/PlayListSong', id]);
+    }
+  }
+
+ 
+  
   timname(id: number | undefined) {
     if (id !== undefined) {
       this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
@@ -58,23 +67,7 @@ export class UserplaylistComponent implements OnInit {
       console.error('Playlist ID is undefined.');
     }
   }
-  // timname(id: number | undefined) {
-  //   if (id !== undefined) {
-  //     this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
-  //       (songs: any[]) => {
-  //         this.songsInPlaylist = songs;
-  //         console.log('Songs in playlist:', this.songsInPlaylist);
-  //       },
-  //       error => {
-          
-  //         console.error('Failed to fetch songs from the playlist:', error);
-  //       }
-  //     );
-  //   } else {
-      
-  //     console.error('Playlist ID is undefined.');
-  //   }
-  // }
+ 
 
   getAllPlaylists(): void {
     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(
@@ -91,6 +84,7 @@ export class UserplaylistComponent implements OnInit {
       }
     );
   }
+  
   getAllPlaylistsong(): void {
     this.playlistSongService.getAllSongToPlaylist().subscribe(
       (PlaylistSong: PlaylistSong[]) => {

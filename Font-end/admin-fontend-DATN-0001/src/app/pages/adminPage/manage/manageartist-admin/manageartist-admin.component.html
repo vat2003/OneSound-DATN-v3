@@ -17,14 +17,24 @@
               the music genre
               already exists</span>
           </div>
+
+
+
           <div class="form-group mb-3">
             <label for="description">Description</label>
             <textarea type="text" class="form-control" id="description" rows="5" name="description"
               [(ngModel)]="singer.description"></textarea>
 
           </div>
+          <div class="btn-group mb-3" role="group">
+            <input type="radio" class="btn-check" name="active" id="btnradio1" autocomplete="off" checked [value]="true"
+              [(ngModel)]="singer.active" />
+            <label class="btn btn-outline-primary" for="btnradio1">Active</label>
 
-
+            <input type="radio" class="btn-check" name="active" id="btnradio3" autocomplete="off"
+              [(ngModel)]="singer.active" [value]="false" />
+            <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
+          </div>
           <div class="form-group m-3">
             <label>Image</label>
             <div class="file-upload">

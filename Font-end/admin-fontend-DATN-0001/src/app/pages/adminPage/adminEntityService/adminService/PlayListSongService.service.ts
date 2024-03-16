@@ -17,7 +17,7 @@ export class PlayListSongService {
     }
 
     addSongToPlaylist(playlistId: number, songId: number): Observable<any> {
-      debugger
+      
         const requestBody = {
           playlist: playlistId,
           song: songId
@@ -27,7 +27,7 @@ export class PlayListSongService {
       }
 
       getAllSongsInPlaylist(playlistId: number): Observable<PlaylistSong[]> {
-        debugger
+        
         return this.http.get<PlaylistSong[]>(`${this.apiUrl}/PlaylistSong/playlist/${playlistId}`);
       }
 
@@ -36,8 +36,7 @@ export class PlayListSongService {
       }
 
       removeSongFromPlaylist(playlistId: number, songId: number): Observable<any> {
-        debugger
-        
+                
         return this.http.delete(`${this.apiUrl}/PlaylistSong/${playlistId}/${songId}`);
       }
 

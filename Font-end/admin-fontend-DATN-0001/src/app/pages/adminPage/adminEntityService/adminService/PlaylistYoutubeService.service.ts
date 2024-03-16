@@ -14,13 +14,19 @@ export class PlaylistYoutubeService {
   constructor(private httpClient: HttpClient) {}
 
 
-  createYt(youtubeId: string): Observable<Object> {
-    const requestBody = {
-      id: youtubeId  // assuming 'id' is the property in the Youtube model
-    };
-    return this.httpClient.post(`${this.apiUrl}/youtube`, requestBody);
+  // createYt(youtubeId: string): Observable<Object> {
+  //   const requestBody = {
+  //     id: youtubeId  
+  //   };
+  //   return this.httpClient.post(`${this.apiUrl}/youtube`, requestBody);
+  // }
+
+  createYt(youtube: Youtube): Observable<Object> { // Change the parameter to accept a Youtube object
+    debugger
+    return this.httpClient.post(`${this.apiUrl}/youtube`, youtube); // Send the Youtube object directly
   }
 
+ 
 
   getAllPlaylistYoutubes(): Observable<PlaylistYoutube[]> {
     return this.httpClient.get<PlaylistYoutube[]>(`${this.apiUrl}/PlaylistYoutube`);
@@ -42,8 +48,7 @@ export class PlaylistYoutubeService {
   }
  
 
-  getListPlaylistYoutubeid(playlistId: number): Observable<PlaylistYoutube[]> {
-    
+  getListPlaylistYoutubeid(playlistId: number): Observable<PlaylistYoutube[]> {    
     return this.httpClient.get<PlaylistYoutube[]>(`${this.apiUrl}/PlaylistYoutube/playlist/${playlistId}`);
   }
 

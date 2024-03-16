@@ -1,0 +1,59 @@
+<h1>{{this.id}}</h1>
+
+
+<table class="table table-striped table-hover">
+
+    <tbody>
+        <tr *ngFor="let song of PlaylistSong">
+
+            <td>{{ song.playlist?.id}}</td>
+            <td>{{ song.song?.name}}</td>
+            <td>{{ song.song?.album?.title}}</td>
+
+            <td><img src="{{ song.song?.image }}" alt="" width="100px"></td>
+
+            <td>
+                <i class="fa-solid fa-trash-alt"
+                    (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i> &nbsp;&nbsp;
+            </td>
+        </tr>
+        <tr *ngFor="let song of songsInPlaylist">
+            <td>{{ song.playlist?.id}}</td>
+            <td><img src="{{ song.youtube.thumbnails }}" alt="" width="100px"></td>
+            <td>{{ song.youtube.title }}</td>
+            <td style="color: rgb(222, 10, 91);">{{ song.youtube.channelTitle }}</td>
+
+            <td>
+                <i class="fa-solid fa-trash-alt"
+                    (click)="removeYoutubeFromPlaylist(song.playlist?.id ?? 0,song.youtube?.id ?? 0)"></i> &nbsp;&nbsp;
+            </td>
+        </tr>
+
+        <!-- <tr *ngFor="let song of PlaylistSong; trackBy: trackById">
+            <td>{{ song.playlist?.id}}</td>
+            <td>{{ song.song?.name}}</td>
+            <td>{{ song.song?.album?.title}}</td>
+            <td>{{ song.song?.image}}</td>
+            <td>
+                <i class="fa-solid fa-trash-alt"
+                    (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i> &nbsp;&nbsp;
+            </td>
+        </tr>
+
+        <tr *ngFor="let song of songsInPlaylist; trackBy: trackById">
+            <td>{{ song.playlist?.id}}</td>
+            <td>{{ song.youtube.id }}</td>
+            <td>{{ song.youtube.title }}</td>
+            <td>{{ song.youtube.description }}</td>
+            <td>{{ song.youtube.thumbnails }}</td>
+            <td>{{ song.youtube.channelTitle }}</td>
+            <td>{{ song.youtube.publishTime }}</td>
+            <td>
+                <i class="fa-solid fa-trash-alt"
+                    (click)="removeYoutubeFromPlaylist(song.playlist?.id ?? 0, song.youtube?.id ?? '')"></i>
+                &nbsp;&nbsp;
+            </td>
+        </tr> -->
+
+    </tbody>
+</table>
