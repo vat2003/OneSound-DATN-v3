@@ -13,11 +13,14 @@ import { GenreServiceService } from '../../adminPage/adminEntityService/adminSer
 import { AuthorService } from '../../adminPage/adminEntityService/adminService/author.service';
 import { SongAuthorService } from '../../adminPage/adminEntityService/adminService/song-author.service';
 import { forkJoin, map, switchMap } from 'rxjs';
+import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [],
+  imports: [
+    NgForOf
+  ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })

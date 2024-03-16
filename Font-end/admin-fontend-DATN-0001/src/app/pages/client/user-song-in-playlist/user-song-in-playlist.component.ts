@@ -19,6 +19,7 @@ import {PlayListSongService} from "../../adminPage/adminEntityService/adminServi
 import {PlaylistSong} from "../../adminPage/PlaylistSong/PlaylistSong";
 import {playlistService} from "../../adminPage/adminEntityService/adminService/playlistService.service";
 import {Playlist} from "../../adminPage/adminEntityService/adminEntity/Playlist/Playlist";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-user-song-in-playlist',
@@ -33,9 +34,11 @@ export class UserSongInPlaylistComponent {
   acc?: account | null;
   favListSongs: any[] = [];
   currentPlaylist?: Playlist;
+  playlistId: any;
 
   // songs: Song[] = [];
   constructor(
+    private route: ActivatedRoute,
     private matDialog: MatDialog,
     private SongService: SongService,
     private PlaylistSongService: PlayListSongService,
@@ -63,9 +66,10 @@ export class UserSongInPlaylistComponent {
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
+    this.playlistId = this.route.snapshot.params['id'];
     this.getAllSongs();
     this.getAllSongFavByUser();
-    this.getPlaylist(64);
+    this.getPlaylist(this.playlistId);
   }
 
 
@@ -77,7 +81,7 @@ export class UserSongInPlaylistComponent {
     //   console.log(this.songs);
     // });
 
-    this.PlaylistSongService.getAllSongsInPlaylist(64).subscribe((data) => {
+    this.PlaylistSongService.getAllSongsInPlaylist(this.playlistId).subscribe((data) => {
       this.songs = data;
       this.songsfromdata = data;
       console.log(data)
