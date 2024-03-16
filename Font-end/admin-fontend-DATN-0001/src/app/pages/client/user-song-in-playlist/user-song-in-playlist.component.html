@@ -1,6 +1,6 @@
 <div class="detail-container">
   <div class="detail-container-banner" id="category-detail">
-    <!-- <div class="detail-container-banner-first">
+    <div class="detail-container-banner-first">
       <img src="assets/img/client/explore/hiphop.png" alt=""/>
       <div class="detail-container-banner-content">
         <h1>{{ this.currentPlaylist?.name }}</h1>
@@ -9,9 +9,9 @@
           The best HIP-HOP tracks of 2023, so far,
           from J.Cole to Eminem.(Cover: ....)
         </p>
-        <p>{{this.songs.length}} TRACKS (4:30:20)</p>
+        <p>{{ this.PlaylistSong.length }} TRACKS </p>
       </div>
-    </div> -->
+    </div>
 
     <div class="detail-container-banner-favicon">
       <div class="detail-container-banner-favicon-cta">
@@ -43,61 +43,63 @@
 <div class="list-tracks">
   <div class="list-tracks-form-search">
     <input type="search" name="search-music" id="" placeholder="Filter playlist on title, artist or album"
-      class="search" />
+           class="search"/>
     <div class="icon-search">
       <i class="fa-solid fa-magnifying-glass"></i>
     </div>
   </div>
   <table>
     <thead>
-      <tr>
-        <th></th>
-        <th>TITLE</th>
-        <th>ARTIST</th>
-        <th>LISTS</th>
-        <th>TIME</th>
-        <th></th>
-      </tr>
+    <tr>
+      <th></th>
+      <th>TITLE</th>
+      <th>ARTIST</th>
+      <th>LISTS</th>
+      <th>TIME</th>
+      <th></th>
+    </tr>
     </thead>
     <tbody id="list-songs-detail">
-      <tr *ngFor="let song of PlaylistSong">
-        <td>
-          <img src="assets/img/client/keshi.jpg" alt="" />
-        </td>
+    <tr *ngFor="let song of PlaylistSong">
+      <td>
+        <img src="assets/img/client/keshi.jpg" alt=""/>
+      </td>
 
-        <!-- <td><img src="{{ song.song?.image }}" alt="" width="100px"></td> -->
+      <td>
+        <div class="line-clamp">{{ song.song?.name }}</div>
+      </td>
 
-        <td>
-          <div class="table-title">
-            <div class="line-clamp">{{ song.song?.name }}</div>
-          </div>
-        </td>
-        <td>{{song.playlist?.name}}</td>
-        <td>POP</td>
-        <td>3:15</td>
-        <td>
-          <i class="fa-solid fa-trash-alt"
-            (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i>
-        </td>
-      </tr>
-    </tbody>
-    <tbody id="list-songs-detail">
-      <tr *ngFor="let song of songsInPlaylist">
-        <td><img src="{{ song.youtube.thumbnails }}" alt="" width="100px"></td>
+      <td>
+        <div class="table-title">
+          <div class="line-clamp">{{ song.song }}</div>
+        </div>
+      </td>
+      <td>{{ song.playlist?.name }}</td>
+      <td>POP</td>
+      <td>3:15</td>
+      <td>
+        <i class="fa-solid fa-trash-alt"
+           (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i>
+      </td>
+    </tr>
+    <!--    </tbody>-->
+    <!--    <tbody id="list-songs-detail">-->
+    <tr *ngFor="let song of songsInPlaylist">
+      <td><img src="{{ song.youtube.thumbnails }}" alt="" width="100px"></td>
 
-        <td>
-          <div class="table-title">
-            <div class="line-clamp">{{ song.youtube?.title }}</div>
-          </div>
-        </td>
-        <td>{{ song.youtube?.channelTitle }}</td>
-        <td>POP</td>
-        <td>3:15</td>
-        <td>
-          <i class="fa-solid fa-trash-alt"
-            (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i>
-        </td>
-      </tr>
+      <td>
+        <div class="table-title">
+          <div class="line-clamp">{{ song.youtube?.title }}</div>
+        </div>
+      </td>
+      <td>{{ song.youtube?.channelTitle }}</td>
+      <td>POP</td>
+      <td>3:15</td>
+      <td>
+        <i class="fa-solid fa-trash-alt"
+           (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i>
+      </td>
+    </tr>
     </tbody>
 
   </table>

@@ -20,7 +20,7 @@ import {PlaylistSong} from "../../adminPage/PlaylistSong/PlaylistSong";
 import {playlistService} from "../../adminPage/adminEntityService/adminService/playlistService.service";
 import {Playlist} from "../../adminPage/adminEntityService/adminEntity/Playlist/Playlist";
 import {ActivatedRoute, Router} from "@angular/router";
-import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import {PlaylistYoutubeService} from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
 
 @Component({
   selector: 'app-user-song-in-playlist',
@@ -145,79 +145,139 @@ export class UserSongInPlaylistComponent {
   PlaylistSong: PlaylistSong[] = [];
   account?: account | null;
   songsInPlaylist: any[] = [];
-  firstPlaylistId : number | undefined;
-  
+  firstPlaylistId: number | undefined;
+  favListSongs: any[] = [];
+  currentPlaylist?: Playlist;
+  acc?: account | null;
+  songsfromdata: PlaylistSong[] = [];
+  songs: any[] = [];
+
   constructor(private route: ActivatedRoute,
-    private playlistService: playlistService,
-    private playlistSongService: PlayListSongService,
-    private PlaylistYoutubeService: PlaylistYoutubeService,
-    private cdr: ChangeDetectorRef,
-    private userService: accountServiceService,
-    private router: Router // Inject Router
-    ) {}
+              private playlistService: playlistService,
+              private playlistSongService: PlayListSongService,
+              private PlaylistYoutubeService: PlaylistYoutubeService,
+              private cdr: ChangeDetectorRef,
+              private userService: accountServiceService,
+              private router: Router,
+              private favSong: FavoriteService, private songService: SongService
+    , private playlistInteractionService: PlaylistInteractionService
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.id = +params['id']; 
+      this.id = +params['id'];
 
     });
-    this.timname(this.id )
+    this.timname(this.id);
+    this.acc = this.userService.getUserResponseFromLocalStorage();
+      // this.getAllSongs();
+      this.getAllSongFavByUser();
+      this.getPlaylist(this.id);
+  }
+
+
+  timname(id: number | undefined) {
+    if (id !== undefined) {
+      this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
+        (playlistSongs) => {
+          this.PlaylistSong = playlistSongs;
+          console.log('Songs in playlist:', this.PlaylistSong);
+        },
+        (error) => {
+          console.error('Failed to fetch playlist songs:', error);
+        }
+      );
+
+      this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
+        (youtubeSongs) => {
+          this.songsInPlaylist = youtubeSongs;
+          console.log('YouTube songs in playlist:', this.songsInPlaylist);
+        },
+        (error) => {
+          console.error('Failed to fetch YouTube songs:', error);
+        }
+      );
+    } else {
+      console.error('Playlist ID is undefined.');
     }
+  }
 
-
-    timname(id: number | undefined) {
-      if (id !== undefined) {
-        this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
-          (playlistSongs) => {
-            this.PlaylistSong = playlistSongs;
-            console.log('Songs in playlist:', this.PlaylistSong);
-          },
-          (error) => {
-            console.error('Failed to fetch playlist songs:', error);
-          }
-        );
-    
-        this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
-          (youtubeSongs) => {
-            this.songsInPlaylist = youtubeSongs;
-            console.log('YouTube songs in playlist:', this.songsInPlaylist);
-          },
-          (error) => {
-            console.error('Failed to fetch YouTube songs:', error);
-          }
-        );
-      } else {
-        console.error('Playlist ID is undefined.');
+  removeSongFromPlaylist(id: number, idsong: number): void {
+    this.playlistSongService.removeSongFromPlaylist(id, idsong).subscribe(
+      () => {
+        this.PlaylistSong = this.PlaylistSong.filter(song => song.playlist?.id !== id);
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Failed to remove song from playlist:', error);
       }
+    );
+
+  }
+
+  removeYoutubeFromPlaylist(id: number, idsong: string): void {
+    this.PlaylistYoutubeService.removeYoutubeFromPlaylist(id, idsong).subscribe(
+      () => {
+        this.songsInPlaylist = this.songsInPlaylist.filter(song => song.playlist?.id !== id);
+        this.cdr.detectChanges();
+      },
+      (error) => {
+        console.error('Failed to remove song from playlist:', error);
+      }
+    );
+
+  }
+
+  getPlaylist(id: any) {
+    this.playlistService.getPlaylistByid(id).subscribe((data) => {
+      this.currentPlaylist = data;
+    });
+  }
+
+  getAllSongFavByUser() {
+    if (this.acc && this.acc.id) {
+      this.favSong.getAllFavSongByUser(this.acc.id).subscribe((data) => {
+        this.favListSongs = data;
+        // console.log(this.favListSongs);
+        this.checkFav();
+      });
     }
-    
-    removeSongFromPlaylist(id: number, idsong: number): void {    
-      this.playlistSongService.removeSongFromPlaylist(id, idsong).subscribe(
-        () => {
-          this.PlaylistSong = this.PlaylistSong.filter(song => song.playlist?.id !== id);  
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          console.error('Failed to remove song from playlist:', error);
-        }
-      );
-   
   }
 
-  removeYoutubeFromPlaylist(id: number, idsong: string): void {    
-      this.PlaylistYoutubeService.removeYoutubeFromPlaylist(id, idsong).subscribe(
-        () => {
-          this.songsInPlaylist = this.songsInPlaylist.filter(song => song.playlist?.id !== id);  
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          console.error('Failed to remove song from playlist:', error);
-        }
-      );
-   
+  checkFav() {
+    for (let song of this.songs) {
+      let found = this.favListSongs.find((fav) => fav.song.id === song.id);
+      // Nếu tồn tại, gán isFav = true, ngược lại gán isFav = false
+      song.isFav = found ? true : false;
+    }
   }
-    
-    
 
+  favoriteSong(song: any) {
+    // alert(song.id);
+    let songId = song.id;
+    let favS = new FavoriteSong(this.acc?.id, songId);
+    if (
+      this.acc == null ||
+      this.acc == undefined ||
+      this.acc === null ||
+      this.acc === undefined
+    ) {
+      alert('Please log in to use this feature');
+      return;
+    }
+    if (song.isFav) {
+      if (!confirm('Are you sure you want to unlike?')) {
+        return;
+      }
+      song.isFav = false;
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {
+      });
+    } else {
+      song.isFav = true;
+      this.favSong.addFavoriteSong(favS).subscribe((data) => {
+      });
+    }
 
+  }
 }

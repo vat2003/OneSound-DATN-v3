@@ -1,16 +1,7 @@
 <div class="detail-container">
   <div class="detail-container-banner" id="category-detail">
     <div class="detail-container-banner-first">
-      <img src="assets/img/client/explore/hiphop.png" alt="" />
-      <!-- <div class="detail-container-banner-content">
-        <h1>{{ this.acc?.fullname }}</h1>
-        <p>Created by {{ this.acc?.fullname }}</p>
-        <p>
-          The best HIP-HOP tracks of 2023, so far,
-          from J.Cole to Eminem.(Cover: ....)
-        </p>
-        <p>{{ this.playlists.length }} PLAYLISTS</p>
-      </div> -->
+      <img src="assets/img/client/explore/hiphop.png" alt=""/>
     </div>
   </div>
 </div>
@@ -18,7 +9,7 @@
 <div class="list-tracks">
   <div class="list-tracks-form-search">
     <input type="search" name="search-music" id="" placeholder="Filter playlist on title, artist or album"
-      class="search" />
+           class="search"/>
     <div class="icon-search">
       <i class="fa-solid fa-magnifying-glass"></i>
     </div>
@@ -40,14 +31,14 @@
 
       <li class="songItem" *ngFor="let playlist of playlists">
         <div class="img_play" (click)="a(playlist.id)">
-          <img src="assets/img/client/explore/hiphop.png" alt="alan" />
+          <img src="assets/img/client/explore/hiphop.png" alt="alan"/>
           <i class="bi fa-solid fa-circle-play" i="1"></i>
         </div>
         <h5>
           <p class="line-clamp">{{ playlist.name }}</p>
 
           <div class="subtitle line-clamp line-2">
-            Date Created: {{ this.account?.id }}
+            Date Created: {{ playlist.likeDate | date:'yyyy-MM-dd' }}
           </div>
         </h5>
         <i class="fa-solid fa-trash-alt" (click)="deletePlaylist(playlist)"></i> &nbsp;&nbsp;
