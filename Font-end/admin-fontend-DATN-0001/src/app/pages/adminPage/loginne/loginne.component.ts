@@ -140,10 +140,10 @@ export class LoginneComponent implements OnInit {
               debugger;
               alert(this.account.accountRole.name);
 
-              if (this.account.accountRole.name === 'admin') {
+              if (this.account.accountRole.name === 'ADMIN') {
                 debugger;
                 this.router.navigate(['/onesound/admin']);
-              } else if (this.account.accountRole.name === 'user') {
+              } else if (this.account.accountRole.name === 'USER') {
                 debugger;
                 this.router.navigate(['/onesound/home/explore']);
               }
