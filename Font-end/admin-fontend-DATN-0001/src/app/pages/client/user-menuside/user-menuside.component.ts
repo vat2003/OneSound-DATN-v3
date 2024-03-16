@@ -38,9 +38,9 @@ export class UserMenusideComponent implements OnInit {
 
   ngOnInit(): void {
     this.acc = this.UserService.getUserResponseFromLocalStorage();
-    if (!this.acc) {
-      this.logout();
-    }
+    // if (!this.acc) {
+    //   this.logout();
+    // }
   }
 
   constructor(private router: Router
