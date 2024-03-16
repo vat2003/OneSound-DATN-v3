@@ -1,8 +1,8 @@
 <div class="detail-container">
   <div class="detail-container-banner" id="category-detail">
     <div class="detail-container-banner-first">
-      <img src="assets/img/client/explore/hiphop.png" alt=""/>
-      <div class="detail-container-banner-content">
+      <img src="assets/img/client/explore/hiphop.png" alt="" />
+      <!-- <div class="detail-container-banner-content">
         <h1>{{ this.acc?.fullname }}</h1>
         <p>Created by {{ this.acc?.fullname }}</p>
         <p>
@@ -10,7 +10,7 @@
           from J.Cole to Eminem.(Cover: ....)
         </p>
         <p>{{ this.playlists.length }} PLAYLISTS</p>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -18,7 +18,7 @@
 <div class="list-tracks">
   <div class="list-tracks-form-search">
     <input type="search" name="search-music" id="" placeholder="Filter playlist on title, artist or album"
-           class="search"/>
+      class="search" />
     <div class="icon-search">
       <i class="fa-solid fa-magnifying-glass"></i>
     </div>
@@ -36,24 +36,27 @@
     </div>
 
     <div class="pop_song" id="list-categories">
-      <span *ngIf="playlists.length === 0" class="text-warning" style="color: yellow"
-      >There are no playlist here</span
-      >
+      <span *ngIf="playlists.length === 0" class="text-warning" style="color: yellow">There are no playlist here</span>
+
       <li class="songItem" *ngFor="let playlist of playlists">
         <div class="img_play" routerLink="/onesound/home/user/playlist/{{playlist.id}}">
-          <img src="assets/img/client/explore/hiphop.png" alt="alan"/>
+          <img src="assets/img/client/explore/hiphop.png" alt="alan" />
           <i class="bi fa-solid fa-circle-play" i="1"></i>
         </div>
         <h5>
           <p class="line-clamp">{{ playlist.name }}</p>
 
           <div class="subtitle line-clamp line-2">
-            Date Created: {{ this.acc?.fullname }}
+            Date Created: {{ this.account?.id }}
           </div>
         </h5>
+        <i class="fa-solid fa-trash-alt" (click)="deletePlaylist(playlist)"></i> &nbsp;&nbsp;
+
       </li>
 
     </div>
+
+
   </div>
 
   <!--  -->

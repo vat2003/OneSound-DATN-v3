@@ -33,7 +33,7 @@ import {CaptchaComponent} from "./pages/captcha/captcha.component";
 import { UserplaylistComponent } from './pages/client/userplaylist/userplaylist.component';
 import {UserFavoriteComponent} from "./pages/client/user-favorite/user-favorite.component";
 import {UserPlaylistFormComponent} from "./pages/client/user-playlist-form/user-playlist-form.component";
-import {UserSongInPlaylistComponent} from "./pages/client/user-song-in-playlist/user-song-in-playlist.component";
+import { UserSongInPlaylistComponent } from './pages/client/user-song-in-playlist/user-song-in-playlist.component';
 import { PlayListSongComponent } from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
 export const routes: Routes = [
   { path: '', component: UserExploreComponent },

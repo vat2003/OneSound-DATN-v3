@@ -38,8 +38,7 @@ export class UserplaylistComponent implements OnInit {
 
   ngOnInit(): void {
         this.account = this.userService.getUserResponseFromLocalStorage();
-    this.getAllPlaylists();
-    // this.getAllPlaylistsong()
+    this.getAllPlaylists(); 
   }
 
   a(id: number | undefined){
@@ -85,19 +84,7 @@ export class UserplaylistComponent implements OnInit {
     );
   }
   
-  getAllPlaylistsong(): void {
-    this.playlistSongService.getAllSongToPlaylist().subscribe(
-      (PlaylistSong: PlaylistSong[]) => {
-        debugger
-        console.log(PlaylistSong);
-        
-        this.PlaylistSong = PlaylistSong;
-      },
-      (error) => {                
-        console.error('Error fetching playlists:', error);
-      }
-    );
-  }
+
 
   deletePlaylist(playlist: Playlist): void {    
     this.playlistSongService.removePlaylist(playlist.id ?? 0).subscribe(
@@ -115,13 +102,10 @@ export class UserplaylistComponent implements OnInit {
     if (this.firstPlaylistId !== undefined) {
       this.playlistSongService.removeSongFromPlaylist(id, idsong).subscribe(
         () => {
-          // Cập nhật mảng songsInPlaylist sau khi xóa
           this.songsInPlaylist = this.songsInPlaylist.filter(song => song.id !== id);
   
-          // Cập nhật mảng PlaylistSong sau khi xóa
           this.PlaylistSong = this.PlaylistSong.filter(p => p.playlistId !== this.firstPlaylistId || p.songId !== id);
   
-          // Gọi lại detectChanges để cập nhật giao diện
           this.cdr.detectChanges();
         },
         (error) => {
