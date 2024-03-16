@@ -29,7 +29,7 @@
           <a class="btn-link">{{ playlist.name }}</a>
         </td>
         <td>{{ playlist.id }}</td>
-        <td>{{ this.data.youtubeId }}</td>
+        <td (click)="timname(playlist.id  ?? 0)">{{ this.data.youtubeId }}</td>
 
       </tr>
 

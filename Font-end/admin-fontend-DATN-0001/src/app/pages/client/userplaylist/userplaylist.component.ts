@@ -67,23 +67,7 @@ export class UserplaylistComponent implements OnInit {
       console.error('Playlist ID is undefined.');
     }
   }
-  // timname(id: number | undefined) {
-  //   if (id !== undefined) {
-  //     this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
-  //       (songs: any[]) => {
-  //         this.songsInPlaylist = songs;
-  //         console.log('Songs in playlist:', this.songsInPlaylist);
-  //       },
-  //       error => {
-          
-  //         console.error('Failed to fetch songs from the playlist:', error);
-  //       }
-  //     );
-  //   } else {
-      
-  //     console.error('Playlist ID is undefined.');
-  //   }
-  // }
+ 
 
   getAllPlaylists(): void {
     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(

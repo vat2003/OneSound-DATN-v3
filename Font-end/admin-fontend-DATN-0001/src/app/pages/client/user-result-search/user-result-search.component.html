@@ -25,7 +25,7 @@
                 <!-- <td *ngIf="video.snippet"></td> -->
                 <!-- <td>{{video.isFav}}</td> -->
                 <td>
-                  <i class="fa-solid fa-plus" (click)="openDialog(video.id.videoId)"></i>
+                    <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
 
                     <i class="favorite fa-heart"
                         [ngClass]="{'fa-solid': video.isFav === true, 'fa-regular': video.isFav === false}"
