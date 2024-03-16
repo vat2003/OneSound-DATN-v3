@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
 import {BlankComponent} from './pages/adminPage/blank/blank.component';
 import {Notfound404Component} from './pages/adminPage/notfound404/notfound404.component';
@@ -29,27 +29,28 @@ import {CountAccessComponent} from "./pages/adminPage/manage/statictical/count-a
 import {ReportComponent} from "./pages/adminPage/manage/statictical/report/report.component";
 import {StaticticalComponent} from "./pages/adminPage/manage/statictical/statictical/statictical.component";
 import {UserResultSearchComponent} from "./pages/client/user-result-search/user-result-search.component";
-import {CaptchaComponent} from "./pages/captcha/captcha.component";
-import { UserplaylistComponent } from './pages/client/userplaylist/userplaylist.component';
+import {UserplaylistComponent} from './pages/client/userplaylist/userplaylist.component';
 import {UserFavoriteComponent} from "./pages/client/user-favorite/user-favorite.component";
 import {UserPlaylistFormComponent} from "./pages/client/user-playlist-form/user-playlist-form.component";
-import { UserSongInPlaylistComponent } from './pages/client/user-song-in-playlist/user-song-in-playlist.component';
-import { PlayListSongComponent } from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
+import {UserSongInPlaylistComponent} from './pages/client/user-song-in-playlist/user-song-in-playlist.component';
+import {
+  PlayListSongComponent
+} from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
+
 export const routes: Routes = [
-  { path: '', component: UserExploreComponent },
-  { path: 'onesound/signin', component: LoginneComponent },
-  { path: 'onesound/signup', component: DangkyComponent },
-  { path: 'onesound/dangnhap', component: LoginneComponent },
-  { path: 'onesound/dangky', component: DangkyComponent },
-  { path: 'onesound/changepassword/:id', component: ChangePasswordComponent },
-  { path: 'onesound/forgotpassword', component: QuenmkComponent },
-  { path: 'onesound/admin/image', component: ManageimageAdminComponent },
-  { path: 'update-genre/:id', component: ManagegenreAdminComponent },
-  { path: 'update-singer/:id', component: ManageartistAdminComponent },
-  { path: 'oauth2/authorization/google', component: SomeComponentComponent },
-  { path: 'onesound/profile', component: ProfileComponent },
-  { path: 'onesound/feedback', component: FeedbackComponent },
-  { path: 'onesound/captcha', component: CaptchaComponent },
+  {path: '', component: UserExploreComponent},
+  {path: 'onesound/signin', component: LoginneComponent},
+  {path: 'onesound/signup', component: DangkyComponent},
+  {path: 'onesound/dangnhap', component: LoginneComponent},
+  {path: 'onesound/dangky', component: DangkyComponent},
+  {path: 'onesound/changepassword/:id', component: ChangePasswordComponent},
+  {path: 'onesound/forgotpassword', component: QuenmkComponent},
+  {path: 'onesound/admin/image', component: ManageimageAdminComponent},
+  {path: 'update-genre/:id', component: ManagegenreAdminComponent},
+  {path: 'update-singer/:id', component: ManageartistAdminComponent},
+  {path: 'oauth2/authorization/google', component: SomeComponentComponent},
+  {path: 'onesound/profile', component: ProfileComponent},
+  {path: 'onesound/feedback', component: FeedbackComponent},
 
   {
     path: 'onesound/admin',
@@ -57,26 +58,26 @@ export const routes: Routes = [
 
     component: HomeComponent,
     children: [
-      { path: 'blank', component: BlankComponent },
-      { path: '404', component: Notfound404Component },
-      { path: 'manage/genre/:id', component: ManagegenreAdminComponent },
-      { path: 'manage/song', component: ManagesongAdminComponent },
-      { path: 'manage/user', component: ManageuserAdminComponent },
-      { path: 'chart', component: ChartComponent },
-      { path: 'dashboard', component: BlankComponent },
-      { path: '', component: ReportComponent },
-      { path: 'manage/album', component: ManagealbumAdminComponent },
-      { path: 'manage/artist', component: ManageartistAdminComponent },
-      { path: 'manage/genre', component: ManagegenreAdminComponent },
-      { path: 'manage/profile', component: ManageprofileAdminComponent },
-      { path: 'manage/author', component: ManageauthorComponent },
+      {path: 'blank', component: BlankComponent},
+      {path: '404', component: Notfound404Component},
+      {path: 'manage/genre/:id', component: ManagegenreAdminComponent},
+      {path: 'manage/song', component: ManagesongAdminComponent},
+      {path: 'manage/user', component: ManageuserAdminComponent},
+      {path: 'chart', component: ChartComponent},
+      {path: 'dashboard', component: BlankComponent},
+      {path: '', component: ReportComponent},
+      {path: 'manage/album', component: ManagealbumAdminComponent},
+      {path: 'manage/artist', component: ManageartistAdminComponent},
+      {path: 'manage/genre', component: ManagegenreAdminComponent},
+      {path: 'manage/profile', component: ManageprofileAdminComponent},
+      {path: 'manage/author', component: ManageauthorComponent},
 
       {
         path: 'manage/statistical',
         component: StaticticalComponent,
         children: [
-          { path: 'report', component: ReportComponent },
-          { path: 'count-access', component: CountAccessComponent },
+          {path: 'report', component: ReportComponent},
+          {path: 'count-access', component: CountAccessComponent},
         ],
       },
       {
@@ -94,26 +95,26 @@ export const routes: Routes = [
     component: UserMenusideComponent,
     canActivate: [AuthGuardFn],
     children: [
-      { path: '', component: UserExploreComponent },
-      { path: 'explore', component: UserExploreComponent },
-      { path: 'playsong', component: UserPlaysongComponent },
-      { path: 'profile/:id', component: UserProfileComponent },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'favorite', component: UserFavoriteComponent },
+      {path: '', component: UserExploreComponent},
+      {path: 'explore', component: UserExploreComponent},
+      {path: 'playsong', component: UserPlaysongComponent},
+      {path: 'profile/:id', component: UserProfileComponent},
+      {path: 'profile', component: ProfileComponent},
+      {path: 'favorite', component: UserFavoriteComponent},
       {path: 'Playlists', component: UserplaylistComponent},
       {path: 'album/:id', component: UserPlaysongComponent},
-      { path: 'user/playlist', component: UserPlaylistFormComponent },
-      { path: 'user/playlist/:id', component: UserSongInPlaylistComponent },
+      {path: 'user/playlist', component: UserPlaylistFormComponent},
+      {path: 'user/playlist/:id', component: UserSongInPlaylistComponent},
       // {path: 'PlayListSong/:id', component: PlayListSongComponent},
-      { path: 'PlayListSong/:id', component: PlayListSongComponent }
+      {path: 'PlayListSong/:id', component: PlayListSongComponent}
     ],
   },
   {
     path: 'onesound/home',
     component: UserMenusideComponent,
     children: [
-      { path: 'search/:keyword', component: UserResultSearchComponent },
-      { path: 'feedback', component: FeedbackComponent },
+      {path: 'search/:keyword', component: UserResultSearchComponent},
+      {path: 'feedback', component: FeedbackComponent},
     ],
   },
 ];
