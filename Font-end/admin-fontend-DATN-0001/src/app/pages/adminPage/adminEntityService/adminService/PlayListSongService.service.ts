@@ -26,8 +26,7 @@ export class PlayListSongService {
         return this.http.post(`${this.apiUrl}/PlaylistSong`, requestBody);
       }
 
-      getAllSongsInPlaylist(playlistId: number): Observable<PlaylistSong[]> {
-        
+      getAllSongsInPlaylist(playlistId: number): Observable<PlaylistSong[]> {        
         return this.http.get<PlaylistSong[]>(`${this.apiUrl}/PlaylistSong/playlist/${playlistId}`);
       }
 

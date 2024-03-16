@@ -71,6 +71,32 @@ export class PlayListSongComponent implements OnInit {
         console.error('Playlist ID is undefined.');
       }
     }
+
+    removeSongFromPlaylist(id: number, idsong: number): void {    
+      this.playlistSongService.removeSongFromPlaylist(id, idsong).subscribe(
+        () => {
+          this.PlaylistSong = this.PlaylistSong.filter(song => song.playlist?.id !== id);  
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          console.error('Failed to remove song from playlist:', error);
+        }
+      );
+   
+  }
+
+  removeYoutubeFromPlaylist(id: number, idsong: string): void {    
+      this.PlaylistYoutubeService.removeYoutubeFromPlaylist(id, idsong).subscribe(
+        () => {
+          this.songsInPlaylist = this.songsInPlaylist.filter(song => song.playlist?.id !== id);  
+          this.cdr.detectChanges();
+        },
+        (error) => {
+          console.error('Failed to remove song from playlist:', error);
+        }
+      );
+   
+  }
     
   
     
@@ -99,31 +125,7 @@ export class PlayListSongComponent implements OnInit {
 
 
 
-  removeSongFromPlaylist(id: number, idsong: number): void {    
-      this.playlistSongService.removeSongFromPlaylist(id, idsong).subscribe(
-        () => {
-          this.PlaylistSong = this.PlaylistSong.filter(song => song.playlist?.id !== id);  
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          console.error('Failed to remove song from playlist:', error);
-        }
-      );
-   
-  }
-
-  removeYoutubeFromPlaylist(id: number, idsong: string): void {    
-      this.PlaylistYoutubeService.removeYoutubeFromPlaylist(id, idsong).subscribe(
-        () => {
-          this.songsInPlaylist = this.songsInPlaylist.filter(song => song.playlist?.id !== id);  
-          this.cdr.detectChanges();
-        },
-        (error) => {
-          console.error('Failed to remove song from playlist:', error);
-        }
-      );
-   
-  }
+ 
 
   // trackById(index: number, item: any): any {
   //   return item.id;

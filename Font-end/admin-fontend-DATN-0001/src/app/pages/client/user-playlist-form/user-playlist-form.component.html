@@ -39,7 +39,7 @@
       <span *ngIf="playlists.length === 0" class="text-warning" style="color: yellow">There are no playlist here</span>
 
       <li class="songItem" *ngFor="let playlist of playlists">
-        <div class="img_play" routerLink="/onesound/home/user/playlist/{{playlist.id}}">
+        <div class="img_play" (click)="a(playlist.id)">
           <img src="assets/img/client/explore/hiphop.png" alt="alan" />
           <i class="bi fa-solid fa-circle-play" i="1"></i>
         </div>

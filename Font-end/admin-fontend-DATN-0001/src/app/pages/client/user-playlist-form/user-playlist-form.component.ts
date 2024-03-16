@@ -25,31 +25,7 @@ import { PlayListSongService } from '../../adminPage/adminEntityService/adminSer
   styleUrl: './user-playlist-form.component.scss'
 })
 export class UserPlaylistFormComponent {
-  // acc?: account | null;
-  // playlists: Playlist[] = [];
-
-  // constructor(
-  //   private userService: accountServiceService,
-  //   private PlaylistService: playlistService,
-  //   private router: Router,
-  // ) {
-  // }
-
-  // openSongList(id: any) {
-  //   this.router.navigate(['onesound/signup']);
-  // }
-
-  // ngOnInit(): void {
-  //   this.acc = this.userService.getUserResponseFromLocalStorage();
-  //   this.getPlaylist();
-  // }
-
-  // getPlaylist(): void {
-  //   this.PlaylistService.getByUser(this.acc?.id).subscribe((data) => {
-  //     this.playlists = data;
-  //     console.log(this.playlists)
-  //   });
-  // }
+ 
 
   playlists: Playlist[] = [];
   PlaylistSong: PlaylistSong[] = [];
@@ -73,7 +49,8 @@ export class UserPlaylistFormComponent {
 
   a(id: number | undefined){
     if (id !== undefined) {      
-      this.router.navigate(['onesound/home/PlayListSong', id]);
+      // this.router.navigate(['onesound/home/PlayListSong', id]);
+      this.router.navigate(['onesound/home/user/playlist/', id]);
     }
   }
 
