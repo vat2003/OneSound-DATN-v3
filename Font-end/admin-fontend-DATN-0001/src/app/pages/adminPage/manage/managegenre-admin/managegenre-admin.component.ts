@@ -266,7 +266,7 @@ export class ManagegenreAdminComponent implements OnInit {
     }
     if (!this.setImageUrl || !this.imageFile) {
       this.Genree.image = 'adminManageImage/genre/null.jpg';
-    }debugger
+    }
     this.GenreService.createGenre(this.Genree).subscribe(
       async (data) => {
         //Trong lúc lưu đối tượng vào Database thì đồng thời Set path và file ảnh lên Firebase
@@ -299,6 +299,7 @@ export class ManagegenreAdminComponent implements OnInit {
     if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
       this.Genree.image = 'adminManageImage/genre/null.jpg';
     }
+
     this.GenreService.updateGenre(id, this.Genree).subscribe(
       async (data) => {
         if (this.imageFile) {

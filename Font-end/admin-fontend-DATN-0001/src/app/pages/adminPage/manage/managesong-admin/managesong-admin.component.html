@@ -34,7 +34,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Artist</label>
+            <label class="form-label">Artist</label>
             <!-- Input cho Singer -->
             <input
               type="text"
@@ -64,15 +64,14 @@
               <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Fullname</th>
-                <th scope="col">Desc</th>
                 <th scope="col">Image</th>
+                <th scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let singer of singerTable; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
                 <td>{{ singer.fullname }}</td>
-                <td>{{ singer.description }}</td>
                 <td>
                   <img
                     src="{{ singer.image }}"
@@ -95,7 +94,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Album</label>
+            <label class="form-label">Album</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
@@ -122,9 +121,9 @@
               <tr>
                 <!-- <th scope="col">No.</th> -->
                 <th scope="col">Title</th>
-                <th scope="col">Desc</th>
                 <th scope="col">Release</th>
                 <th scope="col">Image</th>
+                <th scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -132,7 +131,7 @@
                 <!-- <th scope="row">{{ i + 1 }}</th> -->
 
                 <td>{{ album.title }}</td>
-                <td>{{ album.description }}</td>
+                <td>{{ album.releaseYear }}</td>
 
                 <td>
                   <img
@@ -155,7 +154,7 @@
             </table>
           </div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Genre</label>
+            <label class="form-label">Genre</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
@@ -182,8 +181,8 @@
               <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Title</th>
-                <th scope="col">Desc</th>
                 <th scope="col">Image</th>
+                <th scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -191,7 +190,6 @@
                 <th scope="row">{{ i + 1 }}</th>
 
                 <td>{{ album.name }}</td>
-                <td>{{ album.description }}</td>
 
                 <td>
                   <img
@@ -215,7 +213,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Author</label>
+            <label class="form-label">Author</label>
             <input
               type="text"
               class="form-control mb-4 border-light border-2"
@@ -244,8 +242,8 @@
               <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Title</th>
-                <th scope="col">Desc</th>
                 <th scope="col">Image</th>
+                <th scope="col">Action</th>
               </tr>
               </thead>
               <tbody>
@@ -253,7 +251,6 @@
                 <th scope="row">{{ i + 1 }}</th>
 
                 <td>{{ album.fullname }}</td>
-                <td>{{ album.description }}</td>
 
                 <td>
                   <img
@@ -491,6 +488,7 @@
           class="form-control mb-4 border-light border-2"
           style="border-radius: 20px"
           placeholder="Search"
+          name="searchItem"
           [(ngModel)]="searchTerm"
           (ngModelChange)="search()"
           (keyup)="onKey($event)"
