@@ -1,3 +1,4 @@
+import { accountServiceService } from './../../adminPage/adminEntityService/adminService/account-service.service';
 import { SongService } from './../../adminPage/adminEntityService/adminService/song.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -12,12 +13,18 @@ import { SongGenreService } from '../../adminPage/adminEntityService/adminServic
 import { GenreServiceService } from '../../adminPage/adminEntityService/adminService/genre-service.service';
 import { AuthorService } from '../../adminPage/adminEntityService/adminService/author.service';
 import { SongAuthorService } from '../../adminPage/adminEntityService/adminService/song-author.service';
-import { forkJoin, map, switchMap } from 'rxjs';
+import { forkJoin, map, mergeMap, switchMap } from 'rxjs';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf,NgFor,
+    NgxPaginationModule,
+  ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
 })
@@ -31,6 +38,13 @@ export class UserProfileComponent implements OnInit {
   singerMap: { [key: number]: any[] } = {};
   genreMap: { [key: number]: any[] } = {};
   authorMap: { [key: number]: any[] } = {};
+  pageSize: number = 5;
+  p: number = 1;
+  localStorage?: Storage;
+  page: number = 1;
+  itempage: number = 4;
+  users:account[]=[];
+  forceDate: any;
   constructor(
     private route: ActivatedRoute,
     private singerService: SingerService,
@@ -40,15 +54,17 @@ export class UserProfileComponent implements OnInit {
     private GenreServiceService:GenreServiceService,
     private AuthorService:AuthorService,
     private SongAuthorService:SongAuthorService,
-    private SongService:SongService
+    private SongService:SongService,
+    private accountServiceService:accountServiceService
   ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     // alert(this.id)
+    this.getAllSongs();
     this.loadSinger();
     this.getRelativeArtist();
-    this.getAllSongs();
+    this.getAllUser();
   }
   // private getSingerById() {
   //   this.singerService.getArtistById(this.id).subscribe(
@@ -59,19 +75,66 @@ export class UserProfileComponent implements OnInit {
   //   );
   // }
 
-  getAllSongs(): void {
-    this.SongSingerService.getAllSongBySinger(this.id).pipe(
-      map((data) => data.map(song => this.SongService.getSongById(song.id)))
-    ).subscribe((observables) => {
-      forkJoin(observables).subscribe((songs) => {
+  // getAllSongs(): void {
+  //   this.SongSingerService.getAllSongBySinger(this.id).pipe(
+  //     mergeMap((data) => {
+  //       const observables = data.map(song => this.SongService.getSongById(song.id));
+  //       return forkJoin(observables);
+  //     })
+  //   ).subscribe((songs) => {
+  //     this.songs = songs;
+      // console.log("Hehehehehheheheh", this.songs);
+      // this.getSingersForSongs();
+      // this.getGenresForSongs();
+      // this.getAuthorsForSongs();
+  //   });
+
+  // }
+
+  getAllUser() {
+    this.accountServiceService.getPages(0, 5).subscribe(data => {
+      const mang=data.content.length-5;
+      for(let i =0;i>=mang;i++){
+        this.users=data.content;
+        console.log("NGƯỜI DÙNG: "+this.users)
+      }
+    });
+  }
+
+
+
+  getAllSongs(){
+    this.SongSingerService.getAllSongBySinger(this.id).subscribe(async data => {
+      const promises = [];
+      for(const song of data){
+        const promise = new Promise<Song>((resolve, reject) => {
+          // this.songs = data.content;
+          this.SongService.getSongById(song.song.id).subscribe(async baihat => {
+            baihat.image = await this.setImageURLFirebase(baihat.image);
+            // baihat.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
+            resolve(baihat);
+          });
+        });
+        promises.push(promise);
+      }
+      Promise.all(promises).then(songs => {
+        for(let song of songs){
+          this.forceDate = new DatePipe('en-US').transform(song.release, 'MM-dd-yyyy');
+          song.release = this.forceDate;
+          // song.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
+        }
         this.songs = songs;
-        console.log("Hehehehehheheheh" + this.songs);
+        console.log("Hehehehehheheheh", this.songs);
         this.getSingersForSongs();
         this.getGenresForSongs();
         this.getAuthorsForSongs();
+      }).catch(error => {
+        console.error('Error fetching song images:', error);
       });
     });
   }
+
+
 
 
 getSingersForSongs() {
@@ -142,12 +205,21 @@ getAuthorsForSongs() {
 
 getRelativeArtist() {
   this.singerService.getAllArtists().subscribe(data => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       this.singers.push(data[i]);
       console.log("ĐỀ XUẤT CA SĨ: " + this.singers[i].fullname);
     }
   });
 }
+
+//
+
+// reload() {
+//   const currentUrl = this.router.url;
+//   this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+//     this.router.navigate([currentUrl]);
+//   });
+// }
 
 
   getSingerById(): void {

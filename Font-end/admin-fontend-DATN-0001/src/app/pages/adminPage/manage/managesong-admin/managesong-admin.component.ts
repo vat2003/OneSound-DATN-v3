@@ -775,6 +775,8 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   //     // this.removeUpload();
   //   }
   // }
+
+
   onFileSelectedAudio(event: any) {
     const selectedFile = event.target.files[0];
     const maxSizeInBytes = 8 * 1024 * 1024; // giới hạn 8 MB
@@ -998,7 +1000,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         console.log("URL NHẠC: " + this.setAudioUrl)
         console.log("URL Hình: " + await this.setImageURLFirebase(this.song.image))
         await this.handleFilesData(this.audioUrl);
-
+        if(this.singerTable.length>0){
+          this.singerTable.splice(0, this.singerTable.length);
+        }
         // Process singers
         this.SongSingerService.getAllSingerBySong(id).subscribe((data) => {
           if (data && data.length > 0) {
@@ -1008,9 +1012,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               this.singerService.getArtistById(song.singer.id).subscribe((datasinger) => {
                 if (datasinger) {
                   console.log("Dữ liệu t2: ", datasinger);
-                  if(this.singerTable.length>0){
-                    this.singerTable.splice(0, this.singerTable.length);
-                  }
+
                   this.singerTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.singerTable);
                   this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
@@ -1028,6 +1030,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
           }
         });
 
+        if(this.authorTable.length>0){
+          this.authorTable.splice(0, this.authorTable.length);
+        }
         this.SongAuthorService.getAllAuthorBySong(id).subscribe((data) => {
           if (data && data.length > 0) {
             console.log("Dữ liệu t1: ", data);
@@ -1041,9 +1046,6 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
                   //   // fullname tồn tại trong singerTable, hãy xóa nó
                   //   this.authorTable.splice(singerNameIndex, 1);
                   // }
-                  if(this.authorTable.length>0){
-                    this.authorTable.splice(0, this.authorTable.length);
-                  }
                   this.authorTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.authorTable);
                   this.filterOptionsAuthor = this.formcontrolAuthor.valueChanges.pipe(
@@ -1060,6 +1062,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
             console.log("Không có dữ liệu");
           }
         });
+        if(this.genreTable.length>0){
+          this.genreTable.splice(0, this.genreTable.length);
+        }
         this.SongGenreService.getAllGenreBySong(id).subscribe((data) => {
           if (data && data.length > 0) {
             console.log("Dữ liệu t1: ", data);
@@ -1068,9 +1073,6 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               this.genreService.getGenre(song.genre.id).subscribe((datasinger) => {
                 if (datasinger) {
                   console.log("Dữ liệu t2: ", datasinger);
-                  if(this.genreTable.length>0){
-                    this.genreTable.splice(0, this.genreTable.length);
-                  }
                   this.genreTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.genreTable);
                   this.filterOptionsGenre = this.formcontrolGenre.valueChanges.pipe(
