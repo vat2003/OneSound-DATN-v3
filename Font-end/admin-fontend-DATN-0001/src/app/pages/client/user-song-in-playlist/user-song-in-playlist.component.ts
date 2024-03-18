@@ -21,6 +21,7 @@ import {playlistService} from "../../adminPage/adminEntityService/adminService/p
 import {Playlist} from "../../adminPage/adminEntityService/adminEntity/Playlist/Playlist";
 import {ActivatedRoute, Router} from "@angular/router";
 import {PlaylistYoutubeService} from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
 
 @Component({
   selector: 'app-user-song-in-playlist',
@@ -151,6 +152,7 @@ export class UserSongInPlaylistComponent {
   acc?: account | null;
   songsfromdata: PlaylistSong[] = [];
   songs: any[] = [];
+  songEntity: Song | null | undefined;
 
   constructor(private route: ActivatedRoute,
               private playlistService: playlistService,
@@ -159,8 +161,9 @@ export class UserSongInPlaylistComponent {
               private cdr: ChangeDetectorRef,
               private userService: accountServiceService,
               private router: Router,
-              private favSong: FavoriteService, private songService: SongService
-    , private playlistInteractionService: PlaylistInteractionService
+              private favSong: FavoriteService, private songService: SongService,
+              private firebaseStorage: FirebaseStorageCrudService,
+              private playlistInteractionService: PlaylistInteractionService
   ) {
   }
 
@@ -171,9 +174,24 @@ export class UserSongInPlaylistComponent {
     });
     this.timname(this.id);
     this.acc = this.userService.getUserResponseFromLocalStorage();
-      // this.getAllSongs();
-      this.getAllSongFavByUser();
-      this.getPlaylist(this.id);
+    // this.getAllSongs();
+    this.getAllSongFavByUser();
+    this.getPlaylist(this.id);
+    this.fillImageSong();
+  }
+
+  async setImageURLFirebase(image: string | any): Promise<string> {
+    if (image != null) {
+      try {
+        const imageURL = await this.firebaseStorage.getFile(image);
+        return imageURL;
+      } catch (error) {
+        console.error('Error getting image from Firebase Storage:', error);
+        return ''; // Trả về chuỗi rỗng nếu có lỗi
+      }
+    } else {
+      return 'null';
+    }
   }
 
 
@@ -182,12 +200,14 @@ export class UserSongInPlaylistComponent {
       this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
         (playlistSongs) => {
           this.PlaylistSong = playlistSongs;
+          this.fillImageSong();
           console.log('Songs in playlist:', this.PlaylistSong);
         },
         (error) => {
           console.error('Failed to fetch playlist songs:', error);
         }
       );
+
 
       this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
         (youtubeSongs) => {
@@ -201,6 +221,26 @@ export class UserSongInPlaylistComponent {
     } else {
       console.error('Playlist ID is undefined.');
     }
+  }
+
+  fillImageSong() {
+    this.PlaylistSong.forEach(song => {
+      console.log(song.song?.image);
+      this.setImageURLFirebase(song.song?.image).then((imageString: string) => {
+        console.log('Image string:', imageString);
+        this.songEntity = new Song(song.song?.name
+          , imageString
+          , song.song?.release
+          , song.song?.description
+          , song.song?.path
+          , song.song?.lyrics
+          , song.song?.album
+          , song.song?.dateTemp);
+        song.song = this.songEntity;
+      })
+
+    });
+
   }
 
   removeSongFromPlaylist(id: number, idsong: number): void {

@@ -1,16 +1,17 @@
-
-import { Component, Inject, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
-import { FormControl, FormsModule } from "@angular/forms";
-import { CommonModule, NgIf } from "@angular/common";
-import { MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Song } from "../../adminPage/adminEntityService/adminEntity/song/song";
-import { account } from "../../adminPage/adminEntityService/adminEntity/account/account";
-import { accountServiceService } from "../../adminPage/adminEntityService/adminService/account-service.service";
-import { Playlist } from '../../adminPage/PlaylistSong/Playlist';
-import { playlistService } from '../../adminPage/adminEntityService/adminService/playlistService.service';
-import { PlayListSongService } from '../../adminPage/adminEntityService/adminService/PlayListSongService.service';
-import { PlaylistSong } from '../../adminPage/PlaylistSong/PlaylistSong';
-import { PlaylistInteractionService } from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
+import {Component, Inject, NO_ERRORS_SCHEMA, OnInit} from '@angular/core';
+import {FormControl, FormsModule} from "@angular/forms";
+import {CommonModule, NgIf} from "@angular/common";
+import {MAT_DIALOG_DATA} from "@angular/material/dialog";
+import {Song} from "../../adminPage/adminEntityService/adminEntity/song/song";
+import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
+import {accountServiceService} from "../../adminPage/adminEntityService/adminService/account-service.service";
+import {Playlist} from '../../adminPage/PlaylistSong/Playlist';
+import {playlistService} from '../../adminPage/adminEntityService/adminService/playlistService.service';
+import {PlayListSongService} from '../../adminPage/adminEntityService/adminService/PlayListSongService.service';
+import {PlaylistSong} from '../../adminPage/PlaylistSong/PlaylistSong';
+import {
+  PlaylistInteractionService
+} from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
 
 @Component({
   selector: 'app-user-playlist-modal',
@@ -37,22 +38,17 @@ export class UserPlaylistModalComponent implements OnInit {
   playlistSongMap: { [playlistId: number]: boolean } = {};
 
 
-
-
   constructor(@Inject(MAT_DIALOG_DATA) public data: { song: Song },
               private userService: accountServiceService,
               private playlistService: playlistService,
               private playlistSongService: PlayListSongService,
               private playlistInteractionService: PlaylistInteractionService,
-
   ) {
   }
 
   toggleForm() {
     this.showForm = !this.showForm;
   }
-
-
 
 
   updatePlaylists(): void {
@@ -65,21 +61,25 @@ export class UserPlaylistModalComponent implements OnInit {
         this.formcontrol.setValue('');
         playlists.forEach((playlist) => {
           debugger
-          const playlistId = playlist.id ?? 0;
-          this.playlistSongService.findSongInPlaylist(playlistId, this.currentSongId ?? 0).subscribe(
-            (playlistSong: PlaylistSong) => {
-              debugger
-              this.playlistSongMap[playlistId] = playlistSong !== null;
-            },
-            (error) => {
-              debugger
-              console.error(`Error fetching song in playlist ${playlistId}:`, error);
-            }
-          );
+          this.findSongPlaylist(playlist);
         });
       },
       (error) => {
         console.error('Error fetching playlists:', error);
+      }
+    );
+  }
+
+  findSongPlaylist(playlist: Playlist) {
+    const playlistId = playlist.id ?? 0;
+    this.playlistSongService.findSongInPlaylist(playlistId, this.currentSongId ?? 0).subscribe(
+      (playlistSong: PlaylistSong) => {
+        debugger
+        this.playlistSongMap[playlistId] = playlistSong !== null;
+      },
+      (error) => {
+        debugger
+        console.error(`Error fetching song in playlist ${playlistId}:`, error);
       }
     );
   }
@@ -97,8 +97,6 @@ export class UserPlaylistModalComponent implements OnInit {
   }
 
 
-
-
   addPlaySong(playlist: Playlist) {
     const playlistId: number | undefined = playlist.id;
     const songId: number | undefined = this.currentSongId;
@@ -106,8 +104,7 @@ export class UserPlaylistModalComponent implements OnInit {
     if (playlistId !== undefined && songId !== undefined) {
       debugger
       this.playlistSongService.addSongToPlaylist(playlistId, songId).subscribe(
-        (Playlist: Playlist) =>
-        {
+        (Playlist: Playlist) => {
           debugger
           console.log('Song added to playlist successfully.');
 
@@ -125,8 +122,6 @@ export class UserPlaylistModalComponent implements OnInit {
 
     this.playlistInteractionService.updatePlaylist();
   }
-
-
 
 
   timname(id: number | undefined) {
@@ -149,8 +144,6 @@ export class UserPlaylistModalComponent implements OnInit {
       console.error('Playlist ID is undefined.');
     }
   }
-
-
 
 
   Playlist(): void {
@@ -217,8 +210,6 @@ export class UserPlaylistModalComponent implements OnInit {
   }
 
 
-
-
   toggleAddRemove(playlist: Playlist): void {
     const playlistId = playlist.id;
     const songId = this.currentSongId;
@@ -230,30 +221,35 @@ export class UserPlaylistModalComponent implements OnInit {
             console.log('Song added to playlist successfully.');
             this.playlistSongMap[playlistId] = true;
             this.playlistInteractionService.updatePlaylist();
+            this.timname(playlistId);
           },
           (error) => {
             console.error('Failed to add song to playlist:', error);
           }
         );
-      } else {
+      }
+      if (isSongInPlaylist) {
         this.playlistSongService.removeSongFromPlaylist(playlistId, songId).subscribe(
           () => {
+
             console.log('Song removed from playlist successfully.');
             this.playlistSongMap[playlistId] = false;
+            alert(this.playlistSongMap[playlistId])
             this.playlistInteractionService.updatePlaylist();
+            this.timname(playlistId);
+            this.findSongPlaylist(playlist);
           },
           (error) => {
             console.error('Failed to remove song from playlist:', error);
           }
         );
       }
+
     } else {
       console.error('Invalid playlistId or songId.');
     }
+
   }
-
-
-
 
 
 }

@@ -19,7 +19,7 @@ import { CommonModule, NgIf } from '@angular/common';
   templateUrl: './user-playlist-youtube-modal-component.component.html',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     FormsModule,
     NgIf
   ],
@@ -32,7 +32,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
   songsInPlaylist: any[] = [];
   playlistName: string = '';
   playlistSongMap: { [playlistId: number]: boolean } = {};
-  currentSongId: string | undefined; 
+  currentSongId: string | undefined;
   showForm = false;
 
   constructor(
@@ -42,23 +42,23 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     private playlistSongService: PlayListSongService,
     private PlaylistYoutubeService: PlaylistYoutubeService,
     private playlistInteractionService: PlaylistInteractionService,
-    private cdr: ChangeDetectorRef 
+    private cdr: ChangeDetectorRef
   ) {}
 
     ngOnInit(): void {
     this.account = this.userService.getUserResponseFromLocalStorage();
     this.currentSongId = this.data.youtubeId;
-  
+
     this.loadPlaylists();
-  
+
   }
-  
+
   loadPlaylists(): void {
     this.playlistService.getPlaylistsByUserId(this.account?.id ?? 0).subscribe(
       (playlists: Playlist[]) => {
         this.PlaylistTable = playlists;
-        this.formcontrol.setValue('');  
-  
+        this.formcontrol.setValue('');
+
         playlists.forEach((playlist) => {
           this.checkSongInPlaylist(playlist);
         });
@@ -67,9 +67,9 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
         console.error('Error fetching songs from the playlist:', error);
       }
     );
-    
+
   }
-  
+
   checkSongInPlaylist(playlist: Playlist): void {
     if (playlist.id !== undefined) {
       this.PlaylistYoutubeService.findYoutubeInPlaylist(playlist.id, this.currentSongId || '').subscribe(
@@ -83,7 +83,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
       );
     }
   }
-  
+
 
 
   toggleAddRemove(playlist: Playlist): void {
@@ -95,7 +95,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     } else {
       this.addSongToPlaylist(playlistId, youtubeId);
     }
-    this.loadPlaylists(); 
+    this.loadPlaylists();
     this.cdr.detectChanges();
 
   }
@@ -104,7 +104,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     this.PlaylistYoutubeService.addYoutubeToPlaylist(playlistId, youtubeId).pipe(
       switchMap(() => {
         this.playlistSongMap[playlistId] = true;
-        this.playlistInteractionService.updatePlaylist();    
+        this.playlistInteractionService.updatePlaylist();
         return of(null);
       })
     ).subscribe(
@@ -120,7 +120,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     this.PlaylistYoutubeService.removeYoutubeFromPlaylist(playlistId, youtubeId).pipe(
       switchMap(() => {
         this.playlistSongMap[playlistId] = false;
-        this.playlistInteractionService.updatePlaylist();   
+        this.playlistInteractionService.updatePlaylist();
         return of(null);
       })
     ).subscribe(
@@ -132,14 +132,14 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     );
   }
 
-  timname(id: number): void {    
+  timname(id: number): void {
     this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
-      
-      (songs: any[]) => {        
+
+      (songs: any[]) => {
         this.songsInPlaylist = songs;
         console.log('Songs in playlist:', this.songsInPlaylist);
       },
-      error => {        
+      error => {
         console.error('Failed to fetch songs from the playlist:', error);
       }
     );
@@ -160,12 +160,12 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
         id: this.account?.id || 0
       }
     };
-  
+
     if (!this.playlistName.trim()) {
       alert("Vui lòng không để trống tên playlist");
       return;
     }
-  
+
     this.playlistService.getPlaylistByName(playlist.name).subscribe(
       (existingPlaylist: Playlist | null) => {
         if (existingPlaylist) {
@@ -176,7 +176,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
               this.PlaylistTable.push(createdPlaylist);
               this.playlistSongMap[createdPlaylist.id ?? 0] = true;
               console.log('Created Playlist Information:', createdPlaylist);
-              this.addSongToNewPlaylist(createdPlaylist.id ?? 0); 
+              this.addSongToNewPlaylist(createdPlaylist.id ?? 0);
             },
             (error) => {
               console.error('Error creating playlist:', error);
@@ -189,14 +189,14 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
       }
     );
   }
-  
+
   addSongToNewPlaylist(playlistId: number): void {
     this.PlaylistYoutubeService.addYoutubeToPlaylist(playlistId, this.currentSongId || '').subscribe(
       () => {
         console.log('Song added to playlist successfully.');
         this.playlistSongMap[playlistId] = true;
         this.playlistInteractionService.updatePlaylist();
-        
+
         // Cập nhật trạng thái của checkbox tương ứng với playlist mới
         const newPlaylistIndex = this.PlaylistTable.findIndex(playlist => playlist.id === playlistId);
         if (newPlaylistIndex !== -1) {
@@ -208,7 +208,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
       }
     );
   }
-  
+
 
   toggleForm(): void {
     this.showForm = !this.showForm;
