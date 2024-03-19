@@ -9,15 +9,19 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
 import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
+import { DataGlobalService } from '../../../services/data-global.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-user-player-audio',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './user-player-audio.component.html',
   styleUrl: './user-player-audio.component.scss',
 })
 export class UserPlayerAudioComponent implements OnInit {
+  selectedSong: any;
+
   @ViewChild('masterPlay') masterPlay!: ElementRef<HTMLElement>;
   @ViewChild('seek') seek!: ElementRef<HTMLInputElement>;
   @ViewChild('seek_bar') seek_bar!: ElementRef<HTMLElement>;
@@ -32,9 +36,18 @@ export class UserPlayerAudioComponent implements OnInit {
   currentTime: string = '0:00';
   totalTime: string = '0:00';
 
-  constructor() {}
+  constructor(private dataGlobal: DataGlobalService) {}
 
   ngOnInit(): void {
+    this.dataGlobal.YtGlobalId.subscribe((video) => {
+      if (video == null || video == undefined) {
+        this.selectedSong = this.dataGlobal.getItem('songHeardLast');
+      } else {
+        this.selectedSong = video; // Cập nhật giá trị mới của ind_display khi có sự thay đổi của index
+        console.log('this.selectedSong from player AUDIO ', this.selectedSong);
+      }
+    });
+
     this.loadAudio();
     this.seek_bar.nativeElement.style.width = '0%';
     this.seek_dot.nativeElement.style.left = '0%';
@@ -42,7 +55,7 @@ export class UserPlayerAudioComponent implements OnInit {
 
   loadAudio(): void {
     this.audio = new Audio();
-    this.audio.src = 'assets/audio/chayngaydi.mp3';
+    this.audio.src = 'assets/audio/chayngaydi.mp3'; // đây là tao lưu cứng bài hát trong ổ, hãy dùng firebase service để lấy đường dẫn audio vào đây
 
     this.audio.addEventListener('loadedmetadata', () => {
       // Cập nhật thời lượng total của bài hát

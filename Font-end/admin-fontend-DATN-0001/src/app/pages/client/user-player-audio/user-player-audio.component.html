@@ -1,11 +1,11 @@
 <div class="master_play">
 
     <img src="assets/img/client/whatitis.jpg" alt="Alan" id="poster_master_play" />
+    <!-- thay dùm tao cái ảnh bẳng firebase service -->
     <h5 id="title">
         <p class="line-clamp" id="song-title">
-            What it is (audio)
-            <i class="fa-regular fa-heart"></i>
-            <i class="fa-solid fa-ellipsis"></i>
+            {{selectedSong.name}}
+
         </p>
 
         <div class="subtitle line-clamp" id="artist-name">
@@ -42,6 +42,8 @@
     </div>
     <div class="mode">
         <div class="mode-type">HIFI</div>
+        <i class="fa-regular fa-heart"></i>
+        <i class="fa-solid fa-ellipsis"></i>
         <i class="fa-solid fa-bars"></i>
         <i class="fa-solid fa-square-arrow-up-right"></i>
     </div>
