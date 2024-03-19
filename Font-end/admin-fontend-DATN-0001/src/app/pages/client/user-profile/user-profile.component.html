@@ -204,21 +204,34 @@
                 </div>
 
                 <div class="album">
-                  <div class="album__info">
+                  <div class="album__info" *ngFor="let item of albums">
                     <div class="album__info__art">
-                      <img
-                        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                        alt="When It's Dark Out"
-                      />
+                      <img src="{{ item.image }}" alt="When It's Dark Out" />
                     </div>
 
                     <div class="album__info__meta">
-                      <div class="album__year">2015</div>
+                      <div class="album__year">{{ item.releaseYear }}</div>
 
-                      <div class="album__name">When It's Dark Out</div>
+                      <div class="album__name mt-3 mb-3">
+                        {{ item.title }}
+                      </div>
+                      <div
+                        style="color: rgb(135, 135, 135); font-weight: lighter"
+                      >
+                        <span
+                          *ngFor="
+                            let singer of singerAlbumMap[item.id];
+                            let last = last
+                          "
+                          >{{ singer.fullname
+                          }}{{
+                            !last && singerMap[item.id].length > 1 ? ", " : ""
+                          }}</span
+                        >
+                      </div>
 
                       <div class="album__actions">
-                        <button class="button-light save">Save</button>
+                        <button class="button-light save">Detail</button>
 
                         <button class="button-light more">
                           <i class="ion-ios-more"></i>
@@ -227,7 +240,7 @@
                     </div>
                   </div>
 
-                  <div class="album__tracks">
+                  <!-- <div class="album__tracks">
                     <div class="tracks">
                       <div class="tracks__heading">
                         <div class="tracks__heading__number">#</div>
@@ -627,7 +640,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -635,7 +648,7 @@
           <!-- / -->
 
           <!-- Related Artists -->
-          <div role="tabpanel" class="tab-pane" id="related-artists">
+          <!-- <div role="tabpanel" class="tab-pane" id="related-artists">
             <div class="media-cards">
               <div class="media-card">
                 <div
@@ -741,7 +754,7 @@
                 <a class="media-card__footer">Childish Gambino</a>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- / -->
 
           <!-- About // Coming Soon-->

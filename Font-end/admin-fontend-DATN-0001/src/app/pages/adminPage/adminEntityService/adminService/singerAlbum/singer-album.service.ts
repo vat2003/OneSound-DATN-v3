@@ -1,3 +1,4 @@
+import { SingerAlbum } from './../../adminEntity/singerAlbum/singer-album';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
@@ -15,6 +16,14 @@ export class SingerAlbumService {
   //   const body = { singerId, albumId };
   //   return this.httpClient.post<SingerAlbum>(`${this.baseURL}/create`, body);
   // }
+
+  getAllAlbumBySinger(id:number):Observable<any[]> {
+    return this.httpClient.get<SingerAlbum[]>(`${this.baseURL}/get-by-singer/${id}`);
+  }
+
+  getAllSingerAlbumById(id:number):Observable<any[]> {
+    return this.httpClient.get<SingerAlbum[]>(`${this.baseURL}/get-by-album/${id}`);
+  }
 
   createSingerAlbum(singerId: number, albumId: number): Observable<Object> {
 

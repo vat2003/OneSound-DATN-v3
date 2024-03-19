@@ -1,15 +1,9 @@
-// import { Album } from "../album/album";
-// import { Singer } from "../singer/singer";
+export class SingerAlbum{
+  albumId: number;
+  singerId: number;
 
-// export class SingerAlbum {
-  
-//     id: SingerAlbumId;
-//     singer: Singer;
-//     album: Album;
-
-//     constructor(id: SingerAlbumId, singer: Singer, album: Album) {
-//         this.id = id;
-//         this.singer = singer;
-//         this.album = album;
-//     }
-// }
+  constructor(albumId: number = 0, singerId: number = 0) {
+      this.albumId = albumId;
+      this.singerId = singerId;
+  }
+}
