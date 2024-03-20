@@ -3,7 +3,7 @@ import { SingerAlbumService } from './../../adminPage/adminEntityService/adminSe
 import { accountServiceService } from './../../adminPage/adminEntityService/adminService/account-service.service';
 import { SongService } from './../../adminPage/adminEntityService/adminService/song.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
 import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
@@ -15,7 +15,7 @@ import { SongGenreService } from '../../adminPage/adminEntityService/adminServic
 import { GenreServiceService } from '../../adminPage/adminEntityService/adminService/genre-service.service';
 import { AuthorService } from '../../adminPage/adminEntityService/adminService/author.service';
 import { SongAuthorService } from '../../adminPage/adminEntityService/adminService/song-author.service';
-import { forkJoin, map, mergeMap, switchMap } from 'rxjs';
+import { Observable, forkJoin, map, mergeMap, switchMap } from 'rxjs';
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
@@ -45,6 +45,7 @@ export class UserProfileComponent implements OnInit {
   genreMap: { [key: number]: any[] } = {};
   authorMap: { [key: number]: any[] } = {};
   pageSize: number = 5;
+  qtt:number=0;
   p: number = 1;
   localStorage?: Storage;
   page: number = 1;
@@ -63,7 +64,8 @@ export class UserProfileComponent implements OnInit {
     private SongService:SongService,
     private accountServiceService:accountServiceService,
     private albumService: AlbumService,
-    private SingerAlbumService:SingerAlbumService
+    private SingerAlbumService:SingerAlbumService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -74,7 +76,25 @@ export class UserProfileComponent implements OnInit {
     this.getRelativeArtist();
     this.getAllUser();
     this.getAllAlbum();
+    this.countSong(this.albums[length-1])
   }
+
+  gotoDetailAlbum(album:Album):void{
+    this.router.navigate(['/onesound/home/album/', album.id]);
+  }
+
+  countSong(album:Album){
+    this.albumService.getAlbumById(album.id).subscribe(data=>{
+      this.songs=data.songs;
+      console.log("BÀI HÁT TRONG ALBUM: "+this.songs);
+      this.qtt=data.songs.length;
+    })
+  }
+
+
+
+
+
   // private getSingerById() {
   //   this.singerService.getArtistById(this.id).subscribe(
   //     (data) => {

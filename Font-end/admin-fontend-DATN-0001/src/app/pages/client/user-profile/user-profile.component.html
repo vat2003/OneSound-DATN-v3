@@ -103,7 +103,7 @@
                   <div class="latest-release__art">
                     <img
                       src="{{ songs[songs.length - 1].image }}"
-                      alt="When It's Dark Out"
+                      alt="{{ songs[songs.length - 1].name }}"
                     />
                   </div>
 
@@ -117,6 +117,33 @@
                       <span class="month">{{
                         songs[songs.length - 1].release
                       }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="latest-release" *ngIf="albums && albums.length > 0">
+                  <div class="latest-release__art">
+                    <img
+                      src="{{ albums[albums.length - 1].image }}"
+                      alt="{{ albums[albums.length - 1].title }}"
+                    />
+                  </div>
+
+                  <!-- Chỉ hiển thị phần tử cuối cùng của mảng -->
+                  <div class="latest-release__song">
+                    <div class="latest-release__song__title">
+                      {{ albums[albums.length - 1].title }}
+                    </div>
+
+                    <div class="latest-release__song__date">
+                      <span class="month">{{ qtt }} songs</span>
+                    </div>
+                    <div class="album__actions">
+                      <button
+                        class="button-light save"
+                        (click)="gotoDetailAlbum(albums[albums.length - 1])"
+                      >
+                        Detail
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -204,7 +231,18 @@
                 </div>
 
                 <div class="album">
-                  <div class="album__info" *ngFor="let item of albums">
+                  <div
+                    class="album__info"
+                    *ngFor="
+                      let item of albums
+                        | paginate
+                          : {
+                              itemsPerPage: pageSize,
+                              currentPage: p,
+                              id: 'CountAlbum'
+                            }
+                    "
+                  >
                     <div class="album__info__art">
                       <img src="{{ item.image }}" alt="When It's Dark Out" />
                     </div>
@@ -221,23 +259,37 @@
                         <span
                           *ngFor="
                             let singer of singerAlbumMap[item.id];
-                            let last = last
+                            let i = index
                           "
-                          >{{ singer.fullname
-                          }}{{
-                            !last && singerMap[item.id].length > 1 ? ", " : ""
-                          }}</span
                         >
+                          {{ singer.fullname }}
+                          <ng-container
+                            *ngIf="i < singerAlbumMap[item.id].length - 1"
+                          >
+                            {{ ", " }}
+                          </ng-container>
+                        </span>
                       </div>
 
                       <div class="album__actions">
-                        <button class="button-light save">Detail</button>
+                        <button
+                          class="button-light save"
+                          (click)="gotoDetailAlbum(item)"
+                        >
+                          Detail
+                        </button>
 
                         <button class="button-light more">
                           <i class="ion-ios-more"></i>
                         </button>
                       </div>
                     </div>
+                  </div>
+                  <div class="text-center">
+                    <pagination-controls
+                      (pageChange)="p = $event"
+                      id="CountAlbum"
+                    ></pagination-controls>
                   </div>
 
                   <!-- <div class="album__tracks">
