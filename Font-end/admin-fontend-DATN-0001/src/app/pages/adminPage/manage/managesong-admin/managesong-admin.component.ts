@@ -1,3 +1,4 @@
+
 import {Genre} from './../../adminEntityService/adminEntity/genre/genre';
 import {SongGenreService} from './../../adminEntityService/adminService/song-genre.service';
 import {SongAuthorService} from './../../adminEntityService/adminService/song-author.service';
@@ -88,7 +89,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   p: number = 1;
   id: number = -1;
   albums: Album[] = [];
-  album: Album = new Album();
+  album:Album=new Album();
   albumName: string[] = [];
   albumTable: Album[] = [];
   singers: Singer[] = [];
@@ -172,31 +173,21 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     this.from = new Date('2015-11-05');
     // this.date = null;
   }
-
   search(): void {
     // this.searchTerms.next(this.searchTerm);
     const searchTermLowerCase = this.searchTerm.toLowerCase();
-    // this.songs = this.songs.filter(song =>
-    //   song.name.toLowerCase().includes(searchTermLowerCase) ||
-    //   song.description.toLowerCase().includes(searchTermLowerCase) ||
-    //   song.album.title.toLowerCase().includes(searchTermLowerCase)
-    // );
-    // if (searchTermLowerCase == '') {
-    //   this.displayDataOnTable(0, 10);
-    // }
-
-    this.songs = this.songs.filter((song: Song) => {
-      return song.name.toLowerCase().includes(searchTermLowerCase);
-    });
+    this.songs = this.songs.filter(author =>
+      author.name.toLowerCase().includes(searchTermLowerCase) ||
+      author.description.toLowerCase().includes(searchTermLowerCase)||
+      author.album.title.toLowerCase().includes(searchTermLowerCase)
+    );
     if (searchTermLowerCase == '') {
       this.displayDataOnTable(0, 10);
     }
   }
-
   onKey(event: any): void {
     this.searchTerms.next(event.target.value);
   }
-
   toggleUpload(event: any): void {
     const value = event.target.checked;
     const sampleUrl =
@@ -925,7 +916,6 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       this.removeUpload();
     }
   }
-
   fillAudio(url: string): void {
     this.renderer.setStyle(
       this.el.nativeElement.querySelector('.file-upload-wrapper'),
@@ -1014,12 +1004,11 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         this.fillAudio(this.audioUrl);
 
         await this.handleFilesData(this.audioUrl);
-
-        if (this.singerTable.length > 0) {
+        if(this.singerTable.length>0){
           this.singerTable.splice(0, this.singerTable.length);
         }
         // Process singers
-        this.SongSingerService.getAllSingerBySong(id).subscribe(async (data) => {
+        this.SongSingerService.getAllSingerBySong(id).subscribe((data) => {
           if (data && data.length > 0) {
             console.log("Dữ liệu t1: ", data);
             for (const song1 of data) {
@@ -1027,7 +1016,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               this.singerService.getArtistById(song1.singer.id).subscribe(async (datasinger) => {
                 if (datasinger) {
                   console.log("Dữ liệu t2: ", datasinger);
-
+                  if(this.singerTable.length>0){
+                    this.singerTable.splice(0, this.singerTable.length);
+                  }
                   this.singerTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.singerTable);
                   this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
@@ -1117,6 +1108,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       (error: any) => {
         console.log(error);
       }
+    ;
   }
 
 
@@ -1194,10 +1186,10 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     this.song.path = this.setAudioUrl;
 
     // Gọi API để tạo bài hát mới
-    this.album = this.albumTable[0];
+    this.album= this.albumTable[0];
     this.song.album = this.album;
-    console.log("ALBUM T1: " + this.song.album);
-    console.log("ALBUM T2: " + this.album);
+    console.log("ALBUM T1: "+this.song.album);
+    console.log("ALBUM T2: "+this.album);
 
     if (!this.setImageUrl || !this.imageFile) {
       this.song.image = 'adminManageImage/song/null.jpg';
@@ -1253,7 +1245,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
         this.genreTable.forEach(singerintable => {
           console.log("GENRE IN TABLE: ", singerintable); // Log singer information for debugging
-          console.log("SongId: ----------------->" + songId);
+          console.log("SongId: ----------------->"+songId);
 
           this.SongGenreService.createSongGenre(songId, singerintable.id)
             .subscribe(
@@ -1266,6 +1258,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               }
             );
         });
+
 
 
         for (const singerId of authorIds) {
@@ -1346,7 +1339,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 //     }
 // }
 
-  updateSong(id: number) {
+  updateSong(id:number) {
     // Kiểm tra xem bài hát đã chọn để cập nhật có tồn tại không
     if (!this.song.id) {
       alert("Please select a song to update.");
@@ -1489,18 +1482,15 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   deleteSong(id: number) {
     const isConfirmed = window.confirm('Are you sure you want to delete this song?');
     if (isConfirmed) {
-      this.SongAuthorService.deleteAllSongAuthorBySongId(id).subscribe(data => {
-      })
-      this.SongGenreService.deleteAllSongGenreBySongId(id).subscribe(data => {
-      })
-      this.SongSingerService.deleteAllSongSingerBySongId(id).subscribe(data => {
-      })
+      this.SongAuthorService.deleteAllSongAuthorBySongId(id).subscribe(data=>{})
+      this.SongGenreService.deleteAllSongGenreBySongId(id).subscribe(data=>{})
+      this.SongSingerService.deleteAllSongSingerBySongId(id).subscribe(data=>{})
       this.SongService.deleteSong(id).subscribe(data => {
         this.displayDataOnTable(0, 10);
         this.reload();
         this.toast.warning({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
 
-      });
+      })
     }
   }
 }

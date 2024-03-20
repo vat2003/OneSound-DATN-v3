@@ -1,6 +1,9 @@
+import { SingerAlbum } from './../../adminPage/adminEntityService/adminEntity/singerAlbum/singer-album';
+import { SingerAlbumService } from './../../adminPage/adminEntityService/adminService/singerAlbum/singer-album.service';
+import { accountServiceService } from './../../adminPage/adminEntityService/adminService/account-service.service';
 import { SongService } from './../../adminPage/adminEntityService/adminService/song.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
 import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
@@ -12,13 +15,20 @@ import { SongGenreService } from '../../adminPage/adminEntityService/adminServic
 import { GenreServiceService } from '../../adminPage/adminEntityService/adminService/genre-service.service';
 import { AuthorService } from '../../adminPage/adminEntityService/adminService/author.service';
 import { SongAuthorService } from '../../adminPage/adminEntityService/adminService/song-author.service';
-import { forkJoin, map, switchMap } from 'rxjs';
+import { Observable, forkJoin, map, mergeMap, switchMap } from 'rxjs';
+import { DatePipe, NgFor, NgIf } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { AlbumService } from '../../adminPage/adminEntityService/adminService/album/album.service';
+import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
 import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   imports: [
+    NgIf,NgFor,
+    NgxPaginationModule,
     NgForOf
   ],
   templateUrl: './user-profile.component.html',
@@ -29,11 +39,21 @@ export class UserProfileComponent implements OnInit {
   singer: Singer = new Singer();
   singers:Singer[]=[];
   songs:Song[]=[];
+  albums:Album[]=[];
   authors:Author[]=[];
   genres:Genre[]=[];
   singerMap: { [key: number]: any[] } = {};
+  singerAlbumMap: { [key: number]: any[] } = {};
   genreMap: { [key: number]: any[] } = {};
   authorMap: { [key: number]: any[] } = {};
+  pageSize: number = 5;
+  qtt:number=0;
+  p: number = 1;
+  localStorage?: Storage;
+  page: number = 1;
+  itempage: number = 4;
+  users:account[]=[];
+  forceDate: any;
   constructor(
     private route: ActivatedRoute,
     private singerService: SingerService,
@@ -43,16 +63,40 @@ export class UserProfileComponent implements OnInit {
     private GenreServiceService:GenreServiceService,
     private AuthorService:AuthorService,
     private SongAuthorService:SongAuthorService,
-    private SongService:SongService
+    private SongService:SongService,
+    private accountServiceService:accountServiceService,
+    private albumService: AlbumService,
+    private SingerAlbumService:SingerAlbumService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     // alert(this.id)
+    this.getAllSongs();
     this.loadSinger();
     this.getRelativeArtist();
-    this.getAllSongs();
+    this.getAllUser();
+    this.getAllAlbum();
+    this.countSong(this.albums[length-1])
   }
+
+  gotoDetailAlbum(album:Album):void{
+    this.router.navigate(['/onesound/home/album/', album.id]);
+  }
+
+  countSong(album:Album){
+    this.albumService.getAlbumById(album.id).subscribe(data=>{
+      this.songs=data.songs;
+      console.log("BÀI HÁT TRONG ALBUM: "+this.songs);
+      this.qtt=data.songs.length;
+    })
+  }
+
+
+
+
+
   // private getSingerById() {
   //   this.singerService.getArtistById(this.id).subscribe(
   //     (data) => {
@@ -62,19 +106,93 @@ export class UserProfileComponent implements OnInit {
   //   );
   // }
 
-  getAllSongs(): void {
-    this.SongSingerService.getAllSongBySinger(this.id).pipe(
-      map((data) => data.map(song => this.SongService.getSongById(song.id)))
-    ).subscribe((observables) => {
-      forkJoin(observables).subscribe((songs) => {
+  // getAllSongs(): void {
+  //   this.SongSingerService.getAllSongBySinger(this.id).pipe(
+  //     mergeMap((data) => {
+  //       const observables = data.map(song => this.SongService.getSongById(song.id));
+  //       return forkJoin(observables);
+  //     })
+  //   ).subscribe((songs) => {
+  //     this.songs = songs;
+      // console.log("Hehehehehheheheh", this.songs);
+      // this.getSingersForSongs();
+      // this.getGenresForSongs();
+      // this.getAuthorsForSongs();
+  //   });
+
+  // }
+
+  getAllUser() {
+    this.accountServiceService.getAllUsers().subscribe(data=>{
+      if(data.length>=5){
+        const mang=data.length-5;
+        for(let i=mang;i<6;i++){
+          this.users.push(data[i]);
+          console.log("NGỪI DÙNG NÈ PÉ: "+this.users);
+        }
+      }
+      else{
+        this.users=data;
+      }
+    })
+  }
+
+getAllAlbum(){
+  this.SingerAlbumService.getAllAlbumBySinger(this.id).subscribe(async data=>{
+    const promises = [];
+      for(const song of data){
+        const promise = new Promise<Album>((resolve, reject) => {
+          // this.songs = data.content;
+          this.albumService.getAlbumById(song.album.id).subscribe(async baihat => {
+            baihat.image = await this.setImageURLFirebase(baihat.image);
+            // baihat.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
+            resolve(baihat);
+          });
+        });
+        promises.push(promise);
+      }
+      Promise.all(promises).then(albums => {
+        this.albums = albums;
+        console.log("Hehehehehheheheh", this.songs);
+        this.getSingersForAlbums();
+      }).catch(error => {
+        console.error('Error fetching song images:', error);
+      });
+  })
+}
+
+  getAllSongs(){
+    this.SongSingerService.getAllSongBySinger(this.id).subscribe(async data => {
+      const promises = [];
+      for(const song of data){
+        const promise = new Promise<Song>((resolve, reject) => {
+          // this.songs = data.content;
+          this.SongService.getSongById(song.song.id).subscribe(async baihat => {
+            baihat.image = await this.setImageURLFirebase(baihat.image);
+            // baihat.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
+            resolve(baihat);
+          });
+        });
+        promises.push(promise);
+      }
+      Promise.all(promises).then(songs => {
+        for(let song of songs){
+          this.forceDate = new DatePipe('en-US').transform(song.release, 'MM-dd-yyyy');
+          song.release = this.forceDate;
+          // song.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
+        }
         this.songs = songs;
         console.log("Hehehehehheheheh" + this.songs);
         this.getSingersForSongs();
         this.getGenresForSongs();
         this.getAuthorsForSongs();
+      }).catch(error => {
+        console.error('Error fetching song images:', error);
       });
     });
   }
+
+
 
 
 getSingersForSongs() {
@@ -96,6 +214,28 @@ getSingersForSongs() {
       this.singerMap[result.songId] = result.singers;
     });
     console.log("Singer Map:", this.singerMap);
+  });
+}
+
+getSingersForAlbums() {
+  const observables = this.albums.map(song => {
+    return this.SingerAlbumService.getAllSingerAlbumById(song.id).pipe(
+      switchMap(singers => {
+        const singerObservables = singers.map(singer => this.singerService.getArtistById(singer.singer.id));
+        return forkJoin(singerObservables).pipe(
+          map(singerDataArray => {
+            return { songId: song.id, singers: singerDataArray };
+          })
+        );
+      })
+    );
+  });
+
+  forkJoin(observables).subscribe(results => {
+    results.forEach(result => {
+      this.singerAlbumMap[result.songId] = result.singers;
+    });
+    console.log("Singer Map:", this.singerAlbumMap);
   });
 }
 
@@ -145,12 +285,21 @@ getAuthorsForSongs() {
 
 getRelativeArtist() {
   this.singerService.getAllArtists().subscribe(data => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 3; i++) {
       this.singers.push(data[i]);
       console.log("ĐỀ XUẤT CA SĨ: " + this.singers[i].fullname);
     }
   });
 }
+
+//
+
+// reload() {
+//   const currentUrl = this.router.url;
+//   this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+//     this.router.navigate([currentUrl]);
+//   });
+// }
 
 
   getSingerById(): void {

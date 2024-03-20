@@ -75,6 +75,10 @@ export class accountServiceService {
 
 
 
+getAllUsers():Observable<account[]>{
+  return this.http.get<account[]>(`${this.baseUrl}/users/user`);
+}
+
   getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<account> {
     const params = new HttpParams()
       .set('page', page.toString())

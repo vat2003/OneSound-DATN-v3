@@ -4,7 +4,7 @@
       <div class="artist__header">
         <div class="artist__info">
           <div class="profile__img">
-            <img src="{{ singer.image }}" alt="G-Eazy"/>
+            <img src="{{ singer.image }}" alt="G-Eazy" />
           </div>
 
           <div class="artist__info__meta">
@@ -46,7 +46,7 @@
                 aria-controls="artist-overview"
                 role="tab"
                 data-toggle="tab"
-              >Overview</a
+                >Overview</a
               >
             </li>
 
@@ -56,7 +56,7 @@
                 aria-controls="related-artists"
                 role="tab"
                 data-toggle="tab"
-              >Related Artists</a
+                >Related Artists</a
               >
             </li>
 
@@ -76,26 +76,50 @@
                 <!-- Latest Release-->
                 <div class="section-title">Latest Release</div>
 
-                <div class="latest-release">
+                <div class="latest-release" *ngIf="songs && songs.length > 0">
                   <div class="latest-release__art">
-                    <<<<<<< HEAD
                     <img
-                      src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                      alt="When It's Dark Out"
+                      src="{{ songs[songs.length - 1].image }}"
+                      alt="{{ songs[songs.length - 1].name }}"
                     />
                   </div>
 
                   <div class="latest-release__song">
                     <div class="latest-release__song__title">
-                      Drifting (Track Commentary)
+                      {{ songs[songs.length - 1].name }}
                     </div>
 
                     <div class="latest-release__song__date">
-                      <span class="day">4</span>
+                      <span class="month">{{
+                        songs[songs.length - 1].release
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="latest-release" *ngIf="albums && albums.length > 0">
+                  <div class="latest-release__art">
+                    <img
+                      src="{{ albums[albums.length - 1].image }}"
+                      alt="{{ albums[albums.length - 1].title }}"
+                    />
+                  </div>
 
-                      <span class="month">December</span>
+                  <!-- Chỉ hiển thị phần tử cuối cùng của mảng -->
+                  <div class="latest-release__song">
+                    <div class="latest-release__song__title">
+                      {{ albums[albums.length - 1].title }}
+                    </div>
 
-                      <span class="year">2015</span>
+                    <div class="latest-release__song__date">
+                      <span class="month">{{ qtt }} songs</span>
+                    </div>
+                    <div class="album__actions">
+                      <button
+                        class="button-light save"
+                        (click)="gotoDetailAlbum(albums[albums.length - 1])"
+                      >
+                        Detail
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -103,30 +127,55 @@
 
                 <!-- Popular-->
                 <div class="section-title">Popular</div>
-
                 <div class="tracks">
-                  <div class="track" *ngFor="let song of songs; let i = index">
+                  <div
+                    class="track"
+                    *ngFor="
+                      let song of songs
+                        | paginate
+                          : {
+                              itemsPerPage: pageSize,
+                              currentPage: p,
+                              id: 'CountUser'
+                            };
+                      let i = index
+                    "
+                  >
                     <div class="track__art">
-                      <img [src]="song.image" alt="When It's Dark Out"/>
+                      <img src="{{ song.image }}" />
                     </div>
 
-                    <div class="track__number">{{ i + 1 }}</div>
+                    <!-- <div class="track__number">{{ i + 1 }}</div> -->
 
                     <div class="track__added">
                       <i class="ion-checkmark-round added"></i>
                     </div>
-
                     <div class="track__title">{{ song.name }}</div>
 
                     <div class="track__explicit">
-                      <span class="label">Explicit</span>
+                      <span
+                        *ngFor="
+                          let singer of singerMap[song.id];
+                          let last = last
+                        "
+                        >{{ singer.fullname
+                        }}{{
+                          !last && singerMap[song.id].length > 1 ? ", " : ""
+                        }}</span
+                      >
                     </div>
 
                     <div class="track__plays">147,544,165</div>
                   </div>
                 </div>
 
-                <button class="show-more button-light">Show 5 More</button>
+                <!-- <button class="show-more button-light">Show 5 More</button> -->
+                <div class="text-center">
+                  <pagination-controls
+                    (pageChange)="p = $event"
+                    id="CountUser"
+                  ></pagination-controls>
+                </div>
                 <!-- / -->
               </div>
 
@@ -136,7 +185,7 @@
                 <div class="related-artists" *ngFor="let item of singers">
                   <a href="#" class="related-artist">
                     <span class="related-artist__img">
-                      <img [src]="item.image" alt="{{ item.fullname }}"/>
+                      <img src="{{ item.image }}" />
                     </span>
 
                     <span class="related-artist__name">{{
@@ -158,21 +207,53 @@
                 </div>
 
                 <div class="album">
-                  <div class="album__info">
+                  <div
+                    class="album__info"
+                    *ngFor="
+                      let item of albums
+                        | paginate
+                          : {
+                              itemsPerPage: pageSize,
+                              currentPage: p,
+                              id: 'CountAlbum'
+                            }
+                    "
+                  >
                     <div class="album__info__art">
-                      <img
-                        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7022/whenDarkOut.jpg"
-                        alt="When It's Dark Out"
-                      />
+                      <img src="{{ item.image }}" alt="When It's Dark Out" />
                     </div>
 
                     <div class="album__info__meta">
-                      <div class="album__year">2015</div>
+                      <div class="album__year">{{ item.releaseYear }}</div>
 
-                      <div class="album__name">When It's Dark Out</div>
+                      <div class="album__name mt-3 mb-3">
+                        {{ item.title }}
+                      </div>
+                      <div
+                        style="color: rgb(135, 135, 135); font-weight: lighter"
+                      >
+                        <span
+                          *ngFor="
+                            let singer of singerAlbumMap[item.id];
+                            let i = index
+                          "
+                        >
+                          {{ singer.fullname }}
+                          <ng-container
+                            *ngIf="i < singerAlbumMap[item.id].length - 1"
+                          >
+                            {{ ", " }}
+                          </ng-container>
+                        </span>
+                      </div>
 
                       <div class="album__actions">
-                        <button class="button-light save">Save</button>
+                        <button
+                          class="button-light save"
+                          (click)="gotoDetailAlbum(item)"
+                        >
+                          Detail
+                        </button>
 
                         <button class="button-light more">
                           <i class="ion-ios-more"></i>
@@ -180,8 +261,14 @@
                       </div>
                     </div>
                   </div>
+                  <div class="text-center">
+                    <pagination-controls
+                      (pageChange)="p = $event"
+                      id="CountAlbum"
+                    ></pagination-controls>
+                  </div>
 
-                  <div class="album__tracks">
+                  <!-- <div class="album__tracks">
                     <div class="tracks">
                       <div class="tracks__heading">
                         <div class="tracks__heading__number">#</div>
@@ -581,7 +668,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -589,7 +676,7 @@
           <!-- / -->
 
           <!-- Related Artists -->
-          <div role="tabpanel" class="tab-pane" id="related-artists">
+          <!-- <div role="tabpanel" class="tab-pane" id="related-artists">
             <div class="media-cards">
               <div class="media-card">
                 <div
@@ -695,7 +782,7 @@
                 <a class="media-card__footer">Childish Gambino</a>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- / -->
 
           <!-- About // Coming Soon-->
@@ -708,25 +795,7 @@
 
   <div class="content__right">
     <div class="social">
-      <div class="friends">
-        <a href="#" class="friend">
-          <i class="ion-android-person"></i>
-
-          Sam Smith
-        </a>
-
-        <a href="#" class="friend">
-          <i class="ion-android-person"></i>
-
-          Tarah Forsyth
-        </a>
-
-        <a href="#" class="friend">
-          <i class="ion-android-person"></i>
-
-          Ricahrd Tomkins
-        </a>
-
+      <div class="friends" *ngFor="let item of users">
         <a href="#" class="friend">
           <i class="ion-android-person"></i>
 
