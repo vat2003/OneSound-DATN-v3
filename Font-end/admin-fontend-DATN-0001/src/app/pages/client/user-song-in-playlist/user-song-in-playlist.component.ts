@@ -177,7 +177,6 @@ export class UserSongInPlaylistComponent {
     // this.getAllSongs();
     this.getAllSongFavByUser();
     this.getPlaylist(this.id);
-    this.fillImageSong();
   }
 
   async setImageURLFirebase(image: string | any): Promise<string> {
@@ -236,6 +235,7 @@ export class UserSongInPlaylistComponent {
           , song.song?.lyrics
           , song.song?.album
           , song.song?.dateTemp);
+        this.songEntity.id = <number>song.song?.id;
         song.song = this.songEntity;
       })
 
@@ -257,10 +257,12 @@ export class UserSongInPlaylistComponent {
   }
 
   removeYoutubeFromPlaylist(id: number, idsong: string): void {
+    alert(idsong)
     this.PlaylistYoutubeService.removeYoutubeFromPlaylist(id, idsong).subscribe(
       () => {
         this.songsInPlaylist = this.songsInPlaylist.filter(song => song.playlist?.id !== id);
         this.cdr.detectChanges();
+        this.timname(id);
       },
       (error) => {
         console.error('Failed to remove song from playlist:', error);
