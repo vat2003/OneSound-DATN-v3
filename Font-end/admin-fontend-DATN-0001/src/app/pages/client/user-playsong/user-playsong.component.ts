@@ -5,35 +5,32 @@ import {SongGenreService} from './../../adminPage/adminEntityService/adminServic
 import {SongSingerService} from './../../adminPage/adminEntityService/adminService/song-singer.service';
 import {AlbumService} from './../../adminPage/adminEntityService/adminService/album/album.service';
 import {Component, OnInit, signal} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
-import {SongService} from "../../adminPage/adminEntityService/adminService/song.service";
-import {Singer} from "../../adminPage/adminEntityService/adminEntity/singer/singer";
-import {Song} from "../../adminPage/adminEntityService/adminEntity/song/song";
-import {NgClass, NgForOf, NgStyle} from "@angular/common";
+import {MatDialog} from '@angular/material/dialog';
+import {UserPlaylistModalComponent} from '../user-playlist-modal/user-playlist-modal.component';
+import {SongService} from '../../adminPage/adminEntityService/adminService/song.service';
+import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
+import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
+import {CommonModule, NgClass, NgForOf, NgStyle} from '@angular/common';
 import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
 import {ActivatedRoute} from '@angular/router';
 import {SingerService} from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
 import {Observable, forkJoin, map, startWith, switchMap} from 'rxjs';
-import {FormControl} from '@angular/forms';
+import {FormControl, FormsModule} from '@angular/forms';
 import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
 import {Author} from '../../adminPage/adminEntityService/adminEntity/author/author';
-import {FavoriteSong} from "../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song";
-import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
-import {FavoriteService} from "../../../services/favorite-service/favorite.service";
-import {accountServiceService} from "../../adminPage/adminEntityService/adminService/account-service.service";
+import {FavoriteSong} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {FavoriteService} from '../../../services/favorite-service/favorite.service';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {DataGlobalService} from '../../../services/data-global.service';
 
 @Component({
   selector: 'app-user-playsong',
   standalone: true,
-  imports: [
-    NgForOf,
-    NgClass,
-    NgStyle
-  ],
+  imports: [NgForOf, NgClass, NgStyle, CommonModule, FormsModule],
   templateUrl: './user-playsong.component.html',
-  styleUrl: './user-playsong.component.scss'
+  styleUrl: './user-playsong.component.scss',
 })
 export class UserPlaysongComponent implements OnInit {
   // songs: Song[] = [];
@@ -48,7 +45,6 @@ export class UserPlaysongComponent implements OnInit {
   acc?: account | null;
   favListSongs: any[] = [];
   songsfromdata: Song[] = [];
-
 
   filterOptionsSinger!: Observable<string[]>;
   formcontrol = new FormControl('');
@@ -69,6 +65,7 @@ export class UserPlaysongComponent implements OnInit {
               private firebaseStorage: FirebaseStorageCrudService,
               private favSong: FavoriteService,
               private userService: accountServiceService,
+              private dataGlobal: DataGlobalService
   ) {
   }
 
@@ -77,7 +74,6 @@ export class UserPlaysongComponent implements OnInit {
     this.id = this.route.snapshot.params['id'];
     this.getAllSongs();
     this.getAlbumById();
-
   }
 
   getAllSongs(): void {
@@ -96,14 +92,15 @@ export class UserPlaysongComponent implements OnInit {
     });
   }
 
-
   getSingersForSongs() {
-    const observables = this.songs.map(song => {
+    const observables = this.songs.map((song) => {
       return this.SongSingerService.getAllSingerBySong(song.id).pipe(
-        switchMap(singers => {
-          const singerObservables = singers.map(singer => this.singerService.getArtistById(singer.singer.id));
+        switchMap((singers) => {
+          const singerObservables = singers.map((singer) =>
+            this.singerService.getArtistById(singer.singer.id)
+          );
           return forkJoin(singerObservables).pipe(
-            map(singerDataArray => {
+            map((singerDataArray) => {
               return {songId: song.id, singers: singerDataArray};
             })
           );
@@ -111,21 +108,23 @@ export class UserPlaysongComponent implements OnInit {
       );
     });
 
-    forkJoin(observables).subscribe(results => {
-      results.forEach(result => {
+    forkJoin(observables).subscribe((results) => {
+      results.forEach((result) => {
         this.singerMap[result.songId] = result.singers;
       });
-      console.log("Singer Map:", this.singerMap);
+      console.log('Singer Map:', this.singerMap);
     });
   }
 
   getGenresForSongs() {
-    const observables = this.songs.map(song => {
+    const observables = this.songs.map((song) => {
       return this.SongGenreService.getAllGenreBySong(song.id).pipe(
-        switchMap(genres => {
-          const singerObservables = genres.map(genres => this.GenreServiceService.getGenre(genres.genre.id));
+        switchMap((genres) => {
+          const singerObservables = genres.map((genres) =>
+            this.GenreServiceService.getGenre(genres.genre.id)
+          );
           return forkJoin(singerObservables).pipe(
-            map(singerDataArray => {
+            map((singerDataArray) => {
               return {songId: song.id, genres: singerDataArray};
             })
           );
@@ -133,21 +132,23 @@ export class UserPlaysongComponent implements OnInit {
       );
     });
 
-    forkJoin(observables).subscribe(results => {
-      results.forEach(result => {
+    forkJoin(observables).subscribe((results) => {
+      results.forEach((result) => {
         this.genreMap[result.songId] = result.genres;
       });
-      console.log("Genre Map:", this.genreMap);
+      console.log('Genre Map:', this.genreMap);
     });
   }
 
   getAuthorsForSongs() {
-    const observables = this.songs.map(song => {
+    const observables = this.songs.map((song) => {
       return this.SongAuthorService.getAllAuthorBySong(song.id).pipe(
-        switchMap(authors => {
-          const singerObservables = authors.map(genres => this.AuthorService.getAuthorById(genres.author.id));
+        switchMap((authors) => {
+          const singerObservables = authors.map((genres) =>
+            this.AuthorService.getAuthorById(genres.author.id)
+          );
           return forkJoin(singerObservables).pipe(
-            map(singerDataArray => {
+            map((singerDataArray) => {
               return {songId: song.id, authors: singerDataArray};
             })
           );
@@ -155,14 +156,13 @@ export class UserPlaysongComponent implements OnInit {
       );
     });
 
-    forkJoin(observables).subscribe(results => {
-      results.forEach(result => {
+    forkJoin(observables).subscribe((results) => {
+      results.forEach((result) => {
         this.authorMap[result.songId] = result.authors;
       });
-      console.log("Author Map:", this.authorMap);
+      console.log('Author Map:', this.authorMap);
     });
   }
-
 
   getAlbumById(): void {
     this.AlbumService.getAlbumById(this.id).subscribe(async (data) => {
@@ -188,15 +188,13 @@ export class UserPlaysongComponent implements OnInit {
 
   openDialog(songInput: Song) {
     const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
-      data: {song: songInput}
+      data: {song: songInput},
     });
 
     dialogRef.afterOpened().subscribe(() => {
       this.getAllSongs();
-
     });
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
     });
   }
 
@@ -243,5 +241,11 @@ export class UserPlaysongComponent implements OnInit {
       this.favSong.addFavoriteSong(favS).subscribe((data) => {
       });
     }
+  }
+
+  showDetail(item: any) {
+    this.dataGlobal.changeId(item);
+    // this.dataGlobal.setSongHeardLast(item);
+    this.dataGlobal.setItem('songHeardLast', item);
   }
 }
