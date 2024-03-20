@@ -39,6 +39,8 @@ export class accountServiceService {
   private Feedback = `${this.baseUrl}/users/feed`;
   private DoiMatKhauCuaQuenMatKhau = `${this.baseUrl}/users/update/pass`;
 
+  private apicheckactive = `${this.baseUrl}/users/checkactive`;
+
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
   }
@@ -51,11 +53,19 @@ export class accountServiceService {
     this.localStorage = document.defaultView?.localStorage;
   }
 
+  
+
+
   EmailFeedBack(Feedback: Feedback): Observable<Object> {
     debugger
     return this.http.post<account>(`${this.Feedback}`, Feedback, {});
   }
 
+
+  checkactive1(email: string): Observable<any> {
+    const requestData = { email: email }; 
+    return this.http.post<any>(this.apicheckactive, requestData);
+  }
 
   // guimail
   HamDoiMatKhauCuaQuenMatKhau(email: string, login: login): Observable<Object> {
@@ -63,10 +73,7 @@ export class accountServiceService {
     return this.http.put<account>(`${this.DoiMatKhauCuaQuenMatKhau}/${email}`, login, {});
   }
 
-  guimail1(email: string): Observable<any> {
-    debugger
-    return this.http.get<any>(`${this.guimail}/${email}`);
-  }
+
 
   getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<account> {
     const params = new HttpParams()
@@ -79,6 +86,10 @@ export class accountServiceService {
     return this.http.get<any>(`${this.checktoken}/${token}`);
   }
 
+  guimail1(email: string): Observable<any> {
+    debugger
+    return this.http.get<any>(`${this.guimail}/${email}`);
+  }
 
   hot(message: string, email: string): Observable<any> {
     debugger
