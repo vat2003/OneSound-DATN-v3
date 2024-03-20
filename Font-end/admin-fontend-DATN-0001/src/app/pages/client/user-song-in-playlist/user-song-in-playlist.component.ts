@@ -257,7 +257,6 @@ export class UserSongInPlaylistComponent {
   }
 
   removeYoutubeFromPlaylist(id: number, idsong: string): void {
-    alert(idsong)
     this.PlaylistYoutubeService.removeYoutubeFromPlaylist(id, idsong).subscribe(
       () => {
         this.songsInPlaylist = this.songsInPlaylist.filter(song => song.playlist?.id !== id);
