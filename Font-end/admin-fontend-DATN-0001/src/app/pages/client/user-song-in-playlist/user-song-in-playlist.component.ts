@@ -173,11 +173,11 @@ export class UserSongInPlaylistComponent {
 
     });
     this.timname(this.id);
-    this.acc = this.userService.getUserResponseFromLocalStorage();
-    // this.getAllSongs();
-    this.getAllSongFavByUser();
-    this.getPlaylist(this.id);
-    this.fillImageSong();
+    // this.acc = this.userService.getUserResponseFromLocalStorage();
+    // // this.getAllSongs();
+    // this.getAllSongFavByUser();
+    // this.getPlaylist(this.id);
+    // this.fillImageSong();
   }
 
   async setImageURLFirebase(image: string | any): Promise<string> {
@@ -200,13 +200,13 @@ export class UserSongInPlaylistComponent {
       this.playlistSongService.getAllSongsInPlaylist(id).subscribe(
         (playlistSongs) => {
           this.PlaylistSong = playlistSongs;
-          this.fillImageSong();
           console.log('Songs in playlist:', this.PlaylistSong);
         },
         (error) => {
           console.error('Failed to fetch playlist songs:', error);
         }
       );
+      this.fillImageSong();
 
 
       this.PlaylistYoutubeService.getListPlaylistYoutubeid(id).subscribe(
@@ -228,7 +228,8 @@ export class UserSongInPlaylistComponent {
       console.log(song.song?.image);
       this.setImageURLFirebase(song.song?.image).then((imageString: string) => {
         console.log('Image string:', imageString);
-        this.songEntity = new Song(song.song?.name
+        this.songEntity = new Song(
+            song.song?.name
           , imageString
           , song.song?.release
           , song.song?.description
@@ -236,7 +237,12 @@ export class UserSongInPlaylistComponent {
           , song.song?.lyrics
           , song.song?.album
           , song.song?.dateTemp);
+
+        this.songEntity.id = <number>song.song?.id;
         song.song = this.songEntity;
+
+
+        // song.song?.setImage(imageString);
       })
 
     });
@@ -253,6 +259,7 @@ export class UserSongInPlaylistComponent {
         console.error('Failed to remove song from playlist:', error);
       }
     );
+    this.timname(id);
 
   }
 

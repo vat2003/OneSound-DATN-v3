@@ -34,7 +34,7 @@ export class UserMenusideComponent implements OnInit {
   isNumber: boolean = false;
   videoId!: string;
   acc?: account | null;
-
+  selectedVideo!: any;
 
   ngOnInit(): void {
     this.acc = this.UserService.getUserResponseFromLocalStorage();
@@ -48,6 +48,12 @@ export class UserMenusideComponent implements OnInit {
     , private UserService: accountServiceService
     , private toast: NgToastService
   ) {
+  }
+
+  kha() {
+    this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
+
+    console.log(`this.dataGlobal.getItem('songHeardLast')`, this.selectedVideo);
   }
 
   logout() {

@@ -34,7 +34,7 @@ export class UserResultSearchComponent implements OnInit {
   acc?: account | null;
   // Youtube!: Youtube;
   favList: any[] = [];
-
+  selectedVideo!: any;
   // selectedVideo!: any;
 
   constructor(
@@ -59,6 +59,10 @@ export class UserResultSearchComponent implements OnInit {
       this.get_keyword_from_searchinput();
       this.search();
     });
+    this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
+
+    console.log(`this.dataGlobal.getItem('songHeardLast')`, this.selectedVideo);
+
   }
 
 
@@ -147,7 +151,7 @@ export class UserResultSearchComponent implements OnInit {
 
   openDialog(youtubeitem: any) {
 
-   
+
     debugger
     const Youtube: Youtube = {
       id:  youtubeitem.id.videoId,
@@ -156,8 +160,8 @@ export class UserResultSearchComponent implements OnInit {
       thumbnails:   youtubeitem.snippet.thumbnails.high.url,
       channelTitle: youtubeitem.snippet.channelTitle,
       publishTime:  youtubeitem.snippet.publishTime
-    
-    };    
+
+    };
     this.PlaylistYoutubeService.createYt(Youtube).subscribe(
       () => {
         console.log('Song added to playlist successfully.');

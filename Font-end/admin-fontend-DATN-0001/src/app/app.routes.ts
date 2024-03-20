@@ -93,16 +93,12 @@ export const routes: Routes = [
   {
     path: 'onesound/home',
     component: UserMenusideComponent,
-    canActivate: [AuthGuardFn],
+    // canActivate: [AuthGuardFn],
     children: [
-      {path: '', component: UserExploreComponent},
-      {path: 'explore', component: UserExploreComponent},
       {path: 'playsong', component: UserPlaysongComponent},
-      {path: 'profile/:id', component: UserProfileComponent},
       {path: 'profile', component: ProfileComponent},
       {path: 'favorite', component: UserFavoriteComponent},
       {path: 'Playlists', component: UserplaylistComponent},
-      {path: 'album/:id', component: UserPlaysongComponent},
       {path: 'user/playlist', component: UserPlaylistFormComponent},
       {path: 'user/playlist/:id', component: UserSongInPlaylistComponent},
       // {path: 'PlayListSong/:id', component: PlayListSongComponent},
@@ -115,6 +111,10 @@ export const routes: Routes = [
     children: [
       {path: 'search/:keyword', component: UserResultSearchComponent},
       {path: 'feedback', component: FeedbackComponent},
+      {path: '', component: UserExploreComponent},
+      {path: 'explore', component: UserExploreComponent},
+      {path: 'profile/:id', component: UserProfileComponent},
+      {path: 'album/:id', component: UserPlaysongComponent},
     ],
   },
 ];
