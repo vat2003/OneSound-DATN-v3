@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, NO_ERRORS_SCHEMA, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, NO_ERRORS_SCHEMA, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { AlbumService } from '../../adminEntityService/adminService/album/album.service';
 import { Singer } from '../../adminEntityService/adminEntity/singer/singer';
 import { Album } from '../../adminEntityService/adminEntity/album/album';
@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SingerAlbumService } from '../../adminEntityService/adminService/singerAlbum/singer-album.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
@@ -29,12 +30,13 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatAutocompleteModule,
     MatSelectModule,
     ReactiveFormsModule,
+    NgxPaginationModule
   ],
   templateUrl: './managealbum-admin.component.html',
   styleUrl: './managealbum-admin.component.scss',
   schemas: [NO_ERRORS_SCHEMA]
 })
-export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChanges {
+export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChanges, AfterContentInit {
 
   p: number = 1;
   totalAlbums: number = 0;
@@ -61,7 +63,8 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   page: number = 1;
   itempage: number = 4;
   searchTerm: string = '';
-
+  pU: number = 1;
+  pageSize: number = 5;
   private searchTerms = new Subject<string>();
 
   private _FILTER(value: string): string[] {
@@ -86,49 +89,50 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   ) {
 
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    this.filterOptions = this.formcontrol.valueChanges.pipe(
-      startWith(''), map(value => this._FILTER(value || ''))
-    )
+  ngAfterContentInit(): void {
+
   }
+  ngOnChanges(changes: SimpleChanges): void {
+
+  }
+
+
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.displaySelectedYear();
     this.displayDataOnTable(0, 10);
     this.displaySingerBysearch();
-    this.filterOptions = this.formcontrol.valueChanges.pipe(
-      startWith(''), map(value => this._FILTER(value || ''))
-    )
 
-    this.searchTerms
-      .pipe(
-        debounceTime(500), // Tăng thời gian chờ
-        // Không sử dụng distinctUntilChanged tạm thời
-        // distinctUntilChanged(),
-        switchMap((term: string) => this.albumService.getAllAlbumByAlbumTitle(term, 0, 10))
-      )
-      .subscribe(async (data) => {
 
-        // Xử lý kết quả tìm kiếm ở đây
-        // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
-        this.imageAlbum = data.content.map((album: Album) => album.image);
-        this.titleAlbum = data.content.map((album: Album) => album.title);
-        this.albums = data.content;
+    // this.searchTerms
+    //   .pipe(
+    //     debounceTime(500), // Tăng thời gian chờ
+    //     // Không sử dụng distinctUntilChanged tạm thời
+    //     // distinctUntilChanged(),
+    //     switchMap((term: string) => this.albumService.getAllAlbumByAlbumTitle(term, 0, 10))
+    //   )
+    //   .subscribe(async (data) => {
 
-        for (const album of this.albums) {
-          if (album.image == null || album.image == '') {
-            continue;
-          }
-          album.image = await this.setImageURLFirebase(album.image);
-          album.albumcreateDate = new Date(album.albumcreateDate);
-        }
-        console.log("album: --->", this.albums);
+    //     // Xử lý kết quả tìm kiếm 
+    //     // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
+    //     this.imageAlbum = data.content.map((album: Album) => album.image);
+    //     this.titleAlbum = data.content.map((album: Album) => album.title);
+    //     this.albums = data.content;
 
-        this.total = data.totalPages;
-        this.visiblePages = this.PageArray(this.page, this.total);
+    //     for (const album of this.albums) {
+    //       if (album.image == null || album.image == '') {
+    //         continue;
+    //       }
+    //       album.image = await this.setImageURLFirebase(album.image);
+    //       album.albumcreateDate = new Date(album.albumcreateDate);
+    //     }
+    //     console.log("album: --->", this.albums);
 
-      });
+    //     this.total = data.totalPages;
+    //     this.visiblePages = this.PageArray(this.page, this.total);
+
+    //   });
   }
 
 
@@ -317,12 +321,12 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
   //Hiển thị dữ liệu lên table
   displayDataOnTable(page: number, limit: number) {
-    this.albumService.getAllAlbum(page, limit).subscribe(
+    this.albumService.getAllAlbumNormal().subscribe(
       async (data) => {
         console.log(data);
-        this.imageAlbum = data.content.map((album: Album) => album.image);
-        this.titleAlbum = data.content.map((album: Album) => album.title);
-        this.albums = data.content;
+        // this.imageAlbum = data.content.map((album: Album) => album.image);
+        // this.titleAlbum = data.content.map((album: Album) => album.title);
+        this.albums = data;
 
         for (const album of this.albums) {
           if (album.image == null || album.image == '') {
@@ -331,7 +335,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
           album.image = await this.setImageURLFirebase(album.image);
           album.albumcreateDate = new Date(album.albumcreateDate);
         }
-        this.total = data.totalPages;
+        // this.total = data.totalPages;
         this.visiblePages = this.PageArray(this.page, this.total);
 
       }, (error) => {
@@ -423,7 +427,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       console.log("singerName: ", this.singerName)
 
     }
-    
+
     this.filterOptions = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
     )

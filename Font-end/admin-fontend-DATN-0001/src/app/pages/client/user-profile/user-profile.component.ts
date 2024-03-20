@@ -24,10 +24,10 @@ import { forkJoin, map, switchMap } from 'rxjs';
 export class UserProfileComponent implements OnInit {
   id!: number;
   singer: Singer = new Singer();
-  singers:Singer[]=[];
-  songs:Song[]=[];
-  authors:Author[]=[];
-  genres:Genre[]=[];
+  singers: Singer[] = [];
+  songs: Song[] = [];
+  authors: Author[] = [];
+  genres: Genre[] = [];
   singerMap: { [key: number]: any[] } = {};
   genreMap: { [key: number]: any[] } = {};
   authorMap: { [key: number]: any[] } = {};
@@ -35,13 +35,13 @@ export class UserProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private singerService: SingerService,
     private firebaseStorage: FirebaseStorageCrudService,
-    private SongSingerService:SongSingerService,
-    private SongGenreService:SongGenreService,
-    private GenreServiceService:GenreServiceService,
-    private AuthorService:AuthorService,
-    private SongAuthorService:SongAuthorService,
-    private SongService:SongService
-  ) {}
+    private SongSingerService: SongSingerService,
+    private SongGenreService: SongGenreService,
+    private GenreServiceService: GenreServiceService,
+    private AuthorService: AuthorService,
+    private SongAuthorService: SongAuthorService,
+    private SongService: SongService
+  ) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -74,80 +74,80 @@ export class UserProfileComponent implements OnInit {
   }
 
 
-getSingersForSongs() {
-  const observables = this.songs.map(song => {
-    return this.SongSingerService.getAllSingerBySong(song.id).pipe(
-      switchMap(singers => {
-        const singerObservables = singers.map(singer => this.singerService.getArtistById(singer.singer.id));
-        return forkJoin(singerObservables).pipe(
-          map(singerDataArray => {
-            return { songId: song.id, singers: singerDataArray };
-          })
-        );
-      })
-    );
-  });
-
-  forkJoin(observables).subscribe(results => {
-    results.forEach(result => {
-      this.singerMap[result.songId] = result.singers;
+  getSingersForSongs() {
+    const observables = this.songs.map(song => {
+      return this.SongSingerService.getAllSingerBySong(song.id).pipe(
+        switchMap(singers => {
+          const singerObservables = singers.map(singer => this.singerService.getArtistById(singer.singer.id));
+          return forkJoin(singerObservables).pipe(
+            map(singerDataArray => {
+              return { songId: song.id, singers: singerDataArray };
+            })
+          );
+        })
+      );
     });
-    console.log("Singer Map:", this.singerMap);
-  });
-}
 
-getGenresForSongs() {
-  const observables = this.songs.map(song => {
-    return this.SongGenreService.getAllGenreBySong(song.id).pipe(
-      switchMap(genres => {
-        const singerObservables = genres.map(genres => this.GenreServiceService.getGenre(genres.genre.id));
-        return forkJoin(singerObservables).pipe(
-          map(singerDataArray => {
-            return { songId: song.id, genres: singerDataArray };
-          })
-        );
-      })
-    );
-  });
-
-  forkJoin(observables).subscribe(results => {
-    results.forEach(result => {
-      this.genreMap[result.songId] = result.genres;
+    forkJoin(observables).subscribe(results => {
+      results.forEach(result => {
+        this.singerMap[result.songId] = result.singers;
+      });
+      console.log("Singer Map:", this.singerMap);
     });
-    console.log("Genre Map:", this.genreMap);
-  });
-}
+  }
 
-getAuthorsForSongs() {
-  const observables = this.songs.map(song => {
-    return this.SongAuthorService.getAllAuthorBySong(song.id).pipe(
-      switchMap(authors => {
-        const singerObservables = authors.map(genres => this.AuthorService.getAuthorById(genres.author.id));
-        return forkJoin(singerObservables).pipe(
-          map(singerDataArray => {
-            return { songId: song.id, authors: singerDataArray };
-          })
-        );
-      })
-    );
-  });
-
-  forkJoin(observables).subscribe(results => {
-    results.forEach(result => {
-      this.authorMap[result.songId] = result.authors;
+  getGenresForSongs() {
+    const observables = this.songs.map(song => {
+      return this.SongGenreService.getAllGenreBySong(song.id).pipe(
+        switchMap(genres => {
+          const singerObservables = genres.map(genres => this.GenreServiceService.getGenre(genres.genre.id));
+          return forkJoin(singerObservables).pipe(
+            map(singerDataArray => {
+              return { songId: song.id, genres: singerDataArray };
+            })
+          );
+        })
+      );
     });
-    console.log("Author Map:", this.authorMap);
-  });
-}
 
-getRelativeArtist() {
-  this.singerService.getAllArtists().subscribe(data => {
-    for (let i = 0; i < 5; i++) {
-      this.singers.push(data[i]);
-      console.log("ĐỀ XUẤT CA SĨ: " + this.singers[i].fullname);
-    }
-  });
-}
+    forkJoin(observables).subscribe(results => {
+      results.forEach(result => {
+        this.genreMap[result.songId] = result.genres;
+      });
+      console.log("Genre Map:", this.genreMap);
+    });
+  }
+
+  getAuthorsForSongs() {
+    const observables = this.songs.map(song => {
+      return this.SongAuthorService.getAllAuthorBySong(song.id).pipe(
+        switchMap(authors => {
+          const singerObservables = authors.map(genres => this.AuthorService.getAuthorById(genres.author.id));
+          return forkJoin(singerObservables).pipe(
+            map(singerDataArray => {
+              return { songId: song.id, authors: singerDataArray };
+            })
+          );
+        })
+      );
+    });
+
+    forkJoin(observables).subscribe(results => {
+      results.forEach(result => {
+        this.authorMap[result.songId] = result.authors;
+      });
+      console.log("Author Map:", this.authorMap);
+    });
+  }
+
+  getRelativeArtist() {
+    this.singerService.getAllArtists().subscribe(data => {
+      for (let i = 0; i < 5; i++) {
+        this.singers.push(data[i]);
+        console.log("ĐỀ XUẤT CA SĨ: " + this.singers[i].fullname);
+      }
+    });
+  }
 
 
   getSingerById(): void {
