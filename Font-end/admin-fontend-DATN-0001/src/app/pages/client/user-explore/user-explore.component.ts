@@ -8,7 +8,7 @@ import { SongService } from './../../adminPage/adminEntityService/adminService/s
 import { SongAlbum } from './../../adminPage/adminEntityService/adminEntity/song/songAlbum';
 import { AlbumService } from './../../adminPage/adminEntityService/adminService/album/album.service';
 import { Component, OnInit } from '@angular/core';
-import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
+// import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -114,6 +114,8 @@ export class UserExploreComponent implements OnInit {
       return 'null';
     }
   }
+
+
   gotoDetailArtist(artist: Singer): void {
     this.router.navigate(['/onesound/home/profile/', artist.id]);
   }
