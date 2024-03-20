@@ -69,7 +69,6 @@ export class UserPlaysongComponent implements OnInit {
               private firebaseStorage: FirebaseStorageCrudService,
               private favSong: FavoriteService,
               private userService: accountServiceService,
-
   ) {
   }
 
@@ -83,11 +82,14 @@ export class UserPlaysongComponent implements OnInit {
 
   getAllSongs(): void {
     this.SongService.getAllSongsByAlbumId(this.id).subscribe((data) => {
+      data.forEach(async (song) => {
+        song.image = await this.setImageURLFirebase(song.image);
+      })
+
       this.songs = data;
       this.songsfromdata = data;
       // this.songs1 = this.songsfromdata;
 
-      console.log("Hehehehehheheheh" + this.songs)
       this.getSingersForSongs();
       this.getGenresForSongs();
       this.getAuthorsForSongs();

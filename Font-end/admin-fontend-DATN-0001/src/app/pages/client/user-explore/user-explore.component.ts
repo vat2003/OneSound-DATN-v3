@@ -1,25 +1,33 @@
-import { GenreServiceService } from './../../adminPage/adminEntityService/adminService/genre-service.service';
-import { SingerService } from './../../adminPage/adminEntityService/adminService/singer-service.service';
-import { SongGenreService } from './../../adminPage/adminEntityService/adminService/song-genre.service';
-import { SongSingerService } from './../../adminPage/adminEntityService/adminService/song-singer.service';
-import { SongGenre } from './../../adminPage/adminEntityService/adminEntity/song/songGenre';
-import { SongSinger } from './../../adminPage/adminEntityService/adminEntity/song/songSinger';
-import { SongService } from './../../adminPage/adminEntityService/adminService/song.service';
-import { SongAlbum } from './../../adminPage/adminEntityService/adminEntity/song/songAlbum';
-import { AlbumService } from './../../adminPage/adminEntityService/adminService/album/album.service';
-import { Component, OnInit } from '@angular/core';
+import {GenreServiceService} from './../../adminPage/adminEntityService/adminService/genre-service.service';
+import {SingerService} from './../../adminPage/adminEntityService/adminService/singer-service.service';
+import {SongGenreService} from './../../adminPage/adminEntityService/adminService/song-genre.service';
+import {SongSingerService} from './../../adminPage/adminEntityService/adminService/song-singer.service';
+import {SongGenre} from './../../adminPage/adminEntityService/adminEntity/song/songGenre';
+import {SongSinger} from './../../adminPage/adminEntityService/adminEntity/song/songSinger';
+import {SongService} from './../../adminPage/adminEntityService/adminService/song.service';
+import {SongAlbum} from './../../adminPage/adminEntityService/adminEntity/song/songAlbum';
+import {AlbumService} from './../../adminPage/adminEntityService/adminService/album/album.service';
+import {Component, OnInit} from '@angular/core';
 // import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
-import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
-import { Router } from '@angular/router';
-import { StaticticalService } from '../../adminPage/adminEntityService/adminService/statictical/statictical.service';
-import { error } from 'console';
-import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
-import { Observable, forkJoin, map, switchMap } from 'rxjs';
-import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
-import { Genre } from '../../adminPage/adminEntityService/adminEntity/genre/genre';
+import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
+import {Router} from '@angular/router';
+import {StaticticalService} from '../../adminPage/adminEntityService/adminService/statictical/statictical.service';
+import {error} from 'console';
+import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
+import {Observable, forkJoin, map, switchMap} from 'rxjs';
+import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
+import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
+import {aborted} from "node:util";
+import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
+import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
+import {FavoriteSong} from "../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song";
+import {MatDialog} from "@angular/material/dialog";
+import {accountServiceService} from "../../adminPage/adminEntityService/adminService/account-service.service";
+import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
+import {FavoriteService} from "../../../services/favorite-service/favorite.service";
 
 @Component({
   selector: 'app-user-explore',
@@ -30,26 +38,35 @@ import { Genre } from '../../adminPage/adminEntityService/adminEntity/genre/genr
 })
 export class UserExploreComponent implements OnInit {
   hotArtist: Singer[] = [];
-  albums:Album[]=[];
-  songs:Song[]=[];
-  singers:Singer[]=[];
-  genres:Genre[]=[];
+  albums: Album[] = [];
+  songs: any[] = [];
+  singers: Singer[] = [];
+  genres: Genre[] = [];
   singerMap: { [key: number]: any[] } = {};
   genreMap: { [key: number]: any[] } = {};
+  acc?: account | null;
+  favListSongs: any[] = [];
   constructor(
+    private favSong: FavoriteService,
+    private userService: accountServiceService,
+    private matDialog: MatDialog,
     private SingerService: SingerService,
-    private AlbumService:AlbumService,
+    private AlbumService: AlbumService,
     private firebaseStorage: FirebaseStorageCrudService,
     private router: Router,
     private statisticsService: StaticticalService,
-    private SongService:SongService,
-    private SongSingerService:SongSingerService,
-    private SongGenreService:SongGenreService,
+    private SongService: SongService,
+    private SongSingerService: SongSingerService,
+    private SongGenreService: SongGenreService,
     // private SingerService:SingerService,
-    private GenreServiceService:GenreServiceService
-  ) { }
+    private GenreServiceService: GenreServiceService
+  ) {
+  }
+
   index: number = 0;
+
   ngOnInit(): void {
+    this.acc = this.userService.getUserResponseFromLocalStorage();
     this.getAllSongs();
     this.getAllArtist();
     this.recordVisit()
@@ -59,18 +76,16 @@ export class UserExploreComponent implements OnInit {
   }
 
 
-
   recordVisit() {
     this.statisticsService.recordVisit().subscribe((res) => {
-      console.log(res);
+        console.log(res);
 
-    }, error => {
-      console.log('error record visit ');
+      }, error => {
+        console.log('error record visit ');
 
-    }
+      }
     )
   }
-
 
 
   getAllArtist(): void {
@@ -89,11 +104,12 @@ export class UserExploreComponent implements OnInit {
       // console.log(data);
     });
   }
+
   getAllAlbum(): void {
     this.AlbumService.getAllAlbumNormal().subscribe(async (data) => {
       this.albums = data;
-      console.log(this.albums);
-      console.log(data);
+      console.log('aaa' + this.albums);
+      console.log('asa' + data);
       this.albums = data;
 
       for (const hotArt of this.albums) {
@@ -101,6 +117,7 @@ export class UserExploreComponent implements OnInit {
           continue;
         }
         hotArt.image = await this.setImageURLFirebase(hotArt.image);
+        console.log(hotArt.image)
       }
       // console.log(data);
     });
@@ -119,7 +136,8 @@ export class UserExploreComponent implements OnInit {
   gotoDetailArtist(artist: Singer): void {
     this.router.navigate(['/onesound/home/profile/', artist.id]);
   }
-  gotoDetailAlbum(album:Album):void{
+
+  gotoDetailAlbum(album: Album): void {
     this.router.navigate(['/onesound/home/album/', album.id]);
   }
 
@@ -184,7 +202,7 @@ export class UserExploreComponent implements OnInit {
           const singerObservables = singers.map(singer => this.SingerService.getArtistById(singer.singer.id));
           return forkJoin(singerObservables).pipe(
             map(singerDataArray => {
-              return { songId: song.id, singers: singerDataArray };
+              return {songId: song.id, singers: singerDataArray};
             })
           );
         })
@@ -206,7 +224,7 @@ export class UserExploreComponent implements OnInit {
           const singerObservables = genres.map(genres => this.GenreServiceService.getGenre(genres.genre.id));
           return forkJoin(singerObservables).pipe(
             map(singerDataArray => {
-              return { songId: song.id, genres: singerDataArray };
+              return {songId: song.id, genres: singerDataArray};
             })
           );
         })
@@ -219,6 +237,66 @@ export class UserExploreComponent implements OnInit {
       });
       console.log("Genre Map:", this.genreMap);
     });
+
+
+  }
+  openDialog(songInput: Song) {
+    const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
+      data: {song: songInput}
+    });
+
+    dialogRef.afterOpened().subscribe(() => {
+      this.getAllSongs();
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
+  }
+
+  getAllSongFavByUser() {
+    if (this.acc && this.acc.id) {
+      this.favSong.getAllFavSongByUser(this.acc.id).subscribe((data) => {
+        this.favListSongs = data;
+        // console.log(this.favListSongs);
+
+        this.checkFav();
+      });
+    }
+  }
+
+  checkFav() {
+    for (let song of this.songs) {
+      let found = this.favListSongs.find((fav) => fav.song.id === song.id);
+      song.isFav = found ? true : false;
+    }
+  }
+
+  favoriteSong(song: any) {
+    // alert(song.id);
+    let songId = song.id;
+    let favS = new FavoriteSong(this.acc?.id, songId);
+    if (
+      this.acc == null ||
+      this.acc == undefined ||
+      this.acc === null ||
+      this.acc === undefined
+    ) {
+      alert('Please log in to use this feature');
+      return;
+    }
+    if (song.isFav) {
+      if (!confirm('Are you sure you want to unlike?')) {
+        return;
+      }
+      song.isFav = false;
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {
+      });
+    } else {
+      song.isFav = true;
+      this.favSong.addFavoriteSong(favS).subscribe((data) => {
+      });
+    }
   }
 
 }
