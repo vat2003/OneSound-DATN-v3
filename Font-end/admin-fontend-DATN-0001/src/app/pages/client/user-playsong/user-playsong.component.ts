@@ -243,9 +243,9 @@ export class UserPlaysongComponent implements OnInit {
     }
   }
 
-  showDetail(item: any) {
+  async showDetail(item: any) {
+    item.path = await this.setImageURLFirebase(item.path);
     this.dataGlobal.changeId(item);
-    // this.dataGlobal.setSongHeardLast(item);
     this.dataGlobal.setItem('songHeardLast', item);
   }
 }

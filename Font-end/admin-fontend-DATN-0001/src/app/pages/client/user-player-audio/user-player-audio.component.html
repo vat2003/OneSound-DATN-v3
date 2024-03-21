@@ -1,6 +1,6 @@
 <div class="master_play">
 
-    <img src="assets/img/client/whatitis.jpg" alt="Alan" id="poster_master_play" />
+    <img src="{{selectedSong.image}}" alt="{{selectedSong.image}}" id="poster_master_play" />
     <!-- thay dùm tao cái ảnh bẳng firebase service -->
     <h5 id="title">
         <p class="line-clamp" id="song-title">
@@ -12,7 +12,7 @@
             Doechii
         </div>
         <div class="album line-clamp" id="category-name">
-            PLAYING FROM: HIP-HOP
+            PLAYING FROM: {{ selectedSong.album.title  }}
         </div>
     </h5>
     <div class="icon">

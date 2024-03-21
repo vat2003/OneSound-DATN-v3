@@ -51,11 +51,24 @@ export const routes: Routes = [
   {path: 'oauth2/authorization/google', component: SomeComponentComponent},
   {path: 'onesound/profile', component: ProfileComponent},
   {path: 'onesound/feedback', component: FeedbackComponent},
-
+  {
+    path: 'onesound/admin',
+    component: HomeComponent,
+    children: [
+      {path: '', component: ReportComponent},
+      {
+        path: 'manage/statictical',
+        component: StaticticalComponent,
+        children: [
+          {path: 'report', component: ReportComponent},
+          {path: 'count-access', component: CountAccessComponent},
+        ],
+      }
+    ]
+  },
   {
     path: 'onesound/admin',
     canActivate: [AdminGuardFn],
-
     component: HomeComponent,
     children: [
       {path: 'blank', component: BlankComponent},
@@ -65,21 +78,11 @@ export const routes: Routes = [
       {path: 'manage/user', component: ManageuserAdminComponent},
       {path: 'chart', component: ChartComponent},
       {path: 'dashboard', component: BlankComponent},
-      {path: '', component: ReportComponent},
       {path: 'manage/album', component: ManagealbumAdminComponent},
       {path: 'manage/artist', component: ManageartistAdminComponent},
       {path: 'manage/genre', component: ManagegenreAdminComponent},
       {path: 'manage/profile', component: ManageprofileAdminComponent},
       {path: 'manage/author', component: ManageauthorComponent},
-
-      {
-        path: 'manage/statistical',
-        component: StaticticalComponent,
-        children: [
-          {path: 'report', component: ReportComponent},
-          {path: 'count-access', component: CountAccessComponent},
-        ],
-      },
       {
         path: 'manage/genre/update-genre/:id',
         component: ManagegenreAdminComponent,
@@ -90,6 +93,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: 'onesound/home',
     component: UserMenusideComponent,

@@ -316,45 +316,39 @@
                 <div
                   class="row bg-dark p-3 pb-4 border border-light rounded shadow"
                 >
-                  <!-- Default checked -->
-                  <!-- <div class="col-md-12 mb-3">
-                    <div class="custom-control custom-switch">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="audioUploadSwitch"
-                        (change)="toggleUpload($event)"
-                      />
-                      <label
-                        class="custom-control-label font-weight-dark"
-                        for="audioUploadSwitch"
-                        >Disable upload and use default audio file</label
-                      >
-                    </div>
-                  </div> -->
-
                   <div class="col-md-12">
                     <div
                       class="file-upload-wrapper bg-dark text-center"
                       #fileUploadWrapper
                     >
-                      <div
-                        class="card card-body w-100 view file-upload bg-dark text-center"
-                      >
-                        <input
-                          type="file"
-                          id="audiofile"
-                          class="file_upload"
-                          (change)="handleFiles($event)"
-                          accept="audio/*"
-                        />
-                        <p class="file-upload-infos-message">
-                          Audio upload - Drag and drop or click
-                        </p>
-                      </div>
+<!--                      <div-->
+<!--                        class="card card-body w-100 view file-upload bg-dark text-center"-->
+<!--                      >-->
+<!--                        <input-->
+<!--                          type="file"-->
+<!--                          id="audiofile"-->
+<!--                          class="file_upload"-->
+<!--                          (change)="handleFiles($event)"-->
+<!--                          accept="audio/*"-->
+<!--                        />-->
+<!--                        <p class="file-upload-infos-message">-->
+<!--                          Audio upload - Drag and drop or click-->
+<!--                        </p>-->
+<!--                      </div>-->
                     </div>
+                    <button
+                      class="file-upload-btn"
+                      type="button"
+                    ><input
+                      type="file"
+                      class="file_upload"
+                      (change)="handleFiles($event)"
+                      accept="audio/*"
+                    />
+                      Change Song
+                    </button>
                   </div>
-                  <div class="mx-auto">
+                  <div class="song-upload-content mx-auto">
                     <audio
                       id="track"
                       [src]="audioUrl"
@@ -367,9 +361,9 @@
                       type="audio/mp3"
                       #track
                     ></audio> -->
-                    <div class="player d-none" style="width: 300px" #player>
+                    <div class="player d-none" style="width:100%" #player>
                       <div class="progress p-1">
-                        <input
+                        <input style="width:100%"
                           id="timeslider"
                           #timeslider
                           class="timeslider"
@@ -419,6 +413,8 @@
                       </div>
                     </div>
                   </div>
+                  <!--                  -->
+                  <!--                  -->
                 </div>
               </div>
             </div>

@@ -14,14 +14,14 @@
           </div>
 
           <div class=" mb-3">
-            <label for="floatingSelect">Release year</label>
+            <label>Release year</label>
             <select class="form-select year" id="year" name="year" [(ngModel)]="album.releaseYear"
               aria-label="Floating label select example">
             </select>
           </div>
 
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Description</label>
+            <label class="form-label">Description</label>
             <textarea class="form-control" name="description" aria-label="With textarea" rows="5"
               [(ngModel)]="album.description"></textarea>
             <span *ngIf="errorFieldsArr.includes('description')" class="text-warning">*Please enter
@@ -57,7 +57,7 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Singer</label>
+            <label class="form-label">Singer</label>
             <!-- <input #searchSinger type="text" class="form-control mb-4 border-light border-2"
               style="border-radius: 20px;" placeholder="Search"> -->
 

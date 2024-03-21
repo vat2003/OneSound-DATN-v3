@@ -33,7 +33,7 @@ export class ReportComponent implements OnInit {
   quantityUsers!: number;
   minDate: string;
   maxDate: string
-  dateCheck!: string;;
+  dateCheck!: string;
   date!: Date
   check!: number;
   dateCountUser1!: Date;

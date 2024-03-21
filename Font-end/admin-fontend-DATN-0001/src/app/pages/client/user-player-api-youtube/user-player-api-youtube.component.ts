@@ -158,7 +158,7 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
     console.log(this.selectedVideo);
 
-    const Youtube: Youtube = {  
+    const Youtube: Youtube = {
       id:  this.selectedVideo.id.videoId,
       title: this.selectedVideo.snippet.title,
       description: this.selectedVideo.snippet.description,

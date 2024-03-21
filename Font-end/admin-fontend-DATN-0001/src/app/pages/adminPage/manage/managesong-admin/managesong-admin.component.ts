@@ -957,6 +957,25 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       'block'
     );
   }
+  removeSong(): void {
+    this.audioFile = '';
+    this.audioUrl = '';
+    // this.renderer.setProperty(
+    //   this.el.nativeElement.querySelector('.file-upload'),
+    //   'value',
+    //   ''
+    // );
+    // this.renderer.setStyle(
+    //   this.el.nativeElement.querySelector('.song-upload-content'),
+    //   'display',
+    //   'none'
+    // );
+    // this.renderer.setStyle(
+    //   this.el.nativeElement.querySelector('.image-upload-wrap'),
+    //   'display',
+    //   'block'
+    // );
+  }
 
 
   getSong(id: number) {
