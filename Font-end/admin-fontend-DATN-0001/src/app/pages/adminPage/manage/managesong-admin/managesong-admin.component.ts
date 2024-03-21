@@ -41,6 +41,7 @@ import {NgToastModule, NgToastService} from 'ng-angular-popup';
 import {format} from 'date-fns';
 import {FirebaseStorage, StorageModule} from '@angular/fire/storage';
 import {getDownloadURL, ref, StorageReference} from '@firebase/storage';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-managesong-admin',
@@ -57,6 +58,7 @@ import {getDownloadURL, ref, StorageReference} from '@firebase/storage';
     MatFormFieldModule,
     MatInputModule,
     NgToastModule,
+    NgxPaginationModule
   ],
   templateUrl: './managesong-admin.component.html',
   styleUrl: './managesong-admin.component.scss',
@@ -87,6 +89,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   setAudioUrl: string = '';
   audioFile: any;
   p: number = 1;
+  pageSize: number= 10;
   id: number = -1;
   albums: Album[] = [];
   album:Album=new Album();
@@ -176,10 +179,10 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   search(): void {
     // this.searchTerms.next(this.searchTerm);
     const searchTermLowerCase = this.searchTerm.toLowerCase();
-    this.songs = this.songs.filter(author =>
-      author.name.toLowerCase().includes(searchTermLowerCase) ||
-      author.description.toLowerCase().includes(searchTermLowerCase)||
-      author.album.title.toLowerCase().includes(searchTermLowerCase)
+    this.songs = this.songs.filter(song =>
+      song.name.toLowerCase().includes(searchTermLowerCase) ||
+      song.description.toLowerCase().includes(searchTermLowerCase)||
+      song.album.title.toLowerCase().includes(searchTermLowerCase)
     );
     if (searchTermLowerCase == '') {
       this.displayDataOnTable(0, 10);
@@ -654,7 +657,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   }
 
   displaySingerBysearch() {
-    this.singerService.getAllArtists().subscribe(
+    this.singerService.getAllArtistActive().subscribe(
       async (data) => {
         this.singerName = data.map((singer: Singer) => singer.fullname);
         console.log("List singer", this.singers);
@@ -893,7 +896,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   resetForm() {
-
+    this.reload();
   }
 
   fillImage(url: string): void {
@@ -993,10 +996,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
           }
 
         }
-
         this.fillImage(await this.setImageURLFirebase(this.song.image));
-
-
         // this.setSongUrl = this.song.path;
         this.setAudioUrl = this.song.path;
         //Set audio vào phía client
@@ -1111,45 +1111,6 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     ;
   }
 
-
-  async processSingers(singers: any[]) {
-    try {
-      const singerPromises = singers.map((element: any) => this.singerService.getArtistById(element.singerId).toPromise());
-      const singerResults = await Promise.all(singerPromises);
-      // Loại bỏ giá trị undefined khỏi mảng singerResults
-      const filteredSingerResults = singerResults.filter(singer => singer !== undefined);
-      this.singerTable = filteredSingerResults as Singer[]; // Ép kiểu sang Singer[]
-      this.updateFilterOptions('singer', this.singerTable);
-    } catch (error) {
-      console.log("Error occurred while fetching singer data:", error);
-    }
-  }
-
-
-  async processGenres(genres: any[]) {
-    try {
-      const genrePromises = genres.map((element: any) => this.genreService.getGenre(element.genreId).toPromise());
-      const genreResults = await Promise.all(genrePromises);
-      const filteredGenreResults = genreResults.filter(genre => genre !== undefined);
-      this.genreTable = filteredGenreResults as Genre[];
-      this.updateFilterOptions('genre', this.genreTable);
-    } catch (error) {
-      console.log("Error occurred while fetching genre data:", error);
-    }
-  }
-
-  async processAuthors(authors: any[]) {
-    try {
-      const authorPromises = authors.map((element: any) => this.AuthorService.getAuthorById(element.authorId).toPromise());
-      const authorResults = await Promise.all(authorPromises);
-      const rs = authorResults.filter((author: any) => author !== undefined);
-      this.authorTable = rs as Author[];
-      this.updateFilterOptions('author', this.authorTable);
-    } catch (error) {
-      console.log("Error occurred while fetching author data:", error);
-    }
-  }
-
   async updateFilterOptions(type: string, data: any[]) {
     switch (type) {
       case 'singer':
@@ -1177,8 +1138,55 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         break;
     }
   }
+  checkAge() {
+    if (this.song.release) {
+      const today = new Date();
+      const birthDate = new Date(this.song.release);
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (monthDiff < 0) {
+        age--;
+      }
+      else{
+        this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
+      }
+    }
+  }
+
+  validateAuthorEmpty(valueCheck: any): string[] {
+    const errorFieldsArr: string[] = [];
+    for (const key in valueCheck) {
+      if (valueCheck.hasOwnProperty(key)) {
+        if (!valueCheck[key]) {
+          //valueCheck[key] là giá trị
+          //key là tên thuộc tính
+          errorFieldsArr.push(key);
+        }
+      }
+    }
+    //return nếu không lỗi
+    return errorFieldsArr;
+  }
+
 
   createSong() {
+    if (this.song.release) {
+      const today = new Date();
+      const releaseDate = new Date(this.song.release);
+      if (releaseDate.getTime() > today.getTime()) {
+        this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
+        return;
+      }
+    } else {
+      this.toast.error({detail: 'Failed Message', summary: 'Release date is required', duration: 3000});
+      return;
+    }
+
+    // Kiểm tra xem tiêu đề bài hát có được nhập hay không
+    if (!this.song.name) {
+      this.toast.error({detail: 'Failed Message', summary: 'Title is required', duration: 3000});
+      return;
+    }
     const img = this.setImageUrl;
     const music = this.setAudioUrl;
     console.log(this.song);
@@ -1287,6 +1295,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         this.resetForm();
         this.reload();
         console.log("Add song successful!");
+        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 5000});
       } catch (error) {
         console.error("Error occurred while adding song:", error);
         alert("Failed to add song. Please try again later." + error);
@@ -1434,13 +1443,13 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   displayDataOnTable(page: number, limit: number) {
-    this.SongService.getCategories(page, limit).subscribe(
+    this.SongService.getAllSongs().subscribe(
       async (data) => {
-        console.log(data);
-        this.imageSong = data.content.map((album: Song) => album.image);
-        this.audioSong = data.content.map((album: Song) => album.path);
-        this.titleSong = data.content.map((album: Song) => album.name);
-        this.songs = data.content;
+        console.log("BÀI HÁT:"+data);
+        // this.imageSong = data.content.map((album: Song) => album.image);
+        // this.audioSong = data.content.map((album: Song) => album.path);
+        // this.titleSong = data.content.map((album: Song) => album.name);
+         this.songs = data;
         this.song.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
         // this.song.dateTemp = formattedDate;
 
@@ -1450,8 +1459,10 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         //   console.log("Ngàyyyyyyyyyy: "+this.song.release);
         // });
 
-        for (const song of this.songs) {
+        console.log("BÀI HÁT T1:"+this.songs);
 
+        for (const song of this.songs) {
+          console.log("BÀI HÁT T2:"+data);
           // KIỂM TRA SỰ TỒN TẠI CỦA IMAGE PATH
           // NẾU TỒN TẠI - CHUYỂN TỪ PATH(SQL) SANG PATH(FIREBASE) - BẰNG CÁCH GÁN MỚI CHO SONG.IMAGE
           if (song.image && song.image != '') {
@@ -1463,17 +1474,18 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
           if (song.path && song.path != '') {
             song.path = await this.setImageURLFirebase(song.path);
           }
-
-          // album.dateTemp=this.formatDate(album.release);
-          // const formattedDate = album.release.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
-          // album.dateTemp = formattedDate;
         }
 
-        this.total = data.totalPages;
-        this.visiblePages = this.PageArray(this.page, this.total);
+        //   // album.dateTemp=this.formatDate(album.release);
+        //   // const formattedDate = album.release.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        //   // album.dateTemp = formattedDate;
+        // }
+
+        // this.total = data.totalPages;
+        // this.visiblePages = this.PageArray(this.page, this.total);
       },
       (error) => {
-        console.error('Error fetching data:', error);
+        console.log('Error huh data:', error);
       }
     );
   }

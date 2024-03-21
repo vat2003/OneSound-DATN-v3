@@ -20,6 +20,10 @@ export class SongService {
   constructor(private httpClient: HttpClient) { }
 
   getAllSongs(): Observable<Song[]> {
+    return this.httpClient.get<Song[]>(`${this.baseUrl}/findAll`);
+  }
+
+  getAllSongsNonePage(): Observable<Song[]> {
     return this.httpClient.get<Song[]>(`${this.baseUrl}`);
   }
 

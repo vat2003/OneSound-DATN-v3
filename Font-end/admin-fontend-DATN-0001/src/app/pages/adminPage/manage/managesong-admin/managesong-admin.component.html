@@ -33,6 +33,36 @@
             />
           </div>
 
+          <label class="form-label">Active</label> <br />
+          <div class="btn-group mb-3" role="group">
+            <input
+              type="radio"
+              class="btn-check"
+              name="active"
+              id="btnradio1"
+              autocomplete="off"
+              checked
+              [value]="true"
+              [(ngModel)]="song.active"
+            />
+            <label class="btn btn-outline-primary" for="btnradio1"
+              >Active</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="active"
+              id="btnradio3"
+              autocomplete="off"
+              [(ngModel)]="song.active"
+              [value]="false"
+            />
+            <label class="btn btn-outline-primary" for="btnradio3"
+              >Inactive</label
+            >
+          </div>
+
           <div class="mb-3">
             <label class="form-label">Artist</label>
             <!-- Input cho Singer -->
@@ -61,34 +91,34 @@
             <!-- Table display for singers -->
             <table class="table table-dark">
               <thead>
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Fullname</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Fullname</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let singer of singerTable; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
-                <td>{{ singer.fullname }}</td>
-                <td>
-                  <img
-                    src="{{ singer.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ singer.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteSingerInTable(singer.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                <tr *ngFor="let singer of singerTable; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ singer.fullname }}</td>
+                  <td>
+                    <img
+                      src="{{ singer.image }}"
+                      width="70"
+                      height="70"
+                      alt="{{ singer.image }}"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      (click)="deleteSingerInTable(singer.id)"
+                      class="btn btn-outline-danger w-50"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -118,38 +148,38 @@
             </mat-autocomplete>
             <table class="table table-dark">
               <thead>
-              <tr>
-                <!-- <th scope="col">No.</th> -->
-                <th scope="col">Title</th>
-                <th scope="col">Release</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <!-- <th scope="col">No.</th> -->
+                  <th scope="col">Title</th>
+                  <th scope="col">Release</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let album of albumTable; let i = index">
-                <!-- <th scope="row">{{ i + 1 }}</th> -->
+                <tr *ngFor="let album of albumTable; let i = index">
+                  <!-- <th scope="row">{{ i + 1 }}</th> -->
 
-                <td>{{ album.title }}</td>
-                <td>{{ album.releaseYear }}</td>
+                  <td>{{ album.title }}</td>
+                  <td>{{ album.releaseYear }}</td>
 
-                <td>
-                  <img
-                    src="{{ album.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ album.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteAlbumInTable(album.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                  <td>
+                    <img
+                      src="{{ album.image }}"
+                      width="70"
+                      height="70"
+                      alt="{{ album.image }}"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      (click)="deleteAlbumInTable(album.id)"
+                      class="btn btn-outline-danger w-50"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -178,36 +208,36 @@
             </mat-autocomplete>
             <table class="table table-dark">
               <thead>
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Title</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let album of genreTable; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
+                <tr *ngFor="let album of genreTable; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
 
-                <td>{{ album.name }}</td>
+                  <td>{{ album.name }}</td>
 
-                <td>
-                  <img
-                    src="{{ album.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ album.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteGenreInTable(album.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                  <td>
+                    <img
+                      src="{{ album.image }}"
+                      width="70"
+                      height="70"
+                      alt="{{ album.image }}"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      (click)="deleteGenreInTable(album.id)"
+                      class="btn btn-outline-danger w-50"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -239,36 +269,36 @@
 
             <table class="table table-dark">
               <thead>
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Title</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let album of authorTable; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
+                <tr *ngFor="let album of authorTable; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
 
-                <td>{{ album.fullname }}</td>
+                  <td>{{ album.fullname }}</td>
 
-                <td>
-                  <img
-                    src="{{ album.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ album.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteAuthorInTable(album.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                  <td>
+                    <img
+                      src="{{ album.image }}"
+                      width="70"
+                      height="70"
+                      alt="{{ album.image }}"
+                    />
+                  </td>
+                  <td>
+                    <button
+                      (click)="deleteAuthorInTable(album.id)"
+                      class="btn btn-outline-danger w-50"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -385,8 +415,8 @@
                           style="width: 100%"
                         >
                           <span id="currentTime" style="width: 30px">{{
-                              currentTime
-                            }}</span>
+                            currentTime
+                          }}</span>
                           <div
                             id="pause"
                             #pause
@@ -412,8 +442,8 @@
                             <i class="fas fa-redo-alt"></i>
                           </div>
                           <span id="duration" #durationDisplay>{{
-                              totalTime
-                            }}</span>
+                            totalTime
+                          }}</span>
                         </div>
                         <!-- <span><a class="text-decoration-none pt-1 pb-1" href="#" target="_blank">Link</a></span> -->
                       </div>
@@ -471,7 +501,9 @@
             >
               Update
             </button>
-            <button class="btn btn-warning ms-3 fw-bold">Reset</button>
+            <button class="btn btn-warning ms-3 fw-bold" (click)="resetForm()">
+              Reset
+            </button>
             <!-- <button (click)="test()" class="btn btn-warning ms-3 fw-bold">
               Test
             </button> -->
@@ -495,43 +527,54 @@
         />
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">*</th>
-            <th scope="col">Image</th>
-            <th scope="col">Title</th>
-            <!-- <th scope="col">Artist</th> -->
-            <th scope="col">Release</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">*</th>
+              <th scope="col">Image</th>
+              <th scope="col">Title</th>
+              <!-- <th scope="col">Artist</th> -->
+              <th scope="col">Release</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody *ngIf="songs && songs.length > 0; else noDataMessage">
-          <tr *ngFor="let album of this.songs; let i = index">
-            <th scope="row">{{ i + 1 }}</th>
-            <td>
-              <img
-                src="{{ album.image }}"
-                width="70"
-                height="70"
-                alt="{{ album.image }}"
-              />
-            </td>
-            <td>{{ album.name }}</td>
-            <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
-            <td>
-              <button
-                (click)="getSong(album.id)"
-                class="btn btn-outline-info me-3"
-              >
-                Detail
-              </button>
-              <button
-                (click)="deleteSong(album.id)"
-                class="btn btn-outline-danger"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+            <tr
+              *ngFor="
+                let album of this.songs
+                  | paginate
+                    : {
+                        itemsPerPage: pageSize,
+                        currentPage: p,
+                        id: 'CountUser'
+                      };
+                let i = index
+              "
+            >
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                <img
+                  src="{{ album.image }}"
+                  width="70"
+                  height="70"
+                  alt="{{ album.image }}"
+                />
+              </td>
+              <td>{{ album.name }}</td>
+              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+              <td>
+                <button
+                  (click)="getSong(album.id)"
+                  class="btn btn-outline-info me-3"
+                >
+                  Detail
+                </button>
+                <button
+                  (click)="deleteSong(album.id)"
+                  class="btn btn-outline-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
           </tbody>
 
           <ng-template #noDataMessage>
@@ -542,52 +585,11 @@
             </tr>
           </ng-template>
         </table>
-        <div class="d-flex justify-content-center">
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" style="cursor: pointer" (click)="Page(0)"
-                >First</a
-                >
-              </li>
-              <li class="page-item" *ngIf="page > 0">
-                <a
-                  class="page-link"
-                  (click)="Page(page - 1)"
-                  style="cursor: pointer"
-                >
-                  <i class="fa fa-chevron-left"></i>
-                </a>
-              </li>
-              <ng-container *ngFor="let page of visiblePages">
-                <li class="page-item" [ngClass]="{ active: page === page + 1 }">
-                  <a
-                    class="page-link"
-                    (click)="Page(page - 1)"
-                    style="cursor: pointer"
-                  >{{ page }}</a
-                  >
-                </li>
-              </ng-container>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a
-                  class="page-link"
-                  (click)="Page(page + 1)"
-                  style="cursor: pointer"
-                >
-                  <i class="fa fa-chevron-right"></i>
-                </a>
-              </li>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a
-                  class="page-link"
-                  (click)="Page(total - 1)"
-                  style="cursor: pointer"
-                >Last</a
-                >
-              </li>
-            </ul>
-          </nav>
+        <div class="text-center">
+          <pagination-controls
+            (pageChange)="p = $event"
+            id="CountUser"
+          ></pagination-controls>
         </div>
       </div>
     </div>

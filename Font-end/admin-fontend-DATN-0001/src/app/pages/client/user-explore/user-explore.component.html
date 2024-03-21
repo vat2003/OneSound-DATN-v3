@@ -72,39 +72,38 @@
   </div>
   <table>
     <thead>
-    <tr>
-      <th>#</th>
-      <th>IMAGE</th>
-      <th>TITLE</th>
-      <th>ARTIST</th>
-      <th>GENRE</th>
-      <th>TIME</th>
-      <th></th>
-    </tr>
+      <tr>
+        <th>#</th>
+        <th>IMAGE</th>
+        <th>TITLE</th>
+        <th>ARTIST</th>
+        <!-- <th>GENRE</th>
+        <th>TIME</th> -->
+        <th></th>
+      </tr>
     </thead>
     <tbody id="list-songs">
-    <tr *ngFor="let s of songs; let i = index">
-      <td>{{ i + 1 }}</td>
-      <td>
-        <img [src]="s.image" alt=""/>
-        <!--        <i class="bi fa-solid fa-circle-play"></i>-->
-      </td>
-      <td>
-        <div class="table-title">
-          <div class="line-clamp">{{ s.name }}</div>
-          <span class="table-song-type">HOT</span>
-        </div>
-      </td>
-      <td>
-        <div>
+      <tr *ngFor="let s of songs; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>
+          <img [src]="s.image" alt="" />
+          <!--        <i class="bi fa-solid fa-circle-play"></i>-->
+        </td>
+        <td>
+          <div class="table-title">
+            <div class="line-clamp">{{ s.name }}</div>
+            <span class="table-song-type">HOT</span>
+          </div>
+        </td>
+        <td>
+          <div>
             <span *ngFor="let singer of singerMap[s.id]; let last = last"
-            >{{
-                singer.fullname
+              >{{ singer.fullname
               }}{{ !last && singerMap[s.id].length > 1 ? ", " : "" }}</span
             >
-        </div>
-      </td>
-      <td>
+          </div>
+        </td>
+        <!-- <td>
         <div>
             <span *ngFor="let singer of genreMap[s.id]; let last = last"
             >{{
@@ -113,14 +112,21 @@
             >
         </div>
       </td>
-      <td>3:15</td>
-      <td *ngIf="this.acc">
-        <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
-        <i class="favorite fa-heart" [ngClass]="{'fa-solid': s.isFav === true, 'fa-regular': s.isFav === false}"
-           [ngStyle]="{'color': s.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favoriteSong(s)">
-        </i>
-      </td>
-    </tr>
+      <td>3:15</td> -->
+        <td *ngIf="this.acc">
+          <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
+          <i
+            class="favorite fa-heart"
+            [ngClass]="{
+              'fa-solid': s.isFav === true,
+              'fa-regular': s.isFav === false
+            }"
+            [ngStyle]="{ color: s.isFav === true ? 'rgb(212, 15, 15)' : '' }"
+            (click)="favoriteSong(s)"
+          >
+          </i>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -136,7 +142,7 @@
   <div class="pop_song">
     <li class="songItem">
       <div class="img_play">
-        <img src="assets/img/client/album/taylor.jpg" alt="alan"/>
+        <img src="assets/img/client/album/taylor.jpg" alt="alan" />
         <i class="bi fa-solid fa-circle-play" i="1"></i>
       </div>
       <h5>
@@ -147,7 +153,7 @@
     </li>
     <li class="songItem">
       <div class="img_play">
-        <img src="assets/img/client/album/conway.jpg" alt="alan"/>
+        <img src="assets/img/client/album/conway.jpg" alt="alan" />
         <i class="bi playListPlay bi-play-circle-fill" id="8"></i>
         <!-- change All id  -->
       </div>
@@ -159,7 +165,7 @@
     </li>
     <li class="songItem">
       <div class="img_play">
-        <img src="assets/img/client/album/sunburn.jpg" alt="alan"/>
+        <img src="assets/img/client/album/sunburn.jpg" alt="alan" />
         <i class="bi playListPlay bi-play-circle-fill" id="9"></i>
       </div>
       <h5>
@@ -170,7 +176,7 @@
     </li>
     <li class="songItem">
       <div class="img_play">
-        <img src="assets/img/client/album/lifedivided.jpg" alt="alan"/>
+        <img src="assets/img/client/album/lifedivided.jpg" alt="alan" />
         <i class="bi playListPlay bi-play-circle-fill" id="10"></i>
       </div>
       <h5>
@@ -181,7 +187,7 @@
     </li>
     <li class="songItem">
       <div class="img_play">
-        <img src="assets/img/client/album/reflection.jpg" alt="alan"/>
+        <img src="assets/img/client/album/reflection.jpg" alt="alan" />
         <i class="bi playListPlay bi-play-circle-fill" id="11"></i>
       </div>
       <h5>
@@ -192,7 +198,7 @@
     </li>
     <li class="songItem">
       <div class="img_play">
-        <img src="assets/img/client/album/mistake.jpg" alt="alan"/>
+        <img src="assets/img/client/album/mistake.jpg" alt="alan" />
         <i class="bi playListPlay bi-play-circle-fill" id="12"></i>
       </div>
       <h5>

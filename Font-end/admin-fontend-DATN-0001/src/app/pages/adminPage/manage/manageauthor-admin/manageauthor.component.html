@@ -30,12 +30,41 @@
             <span
               *ngIf="errorFieldsArr.includes('fullname')"
               class="text-warning"
-            >*Please enter the music author name</span
+              >*Please enter the music author name</span
             >
             <span
               *ngIf="errorFieldsArr.includes('existAuthorName')"
               class="text-warning"
-            >Author name already exists</span
+              >Author name already exists</span
+            >
+          </div>
+          <label class="form-label">Active</label> <br />
+          <div class="btn-group mb-3" role="group">
+            <input
+              type="radio"
+              class="btn-check"
+              name="active"
+              id="btnradio1"
+              autocomplete="off"
+              checked
+              [value]="true"
+              [(ngModel)]="Author.active"
+            />
+            <label class="btn btn-outline-primary" for="btnradio1"
+              >Active</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="active"
+              id="btnradio3"
+              autocomplete="off"
+              [(ngModel)]="Author.active"
+              [value]="false"
+            />
+            <label class="btn btn-outline-primary" for="btnradio3"
+              >Inactive</label
             >
           </div>
           <div class="form-group mb-3">
@@ -145,46 +174,46 @@
         </mat-autocomplete> -->
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">*</th>
-            <th scope="col">Author name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Image</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">*</th>
+              <th scope="col">Author name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Image</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody
             class="align-middle"
             *ngIf="Authors && Authors.length > 0; else noDataMessage"
           >
-          <tr *ngFor="let item of Authors; let i = index">
-            <th scope="row">{{ i + 1 }}</th>
-            <td>{{ item.fullname }}</td>
-            <td>{{ item.description }}</td>
-            <td>
-              <img
-                src="{{ item.image }}"
-                width="70"
-                height="70"
-                alt="{{ item.image }}"
-              />
-            </td>
+            <tr *ngFor="let item of Authors; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>{{ item.fullname }}</td>
+              <td>{{ item.description }}</td>
+              <td>
+                <img
+                  src="{{ item.image }}"
+                  width="70"
+                  height="70"
+                  alt="{{ item.image }}"
+                />
+              </td>
 
-            <td>
-              <button
-                (click)="getAuthor(item.id)"
-                class="btn btn-outline-info me-3"
-              >
-                Detail
-              </button>
-              <button
-                (click)="deleteAuthor(item.id)"
-                class="btn btn-outline-danger"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
+              <td>
+                <button
+                  (click)="getAuthor(item.id)"
+                  class="btn btn-outline-info me-3"
+                >
+                  Detail
+                </button>
+                <button
+                  (click)="deleteAuthor(item.id)"
+                  class="btn btn-outline-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
           </tbody>
           <ng-template #noDataMessage>
             <tr>
@@ -199,7 +228,7 @@
             <ul class="pagination">
               <li class="page-item" *ngIf="page > 0">
                 <a class="page-link" style="cursor: pointer" (click)="Page(0)"
-                >First</a
+                  >First</a
                 >
               </li>
               <li class="page-item" *ngIf="page > 0">
@@ -217,7 +246,7 @@
                     class="page-link"
                     (click)="Page(page - 1)"
                     style="cursor: pointer"
-                  >{{ page }}</a
+                    >{{ page }}</a
                   >
                 </li>
               </ng-container>
@@ -235,7 +264,7 @@
                   class="page-link"
                   (click)="Page(total - 1)"
                   style="cursor: pointer"
-                >Last</a
+                  >Last</a
                 >
               </li>
             </ul>
