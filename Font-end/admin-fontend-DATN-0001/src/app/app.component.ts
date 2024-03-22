@@ -13,11 +13,11 @@ import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
+import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  // imports: [CommonModule, RouterOutlet, RouterLink, NgToastModule],
   imports: [
     CommonModule,
     RouterOutlet,
@@ -28,10 +28,16 @@ import {HttpClientModule} from '@angular/common/http';
     FormsModule,
     NgToastModule,
     HttpClientModule,
+    
+    
   ],
+  
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  providers: [AdminUserServiceService, NgToastService],
+  providers: [AdminUserServiceService, NgToastService,
+   
+  ],
+
 })
 export class AppComponent implements OnInit {
   title = 'admin-fontend-DATN-0001';

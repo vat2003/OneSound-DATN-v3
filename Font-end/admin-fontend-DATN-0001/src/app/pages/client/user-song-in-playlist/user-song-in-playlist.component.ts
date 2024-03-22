@@ -11,7 +11,7 @@ import {FormsModule} from '@angular/forms';
 import {
   PlaylistInteractionService
 } from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import {MatDialog} from "@angular/material/dialog";
 import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
 import {ChangeDetectorRef, Component} from "@angular/core";
@@ -31,115 +31,7 @@ import {FirebaseStorageCrudService} from "../../../services/firebase-storage-cru
   styleUrl: './user-song-in-playlist.component.scss'
 })
 export class UserSongInPlaylistComponent {
-  // songsfromdata: PlaylistSong[] = [];
-  // songs: any[] = [];
-  // acc?: account | null;
-  // favListSongs: any[] = [];
-  // currentPlaylist?: Playlist;
-  // playlistId: any;
 
-  // constructor(
-  //   private route: ActivatedRoute,
-  //   private matDialog: MatDialog,
-  //   private SongService: SongService,
-  //   private PlaylistSongService: PlayListSongService,
-  //   private PlaylistService: playlistService,
-  //   private userService: accountServiceService,
-  //   private favSong: FavoriteService, private songService: SongService
-  //   , private playlistInteractionService: PlaylistInteractionService
-  // ) {
-  // }
-
-
-  // openDialog(songInput: Song) {
-  //   const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
-  //     data: {song: songInput}
-  //   });
-
-  //   dialogRef.afterOpened().subscribe(() => {
-  //     this.getAllSongs();
-
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-
-  //   });
-  // }
-
-  // ngOnInit(): void {
-  //   this.acc = this.userService.getUserResponseFromLocalStorage();
-  //   this.playlistId = this.route.snapshot.params['id'];
-  //   this.getAllSongs();
-  //   this.getAllSongFavByUser();
-  //   this.getPlaylist(this.playlistId);
-  // }
-
-
-  // getAllSongs(): void {
-  //   // this.SongService.getAllSongs().subscribe((data) => {
-  //   //   this.songsfromdata = data;
-  //   //   this.songs = this.songsfromdata;
-  //   //
-  //   //   console.log(this.songs);
-  //   // });
-
-  //   this.PlaylistSongService.getAllSongsInPlaylist(this.playlistId).subscribe((data) => {
-  //     this.songs = data;
-  //     this.songsfromdata = data;
-  //     console.log(data)
-  //   })
-
-  // }
-
-  // getPlaylist(id: any) {
-  //   this.PlaylistService.getPlaylistByid(id).subscribe((data) => {
-  //     this.currentPlaylist = data;
-  //   });
-  // }
-
-  // getAllSongFavByUser() {
-  //   if (this.acc && this.acc.id) {
-  //     this.favSong.getAllFavSongByUser(this.acc.id).subscribe((data) => {
-  //       this.favListSongs = data;
-  //       // console.log(this.favListSongs);
-  //       this.checkFav();
-  //     });
-  //   }
-  // }
-
-  // checkFav() {
-  //   for (let song of this.songs) {
-  //     let found = this.favListSongs.find((fav) => fav.song.id === song.id);
-  //     // Nếu tồn tại, gán isFav = true, ngược lại gán isFav = false
-  //     song.isFav = found ? true : false;
-  //   }
-  // }
-
-  // favoriteSong(song: any) {
-  //   // alert(song.id);
-  //   let songId = song.id;
-  //   let favS = new FavoriteSong(this.acc?.id, songId);
-  //   if (
-  //     this.acc == null ||
-  //     this.acc == undefined ||
-  //     this.acc === null ||
-  //     this.acc === undefined
-  //   ) {
-  //     alert('Please log in to use this feature');
-  //     return;
-  //   }
-  //   if (song.isFav) {
-  //     if (!confirm('Are you sure you want to unlike?')) {
-  //       return;
-  //     }
-  //     song.isFav = false;
-  //     this.favSong.deleteFavoriteSong(favS).subscribe((data) => {
-  //     });
-  //   } else {
-  //     song.isFav = true;
-  //     this.favSong.addFavoriteSong(favS).subscribe((data) => {
-  //     });
-  //   }
-  // }
 
   id: number | undefined;
   playlists: Playlist[] = [];
@@ -153,6 +45,9 @@ export class UserSongInPlaylistComponent {
   songsfromdata: PlaylistSong[] = [];
   songs: any[] = [];
   songEntity: Song | null | undefined;
+  searchTerm: string = '';
+  private searchTerms = new Subject<string>();
+
 
   constructor(private route: ActivatedRoute,
               private playlistService: playlistService,
@@ -165,6 +60,24 @@ export class UserSongInPlaylistComponent {
               private firebaseStorage: FirebaseStorageCrudService,
               private playlistInteractionService: PlaylistInteractionService
   ) {
+  }
+
+  search(): void {
+    const searchTermLowerCase = this.searchTerm.trim().toLowerCase();
+    this.PlaylistSong = this.PlaylistSong.filter(PlaylistSong =>
+      PlaylistSong.song?.name.toLowerCase().includes(searchTermLowerCase) 
+      // ||
+       //playlists..toLowerCase().includes(searchTermLowerCase)
+    );
+
+
+    if (searchTermLowerCase == '') {
+      // this.timname();
+    }
+  }
+
+  onKey(event: any): void {
+    this.searchTerms.next(event.target.value);
   }
 
   ngOnInit(): void {
@@ -289,13 +202,11 @@ export class UserSongInPlaylistComponent {
   checkFav() {
     for (let song of this.songs) {
       let found = this.favListSongs.find((fav) => fav.song.id === song.id);
-      // Nếu tồn tại, gán isFav = true, ngược lại gán isFav = false
       song.isFav = found ? true : false;
     }
   }
 
   favoriteSong(song: any) {
-    // alert(song.id);
     let songId = song.id;
     let favS = new FavoriteSong(this.acc?.id, songId);
     if (

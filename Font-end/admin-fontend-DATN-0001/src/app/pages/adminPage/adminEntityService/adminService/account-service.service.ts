@@ -41,6 +41,10 @@ export class accountServiceService {
 
   private apicheckactive = `${this.baseUrl}/users/checkactive`;
 
+  private apiLoginGoogle = `${this.baseUrl}/emails/users/`;
+  private apiLoginFacebook = `${this.baseUrl}/facebooks/users/`;
+ 
+
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
   }
@@ -54,6 +58,13 @@ export class accountServiceService {
   }
 
   
+  getGoogleUserInfo(id: number): Observable<any> {
+    return this.http.get<any>(this.apiLoginGoogle + id.toString());
+  }
+
+  getFacebookUserInfo(id: number): Observable<any> {
+    return this.http.get<any>(this.apiLoginFacebook + id.toString());
+  }
 
 
   EmailFeedBack(Feedback: Feedback): Observable<Object> {

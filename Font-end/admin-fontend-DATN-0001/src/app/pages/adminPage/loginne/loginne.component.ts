@@ -7,15 +7,16 @@ import { login } from '../adminEntityService/adminEntity/DTO/login';
 import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
 import { TokenService } from '../adminEntityService/adminService/token.service';
 import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.response';
-import { Register } from '../adminEntityService/adminEntity/DTO/Register';
-import { routes } from '../../../app.routes';
+import { GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig } from 'angularx-social-login';
+import { config } from 'process';
+
 
 @Component({
   selector: 'app-loginne',
   standalone: true,
   imports: [RouterLink, CommonModule, FormsModule],
+  
   // providers: [
-  //     SocialAuthService,
   //   {
   //     provide: 'SocialAuthServiceConfig',
   //     useValue: {
@@ -23,18 +24,12 @@ import { routes } from '../../../app.routes';
   //       providers: [
   //         {
   //           id: GoogleLoginProvider.PROVIDER_ID,
-  //           provider: new GoogleLoginProvider('423644450056-m6dpvi9ilk7hp8vbiul7egjr1dte9j8o.apps.googleusercontent.com'),
-  //           scope: 'email,public_profile'
-  //         },
-  //         {
-  //           id: FacebookLoginProvider.PROVIDER_ID,
-  //           provider: new FacebookLoginProvider('881207913434756')
-  //         },
-  //       ],
+  //           provider: new GoogleLoginProvider('841450902270-m7oa7nae0dtoqfube2q1qi1t57e6s32r.apps.googleusercontent.com')
+  //         }
+  //       ]
   //     } as SocialAuthServiceConfig,
-  //   },
+  //   }
   // ],
-
   templateUrl: './loginne.component.html',
   styleUrl: './loginne.component.scss',
 })
@@ -53,58 +48,31 @@ export class LoginneComponent implements OnInit {
   constructor(
     private router: Router,
     private userService: accountServiceService,
-    private tokenService: TokenService
-  ) // private authService: SocialAuthService,
+    private tokenService: TokenService,
+    private authService: SocialAuthService
+
+    
+  ) 
   {}
 
   ngOnInit(): void {
-    this.account = this.userService.getUserResponseFromLocalStorage();
-    // this.authService.authState.subscribe((user) => {
-    //   this.user = user;
-    // });
+  
   }
 
-  // loginWithFacebook(): void {
-  //  
-  //   this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
 
-  //   // Subscribe to authState observable
-  //   this.authService.authState.subscribe((user) => {
-  //    
-  //     console.log(user) + "<----------------";
-  //     console.log(user) + "<----------------";
-  //     console.log(user) + "<----------------";
-  //     // const registerData: Register = {
-  //     //   fullname: this.user?.firstName,
-  //     //   email: this.email,
-  //     //   password: this.password,
-  //     //   retype_password: this.retypePassword,
-  //     //   gender: this.gender,
-  //     //   active: this.active,
-  //     //   createdDate: this.createdDate,
-  //     //   role_id: 1
-  //     // };
-  //   });
 
-  //   // this.userService.register(registerData).subscribe({
-  //   //   next: (response: any) => {
-  //   //     alert("Đăng ký thành công");
-  //   //     console.log(response);
-  //   //     this.router.navigate(['onesound/dangnhap']);
-  //   //   },
-  //   //   complete: () => {
-  //   //   },
-  //   //   error: (error: any) => {
-  //   //     alert("Thất bại");
-  //   //     console.error(error);
-  //   //   }
-  //   // });
-  // }
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((user) => {
+      // Xử lý đăng nhập thành công ở đây
+      alert("ngu")
+      console.log(user);
+    }).catch((error) => {
+      // Xử lý lỗi ở đây
+      console.error(error);
+    });
+  }
 
-  // loginWithGoogle(): void {
-  //  
-  //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  // }
+
 
   dangky() {
     this.router.navigate(['onesound/signup']);
@@ -185,14 +153,13 @@ export class LoginneComponent implements OnInit {
        
       },
       error: (error) => {
-        // Xử lý lỗi khi yêu cầu gặp vấn đề
-        alert("Your account has been locked" )
-        // Thực hiện các hành động phù hợp với lỗi nhận được
+     
+        alert("Your account has been locked x2" )
+        console.log(error);
+        
       },
       complete: () => {
-        // Xử lý khi yêu cầu hoàn thành (không bắt buộc)
         console.log('Yêu cầu hoàn thành');
-        // Thực hiện các hành động phù hợp khi yêu cầu hoàn thành
       }
     });
     
@@ -211,6 +178,5 @@ export class LoginneComponent implements OnInit {
 
   loginByGoogle() {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-    // window.location.href = ('http://localhost:8080/api/v1/users/test');
   }
 }

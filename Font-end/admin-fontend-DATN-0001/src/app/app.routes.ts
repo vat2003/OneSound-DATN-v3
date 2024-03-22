@@ -1,4 +1,4 @@
-import {Routes} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 
 import {BlankComponent} from './pages/adminPage/blank/blank.component';
 import {Notfound404Component} from './pages/adminPage/notfound404/notfound404.component';
@@ -36,6 +36,7 @@ import {UserSongInPlaylistComponent} from './pages/client/user-song-in-playlist/
 import {
   PlayListSongComponent
 } from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
+import { UpdateUserComponentComponent } from './pages/client/update-user-component/update-user-component.component';
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -54,7 +55,7 @@ export const routes: Routes = [
 
   {
     path: 'onesound/admin',
-    canActivate: [AdminGuardFn],
+    // canActivate: [AdminGuardFn],
 
     component: HomeComponent,
     children: [
@@ -93,7 +94,7 @@ export const routes: Routes = [
   {
     path: 'onesound/home',
     component: UserMenusideComponent,
-    canActivate: [AuthGuardFn],
+    // canActivate: [AuthGuardFn],
     children: [
       {path: '', component: UserExploreComponent},
       {path: 'explore', component: UserExploreComponent},
@@ -115,6 +116,10 @@ export const routes: Routes = [
     children: [
       {path: 'search/:keyword', component: UserResultSearchComponent},
       {path: 'feedback', component: FeedbackComponent},
+      { path: 'users/update', component: UpdateUserComponentComponent },
+
+      // http://localhost:4200/users/update?id=4&type=email
     ],
   },
 ];
+export const AppRoutingModule = RouterModule.forRoot(routes);
