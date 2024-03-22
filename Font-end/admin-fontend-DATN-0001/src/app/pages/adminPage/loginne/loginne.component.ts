@@ -16,20 +16,7 @@ import { config } from 'process';
   standalone: true,
   imports: [RouterLink, CommonModule, FormsModule],
   
-  // providers: [
-  //   {
-  //     provide: 'SocialAuthServiceConfig',
-  //     useValue: {
-  //       autoLogin: false,
-  //       providers: [
-  //         {
-  //           id: GoogleLoginProvider.PROVIDER_ID,
-  //           provider: new GoogleLoginProvider('841450902270-m7oa7nae0dtoqfube2q1qi1t57e6s32r.apps.googleusercontent.com')
-  //         }
-  //       ]
-  //     } as SocialAuthServiceConfig,
-  //   }
-  // ],
+
   templateUrl: './loginne.component.html',
   styleUrl: './loginne.component.scss',
 })
@@ -61,16 +48,7 @@ export class LoginneComponent implements OnInit {
 
 
 
-  signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((user) => {
-      // Xử lý đăng nhập thành công ở đây
-      alert("ngu")
-      console.log(user);
-    }).catch((error) => {
-      // Xử lý lỗi ở đây
-      console.error(error);
-    });
-  }
+
 
 
 

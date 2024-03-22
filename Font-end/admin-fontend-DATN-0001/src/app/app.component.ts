@@ -14,6 +14,7 @@ import {MatInputModule} from '@angular/material/input';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import { HeaderComponent } from './pages/client/header/header.component';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,7 @@ import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, Social
     FormsModule,
     NgToastModule,
     HttpClientModule,
-    
+    // HeaderComponent,
     
   ],
   

@@ -9,11 +9,13 @@ import { accountServiceService } from '../../adminPage/adminEntityService/adminS
 import { TokenService } from '../../adminPage/adminEntityService/adminService/token.service';
 import { LoginResponse } from '../../adminPage/adminEntityService/adminEntity/utils/login.response';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../header/header.component';
+import { HeaderneComponent } from '../headerne/headerne.component';
 
 @Component({
   selector: 'app-update-user-component',
   standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule,    ReactiveFormsModule ],
+  imports: [RouterLink, CommonModule, FormsModule,    ReactiveFormsModule ,HeaderneComponent ],
   templateUrl: './update-user-component.component.html',
   styleUrl: './update-user-component.component.scss'
 })
@@ -66,26 +68,153 @@ export class UpdateUserComponentComponent implements OnInit{
     });
   }
   ngOnInit() {
-    debugger;
+    ;
     this.route.queryParams.subscribe(params => {
       this.idEmail = params['id'];
       this.typeRequest = params['type'];
     });
   }
 
+  // save(){
+  //   ; 
+  //   if (this.typeRequest=="facebook"){
+      
+  //   } else {
+  //     if (this.typeRequest=="email"){
+  //       debugger
+  //       this.RegisterDto.google_account_id = 1;
+  //       this.userService.getGoogleUserInfo(this.idEmail).subscribe({
+  //         next: (response: any) =>{
+  //           debugger
+  //           ;
+  //           this.avatar = response.picture;
+  //           this.RegisterDto.email = response.email;
+  //           this.RegisterDto.fullname = "";
+  //           this.RegisterDto.createdDate = this.userProfileForm.get('date_of_birth')?.value;
+  //           this.RegisterDto.password = this.userProfileForm.get('password')?.value;
+  //           this.RegisterDto.address = this.userProfileForm.get('address')?.value;
+  //           this.RegisterDto.avatar = this.avatar;
+  //           this.RegisterDto.retype_password = this.RegisterDto.password;
+         
+  //           const registerData: Register = {
+  //             fullname: this.RegisterDto.fullname,
+  //             email: this.RegisterDto.email,
+  //             password: this.RegisterDto.password,
+  //             retype_password: this.RegisterDto.retype_password,
+  //             gender: true,
+  //             active: true,
+  //             createdDate: this.RegisterDto.createdDate,
+  //             birthday: this.RegisterDto.createdDate,
+  //             role_id: 1,
+  //           };
+  //         debugger
+  //         if (this.RegisterDto.email.length>=6){
+  //           debugger
+  //           this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
+  //             next: (response: any) =>{
+                
+  //               debugger;
+  //               if (response.id>0){
+  //                 alert("This phone number has been used by someone please try by another phone number");
+  //               }
+  //             },
+  //             complete: () =>{
+  //               debugger;
+  //             },
+  //             error: (error: any) => {
+  //               debugger
+  //               console.log("Error fetching data error: "+error.error.message);
+  //             }
+  //           });
+  //         }
+  //           this.userService.register(registerData).subscribe({
+  //             next: (response: any) =>{
+  //               debugger
+  //               alert("You have been updated successfully! Please login again");
+  //               this.loginDto.password = this.RegisterDto.password;
+  //               this.loginDto.email = this.RegisterDto.email;
+  //               console.log(response);
+  //               debugger
+  //               this.userService.login(this.loginDto)
+  //                 .subscribe({
+  //                     next: (response: LoginResponse) => {
+  //                       debugger
+  //                       const {token} = response
+  //                       this.tokenService.setToken(token);
+                        
+  //                       this.userService.getUserDetail(token).subscribe({
+                
+  //                         next: (response: any) => {
+  //                           debugger
+  //                           this.account = {
+  //                             ...response,
+  //                           };
+  //                           console.log(response);
+  //                           this.userService.saveUserResponseToLocalStorage(response);
+  //                           if (this.account && this.account.accountRole) {
+                              
+  //                             alert(this.account.accountRole.name);
+                
+  //                             if (this.account.accountRole.name === 'admin') {
+                                
+  //                               this.router.navigate(['/onesound/admin']);
+  //                             } else if (this.account.accountRole.name === 'user') {
+                                
+  //                               this.router.navigate(['/onesound/home/explore']);
+  //                             }
+  //                           } else {                              
+  //                             alert('Error: User role information not found.');
+  //                           }
+  //                         },
+  //                         complete: () => {},
+  //                         error: (error: any) => {
+  //                           console.log(error);
+  //                         },
+  //                       });
+  //                     },
+  //                     complete: () => {
+                        
+  //                     },
+  //                     error: (error : any) => {
+                        
+  //                     }
+  //                   }
+  //                 );
+  //             },
+  //             complete: () =>{
+  //               ;
+  //             },
+  //             error: (error: any) => {                
+  //               debugger
+  //               console.log("Error fetching data error x1: "+error);
+  //             }
+  //           });
+  //         },
+  //         complete: () =>{
+  //           ;
+  //         },
+  //         error: (error: any) => {
+  //           console.log("Error fetching data error x2 : "+error);
+  //         }
+  //       })
+  //     }
+  //   }
+  // }
   save(){
-    debugger; 
+    ; 
     if (this.typeRequest=="facebook"){
       
     } else {
       if (this.typeRequest=="email"){
+        debugger
         this.RegisterDto.google_account_id = 1;
         this.userService.getGoogleUserInfo(this.idEmail).subscribe({
           next: (response: any) =>{
-            debugger;
+            debugger
+            ;
             this.avatar = response.picture;
             this.RegisterDto.email = response.email;
-            this.RegisterDto.fullname = "";
+            this.RegisterDto.fullname = response.name;
             this.RegisterDto.createdDate = this.userProfileForm.get('date_of_birth')?.value;
             this.RegisterDto.password = this.userProfileForm.get('password')?.value;
             this.RegisterDto.address = this.userProfileForm.get('address')?.value;
@@ -103,26 +232,45 @@ export class UpdateUserComponentComponent implements OnInit{
               birthday: this.RegisterDto.createdDate,
               role_id: 1,
             };
-
+          debugger
+          if (this.RegisterDto.email.length>=6){
+            debugger
+            this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
+              next: (response: any) =>{
+                
+                debugger;
+                if (response.id>0){
+                  alert("This phone number has been used by someone please try by another phone number");
+                }
+              },
+              complete: () =>{
+                debugger;
+              },
+              error: (error: any) => {
+                debugger
+                console.log("Error fetching data error: "+error.error.message);
+              }
+            });
+          }
             this.userService.register(registerData).subscribe({
               next: (response: any) =>{
-                debugger;
+                debugger
                 alert("You have been updated successfully! Please login again");
                 this.loginDto.password = this.RegisterDto.password;
                 this.loginDto.email = this.RegisterDto.email;
                 console.log(response);
-                
+                debugger
                 this.userService.login(this.loginDto)
                   .subscribe({
                       next: (response: LoginResponse) => {
                         debugger
                         const {token} = response
                         this.tokenService.setToken(token);
-                        debugger;
+                        
                         this.userService.getUserDetail(token).subscribe({
                 
                           next: (response: any) => {
-                            
+                            debugger
                             this.account = {
                               ...response,
                             };
@@ -150,25 +298,25 @@ export class UpdateUserComponentComponent implements OnInit{
                         });
                       },
                       complete: () => {
-                        debugger
+                        
                       },
                       error: (error : any) => {
-                        debugger
+                        
                       }
                     }
                   );
               },
               complete: () =>{
-                debugger;
+                ;
               },
-              error: (error: any) => {
+              error: (error: any) => {                
                 debugger
                 console.log("Error fetching data error x1: "+error);
               }
             });
           },
           complete: () =>{
-            debugger;
+            ;
           },
           error: (error: any) => {
             console.log("Error fetching data error x2 : "+error);
@@ -177,12 +325,15 @@ export class UpdateUserComponentComponent implements OnInit{
       }
     }
   }
+
+  
+  
   checkEmailExists(){
     this.checkExistPhoneNumber=false;
     this.buttonHit = true;
     this.userService.checkEmailExists(this.userProfileForm.get('phone_number')?.value).subscribe({
       next: (response: any) =>{
-        debugger;
+        ;
         if (response.id>=1){
           this.checkExistPhoneNumber = true;
         } else {
@@ -191,10 +342,10 @@ export class UpdateUserComponentComponent implements OnInit{
         console.log(this.checkExistPhoneNumber);
       },
       complete: () =>{
-        debugger;
+        ;
       },
       error: (error: any) =>{
-        debugger;
+        ;
         console.log("Error fetching data: error "+error);
       }
     })
