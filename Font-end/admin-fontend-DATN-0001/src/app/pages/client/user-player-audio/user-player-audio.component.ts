@@ -38,7 +38,7 @@ export class UserPlayerAudioComponent implements OnInit {
   currentTime: string = '0:00';
   totalTime: string = '0:00';
   songFromFirebase: any;
-
+  prevIsYoutubePlayer!: boolean;
   constructor(private dataGlobal: DataGlobalService,
               private firebaseStorage: FirebaseStorageCrudService,
               private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
@@ -50,12 +50,17 @@ export class UserPlayerAudioComponent implements OnInit {
     this.dataGlobal.YtGlobalId.subscribe((video) => {
       if (video == null || video == undefined) {
         this.selectedSong = this.dataGlobal.getItem('songHeardLast');
-        this.loadAudio();
       } else {
         this.selectedSong = video; // Cập nhật giá trị mới của ind_display khi có sự thay đổi của index
         console.log('this.selectedSong from player AUDIO ', this.selectedSong);
       }
-      this.loadAudio();
+      console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ', this.selectedSong);
+      if (this.selectedSong.id.videoId === undefined) {
+        this.loadAudio();
+      } else {
+        this.audio.pause();
+      }
+      // this.loadAudio();
     });
     this.seek_bar.nativeElement.style.width = '0%';
     this.seek_dot.nativeElement.style.left = '0%';

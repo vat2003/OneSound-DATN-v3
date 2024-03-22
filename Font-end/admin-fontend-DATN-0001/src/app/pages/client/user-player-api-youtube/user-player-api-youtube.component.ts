@@ -171,13 +171,14 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
 
     this.PlaylistYoutubeService.createYt(Youtube).subscribe(
       () => {
-        const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
-          data: { youtubeId: this.videoId },
-        });
+        const dialogRef = this.matDialog.open(
+          UserPlaylistYoutubeModalComponentComponent,
+          {
+            data: { youtubeId: this.videoId },
+          }
+        );
 
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
+        dialogRef.afterClosed().subscribe((result) => {});
 
       },
       error => {
