@@ -7,6 +7,8 @@ import { FavoriteService } from '../../../services/favorite-service/favorite.ser
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
 import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import {DataGlobalService} from "../../../services/data-global.service";
+import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
 
 @Component({
   selector: 'app-user-favorite',
@@ -23,13 +25,26 @@ export class UserFavoriteComponent implements OnInit {
   favListAlbums: any[] = [];
   constructor(
     private userService: accountServiceService,
-    private favYoutube: FavoriteService
+    private favYoutube: FavoriteService,
+    private dataGlobal: DataGlobalService,
+    private firebaseStorage: FirebaseStorageCrudService,
   ) {}
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.getAllYoutubeFavByUser();
   }
-
+  async setImageURLFirebase(image: string): Promise<string> {
+    if (image != null) {
+      return await this.firebaseStorage.getFile(image);
+    } else {
+      return 'null';
+    }
+  }
+  async showDetail(item: any) {
+    item.path = await this.setImageURLFirebase(item.path);
+    this.dataGlobal.changeId(item);
+    this.dataGlobal.setItem('songHeardLast', item);
+  }
   getAllYoutubeFavByUser() {
     if (this.acc && this.acc.id) {
       this.favYoutube.getAllFavYoutubeByUser(this.acc.id).subscribe((data) => {

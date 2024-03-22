@@ -22,6 +22,7 @@ import {Playlist} from "../../adminPage/adminEntityService/adminEntity/Playlist/
 import {ActivatedRoute, Router} from "@angular/router";
 import {PlaylistYoutubeService} from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
 import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
+import {DataGlobalService} from "../../../services/data-global.service";
 
 @Component({
   selector: 'app-user-song-in-playlist',
@@ -163,7 +164,8 @@ export class UserSongInPlaylistComponent {
               private router: Router,
               private favSong: FavoriteService, private songService: SongService,
               private firebaseStorage: FirebaseStorageCrudService,
-              private playlistInteractionService: PlaylistInteractionService
+              private playlistInteractionService: PlaylistInteractionService,
+              private dataGlobal: DataGlobalService
   ) {
   }
 
@@ -254,6 +256,12 @@ export class UserSongInPlaylistComponent {
       }
     );
 
+  }
+
+  async showDetail(item: any) {
+    item.path = await this.setImageURLFirebase(item.path);
+    this.dataGlobal.changeId(item);
+    this.dataGlobal.setItem('songHeardLast', item);
   }
 
   removeYoutubeFromPlaylist(id: number, idsong: string): void {

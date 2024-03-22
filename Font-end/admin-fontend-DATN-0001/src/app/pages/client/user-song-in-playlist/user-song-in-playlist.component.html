@@ -60,7 +60,7 @@
     </tr>
     </thead>
     <tbody id="list-songs-detail">
-    <tr *ngFor="let song of PlaylistSong">
+    <tr *ngFor="let song of PlaylistSong" (click)="this.showDetail(song.song)">
       <td>
         <img src="{{song.song?.image}}" alt=""/>
       </td>

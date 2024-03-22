@@ -3,7 +3,7 @@ import {SingerAlbumService} from './../../adminPage/adminEntityService/adminServ
 import {accountServiceService} from './../../adminPage/adminEntityService/adminService/account-service.service';
 import {SongService} from './../../adminPage/adminEntityService/adminService/song.service';
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {SingerService} from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
 import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
@@ -22,6 +22,7 @@ import {account} from '../../adminPage/adminEntityService/adminEntity/account/ac
 import {AlbumService} from '../../adminPage/adminEntityService/adminService/album/album.service';
 import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
 import {NgForOf} from "@angular/common";
+import {DataGlobalService} from "../../../services/data-global.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -29,7 +30,7 @@ import {NgForOf} from "@angular/common";
   imports: [
     NgIf, NgFor,
     NgxPaginationModule,
-    NgForOf
+    NgForOf, RouterLink
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -69,7 +70,8 @@ export class UserProfileComponent implements OnInit {
     private accountServiceService: accountServiceService,
     private albumService: AlbumService,
     private SingerAlbumService: SingerAlbumService,
-    private router: Router
+    private router: Router,
+    private dataGlobal: DataGlobalService
   ) {
   }
 
@@ -92,10 +94,14 @@ export class UserProfileComponent implements OnInit {
     this.albumService.getAlbumById(album.id).subscribe(data => {
       this.songs = data.songs;
       console.log("BÀI HÁT TRONG ALBUM: " + this.songs);
-      this.qtt = data.songs.length;
+      this.qtt = this.songs.length;
     })
   }
-
+  async showDetail(item: any) {
+    item.path = await this.setImageURLFirebase(item.path);
+    this.dataGlobal.changeId(item);
+    this.dataGlobal.setItem('songHeardLast', item);
+  }
 
   // private getSingerById() {
   //   this.singerService.getArtistById(this.id).subscribe(
@@ -281,10 +287,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   getRelativeArtist() {
-    this.singerService.getAllArtists().subscribe(data => {
+    this.singerService.getAllArtists().subscribe(async data => {
       for (let i = 0; i < 3; i++) {
+        data[i].image = await this.setImageURLFirebase(data[i].image);
         this.singers.push(data[i]);
         console.log("ĐỀ XUẤT CA SĨ: " + this.singers[i].fullname);
+        console.log("ĐỀ XUẤT CA SĨ: " + this.singers[i].image);
       }
     });
   }

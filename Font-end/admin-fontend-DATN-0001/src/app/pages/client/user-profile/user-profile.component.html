@@ -1,10 +1,10 @@
-<section class="content">
-  <div class="content__middle">
+<section class="">
+  <div class="">
     <div class="artist is-verified">
       <div class="artist__header">
         <div class="artist__info">
           <div class="profile__img">
-            <img src="{{ singer.image }}" />
+            <img src="{{ singer.image }}"/>
           </div>
 
           <div class="artist__info__meta">
@@ -17,26 +17,26 @@
               {{ singer.fullname }}
             </div>
 
-            <div class="artist__info__actions">
-              <button class="button-dark">
-                <i class="ion-ios-play"></i>
-                Play
-              </button>
+            <!--            <div class="artist__info__actions">-->
+            <!--              <button class="button-dark">-->
+            <!--                <i class="ion-ios-play"></i>-->
+            <!--                Play-->
+            <!--              </button>-->
 
-              <button class="button-light">Follow</button>
+            <!--              <button class="button-light">Follow</button>-->
 
-              <button class="button-light more">
-                <i class="ion-ios-more"></i>
-              </button>
-            </div>
+            <!--              <button class="button-light more">-->
+            <!--                <i class="ion-ios-more"></i>-->
+            <!--              </button>-->
+            <!--            </div>-->
           </div>
         </div>
 
-        <div class="artist__listeners">
-          <div class="artist__listeners__count">15,662,810</div>
+        <!--        <div class="artist__listeners">-->
+        <!--          <div class="artist__listeners__count">15,662,810</div>-->
 
-          <div class="artist__listeners__label">Monthly Listeners</div>
-        </div>
+        <!--          <div class="artist__listeners__label">Monthly Listeners</div>-->
+        <!--        </div>-->
 
         <div class="artist__navigation">
           <ul class="nav nav-tabs" role="tablist">
@@ -50,15 +50,15 @@
               >
             </li>
 
-            <li role="presentation">
-              <a
-                href="#related-artists"
-                aria-controls="related-artists"
-                role="tab"
-                data-toggle="tab"
-              >Related Artists</a
-              >
-            </li>
+            <!--            <li role="presentation">-->
+            <!--              <a-->
+            <!--                href="#related-artists"-->
+            <!--                aria-controls="related-artists"-->
+            <!--                role="tab"-->
+            <!--                data-toggle="tab"-->
+            <!--              >Related Artists</a-->
+            <!--              >-->
+            <!--            </li>-->
 
             <!--<li role="presentation">
               <a href="#artist-about" aria-controls="artist-about" role="tab" data-toggle="tab">About</a>
@@ -99,7 +99,8 @@
                 <!-- Latest Release-->
                 <div class="section-title">Latest Release</div>
 
-                <div class="latest-release" *ngIf="songs && songs.length > 0">
+                <div class="latest-release" *ngIf="songs && songs.length > 0"
+                     (click)="showDetail(songs[songs.length - 1])">
                   <div class="latest-release__art">
                     <img
                       src="{{ songs[songs.length - 1].image }}"
@@ -164,9 +165,10 @@
                             };
                       let i = index
                     "
+                    (click)="this.showDetail(song)"
                   >
                     <div class="track__art">
-                      <img src="{{ song.image }}" />
+                      <img src="{{ song.image }}"/>
                     </div>
 
                     <!-- <div class="track__number">{{ i + 1 }}</div> -->
@@ -182,7 +184,8 @@
                           let singer of singerMap[song.id];
                           let last = last
                         "
-                      >{{ singer.fullname
+                      >{{
+                          singer.fullname
                         }}{{
                           !last && singerMap[song.id].length > 1 ? ", " : ""
                         }}</span
@@ -207,9 +210,9 @@
                 <div class="section-title">Related Artists</div>
 
                 <div class="related-artists" *ngFor="let item of singers">
-                  <a href="#" class="related-artist">
+                  <a href="/onesound/home/profile/{{item.id}}" class="related-artist">
                     <span class="related-artist__img">
-                      <img src="{{ item.image }}" />
+                      <img src="{{ item.image }}"/>
                     </span>
 
                     <span class="related-artist__name">{{
@@ -244,7 +247,7 @@
                     "
                   >
                     <div class="album__info__art">
-                      <img src="{{ item.image }}" alt="When It's Dark Out" />
+                      <img src="{{ item.image }}" alt="When It's Dark Out"/>
                     </div>
 
                     <div class="album__info__meta">
@@ -301,16 +304,16 @@
     </div>
   </div>
 
-  <div class="content__right">
-    <div class="social">
-      <div class="friends" *ngFor="let item of users">
-        <a href="#" class="friend">
-          <i class="ion-android-person"></i>
-          {{ item.fullname }}
-        </a>
-      </div>
+  <!--  <div class="content__right">-->
+  <!--    <div class="social">-->
+  <!--      <div class="friends" *ngFor="let item of users">-->
+  <!--        <a href="#" class="friend">-->
+  <!--          <i class="ion-android-person"></i>-->
+  <!--          {{ item.fullname }}-->
+  <!--        </a>-->
+  <!--      </div>-->
 
-      <button class="button-light">Find Friends</button>
-    </div>
-  </div>
+  <!--      <button class="button-light">Find Friends</button>-->
+  <!--    </div>-->
+  <!--  </div>-->
 </section>

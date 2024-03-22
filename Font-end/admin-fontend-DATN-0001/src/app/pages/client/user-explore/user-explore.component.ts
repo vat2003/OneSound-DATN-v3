@@ -28,7 +28,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {accountServiceService} from "../../adminPage/adminEntityService/adminService/account-service.service";
 import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
 import {FavoriteService} from "../../../services/favorite-service/favorite.service";
-import { DataGlobalService } from '../../../services/data-global.service';
+import {DataGlobalService} from '../../../services/data-global.service';
 
 @Component({
   selector: 'app-user-explore',
@@ -47,6 +47,7 @@ export class UserExploreComponent implements OnInit {
   genreMap: { [key: number]: any[] } = {};
   acc?: account | null;
   favListSongs: any[] = [];
+
   constructor(
     private favSong: FavoriteService,
     private userService: accountServiceService,
@@ -60,7 +61,7 @@ export class UserExploreComponent implements OnInit {
     private SongSingerService: SongSingerService,
     private SongGenreService: SongGenreService,
     // private SingerService:SingerService,
-    private dataGlobal:DataGlobalService,
+    private dataGlobal: DataGlobalService,
     private GenreServiceService: GenreServiceService
   ) {
   }
@@ -105,7 +106,8 @@ export class UserExploreComponent implements OnInit {
     });
   }
 
-  showDetail(item: any) {
+  async showDetail(item: any) {
+    item.path = await this.setImageURLFirebase(item.path);
     this.dataGlobal.changeId(item);
     this.dataGlobal.setItem('songHeardLast', item);
   }
@@ -245,6 +247,7 @@ export class UserExploreComponent implements OnInit {
 
 
   }
+
   openDialog(songInput: Song) {
     const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
       data: {song: songInput}
