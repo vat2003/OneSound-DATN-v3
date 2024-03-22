@@ -176,11 +176,14 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   search(): void {
     // this.searchTerms.next(this.searchTerm);
     const searchTermLowerCase = this.searchTerm.toLowerCase();
-    this.songs = this.songs.filter(author =>
-      author.name.toLowerCase().includes(searchTermLowerCase) ||
-      author.description.toLowerCase().includes(searchTermLowerCase)||
-      author.album.title.toLowerCase().includes(searchTermLowerCase)
-    );
+    // this.songs = this.songs.filter(author =>
+    //   author.name.toLowerCase().includes(searchTermLowerCase) ||
+    //   author.description.toLowerCase().includes(searchTermLowerCase)||
+    //   author.album.title.toLowerCase().includes(searchTermLowerCase)
+    // );
+    this.songs = this.songs.filter((song: Song) => {
+      return song.name.toLowerCase().includes(searchTermLowerCase);
+    });
     if (searchTermLowerCase == '') {
       this.displayDataOnTable(0, 10);
     }
