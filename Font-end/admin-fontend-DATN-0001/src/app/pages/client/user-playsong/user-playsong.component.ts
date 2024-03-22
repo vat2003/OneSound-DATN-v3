@@ -15,7 +15,7 @@ import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album'
 import {ActivatedRoute} from '@angular/router';
 import {SingerService} from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
-import {Observable, forkJoin, map, startWith, switchMap} from 'rxjs';
+import {Observable, catchError, forkJoin, map, of, startWith, switchMap} from 'rxjs';
 import {FormControl, FormsModule} from '@angular/forms';
 import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
 import {Author} from '../../adminPage/adminEntityService/adminEntity/author/author';
@@ -139,6 +139,8 @@ export class UserPlaysongComponent implements OnInit {
       console.log('Genre Map:', this.genreMap);
     });
   }
+
+
 
   getAuthorsForSongs() {
     const observables = this.songs.map((song) => {

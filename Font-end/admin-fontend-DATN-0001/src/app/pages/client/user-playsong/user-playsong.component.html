@@ -1,7 +1,11 @@
 <div class="detail-container">
   <div class="detail-container-banner" id="category-detail">
     <div class="detail-container-banner-first">
-      <img [src]="album.image" alt="" style="height: 300px; object-fit: cover" />
+      <img
+        [src]="album.image"
+        alt=""
+        style="height: 300px; object-fit: cover"
+      />
       <div class="detail-container-banner-content">
         <h1>{{ album.title }}</h1>
         <p>{{ album.releaseYear }}</p>
@@ -37,8 +41,13 @@
 
 <div class="list-tracks">
   <div class="list-tracks-form-search">
-    <input type="search" name="search-music" id="" placeholder="Filter playlist on title, artist or album"
-      class="search" />
+    <input
+      type="search"
+      name="search-music"
+      id=""
+      placeholder="Filter playlist on title, artist or album"
+      class="search"
+    />
     <div class="icon-search">
       <i class="fa-solid fa-magnifying-glass"></i>
     </div>
@@ -68,27 +77,41 @@
         </td>
         <td>
           <div>
-            <span *ngFor="let singer of singerMap[song.id]; let last = last">{{ singer.fullname
-              }}{{ !last && singerMap[song.id].length > 1 ? ", " : "" }}</span>
+            <span *ngFor="let singer of singerMap[song.id]; let last = last"
+              >{{ singer.fullname
+              }}{{ !last && singerMap[song.id].length > 1 ? ", " : "" }}</span
+            >
           </div>
         </td>
         <td>
           <div>
-            <span *ngFor="let singer of authorMap[song.id]; let last = last">{{ singer.fullname
-              }}{{ !last && authorMap[song.id].length > 1 ? ", " : "" }}</span>
+            <span *ngFor="let singer of authorMap[song.id]; let last = last"
+              >{{ singer.fullname
+              }}{{ !last && authorMap[song.id].length > 1 ? ", " : "" }}</span
+            >
           </div>
         </td>
         <td>
           <div>
-            <span *ngFor="let singer of genreMap[song.id]; let last = last">{{ singer.name
-              }}{{ !last && genreMap[song.id].length > 1 ? ", " : "" }}</span>
+            <span *ngFor="let singer of genreMap[song.id]; let last = last"
+              >{{ singer.name
+              }}{{ !last && genreMap[song.id].length > 1 ? ", " : "" }}</span
+            >
           </div>
         </td>
         <td>3:15</td>
         <td>
-          <i class="fa-solid fa-plus" (click)="openDialog(song)"></i>&nbsp;&nbsp;
-          <i class="favorite fa-heart" [ngClass]="{'fa-solid': song.isFav === true, 'fa-regular': song.isFav === false}"
-            [ngStyle]="{'color': song.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favoriteSong(song)">
+          <i class="fa-solid fa-plus" (click)="openDialog(song)"></i
+          >&nbsp;&nbsp;
+          <i
+            class="favorite fa-heart"
+            [ngClass]="{
+              'fa-solid': song.isFav === true,
+              'fa-regular': song.isFav === false
+            }"
+            [ngStyle]="{ color: song.isFav === true ? 'rgb(212, 15, 15)' : '' }"
+            (click)="favoriteSong(song)"
+          >
           </i>
         </td>
       </tr>
