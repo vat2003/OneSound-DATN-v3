@@ -15,7 +15,7 @@ import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album'
 import {ActivatedRoute} from '@angular/router';
 import {SingerService} from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
-import {Observable, forkJoin, map, startWith, switchMap} from 'rxjs';
+import {Observable, catchError, forkJoin, map, of, startWith, switchMap} from 'rxjs';
 import {FormControl, FormsModule} from '@angular/forms';
 import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
 import {Author} from '../../adminPage/adminEntityService/adminEntity/author/author';
@@ -140,12 +140,18 @@ export class UserPlaysongComponent implements OnInit {
     });
   }
 
+
+
   getAuthorsForSongs() {
+    console.log("BÀI HÁT AUTHOR: ", this.songs);
     const observables = this.songs.map((song) => {
+      console.log("BÀI HÁT AUTHOR T1111: ", song.id);
       return this.SongAuthorService.getAllAuthorBySong(song.id).pipe(
         switchMap((authors) => {
-          const singerObservables = authors.map((genres) =>
-            this.AuthorService.getAuthorById(genres.author.id)
+          console.log("Author song: "+song.id);
+          console.log("AUthor: "+authors)
+          const singerObservables = authors.map((authors) =>
+            this.AuthorService.getAuthorById(authors.author.id)
           );
           return forkJoin(singerObservables).pipe(
             map((singerDataArray) => {
@@ -159,6 +165,8 @@ export class UserPlaysongComponent implements OnInit {
     forkJoin(observables).subscribe((results) => {
       results.forEach((result) => {
         this.authorMap[result.songId] = result.authors;
+        console.log("Author songID: ",result.songId);
+        console.log("Author song: ",result.authors);
       });
       console.log('Author Map:', this.authorMap);
     });

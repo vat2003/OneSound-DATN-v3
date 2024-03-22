@@ -10,6 +10,7 @@ export class Song {
   description: string;
   dateTemp: string;
   album: Album;
+  active:boolean;
 
   constructor(
     name: string = '',
@@ -20,7 +21,8 @@ export class Song {
     path: string = '',
     lyrics: string = '',
     album: Album = new Album(),
-    dateTemp: string = ''
+    dateTemp: string = '',
+    active:boolean=true
   ) {
     this.name = name;
     this.image = image;
@@ -31,6 +33,7 @@ export class Song {
     this.lyrics = lyrics;
     this.album = album;
     this.dateTemp = dateTemp;
+    this.active=active;
   }
 }
 

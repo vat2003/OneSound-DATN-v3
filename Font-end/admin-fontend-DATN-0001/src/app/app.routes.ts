@@ -93,7 +93,6 @@ export const routes: Routes = [
       },
     ],
   },
-
   {
     path: 'onesound/home',
     component: UserMenusideComponent,
