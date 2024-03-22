@@ -26,7 +26,7 @@ export class AlbumService {
     return this.httpClient.get<AlbumResponse>(`${this.baseURL}/getall`, { params });
   }
 
-  getAllAlbumNormal():Observable<Album[]>{
+  getAllAlbumNormal(): Observable<Album[]> {
     return this.httpClient.get<Album[]>(`${this.baseURL}`);
   }
 
@@ -34,7 +34,13 @@ export class AlbumService {
     return this.httpClient.get<Album[]>(`${this.baseURL}/name/${name}`);
   }
 
-///album/name/{name}
+  ///album/name/{name}
+
+  getAllAlbumInactivel(): Observable<Album[]> {
+    return this.httpClient.get<Album[]>(`${this.baseURL}/getAllInactive`);
+  }
+
+
 
   // getAllAlbumsByName(name: string): Observable<Album> {
   //   return this.httpClient.get<Album>(this.baseURL + '/name/' + name);
@@ -59,7 +65,11 @@ export class AlbumService {
   }
 
   deleteAlbum(id: number): Observable<Object> {
-    return this.httpClient.delete(`${this.baseURL}/delete/${id}`);
+    return this.httpClient.put(`${this.baseURL}/inactive/${id}`, null);
+  }
+
+  restoreAlbum(id: number): Observable<Object> {
+    return this.httpClient.put(`${this.baseURL}/restore/${id}`, null);
   }
 
   getAlbumById(id: number): Observable<Album> {
