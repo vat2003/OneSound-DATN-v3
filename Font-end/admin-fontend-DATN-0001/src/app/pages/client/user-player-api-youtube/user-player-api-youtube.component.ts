@@ -59,7 +59,7 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     private favYoutube: FavoriteService,
     private userService: accountServiceService,
     private matDialog: MatDialog,
-    private PlaylistYoutubeService: PlaylistYoutubeService,
+    private PlaylistYoutubeService: PlaylistYoutubeService
   ) {}
 
   ngOnInit() {
@@ -154,39 +154,36 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   }
 
   openDialog() {
-    debugger
+    debugger;
     this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
     console.log(this.selectedVideo);
 
     const Youtube: Youtube = {
-      id:  this.selectedVideo.id.videoId,
+      id: this.selectedVideo.id.videoId,
       title: this.selectedVideo.snippet.title,
       description: this.selectedVideo.snippet.description,
-      thumbnails:   this.selectedVideo.snippet.thumbnails.high.url,
+      thumbnails: this.selectedVideo.snippet.thumbnails.high.url,
       channelTitle: this.selectedVideo.snippet.channelTitle,
-      publishTime:  this.selectedVideo.snippet.publishTime
-    }
-      console.log(Youtube);
-
+      publishTime: this.selectedVideo.snippet.publishTime,
+    };
+    console.log(Youtube);
 
     this.PlaylistYoutubeService.createYt(Youtube).subscribe(
       () => {
-        const dialogRef = this.matDialog.open(UserPlaylistYoutubeModalComponentComponent, {
-          data: { youtubeId: this.videoId },
-        });
+        const dialogRef = this.matDialog.open(
+          UserPlaylistYoutubeModalComponentComponent,
+          {
+            data: { youtubeId: this.videoId },
+          }
+        );
 
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
-
+        dialogRef.afterClosed().subscribe((result) => {});
       },
-      error => {
+      (error) => {
         console.error('Failed to add song to the playlist:', error);
       }
     );
   }
-
-
 
   setVolume() {
     if (this.player) {

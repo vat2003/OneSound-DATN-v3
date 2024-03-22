@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -7,12 +7,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
-import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
-import {DataGlobalService} from '../../../services/data-global.service';
-import {HttpClientModule} from '@angular/common/http';
-import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
+import { FormsModule } from '@angular/forms';
+import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
+import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
+import { DataGlobalService } from '../../../services/data-global.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
 
 @Component({
   selector: 'app-user-player-audio',
@@ -39,23 +39,29 @@ export class UserPlayerAudioComponent implements OnInit {
   totalTime: string = '0:00';
   songFromFirebase: any;
 
-  constructor(private dataGlobal: DataGlobalService,
-              private firebaseStorage: FirebaseStorageCrudService,
-              private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+  prevIsYoutubePlayer!: boolean;
 
-  ) {
-  }
+  constructor(
+    private dataGlobal: DataGlobalService,
+    private firebaseStorage: FirebaseStorageCrudService,
+    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.dataGlobal.YtGlobalId.subscribe((video) => {
       if (video == null || video == undefined) {
         this.selectedSong = this.dataGlobal.getItem('songHeardLast');
-        this.loadAudio();
       } else {
         this.selectedSong = video; // Cập nhật giá trị mới của ind_display khi có sự thay đổi của index
         console.log('this.selectedSong from player AUDIO ', this.selectedSong);
       }
-      this.loadAudio();
+      console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ', this.selectedSong);
+      if (this.selectedSong.id.videoId === undefined) {
+        this.loadAudio();
+      } else {
+        this.audio.pause();
+      }
+      // this.loadAudio();
     });
     this.seek_bar.nativeElement.style.width = '0%';
     this.seek_dot.nativeElement.style.left = '0%';
@@ -67,9 +73,10 @@ export class UserPlayerAudioComponent implements OnInit {
     if (this.selectedSong) {
       // this.songFromFirebase = await this.firebaseStorage.getFile(this.selectedSong.path);
       this.audio.src = this.selectedSong.path;
-      console.log('AUDIO SRC: ', this.audio.src)
+      console.log('AUDIO SRC: ', this.audio.src);
       // alert(this.audio.src)
     }
+
     // this.audio.src = this.songFromFirebase;
     this.audio.addEventListener('loadedmetadata', () => {
       // Cập nhật thời lượng total của bài hát
@@ -82,7 +89,6 @@ export class UserPlayerAudioComponent implements OnInit {
     this.audio.addEventListener('timeupdate', () => {
       this.updateSeekBar();
     });
-
   }
 
   pauseMusic(): void {
