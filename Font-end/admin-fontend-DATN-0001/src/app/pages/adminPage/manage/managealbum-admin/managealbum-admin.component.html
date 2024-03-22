@@ -62,8 +62,8 @@
               style="border-radius: 20px;" placeholder="Search"> -->
 
             <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px;"
-              placeholder="Search" matInput [matAutocomplete]="auto" [formControl]="formcontrol" />
-            <mat-autocomplete autoActiveFirstOption #auto>
+              placeholder="Search" matInput [matAutocomplete]="autoC" [formControl]="formcontrol" />
+            <mat-autocomplete autoActiveFirstOption #autoC>
               <mat-option (click)="addSingertoTable(item)" *ngFor="let item of filterOptions | async"
                 value="{{item}}">{{item}}</mat-option>
 
@@ -119,10 +119,12 @@
               <th scope="col">IMAGE</th>
               <th scope="col">TITLE</th>
               <th scope="col">RELEASE YEAR</th>
+              <th></th>
             </tr>
           </thead>
           <tbody *ngIf="albums.length > 0; else noDataMessage">
-            <tr *ngFor="let album of albums; let i = index">
+            <tr
+              *ngFor="let album of albums | paginate: { itemsPerPage: pageSize, currentPage: pU,  id: 'albumActive' }; let i = index">
               <th scope="row">{{ i + 1 }}</th>
               <td><img src="{{album.image }}" width="70" height="70" alt="{{album.image}}"></td>
               <td>{{ album.title}}</td>
@@ -143,32 +145,51 @@
             </tr>
           </ng-template>
         </table>
-        <div class="d-flex justify-content-center">
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" (click)="Page(0)">First</a>
-              </li>
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" (click)="Page(page - 1)">
-                  <i class="fa fa-chevron-left"></i>
-                </a>
-              </li>
-              <ng-container *ngFor="let page of visiblePages">
-                <li class="page-item" [ngClass]="{'active': page === page + 1}">
-                  <a class="page-link" (click)="Page(page - 1)">{{ page }}</a>
-                </li>
-              </ng-container>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a class="page-link" (click)="Page(page + 1)">
-                  <i class="fa fa-chevron-right"></i>
-                </a>
-              </li>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a class="page-link" (click)="Page(total - 1)">Last</a>
-              </li>
-            </ul>
-          </nav>
+        <div class="text-center" *ngIf="albums.length > 0">
+          <pagination-controls (pageChange)="pU = $event" id="albumActive"></pagination-controls>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <h6 class="mb-4">INACTIVE LIST</h6>
+        <!-- <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="search()" /> -->
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">No.</th>
+              <th scope="col">IMAGE</th>
+              <th scope="col">TITLE</th>
+              <th scope="col">RELEASE YEAR</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody *ngIf="inactiveList.length > 0; else noDataMessage2">
+            <tr
+              *ngFor="let album of inactiveList | paginate: { itemsPerPage: pageSize, currentPage: pI,  id: 'albumInactive' }; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td><img src="{{album.image }}" width="70" height="70" alt="{{album.image}}"></td>
+              <td>{{ album.title}}</td>
+              <td>{{ album.releaseYear}}</td>
+              <td>
+                <button (click)="restore(album.id)" class="btn btn-outline-success w-50">Restore</button>
+
+              </td>
+            </tr>
+
+          </tbody>
+
+          <ng-template #noDataMessage2>
+            <tr>
+              <td colspan="4">
+                <p class="text-center text-danger">No data available.</p>
+              </td>
+            </tr>
+          </ng-template>
+        </table>
+        <div class="text-center" *ngIf="inactiveList.length > 0">
+          <pagination-controls (pageChange)="pI = $event" id="albumInactive"></pagination-controls>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, NO_ERRORS_SCHEMA, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, NO_ERRORS_SCHEMA, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { AlbumService } from '../../adminEntityService/adminService/album/album.service';
 import { Singer } from '../../adminEntityService/adminEntity/singer/singer';
 import { Album } from '../../adminEntityService/adminEntity/album/album';
@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SingerAlbumService } from '../../adminEntityService/adminService/singerAlbum/singer-album.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
@@ -29,12 +30,13 @@ import { ActivatedRoute, Router } from '@angular/router';
     MatAutocompleteModule,
     MatSelectModule,
     ReactiveFormsModule,
+    NgxPaginationModule
   ],
   templateUrl: './managealbum-admin.component.html',
   styleUrl: './managealbum-admin.component.scss',
   schemas: [NO_ERRORS_SCHEMA]
 })
-export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChanges {
+export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChanges, AfterContentInit {
 
   p: number = 1;
   totalAlbums: number = 0;
@@ -61,7 +63,10 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   page: number = 1;
   itempage: number = 4;
   searchTerm: string = '';
-
+  pU: number = 1;
+  pI: number = 1;
+  pageSize: number = 5;
+  inactiveList: Album[] = [];
   private searchTerms = new Subject<string>();
 
   private _FILTER(value: string): string[] {
@@ -86,6 +91,9 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   ) {
 
   }
+  ngAfterContentInit(): void {
+
+  }
   ngOnChanges(changes: SimpleChanges): void {
     this.filterOptions = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
@@ -97,9 +105,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     this.displaySelectedYear();
     this.displayDataOnTable(0, 10);
     this.displaySingerBysearch();
-    this.filterOptions = this.formcontrol.valueChanges.pipe(
-      startWith(''), map(value => this._FILTER(value || ''))
-    )
+    this.displayDataOnTableInactive();
 
     this.searchTerms
       .pipe(
@@ -110,7 +116,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       )
       .subscribe(async (data) => {
 
-        // Xử lý kết quả tìm kiếm ở đây
+        // Xử lý kết quả tìm kiếm
         // Cập nhật dữ liệu trên bảng khi có kết quả tìm kiếm mới
         this.imageAlbum = data.content.map((album: Album) => album.image);
         this.titleAlbum = data.content.map((album: Album) => album.title);
@@ -125,8 +131,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         }
         console.log("album: --->", this.albums);
 
-        this.total = data.totalPages;
-        this.visiblePages = this.PageArray(this.page, this.total);
+
 
       });
   }
@@ -147,26 +152,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
   }
 
-  Page(page: number) {
-    this.page = page < 0 ? 0 : page;
-    this.localStorage?.setItem('currentProductPage', String(this.page));
-    this.displayDataOnTable(this.page, this.itempage);
-  }
-
-  PageArray(page: number, total: number): number[] {
-    const maxVisiblePages = 5;
-    const halfVisiblePages = Math.floor(maxVisiblePages / 2);
-
-    let startPage = Math.max(page - halfVisiblePages, 1);
-    let endPage = Math.min(startPage + maxVisiblePages - 1, total);
-
-    if (endPage - startPage + 1 < maxVisiblePages) {
-      startPage = Math.max(endPage - maxVisiblePages + 1, 1);
-    }
-
-    return new Array(endPage - startPage + 1).fill(0)
-      .map((_, index) => startPage + index);
-  }
 
   resetForm() {
 
@@ -317,12 +302,12 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
   //Hiển thị dữ liệu lên table
   displayDataOnTable(page: number, limit: number) {
-    this.albumService.getAllAlbum(page, limit).subscribe(
+    this.albumService.getAllAlbumNormal().subscribe(
       async (data) => {
         console.log(data);
-        this.imageAlbum = data.content.map((album: Album) => album.image);
-        this.titleAlbum = data.content.map((album: Album) => album.title);
-        this.albums = data.content;
+        // this.imageAlbum = data.content.map((album: Album) => album.image);
+        // this.titleAlbum = data.content.map((album: Album) => album.title);
+        this.albums = data;
 
         for (const album of this.albums) {
           if (album.image == null || album.image == '') {
@@ -331,8 +316,30 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
           album.image = await this.setImageURLFirebase(album.image);
           album.albumcreateDate = new Date(album.albumcreateDate);
         }
-        this.total = data.totalPages;
-        this.visiblePages = this.PageArray(this.page, this.total);
+
+
+      }, (error) => {
+        console.error('Error fetching data:', error);
+      }
+    );
+  }
+
+  displayDataOnTableInactive() {
+    this.albumService.getAllAlbumInactivel().subscribe(
+      async (data) => {
+        console.log(data);
+        // this.imageAlbum = data.content.map((album: Album) => album.image);
+        // this.titleAlbum = data.content.map((album: Album) => album.title);
+        this.inactiveList = data;
+
+        for (const album of this.inactiveList) {
+          if (album.image == null || album.image == '') {
+            continue;
+          }
+          album.image = await this.setImageURLFirebase(album.image);
+          album.albumcreateDate = new Date(album.albumcreateDate);
+        }
+
 
       }, (error) => {
         console.error('Error fetching data:', error);
@@ -423,7 +430,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       console.log("singerName: ", this.singerName)
 
     }
-    
+
     this.filterOptions = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
     )
@@ -596,22 +603,22 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   deleteAlbum(id: number) {
     const isConfirmed = window.confirm('Are you sure you want to delete this album? If you delete  it, all related information will be deleted too');
     if (isConfirmed) {
-      //----------------------delete SingerAlbum---------------------
-      this.singerAlbumService.deleteSingerAlbum(id).subscribe((data) => {
-        console.log("--------Delete SingerAlbum successful!");
+      //--------------------delete Album after SingerAlbum-------
+
+      this.albumService.deleteAlbum(id).subscribe((data) => {
+
+        console.log("--------Delete Album successful!");
         this.displayDataOnTable(0, 10);
-        //--------------------delete Album after SingerAlbum-------
-        this.albumService.deleteAlbum(id).subscribe((data) => {
-
-          console.log("--------Delete Album successful!");
-          this.displayDataOnTable(0, 10);
-        }, error => console.log("---------Failed to delete the Album!")
-        );
-
-      }, error => console.log("----------Failed to delete SingerAlbum")
-
-
-      )
+        this.displayDataOnTableInactive();
+      }, error => console.log("---------Failed to delete the Album!")
+      );
+      this.displayDataOnTable(0, 10);
+      this.displayDataOnTableInactive();
+      //----------------------delete SingerAlbum---------------------
+      // this.singerAlbumService.deleteSingerAlbum(id).subscribe((data) => {
+      //   console.log("--------Delete SingerAlbum successful!");
+      // }, error => console.log("----------Failed to delete SingerAlbum")
+      // )
 
 
     } else {
@@ -673,6 +680,32 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     this.searchTerms.next(this.searchTerm);
   }
 
+  //||-------------------------------------------------------||
+  //||                     Restore Album                      ||
+  //||--------------------------------------------------------||
 
+  restore(albumId: number) {
+    const isConfirmed = window.confirm('Are you sure you want to resore this album?');
+    if (isConfirmed) {
+      //--------------------delete Album after SingerAlbum-------
+
+      this.albumService.restoreAlbum(albumId).subscribe((data) => {
+        this.displayDataOnTable(0, 10);
+        this.displayDataOnTableInactive();
+      }, error => console.log("---------Failed to resore the Album!")
+      );
+      this.displayDataOnTable(0, 10);
+      this.displayDataOnTableInactive();
+      //----------------------delete SingerAlbum---------------------
+      // this.singerAlbumService.deleteSingerAlbum(id).subscribe((data) => {
+      //   console.log("--------Delete SingerAlbum successful!");
+      // }, error => console.log("----------Failed to delete SingerAlbum")
+      // )
+
+
+    } else {
+
+    }
+  }
 
 }
