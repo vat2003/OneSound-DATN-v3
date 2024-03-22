@@ -28,6 +28,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {accountServiceService} from "../../adminPage/adminEntityService/adminService/account-service.service";
 import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
 import {FavoriteService} from "../../../services/favorite-service/favorite.service";
+import { DataGlobalService } from '../../../services/data-global.service';
 
 @Component({
   selector: 'app-user-explore',
@@ -59,6 +60,7 @@ export class UserExploreComponent implements OnInit {
     private SongSingerService: SongSingerService,
     private SongGenreService: SongGenreService,
     // private SingerService:SingerService,
+    private dataGlobal:DataGlobalService,
     private GenreServiceService: GenreServiceService
   ) {
   }
@@ -71,8 +73,6 @@ export class UserExploreComponent implements OnInit {
     this.getAllArtist();
     this.recordVisit()
     this.getAllAlbum();
-
-
   }
 
 
@@ -103,6 +103,11 @@ export class UserExploreComponent implements OnInit {
       }
       // console.log(data);
     });
+  }
+
+  showDetail(item: any) {
+    this.dataGlobal.changeId(item);
+    this.dataGlobal.setItem('songHeardLast', item);
   }
 
   getAllAlbum(): void {

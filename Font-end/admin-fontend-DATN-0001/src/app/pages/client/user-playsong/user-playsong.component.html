@@ -85,8 +85,8 @@
         </td>
         <td>
           <div>
-            <span *ngFor="let singer of authorMap[song.id]; let last = last"
-              >{{ singer.fullname
+            <span *ngFor="let singer of authorMap[song.id]; let last = last">
+              {{ singer.fullname
               }}{{ !last && authorMap[song.id].length > 1 ? ", " : "" }}</span
             >
           </div>

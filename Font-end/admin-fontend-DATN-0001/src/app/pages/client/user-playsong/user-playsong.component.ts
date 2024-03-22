@@ -143,11 +143,15 @@ export class UserPlaysongComponent implements OnInit {
 
 
   getAuthorsForSongs() {
+    console.log("BÀI HÁT AUTHOR: ", this.songs);
     const observables = this.songs.map((song) => {
+      console.log("BÀI HÁT AUTHOR T1111: ", song.id);
       return this.SongAuthorService.getAllAuthorBySong(song.id).pipe(
         switchMap((authors) => {
-          const singerObservables = authors.map((genres) =>
-            this.AuthorService.getAuthorById(genres.author.id)
+          console.log("Author song: "+song.id);
+          console.log("AUthor: "+authors)
+          const singerObservables = authors.map((authors) =>
+            this.AuthorService.getAuthorById(authors.author.id)
           );
           return forkJoin(singerObservables).pipe(
             map((singerDataArray) => {
@@ -157,10 +161,14 @@ export class UserPlaysongComponent implements OnInit {
         })
       );
     });
-
+debugger
     forkJoin(observables).subscribe((results) => {
+      debugger
       results.forEach((result) => {
+        debugger
         this.authorMap[result.songId] = result.authors;
+        console.log("Author songID: ",result.songId);
+        console.log("Author song: ",result.authors);
       });
       console.log('Author Map:', this.authorMap);
     });

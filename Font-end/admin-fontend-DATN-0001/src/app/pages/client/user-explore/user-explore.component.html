@@ -83,7 +83,7 @@
       </tr>
     </thead>
     <tbody id="list-songs">
-      <tr *ngFor="let s of songs; let i = index">
+      <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
         <td>{{ i + 1 }}</td>
         <td>
           <img [src]="s.image" alt="" />
