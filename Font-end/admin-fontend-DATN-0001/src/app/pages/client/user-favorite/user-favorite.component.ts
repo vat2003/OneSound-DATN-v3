@@ -1,12 +1,12 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { FavoriteService } from '../../../services/favorite-service/favorite.service';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
-import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {FavoriteService} from '../../../services/favorite-service/favorite.service';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {FavoriteYoutbe} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
+import {FavoriteSong} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
 import {DataGlobalService} from "../../../services/data-global.service";
 import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
 
@@ -23,16 +23,20 @@ export class UserFavoriteComponent implements OnInit {
   favListSongs: any[] = [];
   favListYoutubes: any[] = [];
   favListAlbums: any[] = [];
+
   constructor(
     private userService: accountServiceService,
     private favYoutube: FavoriteService,
     private dataGlobal: DataGlobalService,
     private firebaseStorage: FirebaseStorageCrudService,
-  ) {}
+  ) {
+  }
+
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.getAllYoutubeFavByUser();
   }
+
   async setImageURLFirebase(image: string): Promise<string> {
     if (image != null) {
       return await this.firebaseStorage.getFile(image);
@@ -40,19 +44,24 @@ export class UserFavoriteComponent implements OnInit {
       return 'null';
     }
   }
+
   async showDetail(item: any) {
     item.path = await this.setImageURLFirebase(item.path);
     this.dataGlobal.changeId(item);
     this.dataGlobal.setItem('songHeardLast', item);
   }
+
   getAllYoutubeFavByUser() {
     if (this.acc && this.acc.id) {
       this.favYoutube.getAllFavYoutubeByUser(this.acc.id).subscribe((data) => {
         this.favListYoutubes = data;
         console.log('getAll Youtube FavByUser', this.favListYoutubes);
       });
-      this.favYoutube.getAllFavSongByUser(this.acc.id).subscribe((data) => {
+      this.favYoutube.getAllFavSongByUser(this.acc.id).subscribe(async (data) => {
         this.favListSongs = data;
+        for (const songs of this.favListSongs) {
+          songs.song.image = await this.setImageURLFirebase(songs.song.image);
+        }
         console.log('getAll Song FavByUser', this.favListSongs);
       });
     }
@@ -64,10 +73,12 @@ export class UserFavoriteComponent implements OnInit {
       const index = this.favListYoutubes.indexOf(yt);
       if (index !== -1) {
         this.favListYoutubes.splice(index, 1);
-        this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {});
+        this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {
+        });
       }
     }
   }
+
   deleFavSong(song: any) {
     let songId = song.song.id;
     let favS = new FavoriteSong(this.acc?.id, songId);
@@ -76,7 +87,8 @@ export class UserFavoriteComponent implements OnInit {
       const index = this.favListSongs.indexOf(song);
       if (index !== -1) {
         this.favListSongs.splice(index, 1);
-        this.favYoutube.deleteFavoriteSong(favS).subscribe((data) => {});
+        this.favYoutube.deleteFavoriteSong(favS).subscribe((data) => {
+        });
       }
     }
   }
