@@ -1,15 +1,16 @@
 
-  export class RegisterDto {    
-    fullname: string;     
-    address: string;    
-    password: string;      
-    email: string;    
+  export class RegisterDto {
+    fullname: string;
+    address: string;
+    password: string;
+    email: string;
     retype_password: string;
     createdDate: Date;
     facebook_account_id: number = 0;
     google_account_id: number = 0;
-    role_id: number = 1;    
+    role_id: number = 1;
     avatar: string;
+    birthday: Date;
     constructor(data: any) {
       this.fullname = data.fullName;
       this.address = data.address;
@@ -21,6 +22,6 @@
       this.role_id = data.role_id || 1;
       this.email = data.email;
       this.avatar = data.avatar;
+      this.birthday = data.birthday;
     }
   }
-  

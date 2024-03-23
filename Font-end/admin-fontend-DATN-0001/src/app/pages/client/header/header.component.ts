@@ -10,6 +10,7 @@ import { LoginResponse } from "../../adminPage/adminEntityService/adminEntity/ut
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
+  standalone: true,
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit{
@@ -26,7 +27,7 @@ export class HeaderComponent implements OnInit{
   loginDto: login = {
     email: '',
     password: '',
- 
+
   }
   typeRequest: string ='';
   idEmail: number = 0;
@@ -47,7 +48,7 @@ export class HeaderComponent implements OnInit{
       this.typeRequest = params['type'];
     });
 
-    
+
     // console.log("DAY LA HEADER: "+this.idEmail+" "+this.typeRequest);
     if (this.typeRequest=="email"){
       this.userService.getGoogleUserInfo(this.idEmail).subscribe({
@@ -76,20 +77,20 @@ export class HeaderComponent implements OnInit{
 
                             let avatarUrl = response.avatar;
                             let searchString = "https://lh3.googleusercontent.com";
-                         
+
                             this.userService.saveUserResponseToLocalStorage(this.account ?? undefined);
                             if (this.account && this.account.accountRole) {
-                              
+
                               alert(this.account.accountRole.name);
-                
+
                               if (this.account.accountRole.name === 'admin') {
-                                
+
                                 this.router.navigate(['/onesound/admin']);
                               } else if (this.account.accountRole.name === 'user') {
-                                
+
                                 this.router.navigate(['/onesound/home/explore']);
                               }
-                            } else {                              
+                            } else {
                               alert('Error: User role information not found.');
                             }
                           },
@@ -135,7 +136,7 @@ export class HeaderComponent implements OnInit{
         debugger;
         let avatarUrl = response.avatar;
         let searchString = "https://lh3.googleusercontent.com";
-       
+
       },
       complete: () =>{
         debugger;

@@ -1,49 +1,50 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
-import { login } from '../../adminPage/adminEntityService/adminEntity/DTO/login';
-import { Register } from '../../adminPage/adminEntityService/adminEntity/DTO/Register';
-import { RegisterDto } from '../../adminPage/adminEntityService/adminEntity/DTO/registerDto';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { TokenService } from '../../adminPage/adminEntityService/adminService/token.service';
-import { LoginResponse } from '../../adminPage/adminEntityService/adminEntity/utils/login.response';
-import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../header/header.component';
-import { HeaderneComponent } from '../headerne/headerne.component';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators} from '@angular/forms';
+import {login} from '../../adminPage/adminEntityService/adminEntity/DTO/login';
+import {Register} from '../../adminPage/adminEntityService/adminEntity/DTO/Register';
+import {RegisterDto} from '../../adminPage/adminEntityService/adminEntity/DTO/registerDto';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {TokenService} from '../../adminPage/adminEntityService/adminService/token.service';
+import {LoginResponse} from '../../adminPage/adminEntityService/adminEntity/utils/login.response';
+import {CommonModule} from '@angular/common';
+import {HeaderComponent} from '../header/header.component';
+import {HeaderneComponent} from '../headerne/headerne.component';
 
 @Component({
   selector: 'app-update-user-component',
   standalone: true,
-  imports: [RouterLink, CommonModule, FormsModule,    ReactiveFormsModule ,HeaderneComponent ],
+  imports: [RouterLink, CommonModule, FormsModule, ReactiveFormsModule, HeaderneComponent],
   templateUrl: './update-user-component.component.html',
   styleUrl: './update-user-component.component.scss'
 })
-export class UpdateUserComponentComponent implements OnInit{
+export class UpdateUserComponentComponent implements OnInit {
 
   @ViewChild('updatedForm') updatedForm !: NgForm;
   userProfileForm: FormGroup;
-  typeRequest: string ='';
+  typeRequest: string = '';
   buttonHit: boolean = false;
   idEmail: number = 0;
-  avatar: string = '';  
+  avatar: string = '';
   loginDto: login = {
     email: '',
     password: '',
- 
+
   }
   checkExistPhoneNumber: boolean = false;
   RegisterDto: RegisterDto = {
-    fullname : '',
+    fullname: '',
     address: '',
     email: '',
-    password : '',
-    retype_password : '',
+    password: '',
+    retype_password: '',
     createdDate: new Date(),
     role_id: 1,
     google_account_id: 0,
     facebook_account_id: 0,
-    avatar: ''
+    avatar: '',
+    birthday: new Date(),
   };
   // userResponse?: UserResponse;
   account?: account | null;
@@ -64,21 +65,22 @@ export class UpdateUserComponentComponent implements OnInit{
       retype_password: ['', Validators.minLength(3)],
       address: ['', [Validators.required, Validators.minLength(5)]],
       date_of_birth: [''],
-    }, {
-    });
+    }, {});
   }
+
   ngOnInit() {
-    ;
     this.route.queryParams.subscribe(params => {
       this.idEmail = params['id'];
       this.typeRequest = params['type'];
     });
+    this.save();
+    // this.router.navigate(['/onesound/home/profile']);
   }
 
   // save(){
-  //   ; 
+  //   ;
   //   if (this.typeRequest=="facebook"){
-      
+
   //   } else {
   //     if (this.typeRequest=="email"){
   //       debugger
@@ -95,7 +97,7 @@ export class UpdateUserComponentComponent implements OnInit{
   //           this.RegisterDto.address = this.userProfileForm.get('address')?.value;
   //           this.RegisterDto.avatar = this.avatar;
   //           this.RegisterDto.retype_password = this.RegisterDto.password;
-         
+
   //           const registerData: Register = {
   //             fullname: this.RegisterDto.fullname,
   //             email: this.RegisterDto.email,
@@ -112,7 +114,7 @@ export class UpdateUserComponentComponent implements OnInit{
   //           debugger
   //           this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
   //             next: (response: any) =>{
-                
+
   //               debugger;
   //               if (response.id>0){
   //                 alert("This phone number has been used by someone please try by another phone number");
@@ -141,9 +143,9 @@ export class UpdateUserComponentComponent implements OnInit{
   //                       debugger
   //                       const {token} = response
   //                       this.tokenService.setToken(token);
-                        
+
   //                       this.userService.getUserDetail(token).subscribe({
-                
+
   //                         next: (response: any) => {
   //                           debugger
   //                           this.account = {
@@ -152,17 +154,17 @@ export class UpdateUserComponentComponent implements OnInit{
   //                           console.log(response);
   //                           this.userService.saveUserResponseToLocalStorage(response);
   //                           if (this.account && this.account.accountRole) {
-                              
+
   //                             alert(this.account.accountRole.name);
-                
+
   //                             if (this.account.accountRole.name === 'admin') {
-                                
+
   //                               this.router.navigate(['/onesound/admin']);
   //                             } else if (this.account.accountRole.name === 'user') {
-                                
+
   //                               this.router.navigate(['/onesound/home/explore']);
   //                             }
-  //                           } else {                              
+  //                           } else {
   //                             alert('Error: User role information not found.');
   //                           }
   //                         },
@@ -173,10 +175,10 @@ export class UpdateUserComponentComponent implements OnInit{
   //                       });
   //                     },
   //                     complete: () => {
-                        
+
   //                     },
   //                     error: (error : any) => {
-                        
+
   //                     }
   //                   }
   //                 );
@@ -184,7 +186,7 @@ export class UpdateUserComponentComponent implements OnInit{
   //             complete: () =>{
   //               ;
   //             },
-  //             error: (error: any) => {                
+  //             error: (error: any) => {
   //               debugger
   //               console.log("Error fetching data error x1: "+error);
   //             }
@@ -200,27 +202,26 @@ export class UpdateUserComponentComponent implements OnInit{
   //     }
   //   }
   // }
-  save(){
-    ; 
-    if (this.typeRequest=="facebook"){
-      
+  save() {
+    if (this.typeRequest == "facebook") {
+
     } else {
-      if (this.typeRequest=="email"){
+      if (this.typeRequest == "email") {
         debugger
         this.RegisterDto.google_account_id = 1;
         this.userService.getGoogleUserInfo(this.idEmail).subscribe({
-          next: (response: any) =>{
-            debugger
-            ;
+          next: (response: any) => {
             this.avatar = response.picture;
             this.RegisterDto.email = response.email;
             this.RegisterDto.fullname = response.name;
-            this.RegisterDto.createdDate = this.userProfileForm.get('date_of_birth')?.value;
+            this.RegisterDto.createdDate = new Date();
+            // this.RegisterDto.createdDate = this.userProfileForm.get('date_of_birth')?.value;
+            this.RegisterDto.birthday = this.userProfileForm.get('date_of_birth')?.value;
             this.RegisterDto.password = this.userProfileForm.get('password')?.value;
             this.RegisterDto.address = this.userProfileForm.get('address')?.value;
             this.RegisterDto.avatar = this.avatar;
             this.RegisterDto.retype_password = this.RegisterDto.password;
-         
+
             const registerData: Register = {
               fullname: this.RegisterDto.fullname,
               email: this.RegisterDto.email,
@@ -232,28 +233,26 @@ export class UpdateUserComponentComponent implements OnInit{
               birthday: this.RegisterDto.createdDate,
               role_id: 1,
             };
-          debugger
-          if (this.RegisterDto.email.length>=6){
             debugger
-            this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
-              next: (response: any) =>{
-                
-                debugger;
-                if (response.id>0){
-                  alert("This phone number has been used by someone please try by another phone number");
+            if (this.RegisterDto.email.length >= 6) {
+              debugger
+              this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
+                next: (response: any) => {
+                  if (response.id > 0) {
+                    alert("This phone number has been used by someone please try by another phone number");
+                  }
+                },
+                complete: () => {
+                  console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                },
+                error: (error: any) => {
+                  debugger
+                  console.log("Error fetching data error: " + error.error.message);
                 }
-              },
-              complete: () =>{
-                debugger;
-              },
-              error: (error: any) => {
-                debugger
-                console.log("Error fetching data error: "+error.error.message);
-              }
-            });
-          }
+              });
+            }
             this.userService.register(registerData).subscribe({
-              next: (response: any) =>{
+              next: (response: any) => {
                 debugger
                 alert("You have been updated successfully! Please login again");
                 this.loginDto.password = this.RegisterDto.password;
@@ -266,9 +265,9 @@ export class UpdateUserComponentComponent implements OnInit{
                         debugger
                         const {token} = response
                         this.tokenService.setToken(token);
-                        
+
                         this.userService.getUserDetail(token).subscribe({
-                
+
                           next: (response: any) => {
                             debugger
                             this.account = {
@@ -277,76 +276,71 @@ export class UpdateUserComponentComponent implements OnInit{
                             console.log(response);
                             this.userService.saveUserResponseToLocalStorage(response);
                             if (this.account && this.account.accountRole) {
-                              
+
                               alert(this.account.accountRole.name);
-                
+
                               if (this.account.accountRole.name === 'admin') {
-                                
+
                                 this.router.navigate(['/onesound/admin']);
                               } else if (this.account.accountRole.name === 'user') {
-                                
+
                                 this.router.navigate(['/onesound/home/explore']);
                               }
-                            } else {                              
+                            } else {
                               alert('Error: User role information not found.');
                             }
                           },
-                          complete: () => {},
+                          complete: () => {
+                          },
                           error: (error: any) => {
                             console.log(error);
                           },
                         });
                       },
                       complete: () => {
-                        
+
                       },
-                      error: (error : any) => {
-                        
+                      error: (error: any) => {
+
                       }
                     }
                   );
               },
-              complete: () =>{
-                ;
+              complete: () => {
               },
-              error: (error: any) => {                
+              error: (error: any) => {
                 debugger
-                console.log("Error fetching data error x1: "+error);
+                console.log("Error fetching data error x1: " + error);
               }
             });
           },
-          complete: () =>{
-            ;
+          complete: () => {
           },
           error: (error: any) => {
-            console.log("Error fetching data error x2 : "+error);
+            console.log("Error fetching data error x2 : " + error);
           }
         })
       }
     }
   }
 
-  
-  
-  checkEmailExists(){
-    this.checkExistPhoneNumber=false;
+
+  checkEmailExists() {
+    this.checkExistPhoneNumber = false;
     this.buttonHit = true;
     this.userService.checkEmailExists(this.userProfileForm.get('phone_number')?.value).subscribe({
-      next: (response: any) =>{
-        ;
-        if (response.id>=1){
+      next: (response: any) => {
+        if (response.id >= 1) {
           this.checkExistPhoneNumber = true;
         } else {
           this.checkExistPhoneNumber = false;
         }
         console.log(this.checkExistPhoneNumber);
       },
-      complete: () =>{
-        ;
+      complete: () => {
       },
-      error: (error: any) =>{
-        ;
-        console.log("Error fetching data: error "+error);
+      error: (error: any) => {
+        console.log("Error fetching data: error " + error);
       }
     })
   }
