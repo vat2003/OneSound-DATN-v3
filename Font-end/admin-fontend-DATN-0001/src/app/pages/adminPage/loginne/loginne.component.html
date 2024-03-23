@@ -15,9 +15,9 @@
 
         <div class="form-item">
           <div class="login-form-inner-title">Enter your password</div>
-          <input type="password" placeholder="Enter your password" name="password-regis" id="" [(ngModel)]="password" />
+          <input type="password" placeholder="Enter your password" name="password-regis" id="" [(ngModel)]="password"/>
           <p class="text-danger" style="color: red;"
-            *ngIf="password.length < 6 && registerForm.controls['password-regis'].touched">Password must be
+             *ngIf="password.length < 6 && registerForm.controls['password-regis'].touched">Password must be
             at least 6 characters long</p>
         </div>
 
@@ -28,7 +28,7 @@
         <div class="form-item-or">or</div>
 
         <a [href]="'http://localhost:8080/oauth2/authorization/google'"
-          class="btn btn-outline-primary text-white w-100 py-2"><i class="fa fa-google fa-fw"></i> Login with
+           class="btn btn-outline-primary text-white w-100 py-2"><i class="fa fa-google fa-fw"></i> Login with
           Google+</a>
 
         <button class="login-button" (click)="dangky()">
@@ -49,9 +49,9 @@
             }
           </style>
         </defs>
-        <rect class="cls-1" x="551.64" y="127.08" width="300" height="300" rx="150" />
+        <rect class="cls-1" x="551.64" y="127.08" width="300" height="300" rx="150"/>
         <path class="cls-1"
-          d="M700,1239.56H700c-193.28,0-350-156.69-350-350v-.06c0-193.29,156.69-350,350-350H700c193.28,0,350,156.68,350,350v.06C1050,1082.87,893.31,1239.56,700,1239.56Zm150-350h0a150,150,0,0,0-150-150h0a150,150,0,0,0-150,150h0a150,150,0,0,0,150,150h0A150,150,0,0,0,850,889.56Z" />
+              d="M700,1239.56H700c-193.28,0-350-156.69-350-350v-.06c0-193.29,156.69-350,350-350H700c193.28,0,350,156.68,350,350v.06C1050,1082.87,893.31,1239.56,700,1239.56Zm150-350h0a150,150,0,0,0-150-150h0a150,150,0,0,0-150,150h0a150,150,0,0,0,150,150h0A150,150,0,0,0,850,889.56Z"/>
       </svg>
       © 2023 OneSound Music
     </div>

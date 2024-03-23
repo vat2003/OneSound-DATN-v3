@@ -303,7 +303,6 @@ export class UserSongInPlaylistComponent {
   }
 
   favoriteSong(song: any) {
-    // alert(song.id);
     let songId = song.id;
     let favS = new FavoriteSong(this.acc?.id, songId);
     if (

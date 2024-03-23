@@ -65,12 +65,12 @@ export class LoginneComponent implements OnInit {
   }
 
   // loginWithFacebook(): void {
-  //  
+  //
   //   this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
 
   //   // Subscribe to authState observable
   //   this.authService.authState.subscribe((user) => {
-  //    
+  //
   //     console.log(user) + "<----------------";
   //     console.log(user) + "<----------------";
   //     console.log(user) + "<----------------";
@@ -102,7 +102,7 @@ export class LoginneComponent implements OnInit {
   // }
 
   // loginWithGoogle(): void {
-  //  
+  //
   //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
   // }
 
@@ -120,7 +120,7 @@ export class LoginneComponent implements OnInit {
     };
     debugger
     this.userService.checkactive1(login.email).subscribe({
-     
+
       next: (data) => {
         debugger
         if (data != null) {
@@ -129,34 +129,34 @@ export class LoginneComponent implements OnInit {
           this.userService.login(login).subscribe({
             next: (response: LoginResponse) => {
               alert('Login successful!');
-      
+
               const { token } = response;
               console.log(token);
               this.tokenService.setToken(token);
               this.incorrectLoginAttempts = 0;
-      
+
               this.userService.getUserDetail(token).subscribe({
-                
+
                 next: (response: any) => {
-                  
+
                   this.account = {
                     ...response,
                   };
                   console.log(response);
                   this.userService.saveUserResponseToLocalStorage(response);
                   if (this.account && this.account.accountRole) {
-                    
+
                     alert(this.account.accountRole.name);
-      
+
                     if (this.account.accountRole.name === 'admin') {
-                      
+
                       this.router.navigate(['/onesound/admin']);
                     } else if (this.account.accountRole.name === 'user') {
-                      
+
                       this.router.navigate(['/onesound/home/explore']);
                     }
                   } else {
-                    
+
                     alert('Error: User role information not found.');
                   }
                 },
@@ -170,7 +170,7 @@ export class LoginneComponent implements OnInit {
               console.error(error);
               alert('Wrong password, please check again');
               this.incorrectLoginAttempts++;
-      
+
               if (this.incorrectLoginAttempts >= this.maxIncorrectLoginAttempts) {
                 alert('Too many incorrect login attempts. Please try again later.');
                 this.router.navigate(['/onesound/dangky']);
@@ -182,7 +182,7 @@ export class LoginneComponent implements OnInit {
           alert("Your account has been locked" )
 
         }
-       
+
       },
       error: (error) => {
         // Xử lý lỗi khi yêu cầu gặp vấn đề
@@ -195,9 +195,8 @@ export class LoginneComponent implements OnInit {
         // Thực hiện các hành động phù hợp khi yêu cầu hoàn thành
       }
     });
-    
 
- 
+
     // } else {
     //   alert("Email does not exist. Please check or register.");
     // }
@@ -211,6 +210,5 @@ export class LoginneComponent implements OnInit {
 
   loginByGoogle() {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-    // window.location.href = ('http://localhost:8080/api/v1/users/test');
   }
 }

@@ -48,7 +48,4 @@ getUserId(): number {
   
   return 'userId' in userObject ? parseInt(userObject['userId']) : 0;
 }
-
-
-
 }
