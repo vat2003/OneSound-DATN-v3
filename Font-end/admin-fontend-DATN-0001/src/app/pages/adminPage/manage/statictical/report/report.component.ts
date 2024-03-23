@@ -28,7 +28,7 @@ import { get } from 'http';
   styleUrl: './report.component.css'
 })
 export class ReportComponent implements OnInit {
-  @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective<'line'> | undefined;
 
   quantityUsers!: number;
   minDate: string;
@@ -123,13 +123,14 @@ export class ReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.getQuantityUser();
-    console.log(this.dateLables);
-    console.log(this.userDatas);
     this.displaySelectedMonth();
     this.displaySelectedDay();
     this.displaySelectedYear();
-    this.displaySelectedYearOfBarChart()
-    this.getDataBarchart(this.barYear);
+    this.displaySelectedYearOfBarChart();
+
+    this.barChartData.datasets[0].data = this.getData();
+
+    this.chart?.update();
 
   }
 
