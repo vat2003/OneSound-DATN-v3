@@ -86,7 +86,7 @@ export class UserResultSearchComponent implements OnInit {
     if (this.acc && this.acc.id) {
       this.favYoutube.getAllFavYoutubeByUser(this.acc.id).subscribe((data) => {
         this.favList = data;
-
+        console.log("alllll",this.favList)
         this.checkFav();
       });
     }
@@ -126,8 +126,8 @@ export class UserResultSearchComponent implements OnInit {
   }
 
   checkFav() {
-    console.log(this.favList);
 
+    console.log("checkFav" ,this.favList);
     for (let result of this.results) {
       let found = this.favList.find(
         (fav) => fav.youtube.id === result.id.videoId
