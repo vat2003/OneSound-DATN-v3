@@ -86,7 +86,7 @@ export class ChangePasswordComponent {
             password: this.password
           };
 
-          this.userService.HamDoiMatKhauCuaQuenMatKhau(response.message, login).subscribe({
+          this.userService.HamDoiMatKhauCuaQuenMatKhau(login.email, login).subscribe({
             next: (response: any) => {
               debugger
               alert("Change successful");
@@ -97,7 +97,7 @@ export class ChangePasswordComponent {
             },
             error: (error: any) => {
               debugger
-              alert("Failed");
+              alert("Failed" + error);
             }
           });
 
