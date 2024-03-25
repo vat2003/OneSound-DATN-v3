@@ -7,8 +7,6 @@ import { login } from '../adminEntityService/adminEntity/DTO/login';
 import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
 import { TokenService } from '../adminEntityService/adminService/token.service';
 import { LoginResponse } from '../adminEntityService/adminEntity/utils/login.response';
-import { GoogleLoginProvider, SocialAuthService, SocialAuthServiceConfig } from 'angularx-social-login';
-import { config } from 'process';
 
 
 @Component({
@@ -36,7 +34,6 @@ export class LoginneComponent implements OnInit {
     private router: Router,
     private userService: accountServiceService,
     private tokenService: TokenService,
-    private authService: SocialAuthService
 
     
   ) 
