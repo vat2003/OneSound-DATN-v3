@@ -1,7 +1,7 @@
 <div class="detail-container">
   <div class="detail-container-banner" id="category-detail">
     <div class="detail-container-banner-first">
-      <img src="assets/img/client/explore/hiphop.png" alt=""/>
+      <img src="assets/img/client/explore/hiphop.png" alt="" />
       <div class="detail-container-banner-content">
         <h1>{{ this.currentPlaylist?.name }}</h1>
         <p>Created by <i style="text-transform: uppercase;">{{ this.acc?.fullname }}</i></p>
@@ -42,22 +42,25 @@
 
 <div class="list-tracks">
   <div class="list-tracks-form-search">
-    <input type="search" name="search-music" id="" placeholder="Filter playlist on title, artist or album"
-           class="search"/>
+<!--    <input type="search" name="search-music" id="" placeholder="Filter playlist on title, artist or album"-->
+<!--      class="search" />-->
+
+    <input type="text" class="search-music" style="border-radius: 20px" placeholder="Search"
+      [(ngModel)]="searchTerm" (ngModelChange)="search()" (keyup)="onKey($event)" />
     <div class="icon-search">
       <i class="fa-solid fa-magnifying-glass"></i>
     </div>
   </div>
   <table>
     <thead>
-    <tr>
-      <th></th>
-      <th>TITLE</th>
-      <th>ARTIST</th>
-      <th>LISTS</th>
-      <th>TIME</th>
-      <th></th>
-    </tr>
+      <tr>
+        <th></th>
+        <th>TITLE</th>
+        <th>ARTIST</th>
+        <th>LISTS</th>
+        <th>TIME</th>
+        <th></th>
+      </tr>
     </thead>
     <tbody id="list-songs-detail">
     <tr *ngFor="let song of PlaylistSong" (click)="this.showDetail(song.song)">
@@ -69,37 +72,37 @@
         <div class="line-clamp">{{ song.song?.name }}</div>
       </td>
 
-      <td>
-        <div class="table-title">
-          <div class="line-clamp">{{ song.song }}</div>
-        </div>
-      </td>
-      <td>{{ song.playlist?.name }}</td>
-      <td>POP</td>
-      <td>3:15</td>
-      <td>
-        <i class="fa-solid fa-trash-alt"
-           (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i>
-      </td>
-    </tr>
-    <!--    </tbody>-->
-    <!--    <tbody id="list-songs-detail">-->
-    <tr *ngFor="let song of songsInPlaylist">
-      <td><img src="{{ song.youtube.thumbnails }}" alt="" width="100px"></td>
+        <td>
+          <div class="table-title">
+            <div class="line-clamp">{{ song.song }}</div>
+          </div>
+        </td>
+        <td>{{ song.playlist?.name }}</td>
+        <td>POP</td>
+        <td>3:15</td>
+        <td>
+          <i class="fa-solid fa-trash-alt"
+            (click)="removeSongFromPlaylist(song.playlist?.id ?? 0,song.song?.id ?? 0)"></i>
+        </td>
+      </tr>
+      <!--    </tbody>-->
+      <!--    <tbody id="list-songs-detail">-->
+      <tr *ngFor="let song of songsInPlaylist">
+        <td><img src="{{ song.youtube.thumbnails }}" alt="" width="100px"></td>
 
-      <td>
-        <div class="table-title">
-          <div class="line-clamp">{{ song.youtube?.title }}</div>
-        </div>
-      </td>
-      <td>{{ song.youtube?.channelTitle }}</td>
-      <td>POP</td>
-      <td>3:15</td>
-      <td>
-        <i class="fa-solid fa-trash-alt"
-           (click)="removeYoutubeFromPlaylist(song.playlist?.id ?? 0,song.youtube.id ?? 0)"></i>
-      </td>
-    </tr>
+        <td>
+          <div class="table-title">
+            <div class="line-clamp">{{ song.youtube?.title }}</div>
+          </div>
+        </td>
+        <td>{{ song.youtube?.channelTitle }}</td>
+        <td>POP</td>
+        <td>3:15</td>
+        <td>
+          <i class="fa-solid fa-trash-alt"
+            (click)="removeYoutubeFromPlaylist(song.playlist?.id ?? 0,song.youtube.id ?? 0)"></i>
+        </td>
+      </tr>
     </tbody>
 
   </table>

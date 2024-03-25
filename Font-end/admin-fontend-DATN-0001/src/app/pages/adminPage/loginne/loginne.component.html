@@ -27,7 +27,7 @@
         </button>
         <div class="form-item-or">or</div>
 
-        <a [href]="'http://localhost:8080/oauth2/authorization/google'"
+        <a (click)="loginWithGoogle()"
           class="btn btn-outline-primary text-white w-100 py-2"><i class="fa fa-google fa-fw"></i> Login with
           Google+</a>
 
