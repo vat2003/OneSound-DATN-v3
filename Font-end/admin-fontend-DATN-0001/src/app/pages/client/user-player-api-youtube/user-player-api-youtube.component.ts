@@ -53,6 +53,8 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   acc?: account | null;
   selectedVideo: any;
   favList: any[] = [];
+  currentIndex!: number;
+  arrPreNext: any[] = [];
   constructor(
     private youtubeService: YoutubeApiSService,
     private dataGlobal: DataGlobalService,
@@ -65,8 +67,10 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   ngOnInit() {
     // this.selectedVideo = this.dataGlobal.getItem('songHeardLastTimeYoutube');
     // this.videoId = this.selectedVideo.id.videoId;
-    this.getAllYoutubeFavByUser();
+
     this.acc = this.userService.getUserResponseFromLocalStorage();
+    this.getAllYoutubeFavByUser();
+
     this.dataGlobal.YtGlobalId.subscribe((video) => {
       if (video == null || video == undefined) {
         this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
@@ -74,6 +78,13 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
         this.selectedVideo = video; // Cập nhật giá trị mới của ind_display khi có sự thay đổi của index
       }
       this.videoId = this.selectedVideo.id.videoId;
+    });
+
+    this.dataGlobal.arrPreNext.subscribe((arr) => {
+      this.arrPreNext = arr;
+      console.log('arrPreNext from user player api', this.arrPreNext);
+      this.currentIndex = this.arrPreNext.indexOf(this.selectedVideo);
+      // alert(this.currentIndex);
     });
 
     if (!document.getElementById('youtube-api')) {
@@ -251,5 +262,22 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
       this.favYoutube.createYt(youtube).subscribe((data) => {});
       this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
     }
+  }
+
+  previus() {
+    this.currentIndex = this.currentIndex - 1;
+    if (this.currentIndex < 0) {
+      this.currentIndex = this.arrPreNext.length - 1;
+    }
+    this.selectedVideo = this.arrPreNext[this.currentIndex];
+    this.videoId = this.selectedVideo.id.videoId;
+  }
+  next() {
+    this.currentIndex = this.currentIndex + 1;
+    if (this.currentIndex > this.arrPreNext.length - 1) {
+      this.currentIndex = 0;
+    }
+    this.selectedVideo = this.arrPreNext[this.currentIndex];
+    this.videoId = this.selectedVideo.id.videoId;
   }
 }

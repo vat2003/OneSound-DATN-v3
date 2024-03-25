@@ -12,18 +12,18 @@
             Doechii
         </div>
         <div class="album line-clamp" id="category-name">
-            PLAYING FROM: {{ selectedSong.album.title  }}
+            PLAYING FROM: {{ selectedSong.album.title }}
         </div>
     </h5>
     <div class="icon">
         <!-- back icon -->
-        <i class="fa-solid fa-backward" id="back"></i>
+        <i class="fa-solid fa-backward" id="back" (click)="previus()"></i>
 
         <!-- pause - resume icon -->
         <i class="fa-solid fa-play" id="masterPlay" #masterPlay (click)="pauseMusic()"></i>
 
         <!-- next icon -->
-        <i class="fa-solid fa-forward" id="next"></i>
+        <i class="fa-solid fa-forward" id="next" (click)="next()"></i>
     </div>
     <span id="currentStart">{{ currentTime }}</span>
     <div class="bar">
@@ -42,7 +42,13 @@
     </div>
     <div class="mode">
         <div class="mode-type">HIFI</div>
-        <i class="fa-regular fa-heart"></i>
+
+        <i class="favorite fa-heart"
+            [ngClass]="{'fa-solid': selectedSong.isFav === true, 'fa-regular': selectedSong.isFav === false}"
+            [ngStyle]="{'color': selectedSong.isFav === true ? 'rgb(212, 15, 15)' : ''}"
+            (click)="favoriteSong(selectedSong)">
+        </i>
+
         <i class="fa-solid fa-ellipsis"></i>
         <i class="fa-solid fa-bars"></i>
         <i class="fa-solid fa-square-arrow-up-right"></i>

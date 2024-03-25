@@ -80,6 +80,8 @@ export class UserResultSearchComponent implements OnInit {
     this.dataGlobal.changeId(video);
     // this.dataGlobal.setSongHeardLast(video);
     this.dataGlobal.setItem('songHeardLast', video);
+
+    this.dataGlobal.changeArr(this.results);
   }
 
   getAllYoutubeFavByUser() {

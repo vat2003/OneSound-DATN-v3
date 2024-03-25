@@ -13,6 +13,10 @@ import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
 import { DataGlobalService } from '../../../services/data-global.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
+import { FavoriteService } from '../../../services/favorite-service/favorite.service';
+import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
 
 @Component({
   selector: 'app-user-player-audio',
@@ -39,15 +43,25 @@ export class UserPlayerAudioComponent implements OnInit {
   totalTime: string = '0:00';
   songFromFirebase: any;
 
+  acc?: account | null;
+  favListSongs: any[] = [];
   prevIsYoutubePlayer!: boolean;
 
+  currentIndex!: number;
+  arrPreNext: any[] = [];
   constructor(
     private dataGlobal: DataGlobalService,
     private firebaseStorage: FirebaseStorageCrudService,
+    private userService: accountServiceService,
+    private favSong: FavoriteService,
+
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.acc = this.userService.getUserResponseFromLocalStorage();
+    this.getAllSongFavByUser();
+
     this.dataGlobal.YtGlobalId.subscribe((video) => {
       if (video == null || video == undefined) {
         this.selectedSong = this.dataGlobal.getItem('songHeardLast');
@@ -61,8 +75,17 @@ export class UserPlayerAudioComponent implements OnInit {
       } else {
         this.audio.pause();
       }
+
       // this.loadAudio();
     });
+
+    this.dataGlobal.arrPreNext.subscribe((arr) => {
+      this.arrPreNext = arr;
+      console.log('arrPreNext from user player api', this.arrPreNext);
+      this.currentIndex = this.arrPreNext.indexOf(this.selectedSong);
+      // alert(this.currentIndex);
+    });
+
     this.seek_bar.nativeElement.style.width = '0%';
     this.seek_dot.nativeElement.style.left = '0%';
   }
@@ -179,5 +202,66 @@ export class UserPlayerAudioComponent implements OnInit {
       vol_dot.style.left = `${volValue}%`;
       this.audio.volume = volValue / 100;
     });
+  }
+  getAllSongFavByUser() {
+    if (this.acc && this.acc.id) {
+      this.favSong.getAllFavSongByUser(this.acc.id).subscribe((data) => {
+        this.favListSongs = data;
+        console.log('this.favListSongs from audio comp:', this.favListSongs);
+
+        this.checkFav();
+      });
+    }
+  }
+
+  checkFav() {
+    let found = this.favListSongs.find(
+      (fav) => fav.song.id === this.selectedSong.id.videoId
+    );
+
+    this.selectedSong.isFav = found ? true : false;
+  }
+
+  favoriteSong(song: any) {
+    // alert(song.id);
+    let songId = song.id;
+    let favS = new FavoriteSong(this.acc?.id, songId);
+    if (
+      this.acc == null ||
+      this.acc == undefined ||
+      this.acc === null ||
+      this.acc === undefined
+    ) {
+      alert('Please log in to use this feature');
+      return;
+    }
+    if (song.isFav) {
+      if (!confirm('Are you sure you want to unlike?')) {
+        return;
+      }
+      song.isFav = false;
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {});
+    } else {
+      song.isFav = true;
+      this.favSong.addFavoriteSong(favS).subscribe((data) => {});
+    }
+  }
+
+  previus() {
+    this.currentIndex = this.currentIndex - 1;
+
+    if (this.currentIndex < 0) {
+      this.currentIndex = this.arrPreNext.length - 1;
+    }
+    this.selectedSong = this.arrPreNext[this.currentIndex];
+  }
+  next() {
+    this.currentIndex = this.currentIndex + 1;
+
+    if (this.currentIndex > this.arrPreNext.length - 1) {
+      this.currentIndex = 0;
+    }
+
+    this.selectedSong = this.arrPreNext[this.currentIndex];
   }
 }

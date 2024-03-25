@@ -8,7 +8,14 @@ export class DataGlobalService {
   private idSource = new BehaviorSubject<any>(null);
   YtGlobalId = this.idSource.asObservable();
 
+  private arrPreNextSource = new BehaviorSubject<any[]>([]);
+  arrPreNext = this.arrPreNextSource.asObservable();
+
   constructor() {}
+
+  changeArr(arr: any[]) {
+    this.arrPreNextSource.next(arr);
+  }
 
   changeId(video: any) {
     this.idSource.next(video);

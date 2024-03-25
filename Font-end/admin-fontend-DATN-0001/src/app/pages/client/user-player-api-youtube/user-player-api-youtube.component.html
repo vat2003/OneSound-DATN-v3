@@ -15,12 +15,12 @@
         </div>
     </h5>
     <div class="icon">
-        <i class="fa-solid fa-backward" id="back"></i>
+        <i class="fa-solid fa-backward" id="back" (click)="previus()"></i>
 
         <i class="fa-solid fa-play" id="masterPlay" #masterPlay (click)="pauseMusic()"></i>
 
 
-        <i class="fa-solid fa-forward" id="next"></i>
+        <i class="fa-solid fa-forward" id="next" (click)="next()"></i>
     </div>
     <span id="currentStart">{{ currentTime }}</span>
     <div class="bar">

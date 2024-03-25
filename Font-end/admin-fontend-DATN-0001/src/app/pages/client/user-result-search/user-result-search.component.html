@@ -26,7 +26,8 @@
                 <!-- <td>{{video.isFav}}</td> -->
                 <td>
                     <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
-
+                    &nbsp;
+                    &nbsp;
                     <i class="favorite fa-heart"
                         [ngClass]="{'fa-solid': video.isFav === true, 'fa-regular': video.isFav === false}"
                         [ngStyle]="{'color': video.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favorite(video)">
