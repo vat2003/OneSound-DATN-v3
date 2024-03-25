@@ -15,7 +15,7 @@
 
         <div class="form-item">
           <div class="login-form-inner-title">Enter your password</div>
-          <input type="password" placeholder="Enter your password" name="password-regis" id="" [(ngModel)]="password" />
+          <input type="password" placeholder="Enter your password" name="'password-regis'"  [(ngModel)]="password" />
           <p class="text-danger" style="color: red;"
             *ngIf="password.length < 6 && registerForm.controls['password-regis'].touched">Password must be
             at least 6 characters long</p>
@@ -27,7 +27,7 @@
         </button>
         <div class="form-item-or">or</div>
 
-        <a (click)="loginWithGoogle()"
+        <a (click)="loginByGoogle()"
           class="btn btn-outline-primary text-white w-100 py-2"><i class="fa fa-google fa-fw"></i> Login with
           Google+</a>
 
