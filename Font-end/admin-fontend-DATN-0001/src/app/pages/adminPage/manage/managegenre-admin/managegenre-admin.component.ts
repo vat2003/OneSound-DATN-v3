@@ -30,7 +30,7 @@ export class ManagegenreAdminComponent implements OnInit {
   pages: number[] = [];
   page: number = 1;
   total: number = 0;
-  itempage: number = 4;
+  itempage: number = 6;
   visiblePages: number[] = [];
   localStorage?: Storage;
 
@@ -70,7 +70,7 @@ export class ManagegenreAdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    this.getListGenresPage(0, 4);
+    this.getListGenresPage(0, 5);
     this.loadSingerById();
     this.getGenre(this.id);
   }
@@ -260,7 +260,7 @@ export class ManagegenreAdminComponent implements OnInit {
     //Set path ảnh được chọn từ Func onFileSelected()
     this.Genree.image = this.setImageUrl;
     this.errorFieldsArr = this.validateGenreEmpty(this.Genree);
-    if(!this.Genree.name){
+    if (!this.Genree.name) {
       this.toast.warning({detail: 'Warning Message', summary: 'Name is null', duration: 5000});
       return;
     }
@@ -373,7 +373,7 @@ export class ManagegenreAdminComponent implements OnInit {
 
   filterName_Search() {
     this.Genre = this.GenresFromData.filter((genre: Genre) => {
-      return genre.name.includes(this.filterName);
+      return genre.name.toLowerCase().includes(this.filterName.toLowerCase());
     });
   }
 }
