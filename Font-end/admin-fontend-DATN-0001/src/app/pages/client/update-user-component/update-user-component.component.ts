@@ -319,6 +319,7 @@ export class UpdateUserComponentComponent implements OnInit{
             ;
           },
           error: (error: any) => {
+            debugger
             console.log("Error fetching data error x2 : "+error);
           }
         })
