@@ -1202,20 +1202,20 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         break;
     }
   }
-  checkAge() {
-    if (this.song.release) {
-      const today = new Date();
-      const birthDate = new Date(this.song.release);
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDiff = today.getMonth() - birthDate.getMonth();
-      if (monthDiff < 0) {
-        age--;
-      }
-      else{
-        this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
-      }
-    }
-  }
+  // checkAge() {
+  //   if (this.song.release) {
+  //     const today = new Date();
+  //     const birthDate = new Date(this.song.release);
+  //     let age = today.getFullYear() - birthDate.getFullYear();
+  //     const monthDiff = today.getMonth() - birthDate.getMonth();
+  //     if (monthDiff < 0) {
+  //       age--;
+  //     }
+  //     else{
+  //       this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
+  //     }
+  //   }
+  // }
 
   validateAuthorEmpty(valueCheck: any): string[] {
     const errorFieldsArr: string[] = [];
@@ -1499,13 +1499,13 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   displayDataOnTable(page: number, limit: number) {
-    this.SongService.getCategories(page, limit).subscribe(
+    this.SongService.getAllSongsNonePage().subscribe(
       async (data) => {
         console.log(data);
-        this.imageSong = data.content.map((album: Song) => album.image);
-        this.audioSong = data.content.map((album: Song) => album.path);
-        this.titleSong = data.content.map((album: Song) => album.name);
-        this.songs = data.content;
+        this.imageSong = data.map((album: Song) => album.image);
+        this.audioSong = data.map((album: Song) => album.path);
+        this.titleSong = data.map((album: Song) => album.name);
+        this.songs = data;
         this.song.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
         // this.song.dateTemp = formattedDate;
 

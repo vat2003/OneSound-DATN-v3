@@ -184,11 +184,19 @@ export class UserExploreComponent implements OnInit {
 
   getAllSongs(): void {
     this.SongService.getAllSongs().subscribe(async (data) => {
-      this.songs = data;
+      // this.songs = data;
       console.log(this.albums);
-      console.log(data);
-      this.songs = data;
-
+      if (data.length > 10) {
+        for (let i = data.length -1; i >= data.length - 10; i--) {
+            this.songs.push(data[i]);
+        }
+        console.log("TOP 10 bài hát mới: ", this.songs);
+    } else {
+            this.songs=data;
+        console.log("Tất cả các bài hát mới: ", this.songs);
+    }
+    this.songs.reverse();
+    // console.log("SẮP XÊP")
       for (const hotArt of this.songs) {
         if (hotArt.image == null || hotArt.image == '') {
           continue;
