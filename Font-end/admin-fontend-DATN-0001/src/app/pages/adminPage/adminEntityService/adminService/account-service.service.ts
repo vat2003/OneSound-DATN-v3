@@ -141,7 +141,7 @@ getAllUsers():Observable<account[]>{
 
   checkEmailExists(email: string): Observable<boolean> {
     const url = `${this.apicheckmail}/${email}`;
-    return this.http.get<boolean>(url, this.apiConfig);
+    return this.http.get<boolean>(url);
   }
 
   getUserDetail(token: string) {

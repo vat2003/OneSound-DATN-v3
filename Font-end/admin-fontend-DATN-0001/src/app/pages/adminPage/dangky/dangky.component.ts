@@ -63,12 +63,12 @@ export class DangkyComponent {
         return;
       }
       debugger;
-      // Kiểm tra xem mật khẩu có trùng khớp không
+     
       if (this.password !== this.retypePassword) {
         alert('The password does not match');
         return;
       }
-      // Tạo đối tượng dữ liệu đăng ký
+   
       debugger;
       const registerData: Register = {
         fullname: this.fullname,
@@ -82,13 +82,15 @@ export class DangkyComponent {
         role_id: 1,
       };
       debugger;
-      // Gửi yêu cầu kiểm tra email tồn tại trước khi đăng ký
+
       this.userService.checkEmailExists(this.email).subscribe({
         next: (emailExists: boolean) => {
+          debugger
           if (emailExists) {
+            debugger
             alert('Email đã tồn tại. Vui lòng sử dụng email khác.');
           } else {
-            // Nếu không có vấn đề gì, tiến hành đăng ký
+            debugger
             this.userService.register(registerData).subscribe({
               next: (response: any) => {
                 alert('Đăng ký thành công');
@@ -104,10 +106,12 @@ export class DangkyComponent {
           }
         },
         error: (error: any) => {
+          debugger
           console.error('Lỗi kiểm tra sự tồn tại của email', error);
         },
       });
     } else {
+      debugger
       alert('Vui lòng không để trống các thông tin người dùng');
     }
   }

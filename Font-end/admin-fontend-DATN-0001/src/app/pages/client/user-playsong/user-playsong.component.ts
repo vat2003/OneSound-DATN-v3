@@ -1,29 +1,29 @@
-import {AuthorService} from './../../adminPage/adminEntityService/adminService/author.service';
-import {GenreServiceService} from './../../adminPage/adminEntityService/adminService/genre-service.service';
-import {SongAuthorService} from './../../adminPage/adminEntityService/adminService/song-author.service';
-import {SongGenreService} from './../../adminPage/adminEntityService/adminService/song-genre.service';
-import {SongSingerService} from './../../adminPage/adminEntityService/adminService/song-singer.service';
-import {AlbumService} from './../../adminPage/adminEntityService/adminService/album/album.service';
-import {Component, OnInit, signal} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {UserPlaylistModalComponent} from '../user-playlist-modal/user-playlist-modal.component';
-import {SongService} from '../../adminPage/adminEntityService/adminService/song.service';
-import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
-import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
-import {CommonModule, NgClass, NgForOf, NgStyle} from '@angular/common';
-import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
-import {ActivatedRoute} from '@angular/router';
-import {SingerService} from '../../adminPage/adminEntityService/adminService/singer-service.service';
-import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
-import {Observable, catchError, forkJoin, map, of, startWith, switchMap} from 'rxjs';
-import {FormControl, FormsModule} from '@angular/forms';
-import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
-import {Author} from '../../adminPage/adminEntityService/adminEntity/author/author';
-import {FavoriteSong} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
-import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
-import {FavoriteService} from '../../../services/favorite-service/favorite.service';
-import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
-import {DataGlobalService} from '../../../services/data-global.service';
+import { AuthorService } from './../../adminPage/adminEntityService/adminService/author.service';
+import { GenreServiceService } from './../../adminPage/adminEntityService/adminService/genre-service.service';
+import { SongAuthorService } from './../../adminPage/adminEntityService/adminService/song-author.service';
+import { SongGenreService } from './../../adminPage/adminEntityService/adminService/song-genre.service';
+import { SongSingerService } from './../../adminPage/adminEntityService/adminService/song-singer.service';
+import { AlbumService } from './../../adminPage/adminEntityService/adminService/album/album.service';
+import { Component, OnInit, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { UserPlaylistModalComponent } from '../user-playlist-modal/user-playlist-modal.component';
+import { SongService } from '../../adminPage/adminEntityService/adminService/song.service';
+import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
+import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
+import { CommonModule, NgClass, NgForOf, NgStyle } from '@angular/common';
+import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
+import { ActivatedRoute } from '@angular/router';
+import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
+import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
+import { Observable, forkJoin, map, startWith, switchMap } from 'rxjs';
+import { FormControl, FormsModule } from '@angular/forms';
+import { Genre } from '../../adminPage/adminEntityService/adminEntity/genre/genre';
+import { Author } from '../../adminPage/adminEntityService/adminEntity/author/author';
+import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { FavoriteService } from '../../../services/favorite-service/favorite.service';
+import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
+import { DataGlobalService } from '../../../services/data-global.service';
 
 @Component({
   selector: 'app-user-playsong',
@@ -52,35 +52,36 @@ export class UserPlaysongComponent implements OnInit {
   genreMap: { [key: number]: any[] } = {};
   authorMap: { [key: number]: any[] } = {};
 
-  constructor(private matDialog: MatDialog,
-              private SongService: SongService,
-              private AlbumService: AlbumService,
-              private route: ActivatedRoute,
-              private singerService: SingerService,
-              private SongSingerService: SongSingerService,
-              private SongGenreService: SongGenreService,
-              private GenreServiceService: GenreServiceService,
-              private AuthorService: AuthorService,
-              private SongAuthorService: SongAuthorService,
-              private firebaseStorage: FirebaseStorageCrudService,
-              private favSong: FavoriteService,
-              private userService: accountServiceService,
-              private dataGlobal: DataGlobalService
-  ) {
-  }
+  constructor(
+    private matDialog: MatDialog,
+    private SongService: SongService,
+    private AlbumService: AlbumService,
+    private route: ActivatedRoute,
+    private singerService: SingerService,
+    private SongSingerService: SongSingerService,
+    private SongGenreService: SongGenreService,
+    private GenreServiceService: GenreServiceService,
+    private AuthorService: AuthorService,
+    private SongAuthorService: SongAuthorService,
+    private firebaseStorage: FirebaseStorageCrudService,
+    private favSong: FavoriteService,
+    private userService: accountServiceService,
+    private dataGlobal: DataGlobalService
+  ) {}
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.id = this.route.snapshot.params['id'];
     this.getAllSongs();
     this.getAlbumById();
+    this.getAllSongFavByUser();
   }
 
   getAllSongs(): void {
     this.SongService.getAllSongsByAlbumId(this.id).subscribe((data) => {
       data.forEach(async (song) => {
         song.image = await this.setImageURLFirebase(song.image);
-      })
+      });
 
       this.songs = data;
       this.songsfromdata = data;
@@ -101,7 +102,7 @@ export class UserPlaysongComponent implements OnInit {
           );
           return forkJoin(singerObservables).pipe(
             map((singerDataArray) => {
-              return {songId: song.id, singers: singerDataArray};
+              return { songId: song.id, singers: singerDataArray };
             })
           );
         })
@@ -125,7 +126,7 @@ export class UserPlaysongComponent implements OnInit {
           );
           return forkJoin(singerObservables).pipe(
             map((singerDataArray) => {
-              return {songId: song.id, genres: singerDataArray};
+              return { songId: song.id, genres: singerDataArray };
             })
           );
         })
@@ -140,22 +141,16 @@ export class UserPlaysongComponent implements OnInit {
     });
   }
 
-
-
   getAuthorsForSongs() {
-    console.log("BÀI HÁT AUTHOR: ", this.songs);
     const observables = this.songs.map((song) => {
-      console.log("BÀI HÁT AUTHOR T1111: ", song.id);
       return this.SongAuthorService.getAllAuthorBySong(song.id).pipe(
         switchMap((authors) => {
-          console.log("Author song: "+song.id);
-          console.log("AUthor: "+authors)
-          const singerObservables = authors.map((authors) =>
-            this.AuthorService.getAuthorById(authors.author.id)
+          const singerObservables = authors.map((genres) =>
+            this.AuthorService.getAuthorById(genres.author.id)
           );
           return forkJoin(singerObservables).pipe(
             map((singerDataArray) => {
-              return {songId: song.id, authors: singerDataArray};
+              return { songId: song.id, authors: singerDataArray };
             })
           );
         })
@@ -165,8 +160,6 @@ export class UserPlaysongComponent implements OnInit {
     forkJoin(observables).subscribe((results) => {
       results.forEach((result) => {
         this.authorMap[result.songId] = result.authors;
-        console.log("Author songID: ",result.songId);
-        console.log("Author song: ",result.authors);
       });
       console.log('Author Map:', this.authorMap);
     });
@@ -196,21 +189,20 @@ export class UserPlaysongComponent implements OnInit {
 
   openDialog(songInput: Song) {
     const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
-      data: {song: songInput},
+      data: { song: songInput },
     });
 
     dialogRef.afterOpened().subscribe(() => {
       this.getAllSongs();
     });
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   getAllSongFavByUser() {
     if (this.acc && this.acc.id) {
       this.favSong.getAllFavSongByUser(this.acc.id).subscribe((data) => {
         this.favListSongs = data;
-        // console.log(this.favListSongs);
+        console.log('this.favListSongs from playsong comp', this.favListSongs);
 
         this.checkFav();
       });
@@ -242,12 +234,10 @@ export class UserPlaysongComponent implements OnInit {
         return;
       }
       song.isFav = false;
-      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {
-      });
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {});
     } else {
       song.isFav = true;
-      this.favSong.addFavoriteSong(favS).subscribe((data) => {
-      });
+      this.favSong.addFavoriteSong(favS).subscribe((data) => {});
     }
   }
 
@@ -255,5 +245,7 @@ export class UserPlaysongComponent implements OnInit {
     item.path = await this.setImageURLFirebase(item.path);
     this.dataGlobal.changeId(item);
     this.dataGlobal.setItem('songHeardLast', item);
+
+    this.dataGlobal.changeArr(this.songs);
   }
 }

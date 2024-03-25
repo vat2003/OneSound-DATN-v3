@@ -1,9 +1,9 @@
 <div class="master_play">
 
-  <img [src]="selectedVideo.snippet.thumbnails?.high.url" alt="Alan" id="poster_master_play"/>
+  <img [src]="selectedVideo.snippet.thumbnails?.high.url" alt="Alan" id="poster_master_play" />
   <h5 id="title">
     <p class="line-clamp" id="song-title">
-      {{ selectedVideo.snippet.title }}
+      {{selectedVideo.snippet.title }}
 
     </p>
 
@@ -15,16 +15,16 @@
     </div>
   </h5>
   <div class="icon">
-    <i class="fa-solid fa-backward" id="back"></i>
+    <i class="fa-solid fa-backward" id="back" (click)="previus()"></i>
 
     <i class="fa-solid fa-play" id="masterPlay" #masterPlay (click)="pauseMusic()"></i>
 
 
-    <i class="fa-solid fa-forward" id="next"></i>
+    <i class="fa-solid fa-forward" id="next" (click)="next()"></i>
   </div>
   <span id="currentStart">{{ currentTime }}</span>
   <div class="bar">
-    <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()"/>
+    <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()" />
     <div class="bar2" id="bar2" #seek_bar></div>
     <div class="dot" id="seek_dot" #seek_dot></div>
   </div>
@@ -32,7 +32,7 @@
 
   <div class="vol">
     <i class="fa-solid fa-volume-low" id="vol_icon" #vol_icon></i>
-    <input type="range" id="vol" #vol min="0" value="30" max="100" (input)="setVolume()"/>
+    <input type="range" id="vol" #vol min="0" value="30" max="100" (input)="setVolume()" />
     <div class="vol_bar" #vol_bar></div>
     <div class="dot" id="vol_dot" #vol_dot></div>
 
@@ -50,4 +50,5 @@
     <i class="fa-solid fa-square-arrow-up-right" (click)="openDialog()"></i>
   </div>
   <youtube-player #player [playerVars]="{autoplay:1}" [width]="1" [height]="1" [videoId]="videoId"></youtube-player>
+
 </div>
