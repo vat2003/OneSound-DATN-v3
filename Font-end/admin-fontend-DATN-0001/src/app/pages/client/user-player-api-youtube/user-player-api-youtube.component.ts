@@ -53,20 +53,24 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   acc?: account | null;
   selectedVideo: any;
   favList: any[] = [];
+  currentIndex!: number;
+  arrPreNext: any[] = [];
   constructor(
     private youtubeService: YoutubeApiSService,
     private dataGlobal: DataGlobalService,
     private favYoutube: FavoriteService,
     private userService: accountServiceService,
     private matDialog: MatDialog,
-    private PlaylistYoutubeService: PlaylistYoutubeService,
+    private PlaylistYoutubeService: PlaylistYoutubeService
   ) {}
 
   ngOnInit() {
     // this.selectedVideo = this.dataGlobal.getItem('songHeardLastTimeYoutube');
     // this.videoId = this.selectedVideo.id.videoId;
-    this.getAllYoutubeFavByUser();
+
     this.acc = this.userService.getUserResponseFromLocalStorage();
+    this.getAllYoutubeFavByUser();
+
     this.dataGlobal.YtGlobalId.subscribe((video) => {
       if (video == null || video == undefined) {
         this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
@@ -74,6 +78,13 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
         this.selectedVideo = video; // Cập nhật giá trị mới của ind_display khi có sự thay đổi của index
       }
       this.videoId = this.selectedVideo.id.videoId;
+    });
+
+    this.dataGlobal.arrPreNext.subscribe((arr) => {
+      this.arrPreNext = arr;
+      console.log('arrPreNext from user player api', this.arrPreNext);
+      this.currentIndex = this.arrPreNext.indexOf(this.selectedVideo);
+      // alert(this.currentIndex);
     });
 
     if (!document.getElementById('youtube-api')) {
@@ -154,20 +165,19 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   }
 
   openDialog() {
-    debugger
+    debugger;
     this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
     console.log(this.selectedVideo);
 
     const Youtube: Youtube = {
-      id:  this.selectedVideo.id.videoId,
+      id: this.selectedVideo.id.videoId,
       title: this.selectedVideo.snippet.title,
       description: this.selectedVideo.snippet.description,
-      thumbnails:   this.selectedVideo.snippet.thumbnails.high.url,
+      thumbnails: this.selectedVideo.snippet.thumbnails.high.url,
       channelTitle: this.selectedVideo.snippet.channelTitle,
-      publishTime:  this.selectedVideo.snippet.publishTime
-    }
-      console.log(Youtube);
-
+      publishTime: this.selectedVideo.snippet.publishTime,
+    };
+    console.log(Youtube);
 
     this.PlaylistYoutubeService.createYt(Youtube).subscribe(
       () => {
@@ -179,15 +189,12 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
         );
 
         dialogRef.afterClosed().subscribe((result) => {});
-
       },
-      error => {
+      (error) => {
         console.error('Failed to add song to the playlist:', error);
       }
     );
   }
-
-
 
   setVolume() {
     if (this.player) {
@@ -255,5 +262,22 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
       this.favYoutube.createYt(youtube).subscribe((data) => {});
       this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
     }
+  }
+
+  previus() {
+    this.currentIndex = this.currentIndex - 1;
+    if (this.currentIndex < 0) {
+      this.currentIndex = this.arrPreNext.length - 1;
+    }
+    this.selectedVideo = this.arrPreNext[this.currentIndex];
+    this.videoId = this.selectedVideo.id.videoId;
+  }
+  next() {
+    this.currentIndex = this.currentIndex + 1;
+    if (this.currentIndex > this.arrPreNext.length - 1) {
+      this.currentIndex = 0;
+    }
+    this.selectedVideo = this.arrPreNext[this.currentIndex];
+    this.videoId = this.selectedVideo.id.videoId;
   }
 }

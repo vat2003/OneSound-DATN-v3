@@ -1,41 +1,42 @@
 <div class="list-tracks" style="    margin-top: 2rem;">
 
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th>TITLE</th>
-                <th>ARTIST</th>
-                <!-- <th>GENRES</th>  -->
-                <!-- <th>TIME</th> -->
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="list-songs-detail">
-            <tr *ngFor="let video of results">
-                <td (click)="showDetail(video)">
-                    <img *ngIf="video.snippet" [src]="video.snippet.thumbnails?.high.url" [alt]="video.snippet.title" />
-                </td>
-                <td (click)="showDetail(video)">
-                    <div class="table-title">
-                        <div class="line-clamp" *ngIf="video.snippet">{{ video.snippet.title }}</div>
-                    </div>
-                </td>
-                <td *ngIf="video.snippet" (click)="showDetail(video)"> {{ video.snippet.channelTitle }}</td>
-                <!-- <td *ngIf="video.snippet"></td> -->
-                 <td>aaaaaa {{video.isFav}}</td>
-                <td>
-                    <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
+  <table>
+    <thead>
+    <tr>
+      <th></th>
+      <th>TITLE</th>
+      <th>ARTIST</th>
+      <!-- <th>GENRES</th>  -->
+      <!-- <th>TIME</th> -->
+      <th></th>
+    </tr>
+    </thead>
+    <tbody id="list-songs-detail">
+    <tr *ngFor="let video of results">
+      <td (click)="showDetail(video)">
+        <img *ngIf="video.snippet" [src]="video.snippet.thumbnails?.high.url" [alt]="video.snippet.title" />
+      </td>
+      <td (click)="showDetail(video)">
+        <div class="table-title">
+          <div class="line-clamp" *ngIf="video.snippet">{{ video.snippet.title }}</div>
+        </div>
+      </td>
+      <td *ngIf="video.snippet" (click)="showDetail(video)"> {{ video.snippet.channelTitle }}</td>
+      <!-- <td *ngIf="video.snippet"></td> -->
+      <!-- <td>{{video.isFav}}</td> -->
+      <td>
+        <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
+        &nbsp;
+        &nbsp;
+        <i class="favorite fa-heart"
+           [ngClass]="{'fa-solid': video.isFav === true, 'fa-regular': video.isFav === false}"
+           [ngStyle]="{'color': video.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favorite(video)">
+        </i>
+      </td>
+    </tr>
 
-                    <i class="favorite fa-heart"
-                        [ngClass]="{'fa-solid': video.isFav === true, 'fa-regular': video.isFav === false}"
-                        [ngStyle]="{'color': video.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favorite(video)">
-                    </i>
-                </td>
-            </tr>
 
 
-
-        </tbody>
-    </table>
+    </tbody>
+  </table>
 </div>

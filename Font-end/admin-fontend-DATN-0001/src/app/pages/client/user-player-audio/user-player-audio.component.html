@@ -1,50 +1,56 @@
 <div class="master_play">
 
-    <img src="{{selectedSong.image}}" alt="{{selectedSong.image}}" id="poster_master_play" />
-    <!-- thay dùm tao cái ảnh bẳng firebase service -->
-    <h5 id="title">
-        <p class="line-clamp" id="song-title">
-            {{selectedSong.name}}
+  <img src="{{selectedSong.image}}" alt="{{selectedSong.image}}" id="poster_master_play" />
+  <!-- thay dùm tao cái ảnh bẳng firebase service -->
+  <h5 id="title">
+    <p class="line-clamp" id="song-title">
+      {{selectedSong.name}}
 
-        </p>
+    </p>
 
-        <div class="subtitle line-clamp" id="artist-name">
-            Doechii
-        </div>
-        <div class="album line-clamp" id="category-name">
-            PLAYING FROM: {{ selectedSong.album.title  }}
-        </div>
-    </h5>
-    <div class="icon">
-        <!-- back icon -->
-        <i class="fa-solid fa-backward" id="back"></i>
-
-        <!-- pause - resume icon -->
-        <i class="fa-solid fa-play" id="masterPlay" #masterPlay (click)="pauseMusic()"></i>
-
-        <!-- next icon -->
-        <i class="fa-solid fa-forward" id="next"></i>
+    <div class="subtitle line-clamp" id="artist-name">
+      Doechii
     </div>
-    <span id="currentStart">{{ currentTime }}</span>
-    <div class="bar">
-        <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()" />
-        <div class="bar2" id="bar2" #seek_bar></div>
-        <div class="dot" id="seek_dot" #seek_dot></div>
+    <div class="album line-clamp" id="category-name">
+      PLAYING FROM: {{ selectedSong.album.title }}
     </div>
-    <span id="currentEnd">{{ totalTime }}</span>
+  </h5>
+  <div class="icon">
+    <!-- back icon -->
+    <i class="fa-solid fa-backward" id="back" (click)="previus()"></i>
 
-    <div class="vol">
-        <i class="fa-solid fa-volume-low" id="vol_icon" #vol_icon></i>
-        <input type="range" id="vol" #vol min="0" value="30" max="100" />
-        <div class="vol_bar" #vol_bar></div>
-        <div class="dot" id="vol_dot" #vol_dot></div>
+    <!-- pause - resume icon -->
+    <i class="fa-solid fa-play" id="masterPlay" #masterPlay (click)="pauseMusic()"></i>
 
-    </div>
-    <div class="mode">
-        <div class="mode-type">HIFI</div>
-        <i class="fa-regular fa-heart"></i>
-        <i class="fa-solid fa-ellipsis"></i>
-        <i class="fa-solid fa-bars"></i>
-        <i class="fa-solid fa-square-arrow-up-right"></i>
-    </div>
+    <!-- next icon -->
+    <i class="fa-solid fa-forward" id="next" (click)="next()"></i>
+  </div>
+  <span id="currentStart">{{ currentTime }}</span>
+  <div class="bar">
+    <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()" />
+    <div class="bar2" id="bar2" #seek_bar></div>
+    <div class="dot" id="seek_dot" #seek_dot></div>
+  </div>
+  <span id="currentEnd">{{ totalTime }}</span>
+
+  <div class="vol">
+    <i class="fa-solid fa-volume-low" id="vol_icon" #vol_icon></i>
+    <input type="range" id="vol" #vol min="0" value="30" max="100" />
+    <div class="vol_bar" #vol_bar></div>
+    <div class="dot" id="vol_dot" #vol_dot></div>
+
+  </div>
+  <div class="mode">
+    <div class="mode-type">HIFI</div>
+
+    <i class="favorite fa-heart"
+       [ngClass]="{'fa-solid': selectedSong.isFav === true, 'fa-regular': selectedSong.isFav === false}"
+       [ngStyle]="{'color': selectedSong.isFav === true ? 'rgb(212, 15, 15)' : ''}"
+       (click)="favoriteSong(selectedSong)">
+    </i>
+
+    <i class="fa-solid fa-ellipsis"></i>
+    <i class="fa-solid fa-bars"></i>
+    <i class="fa-solid fa-square-arrow-up-right"></i>
+  </div>
 </div>
