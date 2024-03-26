@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
-import {account} from '../adminEntityService/adminEntity/account/account';
+import {account, createAccount} from '../adminEntityService/adminEntity/account/account';
 import {TokenService} from '../adminEntityService/adminService/token.service';
 import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
 import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
@@ -30,7 +30,28 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.account = this.UserService.getUserResponseFromLocalStorage();
+    this.someFunction();
     console.log(this.account);
+  }
+
+  async someFunction() {
+    const acc = createAccount({
+      password: this.account?.password,
+      fullname: this.account?.fullname,
+      email: this.account?.email,
+      active: this.account?.active,
+      address: this.account?.address,
+      avatar_url: this.account?.avatar_url,
+      gender: this.account?.gender,
+      createdDate: this.account?.createdDate,
+      birthday: this.account?.birthday,
+      Phone: this.account?.Phone,
+      accountRole: this.account?.accountRole,
+      passwordResetToken: this.account?.passwordResetToken
+    });
+    acc.avatar_url = await this.setImageURLFirebase(acc.avatar_url);
+
+    this.account = acc;
   }
 
   async setImageURLFirebase(image: string | undefined): Promise<string> {

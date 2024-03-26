@@ -35,7 +35,7 @@ import {NgToastModule, NgToastService} from 'ng-angular-popup';
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
-export class ProfileComponent  implements OnInit {
+export class ProfileComponent implements OnInit {
   userResponse?: account;
   token: string = '';
   account?: account | null;
@@ -47,16 +47,16 @@ export class ProfileComponent  implements OnInit {
   errorFieldsArr: String[] = [];
   protected aFormGroup!: FormGroup;
 
-
+  avatar: string | undefined;
 
   constructor(
-      private formBuilder: FormBuilder,
-      private userService: accountServiceService,
-      private router: Router,
-      private renderer: Renderer2,
-      private el: ElementRef, private firebaseStorage: FirebaseStorageCrudService,
-      private toast: NgToastService,
-      @Inject(PLATFORM_ID) private platformId: any
+    private formBuilder: FormBuilder,
+    private userService: accountServiceService,
+    private router: Router,
+    private renderer: Renderer2,
+    private el: ElementRef, private firebaseStorage: FirebaseStorageCrudService,
+    private toast: NgToastService,
+    @Inject(PLATFORM_ID) private platformId: any
   ) {
     this.userProfileForm = this.formBuilder.group({
 
@@ -73,18 +73,11 @@ export class ProfileComponent  implements OnInit {
   }
 
 
-
   ngOnInit(): void {
-    // this.aFormGroup = this.formBuilder.group({
-    //   recaptcha: ['', Validators.required]
-    // });
-
-
     this.account = this.userService.getUserResponseFromLocalStorage();
 
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(this.account?.birthday, 'yyyy-MM-dd') ?? '';
-
     this.userProfileForm.patchValue({
 
       fullname: this.account?.fullname ?? '',
@@ -98,22 +91,28 @@ export class ProfileComponent  implements OnInit {
       role_id: this.account?.accountRole
     });
 
+    // this.avatar = this.setImageURLFirebase(this.account?.avatar_url ?? '');
+    this.setImageAvatar();
+  }
 
-    // this.setImage(this.userProfileForm.value);
-
+  async setImageAvatar() {
+    this.avatar = await this.setImageURLFirebase(this.account?.avatar_url ?? 'null');
   }
 
   async setImage(avatar_url: string) {
-    this.fillImage(await this.setImageURLFirebase(avatar_url));
+    const imageUrl = await this.setImageURLFirebase(avatar_url);
+    this.fillImage(imageUrl);
   }
 
-  async setImageURLFirebase(image: string): Promise<string> {
+  async setImageURLFirebase(image: string) {
     if (image != null) {
-      return await this.firebaseStorage.getFile(image);
+      const fileUrl = await this.firebaseStorage.getFile(image);
+      return fileUrl + '';
     } else {
       return 'null';
     }
   }
+
 
   save() {
     debugger
@@ -136,23 +135,23 @@ export class ProfileComponent  implements OnInit {
 
 
     this.userService.UpdateProfile(updateUserDTO)
-        .subscribe({
+      .subscribe({
 
-          next: (response: any) => {
-
-
-            this.router.navigate(['/onesound/dangnhap']);
-            console.log(response);
-
-            alert('update profile successfully');
+        next: (response: any) => {
 
 
-          },
-          error: (error: any) => {
-            debugger
-            alert(error.error.message);
-          }
-        });
+          this.router.navigate(['/onesound/dangnhap']);
+          console.log(response);
+
+          alert('update profile successfully');
+
+
+        },
+        error: (error: any) => {
+          debugger
+          alert(error.error.message);
+        }
+      });
   }
 
   onFileSelected(event: any) {
@@ -178,19 +177,19 @@ export class ProfileComponent  implements OnInit {
 
   fillImage(url: string): void {
     this.renderer.setStyle(
-        this.el.nativeElement.querySelector('.image-upload-wrap'),
-        'display',
-        'none'
+      this.el.nativeElement.querySelector('.image-upload-wrap'),
+      'display',
+      'none'
     );
     this.renderer.setAttribute(
-        this.el.nativeElement.querySelector('.file-upload-image'),
-        'src',
-        url
+      this.el.nativeElement.querySelector('.file-upload-image'),
+      'src',
+      url
     );
     this.renderer.setStyle(
-        this.el.nativeElement.querySelector('.file-upload-content'),
-        'display',
-        'block'
+      this.el.nativeElement.querySelector('.file-upload-content'),
+      'display',
+      'block'
     );
     if (url.length == 0) {
       this.removeUpload();
@@ -202,19 +201,19 @@ export class ProfileComponent  implements OnInit {
     this.setImageUrl = '';
     // this.imageFile = null;
     this.renderer.setProperty(
-        this.el.nativeElement.querySelector('.file-upload-input'),
-        'value',
-        ''
+      this.el.nativeElement.querySelector('.file-upload-input'),
+      'value',
+      ''
     );
     this.renderer.setStyle(
-        this.el.nativeElement.querySelector('.file-upload-content'),
-        'display',
-        'none'
+      this.el.nativeElement.querySelector('.file-upload-content'),
+      'display',
+      'none'
     );
     this.renderer.setStyle(
-        this.el.nativeElement.querySelector('.image-upload-wrap'),
-        'display',
-        'block'
+      this.el.nativeElement.querySelector('.image-upload-wrap'),
+      'display',
+      'block'
     );
   }
 }
