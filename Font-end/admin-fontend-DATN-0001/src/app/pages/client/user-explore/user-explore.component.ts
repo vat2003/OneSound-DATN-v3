@@ -74,6 +74,9 @@ export class UserExploreComponent implements OnInit {
     this.getAllArtist();
     this.recordVisit()
     this.getAllAlbum();
+    this.songs.reverse();
+    this.hotArtist.reverse();
+    this.albums.reverse();
   }
 
 
@@ -195,7 +198,7 @@ export class UserExploreComponent implements OnInit {
             this.songs=data;
         console.log("Tất cả các bài hát mới: ", this.songs);
     }
-    this.songs.reverse();
+
     // console.log("SẮP XÊP")
       for (const hotArt of this.songs) {
         if (hotArt.image == null || hotArt.image == '') {

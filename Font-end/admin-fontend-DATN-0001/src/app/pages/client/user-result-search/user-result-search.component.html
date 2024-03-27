@@ -1,42 +1,240 @@
-<div class="list-tracks" style="    margin-top: 2rem;">
+<div class="list-tracks" style="margin-top: 2rem">
+  <div>
+    <div class="h3">
+      <h3>Result</h3>
+      <!-- <div class="btn_s">
+        <button>VIEW ALL</button>
+      </div> -->
+    </div>
+    <div
+      class="popular_song"
+      *ngIf="singerforsearch && singerforsearch.length > 0"
+    >
+      <div class="h3">
+        <h3>Hot Artists</h3>
+        <div class="btn_s">
+          <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
+          <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+        </div>
+      </div>
+      <div class="pop_song">
+        <li
+          class="songItem"
+          *ngFor="let hotArtistitem of singerforsearch"
+          (click)="gotoDetailArtist(hotArtistitem)"
+        >
+          <div class="img_play">
+            <img
+              src="{{ hotArtistitem.image }}"
+              alt="alan"
+              style="height: 180px; object-fit: cover"
+            />
+            <i class="bi fa-solid fa-circle-play" i="1"></i>
+          </div>
+          <h5>
+            <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
 
+            <div class="subtitle line-clamp line-2">1M follow</div>
+          </h5>
+        </li>
+      </div>
+    </div>
+    <div class="popular_song" *ngIf="albums && albums.length > 0">
+      <div class="h3">
+        <h3>Album</h3>
+        <div class="btn_s">
+          <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
+          <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+        </div>
+      </div>
+      <div class="pop_song">
+        <li
+          class="songItem"
+          *ngFor="let hotArtistitem of albums"
+          (click)="gotoDetailAlbum(hotArtistitem)"
+        >
+          <div class="img_play">
+            <img
+              src="{{ hotArtistitem.image }}"
+              alt="alan"
+              style="height: 180px; object-fit: cover"
+            />
+            <i class="bi fa-solid fa-circle-play" i="1"></i>
+          </div>
+          <h5>
+            <p class="line-clamp">{{ hotArtistitem.title }}</p>
+
+            <div class="subtitle line-clamp line-2">1M follow</div>
+          </h5>
+        </li>
+      </div>
+    </div>
+    <div class="popular_song" *ngIf="genres && genres.length > 0">
+      <div class="h3">
+        <h3>Genre</h3>
+        <div class="btn_s">
+          <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
+          <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+        </div>
+      </div>
+      <div class="pop_song">
+        <li class="songItem" *ngFor="let hotArtistitem of genres">
+          <div class="img_play">
+            <img
+              src="{{ hotArtistitem.image }}"
+              alt="alan"
+              style="height: 180px; object-fit: cover"
+            />
+            <i class="bi fa-solid fa-circle-play" i="1"></i>
+          </div>
+          <h5>
+            <p class="line-clamp">{{ hotArtistitem.name }}</p>
+
+            <div class="subtitle line-clamp line-2">1M follow</div>
+          </h5>
+        </li>
+      </div>
+    </div>
+    <div class="popular_song" *ngIf="authors && authors.length > 0">
+      <div class="h3">
+        <h3>Authors</h3>
+        <div class="btn_s">
+          <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
+          <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+        </div>
+      </div>
+      <div class="pop_song">
+        <li class="songItem" *ngFor="let hotArtistitem of authors">
+          <div class="img_play">
+            <img
+              src="{{ hotArtistitem.image }}"
+              alt="alan"
+              style="height: 180px; object-fit: cover"
+            />
+            <i class="bi fa-solid fa-circle-play" i="1"></i>
+          </div>
+          <h5>
+            <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
+
+            <div class="subtitle line-clamp line-2">1M follow</div>
+          </h5>
+        </li>
+      </div>
+    </div>
+
+    <table *ngIf="songs && songs.length > 0; else noDataMessage">
+      <thead>
+        <tr>
+          <!-- <th>#</th> -->
+          <!-- <th>IMAGE</th> -->
+          <th>TITLE</th>
+          <th>ARTIST</th>
+          <!-- <th>GENRE</th>
+          <th>TIME</th> -->
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="list-songs">
+        <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
+          <!-- <td>{{ i + 1 }}</td> -->
+          <td>
+            <img [src]="s.image" alt="" />
+            <i class="bi fa-solid fa-circle-play"></i>
+          </td>
+          <td>
+            <div class="table-title">
+              <div class="line-clamp">{{ s.name }}</div>
+              <!-- <span class="table-song-type">HOT</span> -->
+            </div>
+          </td>
+          <td>
+            <div>
+              <span *ngFor="let singer of singerMap[s.id]; let last = last"
+                >{{ singer.fullname
+                }}{{ !last && singerMap[s.id].length > 1 ? ", " : "" }}</span
+              >
+            </div>
+          </td>
+          <!-- <td>
+          <div>
+              <span *ngFor="let singer of genreMap[s.id]; let last = last"
+              >{{
+                  singer.name
+                }}{{ !last && genreMap[s.id].length > 1 ? ", " : "" }}</span
+              >
+          </div>
+        </td>
+        <td>3:15</td> -->
+          <td *ngIf="this.acc">
+            <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
+            <i class="favorite fa-heart"> </i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noDataMessage>
+      <div>
+        <!-- <td colspan="4"> -->
+        <p class="text-center text-danger">No song available.</p>
+        <!-- </td> -->
+      </div>
+    </ng-template>
+  </div>
+  <div class="h3">
+    <h3>Suggest</h3>
+    <!-- <div class="btn_s">
+      <button>VIEW ALL</button>
+    </div> -->
+  </div>
   <table>
     <thead>
-    <tr>
-      <th></th>
-      <th>TITLE</th>
-      <th>ARTIST</th>
-      <!-- <th>GENRES</th>  -->
-      <!-- <th>TIME</th> -->
-      <th></th>
-    </tr>
+      <tr>
+        <th></th>
+        <th>TITLE</th>
+        <th>ARTIST</th>
+        <!-- <th>GENRES</th>  -->
+        <!-- <th>TIME</th> -->
+        <th></th>
+      </tr>
     </thead>
     <tbody id="list-songs-detail">
-    <tr *ngFor="let video of results">
-      <td (click)="showDetail(video)">
-        <img *ngIf="video.snippet" [src]="video.snippet.thumbnails?.high.url" [alt]="video.snippet.title" />
-      </td>
-      <td (click)="showDetail(video)">
-        <div class="table-title">
-          <div class="line-clamp" *ngIf="video.snippet">{{ video.snippet.title }}</div>
-        </div>
-      </td>
-      <td *ngIf="video.snippet" (click)="showDetail(video)"> {{ video.snippet.channelTitle }}</td>
-      <!-- <td *ngIf="video.snippet"></td> -->
-      <!-- <td>{{video.isFav}}</td> -->
-      <td>
-        <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
-        &nbsp;
-        &nbsp;
-        <i class="favorite fa-heart"
-           [ngClass]="{'fa-solid': video.isFav === true, 'fa-regular': video.isFav === false}"
-           [ngStyle]="{'color': video.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favorite(video)">
-        </i>
-      </td>
-    </tr>
-
-
-
+      <tr *ngFor="let video of results">
+        <td (click)="showDetail(video)">
+          <img
+            *ngIf="video.snippet"
+            [src]="video.snippet.thumbnails?.high.url"
+            [alt]="video.snippet.title"
+          />
+        </td>
+        <td (click)="showDetail(video)">
+          <div class="table-title">
+            <div class="line-clamp" *ngIf="video.snippet">
+              {{ video.snippet.title }}
+            </div>
+          </div>
+        </td>
+        <td *ngIf="video.snippet" (click)="showDetail(video)">
+          {{ video.snippet.channelTitle }}
+        </td>
+        <!-- <td *ngIf="video.snippet"></td> -->
+        <!-- <td>{{video.isFav}}</td> -->
+        <td>
+          <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
+          &nbsp; &nbsp;
+          <i
+            class="favorite fa-heart"
+            [ngClass]="{
+              'fa-solid': video.isFav === true,
+              'fa-regular': video.isFav === false
+            }"
+            [ngStyle]="{
+              color: video.isFav === true ? 'rgb(212, 15, 15)' : ''
+            }"
+            (click)="favorite(video)"
+          >
+          </i>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
