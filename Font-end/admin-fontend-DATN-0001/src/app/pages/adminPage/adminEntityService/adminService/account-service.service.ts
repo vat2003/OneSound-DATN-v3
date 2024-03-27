@@ -44,7 +44,7 @@ export class accountServiceService {
 
   private apiLoginGoogle = `${this.baseUrl}/emails/users/`;
   private apiLoginFacebook = `${this.baseUrl}/facebooks/users/`;
- 
+
 
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
@@ -58,7 +58,7 @@ export class accountServiceService {
     this.localStorage = document.defaultView?.localStorage;
   }
 
-  
+
   getGoogleUserInfo(id: number): Observable<any> {
     return this.http.get<any>(this.apiLoginGoogle + id.toString());
   }
@@ -75,7 +75,7 @@ export class accountServiceService {
 
 
   checkactive1(email: string): Observable<any> {
-    const requestData = { email: email }; 
+    const requestData = {email: email};
     return this.http.post<any>(this.apicheckactive, requestData);
   }
 
@@ -86,14 +86,13 @@ export class accountServiceService {
   }
 
 
+  getAllUsers(): Observable<account[]> {
+    return this.http.get<account[]>(`${this.baseUrl}/users/user`);
+  }
 
-getAllUsers():Observable<account[]>{
-  return this.http.get<account[]>(`${this.baseUrl}/users/user`);
-}
-
-getemailuser(email: string):Observable<account[]>{
-  return this.http.get<account[]>(`${this.baseUrl}/users/emailUser/${email}`);
-}
+  getemailuser(email: string): Observable<account[]> {
+    return this.http.get<account[]>(`${this.baseUrl}/users/emailUser/${email}`);
+  }
 
   getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<account> {
     const params = new HttpParams()

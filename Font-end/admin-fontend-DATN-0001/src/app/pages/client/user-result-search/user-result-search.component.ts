@@ -1,20 +1,24 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { YoutubeApiSService } from '../../../services/youtube-api-s.service';
-import { DataGlobalService } from '../../../services/data-global.service';
-import { AdminUserServiceService } from '../../../services/admin-user-service.service';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
-import { FavoriteService } from '../../../services/favorite-service/favorite.service';
-import { Youtube } from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
-import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
-import { PlaylistInteractionService } from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
-import { MatDialog } from '@angular/material/dialog';
-import { UserPlaylistYoutubeModalComponentComponent } from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {YoutubeApiSService} from '../../../services/youtube-api-s.service';
+import {DataGlobalService} from '../../../services/data-global.service';
+import {AdminUserServiceService} from '../../../services/admin-user-service.service';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {FavoriteYoutbe} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
+import {FavoriteService} from '../../../services/favorite-service/favorite.service';
+import {Youtube} from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
+import {PlaylistYoutubeService} from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import {
+  PlaylistInteractionService
+} from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  UserPlaylistYoutubeModalComponentComponent
+} from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
 
 @Component({
   selector: 'app-user-result-search',
@@ -42,18 +46,22 @@ export class UserResultSearchComponent implements OnInit {
     private matDialog: MatDialog,
     private PlaylistYoutubeService: PlaylistYoutubeService,
     private playlistInteractionService: PlaylistInteractionService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    //debugger;
-    this.acc = this.userService.getUserResponseFromLocalStorage();
-    this.getAllYoutubeFavByUser();
-    this.get_keyword_from_searchinput();
-    this.search();
-    this.playlistInteractionService.playlistUpdated$.subscribe(() => {
+    try {
+      this.acc = this.userService.getUserResponseFromLocalStorage();
+      this.getAllYoutubeFavByUser();
       this.get_keyword_from_searchinput();
       this.search();
-    });
+    } catch (e) {
+      console.log(e)
+    }
+    // this.playlistInteractionService.playlistUpdated$.subscribe(() => {
+    //   this.get_keyword_from_searchinput();
+    //   this.search();
+    // });
   }
 
   get_keyword_from_searchinput() {
@@ -119,11 +127,14 @@ export class UserResultSearchComponent implements OnInit {
         return;
       }
       youtubeitem.isFav = false;
-      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {});
+      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {
+      });
     } else {
       youtubeitem.isFav = true;
-      this.favYoutube.createYt(youtube).subscribe((data) => {});
-      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
+      this.favYoutube.createYt(youtube).subscribe((data) => {
+      });
+      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {
+      });
     }
   }
 
@@ -155,7 +166,7 @@ export class UserResultSearchComponent implements OnInit {
         const dialogRef = this.matDialog.open(
           UserPlaylistYoutubeModalComponentComponent,
           {
-            data: { youtubeId: Youtube.id },
+            data: {youtubeId: Youtube.id},
           }
         );
       },
