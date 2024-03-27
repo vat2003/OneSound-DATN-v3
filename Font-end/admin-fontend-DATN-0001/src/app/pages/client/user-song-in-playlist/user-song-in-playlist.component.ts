@@ -67,14 +67,14 @@ export class UserSongInPlaylistComponent {
   search(): void {
     const searchTermLowerCase = this.searchTerm.trim().toLowerCase();
     this.PlaylistSong = this.PlaylistSong.filter(PlaylistSong =>
-      PlaylistSong.song?.name.toLowerCase().includes(searchTermLowerCase)
+        PlaylistSong.song?.name.toLowerCase().includes(searchTermLowerCase)
       // ||
-       //playlists..toLowerCase().includes(searchTermLowerCase)
+      //playlists..toLowerCase().includes(searchTermLowerCase)
     );
 
 
     if (searchTermLowerCase == '') {
-      // this.timname();
+      this.timname(this.id);
     }
   }
 
