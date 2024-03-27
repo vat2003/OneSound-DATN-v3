@@ -45,19 +45,15 @@ export class UserResultSearchComponent implements OnInit {
     private favYoutube: FavoriteService,
     private matDialog: MatDialog,
     private PlaylistYoutubeService: PlaylistYoutubeService,
-    private playlistInteractionService: PlaylistInteractionService
+    // private playlistInteractionService: PlaylistInteractionService
   ) {
   }
 
   ngOnInit(): void {
-    try {
-      this.acc = this.userService.getUserResponseFromLocalStorage();
-      this.getAllYoutubeFavByUser();
-      this.get_keyword_from_searchinput();
-      this.search();
-    } catch (e) {
-      console.log(e)
-    }
+    this.acc = this.userService.getUserResponseFromLocalStorage();
+    this.getAllYoutubeFavByUser();
+    this.get_keyword_from_searchinput();
+    this.search();
     // this.playlistInteractionService.playlistUpdated$.subscribe(() => {
     //   this.get_keyword_from_searchinput();
     //   this.search();
@@ -96,7 +92,6 @@ export class UserResultSearchComponent implements OnInit {
     if (this.acc && this.acc.id) {
       this.favYoutube.getAllFavYoutubeByUser(this.acc.id).subscribe((data) => {
         this.favList = data;
-
         this.checkFav();
       });
     }

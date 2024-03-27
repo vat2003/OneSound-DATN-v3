@@ -19,7 +19,7 @@ export class YoutubeApiSService {
       key: this.apiKey,
       type: 'video',
       part: 'snippet',
-      maxResults: 6,
+      maxResults: 15,
       topicIds: '/m/04rlf',
       videoCaption: 'closedCaption',
       q: query,
