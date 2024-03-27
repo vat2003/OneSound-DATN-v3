@@ -30,6 +30,7 @@ export class accountServiceService {
   private apiUsercreate = `${this.baseUrl}/users/create`;
   localStorage?: Storage;
   private apicheckmail = `${this.baseUrl}/users/email`;
+  private apicheckmailuser = `${this.baseUrl}/users/emailUser`;
   private apiupdateuser = `${this.baseUrl}/users/update`;
   private apiupdateuseradmin = `${this.baseUrl}/users/update/admin`;
 
@@ -88,6 +89,10 @@ export class accountServiceService {
 
 getAllUsers():Observable<account[]>{
   return this.http.get<account[]>(`${this.baseUrl}/users/user`);
+}
+
+getemailuser(email: string):Observable<account[]>{
+  return this.http.get<account[]>(`${this.baseUrl}/users/emailUser/${email}`);
 }
 
   getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<account> {

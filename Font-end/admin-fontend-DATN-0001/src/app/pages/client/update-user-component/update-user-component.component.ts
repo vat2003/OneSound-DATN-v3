@@ -75,143 +75,17 @@ export class UpdateUserComponentComponent implements OnInit{
     });
   }
 
-  // save(){
-  //   ; 
-  //   if (this.typeRequest=="facebook"){
-      
-  //   } else {
-  //     if (this.typeRequest=="email"){
-  //       debugger
-  //       this.RegisterDto.google_account_id = 1;
-  //       this.userService.getGoogleUserInfo(this.idEmail).subscribe({
-  //         next: (response: any) =>{
-  //           debugger
-  //           ;
-  //           this.avatar = response.picture;
-  //           this.RegisterDto.email = response.email;
-  //           this.RegisterDto.fullname = "";
-  //           this.RegisterDto.createdDate = this.userProfileForm.get('date_of_birth')?.value;
-  //           this.RegisterDto.password = this.userProfileForm.get('password')?.value;
-  //           this.RegisterDto.address = this.userProfileForm.get('address')?.value;
-  //           this.RegisterDto.avatar = this.avatar;
-  //           this.RegisterDto.retype_password = this.RegisterDto.password;
-         
-  //           const registerData: Register = {
-  //             fullname: this.RegisterDto.fullname,
-  //             email: this.RegisterDto.email,
-  //             password: this.RegisterDto.password,
-  //             retype_password: this.RegisterDto.retype_password,
-  //             gender: true,
-  //             active: true,
-  //             createdDate: this.RegisterDto.createdDate,
-  //             birthday: this.RegisterDto.createdDate,
-  //             role_id: 1,
-  //           };
-  //         debugger
-  //         if (this.RegisterDto.email.length>=6){
-  //           debugger
-  //           this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
-  //             next: (response: any) =>{
-                
-  //               debugger;
-  //               if (response.id>0){
-  //                 alert("This phone number has been used by someone please try by another phone number");
-  //               }
-  //             },
-  //             complete: () =>{
-  //               debugger;
-  //             },
-  //             error: (error: any) => {
-  //               debugger
-  //               console.log("Error fetching data error: "+error.error.message);
-  //             }
-  //           });
-  //         }
-  //           this.userService.register(registerData).subscribe({
-  //             next: (response: any) =>{
-  //               debugger
-  //               alert("You have been updated successfully! Please login again");
-  //               this.loginDto.password = this.RegisterDto.password;
-  //               this.loginDto.email = this.RegisterDto.email;
-  //               console.log(response);
-  //               debugger
-  //               this.userService.login(this.loginDto)
-  //                 .subscribe({
-  //                     next: (response: LoginResponse) => {
-  //                       debugger
-  //                       const {token} = response
-  //                       this.tokenService.setToken(token);
-                        
-  //                       this.userService.getUserDetail(token).subscribe({
-                
-  //                         next: (response: any) => {
-  //                           debugger
-  //                           this.account = {
-  //                             ...response,
-  //                           };
-  //                           console.log(response);
-  //                           this.userService.saveUserResponseToLocalStorage(response);
-  //                           if (this.account && this.account.accountRole) {
-                              
-  //                             alert(this.account.accountRole.name);
-                
-  //                             if (this.account.accountRole.name === 'admin') {
-                                
-  //                               this.router.navigate(['/onesound/admin']);
-  //                             } else if (this.account.accountRole.name === 'user') {
-                                
-  //                               this.router.navigate(['/onesound/home/explore']);
-  //                             }
-  //                           } else {                              
-  //                             alert('Error: User role information not found.');
-  //                           }
-  //                         },
-  //                         complete: () => {},
-  //                         error: (error: any) => {
-  //                           console.log(error);
-  //                         },
-  //                       });
-  //                     },
-  //                     complete: () => {
-                        
-  //                     },
-  //                     error: (error : any) => {
-                        
-  //                     }
-  //                   }
-  //                 );
-  //             },
-  //             complete: () =>{
-  //               ;
-  //             },
-  //             error: (error: any) => {                
-  //               debugger
-  //               console.log("Error fetching data error x1: "+error);
-  //             }
-  //           });
-  //         },
-  //         complete: () =>{
-  //           ;
-  //         },
-  //         error: (error: any) => {
-  //           console.log("Error fetching data error x2 : "+error);
-  //         }
-  //       })
-  //     }
-  //   }
-  // }
-  save(){
-    ; 
-    if (this.typeRequest=="facebook"){
-      
+  
+ 
+
+  save() {
+    if (this.typeRequest == "facebook") {
+      // Xử lý yêu cầu từ Facebook nếu cần
     } else {
-      if (this.typeRequest=="email"){
-        debugger
+      if (this.typeRequest == "email") {
         this.RegisterDto.google_account_id = 1;
         this.userService.getGoogleUserInfo(this.idEmail).subscribe({
-          next: (response: any) =>{
-            debugger
-            ;
+          next: (response: any) => {
             this.avatar = response.picture;
             this.RegisterDto.email = response.email;
             this.RegisterDto.fullname = response.name;
@@ -219,12 +93,11 @@ export class UpdateUserComponentComponent implements OnInit{
             this.RegisterDto.password = this.userProfileForm.get('password')?.value;
             this.RegisterDto.address = this.userProfileForm.get('address')?.value;
             this.RegisterDto.avatar = this.avatar;
-            this.RegisterDto.retype_password = this.RegisterDto.password;
-         
+  
             const registerData: Register = {
               fullname: this.RegisterDto.fullname,
               email: this.RegisterDto.email,
-              password: this.RegisterDto.password,
+              password: "",
               retype_password: this.RegisterDto.retype_password,
               gender: true,
               active: true,
@@ -232,100 +105,111 @@ export class UpdateUserComponentComponent implements OnInit{
               birthday: this.RegisterDto.createdDate,
               role_id: 1,
             };
-          debugger
-          if (this.RegisterDto.email.length>=6){
-            debugger
-            this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
-              next: (response: any) =>{
-                
-                debugger;
-                if (response.id>0){
-                  alert("This phone number has been used by someone please try by another phone number");
-                }
-              },
-              complete: () =>{
-                debugger;
-              },
-              error: (error: any) => {
-                debugger
-                console.log("Error fetching data error: "+error.error.message);
-              }
-            });
-          }
-            this.userService.register(registerData).subscribe({
-              next: (response: any) =>{
-                debugger
-                alert("You have been updated successfully! Please login again");
-                this.loginDto.password = this.RegisterDto.password;
-                this.loginDto.email = this.RegisterDto.email;
-                console.log(response);
-                debugger
-                this.userService.login(this.loginDto)
-                  .subscribe({
-                      next: (response: LoginResponse) => {
+  
+            if (this.RegisterDto.email.length >= 6) {
+              this.userService.checkEmailExists(this.RegisterDto.email).subscribe({
+                next: (exists: boolean) => {
+                  if (exists) {
+                    alert("Email đã tồn tại. Vui lòng đăng nhập." + this.RegisterDto.email);
+                    this.userService.getemailuser(this.RegisterDto.email).subscribe({
+                      next: (response: any) => {
                         debugger
-                        const {token} = response
-                        this.tokenService.setToken(token);
-                        
-                        this.userService.getUserDetail(token).subscribe({
-                
-                          next: (response: any) => {
+                        alert("getemailuser");
+                        this.loginDto.password  = "";
+                        this.loginDto.email =  response.email;
+                        // this.loginDto.email = response.email;
+                        this.userService.login(this.loginDto).subscribe({
+                          next: (response: LoginResponse) => {
+                            alert("aa")
                             debugger
-                            this.account = {
-                              ...response,
-                            };
-                            console.log(response);
-                            this.userService.saveUserResponseToLocalStorage(response);
-                            if (this.account && this.account.accountRole) {
-                              
-                              alert(this.account.accountRole.name);
-                
-                              if (this.account.accountRole.name === 'admin') {
-                                
-                                this.router.navigate(['/onesound/admin']);
-                              } else if (this.account.accountRole.name === 'user') {
-                                
-                                this.router.navigate(['/onesound/home/explore']);
-                              }
-                            } else {                              
-                              alert('Error: User role information not found.');
-                            }
+                            const { token } = response;
+                            this.tokenService.setToken(token);
+  
+                            this.userService.getUserDetail(token).subscribe({
+                              next: (response: any) => {
+                                this.account = { ...response };
+                                this.userService.saveUserResponseToLocalStorage(response);
+                                if (this.account && this.account.accountRole) {
+                                  if (this.account.accountRole.name === 'admin') {
+                                    this.router.navigate(['/onesound/admin']);
+                                  } else if (this.account.accountRole.name === 'user') {
+                                    this.router.navigate(['/onesound/home/explore']);
+                                  }
+                                } else {
+                                  alert('Lỗi: Không tìm thấy thông tin vai trò người dùng.');
+                                }
+                              },
+                              error: (error: any) => {
+                                console.log(error);
+                              },
+                            });
                           },
-                          complete: () => {},
                           error: (error: any) => {
                             console.log(error);
-                          },
+                          }
                         });
                       },
-                      complete: () => {
-                        
-                      },
-                      error: (error : any) => {
-                        
+                      error: (error: any) => {
+                        console.log("Lỗi khi đăng ký: " + error.error.message);
                       }
-                    }
-                  );
-              },
-              complete: () =>{
-                ;
-              },
-              error: (error: any) => {                
-                debugger
-                console.log("Error fetching data error x1: "+error);
-              }
-            });
-          },
-          complete: () =>{
-            ;
+                    });
+                  } else {
+                    this.userService.register(registerData).subscribe({
+                      next: (response: any) => {
+                        alert("Bạn đã đăng ký thành công! Vui lòng đăng nhập.");
+                  
+                        this.loginDto.password = "";
+                        this.loginDto.email = this.RegisterDto.email;
+                        this.userService.login(this.loginDto).subscribe({
+                          next: (response: LoginResponse) => {
+                            const { token } = response;
+                            this.tokenService.setToken(token);
+  
+                            this.userService.getUserDetail(token).subscribe({
+                              next: (response: any) => {
+                                this.account = { ...response };
+                                this.userService.saveUserResponseToLocalStorage(response);
+                                if (this.account && this.account.accountRole) {
+                                  if (this.account.accountRole.name === 'admin') {
+                                    this.router.navigate(['/onesound/admin']);
+                                  } else if (this.account.accountRole.name === 'user') {
+                                    this.router.navigate(['/onesound/home/explore']);
+                                  }
+                                } else {
+                                  alert('Lỗi: Không tìm thấy thông tin vai trò người dùng.');
+                                }
+                              },
+                              error: (error: any) => {
+                                console.log(error);
+                              },
+                            });
+                          },
+                          error: (error: any) => {
+                            console.log(error);
+                          }
+                        });
+                      },
+                      error: (error: any) => {
+                        console.log("Lỗi khi đăng ký: " + error.error.message);
+                      }
+                    });
+                  }
+                },
+                error: (error: any) => {
+                  console.log("Lỗi khi kiểm tra email: " + error.error.message);
+                }
+              });
+            }
           },
           error: (error: any) => {
-            debugger
-            console.log("Error fetching data error x2 : "+error);
+            console.log("Lỗi khi lấy thông tin từ Google: " + error.error.message);
           }
-        })
+        });
       }
     }
   }
+  
+  
 
   
   
