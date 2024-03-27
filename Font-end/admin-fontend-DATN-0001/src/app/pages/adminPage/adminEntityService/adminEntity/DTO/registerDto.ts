@@ -8,6 +8,7 @@
     createdDate: Date;
     facebook_account_id: number = 0;
     google_account_id: number = 0;
+    github_account_id: number = 0;
     role_id: number = 1;    
     avatar: string;
     constructor(data: any) {
@@ -18,6 +19,7 @@
       this.createdDate = data.createdDate;
       this.facebook_account_id = data.facebook_account_id || 0;
       this.google_account_id = data.google_account_id || 0;
+      this.github_account_id = data.github_account_id || 0;
       this.role_id = data.role_id || 1;
       this.email = data.email;
       this.avatar = data.avatar;

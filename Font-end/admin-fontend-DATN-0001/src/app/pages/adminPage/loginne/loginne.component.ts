@@ -154,4 +154,7 @@ export class LoginneComponent implements OnInit {
   loginByGoogle() {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
+  loginByGithub() {
+    window.location.href = 'http://localhost:8080/oauth2/authorization/github';
+  }
 }

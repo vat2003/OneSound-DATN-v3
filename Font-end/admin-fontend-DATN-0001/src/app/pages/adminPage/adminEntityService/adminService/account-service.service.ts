@@ -44,6 +44,7 @@ export class accountServiceService {
 
   private apiLoginGoogle = `${this.baseUrl}/emails/users/`;
   private apiLoginFacebook = `${this.baseUrl}/facebooks/users/`;
+  private apiLoginGit = `${this.baseUrl}/githubs/users/`;
 
 
   private apiConfig = {
@@ -65,6 +66,9 @@ export class accountServiceService {
 
   getFacebookUserInfo(id: number): Observable<any> {
     return this.http.get<any>(this.apiLoginFacebook + id.toString());
+  }
+  getGithubUserInfo(id: number): Observable<any> {
+    return this.http.get<any>(this.apiLoginGit + id.toString());
   }
 
 
