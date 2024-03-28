@@ -33,6 +33,7 @@
             <input type="text" class="form-control" [(ngModel)]="Account.address" name="address" />
           </div>
           <label class="form-label">Active</label> <br />
+
           <div class="btn-group mb-3" role="group">
             <input type="radio" class="btn-check" name="active" id="btnradio1" autocomplete="off" checked [value]="true"
                    [(ngModel)]="Account.active" />
@@ -42,6 +43,39 @@
                    [(ngModel)]="Account.active" [value]="false" />
             <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
           </div>
+
+
+
+          <div class="mb-3">
+            <label class="form-label">Role</label><br>
+
+
+            <span *ngIf="readOnlyMode">{{ Account.accountRole?.name }}</span>
+
+
+            <button type="button" (click)="toggleMode()" class="btn btn-link">{{ readOnlyMode ? 'Edit' : 'Cancel'
+              }}</button>
+
+
+            <div *ngIf="!readOnlyMode" class="btn-group" role="group">
+              <!-- <div class="mb-3">
+                <ng-container *ngFor="let role of Roles">
+                  <input type="radio" id="{{role.id}}" name="role" [(ngModel)]="selectedRole" [value]="role.id">
+                  <label for="{{role.id}}">{{ role.name }}</label><br>
+                </ng-container>
+              </div> -->
+              <div class="mb-3">
+                <label class="form-label">Role</label><br>
+                <ng-container *ngFor="let role of Roles">
+                  <input type="radio" id="{{role.id}}" name="role" [(ngModel)]="Account.accountRole" [value]="role">
+                  <label for="{{role.id}}">{{ role.name }}</label><br>
+                </ng-container>
+              </div>
+            </div>
+
+          </div>
+
+
 
           <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
           <br />
@@ -70,7 +104,6 @@
           </div>
 
           <br />
-          <!--          <button (click)="saveUsers()" class="btn btn-primary">Create</button>-->
           <button (click)="updateUser()" class="btn btn-dark">Update</button>
           <button (click)="deleteUser()" class="btn btn-danger">Delete</button>
           <button class="btn btn-warning">Reset</button>

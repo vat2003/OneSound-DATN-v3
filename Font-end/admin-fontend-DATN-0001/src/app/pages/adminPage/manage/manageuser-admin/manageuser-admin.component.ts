@@ -27,6 +27,8 @@ export class ManageuserAdminComponent implements OnInit {
   id!: number;
   Account: account = createAccount();
   Accounts: account[] = [];
+  account?: account | null;
+  readOnlyMode: boolean = true;
   imageUrl: string = '';
   setImageUrl: string = '';
   imageFile: any;
@@ -65,6 +67,11 @@ export class ManageuserAdminComponent implements OnInit {
     this.birthday.setFullYear(this.createdDate.getFullYear() - 18);
 
   }
+
+  toggleMode() {
+    this.readOnlyMode = !this.readOnlyMode;
+  }
+
 
   Page(page: number) {
     this.page = page < 0 ? 0 : page;
@@ -121,6 +128,9 @@ export class ManageuserAdminComponent implements OnInit {
 
       console.log(' FOREASCSLC === ' + x.name);
     }
+
+    this.Roles = this.Roles.filter(role => role.name !== 'admin');
+
   }
 
   Count(role: string) {
@@ -128,12 +138,18 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.account = this.accountServiceService.getUserResponseFromLocalStorage();
+
     this.id = this.route.snapshot.params['id'];
     this.getAllUsers(0, 10);
     this.loadUserById();
     this.view(this.id);
     this.getAllRole();
     this.activeStatus = this.registerForm.form.controls['active'].value;
+
+    console.log("===><<<<" + this.account);
+
 
   }
 
@@ -313,8 +329,8 @@ export class ManageuserAdminComponent implements OnInit {
         console.log(error);
       }
     );
-    // this.formatDate(this.Account.birthday);
   }
+
 
   formatDate(date: Date | string | undefined): string {
     if (!date) {
@@ -344,116 +360,121 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   updateUser() {
-    debugger
-    if (this.registerForm.valid) {
-      if (!this.Account.fullname
-      ) {
-        alert("Please fill up the form");
-        return;
-      }
-    }
-
-    debugger
-    if (this.Account.id !== undefined) {
-      const datePipe = new DatePipe('en-US');
-      const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
-
-      const UpdateUserForAdmin: UpdateUserForAdmin = {
-        fullname: this.Account.fullname,
-        email: this.Account.email,
-        Phone: this.Account.Phone,
-        address: this.Account.address,
-        avatar_url: this.Account.avatar_url,
-        gender: this.Account.gender,
-        password: this.Account.password,
-        birthday: this.registerForm.form.controls['birthday'].value,
-        active: this.Account.active,
-        createdDate: formattedDate,
-        accountRole: this.Account.accountRole,
-      };
-      if (!UpdateUserForAdmin.fullname
-      ) {
-        this.toast.warning({detail: 'Validate warning', summary: 'Fullname not be null', duration: 5000})
-        return;
-      }
-      if (this.imageFile) {
-        UpdateUserForAdmin.avatar_url = this.setImageUrl;
-      }
-
-      if (!this.imageFile && !this.setImageUrl) {
-        UpdateUserForAdmin.avatar_url = 'adminManageImage/user/null.jpg';
-      }
-
-      debugger
-      this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
-        async (data) => {
-          alert('asdfasd'+UpdateUserForAdmin.birthday)
-          alert(this.registerForm.form.controls['birthday'].value)
-          debugger
-          if (this.imageFile) {
-            await this.firebaseStorage.uploadFile(
-              'adminManageImage/user/',
-              this.imageFile
-            );
-
-          }
-          this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
-          await this.getAllUsers(0, 10);
-          this.Account = createAccount();
-          this.removeUpload();
-
-          console.log(data);
-
-        },
-        (error) => {
-          this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
-          console.log(error);
+    if (this.account?.accountRole?.id == 2) {
+      if (this.registerForm.valid) {
+        if (!this.Account.fullname
+        ) {
+          alert("Please fill up the form");
           return;
         }
-      );
-
-
-      if (UpdateUserForAdmin.active == false) {
-
-        this.accountServiceService.hot("Your Account Has Been Locked", UpdateUserForAdmin.email).subscribe(
-          async (data) => {
-            debugger
-            console.log(data);
-          },
-          (error) => {
-            debugger
-            console.log(error);
-
-          }
-        );
-
-
-      } else {
-
-        debugger
-        this.accountServiceService.hot("Your Account Has Been Unlocked", UpdateUserForAdmin.email).subscribe(
-          async (data) => {
-            debugger
-            console.log(data);
-            return;
-          },
-          (error) => {
-            debugger
-            console.log(error);
-            return;
-          }
-        );
-
-
       }
 
+
+      if (this.Account.id !== undefined) {
+        console.log(this.selectedRole);
+
+        const datePipe = new DatePipe('en-US');
+        const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
+
+        const UpdateUserForAdmin: UpdateUserForAdmin = {
+          fullname: this.Account.fullname,
+          email: this.Account.email,
+          Phone: this.Account.Phone,
+          address: this.Account.address,
+          avatar_url: this.Account.avatar_url,
+          gender: this.Account.gender,
+          password: this.Account.password,
+          birthday: this.registerForm.form.controls['birthday'].value,
+          active: this.Account.active,
+          createdDate: formattedDate,
+          accountRole: this.Account.accountRole,
+        };
+        if (!UpdateUserForAdmin.fullname
+        ) {
+          this.toast.warning({detail: 'Validate warning', summary: 'Fullname not be null', duration: 5000})
+          return;
+        }
+        if (this.imageFile) {
+          UpdateUserForAdmin.avatar_url = this.setImageUrl;
+        }
+
+        if (!this.imageFile && !this.setImageUrl) {
+          UpdateUserForAdmin.avatar_url = 'adminManageImage/user/null.jpg';
+        }
+
+
+        this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
+          async (data) => {
+
+            alert('asdfasd' + UpdateUserForAdmin.birthday)
+            alert(this.registerForm.form.controls['birthday'].value)
+
+            if (this.imageFile) {
+              await this.firebaseStorage.uploadFile(
+                'adminManageImage/user/',
+                this.imageFile
+              );
+
+            }
+            this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+            await this.getAllUsers(0, 10);
+            this.Account = createAccount();
+            this.removeUpload();
+
+            console.log(data);
+
+          },
+          (error) => {
+            this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+            console.log(error);
+            return;
+          }
+        );
+
+
+        if (UpdateUserForAdmin.active == false) {
+
+          this.accountServiceService.hot("Your Account Has Been Locked", UpdateUserForAdmin.email).subscribe(
+            async (data) => {
+
+              console.log(data);
+            },
+            (error) => {
+
+              console.log(error);
+
+            }
+          );
+
+
+        } else {
+
+
+          this.accountServiceService.hot("Your Account Has Been Unlocked", UpdateUserForAdmin.email).subscribe(
+            async (data) => {
+
+              console.log(data);
+              return;
+            },
+            (error) => {
+
+              console.log(error);
+              return;
+            }
+          );
+        }
+
+      } else {
+        console.error("ID is undefined");
+      }
     } else {
-      console.error("ID is undefined");
+      alert("nhân viên không có quyền update")
     }
+
 
   }
 
-  Reset(id: number){
+  Reset(id: number) {
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
     const UpdateUserForAdmin: UpdateUserForAdmin = {
@@ -472,7 +493,7 @@ export class ManageuserAdminComponent implements OnInit {
     this.accountServiceService.UpdateActive(id, UpdateUserForAdmin).subscribe(
       async (data) => {
 
-        debugger
+
         if (this.imageFile) {
           await this.firebaseStorage.uploadFile(
             'adminManageImage/user/',
@@ -499,18 +520,17 @@ export class ManageuserAdminComponent implements OnInit {
   saveUsers() {
 
 
-    debugger
     this.Account.avatar_url = this.setImageUrl;
     alert(this.Account)
     this.accountServiceService.createAccount(this.Account).subscribe(
       async (data) => {
-        debugger
+
         this.goToUserList();
         console.log("Update successfully");
         alert('Update successfully');
       },
       (error) => {
-        debugger
+
         console.log("FAILED" + error);
         alert('Update failed');
 
@@ -534,24 +554,30 @@ export class ManageuserAdminComponent implements OnInit {
 
 
   deleteUser() {
-    const confirm = window.confirm('Are you sure?');
-    if (confirm) {
-      this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
-        .pipe(
-          mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
-          catchError(error => {
-            console.error('Error deleting user:', error);
-            return of(null); // Trả về một observable với giá trị là null nếu có lỗi
-          })
-        )
-        .subscribe(data => {
-          if (data !== null) {
-            console.log(data);
-            this.getAllUsers(0, 10);
-          }
-        });
+
+    if (this.account?.accountRole?.id == 2) {
+      const confirm = window.confirm('Are you sure?');
+      if (confirm) {
+        this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
+          .pipe(
+            mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
+            catchError(error => {
+              console.error('Error deleting user:', error);
+              return of(null);
+            })
+          )
+          .subscribe(data => {
+            if (data !== null) {
+              console.log(data);
+              this.getAllUsers(0, 10);
+            }
+          });
+      } else {
+        alert('Delete was denied!');
+      }
     } else {
-      alert('Delete was denied!');
+      alert("nhân viên không được phép xoá")
+
     }
   }
 
