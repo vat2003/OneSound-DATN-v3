@@ -45,14 +45,34 @@
           </div>
 
 
-          <div class="btn-group mb-3" role="group">
-            <div class="mb-3">
-              <label class="form-label">Role</label><br>
-              <ng-container *ngFor="let role of Roles">
-                <input type="radio" id="{{role.id}}" name="role" [(ngModel)]="selectedRole" [value]="role.id">
-                <label for="{{role.id}}">{{ role.name }}</label><br>
-              </ng-container>
+
+          <div class="mb-3">
+            <label class="form-label">Role</label><br>
+
+
+            <span *ngIf="readOnlyMode">{{ Account.accountRole?.name }}</span>
+
+
+            <button type="button" (click)="toggleMode()" class="btn btn-link">{{ readOnlyMode ? 'Edit' : 'Cancel'
+              }}</button>
+
+
+            <div *ngIf="!readOnlyMode" class="btn-group" role="group">
+              <!-- <div class="mb-3">
+                <ng-container *ngFor="let role of Roles">
+                  <input type="radio" id="{{role.id}}" name="role" [(ngModel)]="selectedRole" [value]="role.id">
+                  <label for="{{role.id}}">{{ role.name }}</label><br>
+                </ng-container>
+              </div> -->
+              <div class="mb-3">
+                <label class="form-label">Role</label><br>
+                <ng-container *ngFor="let role of Roles">
+                  <input type="radio" id="{{role.id}}" name="role" [(ngModel)]="Account.accountRole" [value]="role">
+                  <label for="{{role.id}}">{{ role.name }}</label><br>
+                </ng-container>
+              </div>
             </div>
+
           </div>
 
 
