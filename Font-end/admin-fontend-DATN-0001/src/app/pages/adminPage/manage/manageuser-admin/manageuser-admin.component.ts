@@ -27,6 +27,8 @@ export class ManageuserAdminComponent implements OnInit {
   id!: number;
   Account: account = createAccount();
   Accounts: account[] = [];
+  account?: account | null;
+
   imageUrl: string = '';
   setImageUrl: string = '';
   imageFile: any;
@@ -121,6 +123,9 @@ export class ManageuserAdminComponent implements OnInit {
 
       console.log(' FOREASCSLC === ' + x.name);
     }
+
+    this.Roles = this.Roles.filter(role => role.name !== 'admin');
+
   }
 
   Count(role: string) {
@@ -128,12 +133,18 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
+    this.account = this.accountServiceService.getUserResponseFromLocalStorage();
+
     this.id = this.route.snapshot.params['id'];
     this.getAllUsers(0, 10);
     this.loadUserById();
     this.view(this.id);
     this.getAllRole();
     this.activeStatus = this.registerForm.form.controls['active'].value;
+    
+    console.log( "===><<<<"+this.account);
+    
 
   }
 
@@ -313,8 +324,11 @@ export class ManageuserAdminComponent implements OnInit {
         console.log(error);
       }
     );
-    // this.formatDate(this.Account.birthday);
   }
+
+
+  
+  
 
   formatDate(date: Date | string | undefined): string {
     if (!date) {
@@ -534,14 +548,16 @@ export class ManageuserAdminComponent implements OnInit {
 
 
   deleteUser() {
-    const confirm = window.confirm('Are you sure?');
+
+    if ( this.account?.accountRole?.id == 2) {
+            const confirm = window.confirm('Are you sure?');
     if (confirm) {
       this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
         .pipe(
           mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
           catchError(error => {
             console.error('Error deleting user:', error);
-            return of(null); // Trả về một observable với giá trị là null nếu có lỗi
+            return of(null);
           })
         )
         .subscribe(data => {
@@ -552,6 +568,10 @@ export class ManageuserAdminComponent implements OnInit {
         });
     } else {
       alert('Delete was denied!');
+    }
+    }else{
+      alert("nhân viên không được phép xoá")
+
     }
   }
 
