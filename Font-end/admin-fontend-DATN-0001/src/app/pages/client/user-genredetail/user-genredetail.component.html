@@ -1,0 +1,121 @@
+<div class="detail-container">
+  <div class="detail-container-banner" id="category-detail">
+    <div class="detail-container-banner-first">
+      <img
+        [src]="genre.image"
+        alt=""
+        style="height: 300px; object-fit: cover"
+      />
+      <div class="detail-container-banner-content">
+        <h1>{{ genre.name }}</h1>
+        <p>{{ genre.description }}</p>
+        <!-- <p>{{ songs.length }} songs (4:30:20)</p> -->
+      </div>
+    </div>
+
+    <div class="detail-container-banner-favicon">
+      <div class="detail-container-banner-favicon-cta">
+        <button><i class="fa-solid fa-play"></i>Play</button>
+        <button><i class="fa-solid fa-shuffle"></i>Shuffle</button>
+      </div>
+      <div class="detail-container-banner-favicon-more">
+        <div class="more-item">
+          <i class="fa-regular fa-heart"></i>
+          Add
+        </div>
+        <div class="more-item">
+          <i class="fa-solid fa-arrow-up-from-bracket"></i>
+          Share
+        </div>
+        <div class="more-item">
+          <i class="fa-solid fa-ellipsis"></i>
+          More
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="list-tracks">
+  <div class="list-tracks-form-search">
+    <input
+      type="search"
+      name="search-music"
+      id=""
+      placeholder="Filter playlist on title, artist or album"
+      class="search"
+      name="searchItem"
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="search()"
+      (keyup)="onKey($event)"
+    />
+    <div class="icon-search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>TITLE</th>
+        <th>ARTIST</th>
+        <!-- <th>AUTHOR</th> -->
+        <th>GENRE</th>
+        <th>TIME</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="list-songs-detail">
+      <tr *ngFor="let song of songs" (click)="showDetail(song)">
+        <td>
+          <img [src]="song.image" alt="" />
+        </td>
+        <td>
+          <div class="table-title">
+            <div class="line-clamp">{{ song.name }}</div>
+            <!--          <span class="table-song-type">MASTER</span>-->
+          </div>
+        </td>
+        <td>
+          <div>
+            <span *ngFor="let singer of singerMap[song.id]; let last = last"
+              >{{ singer.fullname
+              }}{{ !last && singerMap[song.id].length > 1 ? ", " : "" }}</span
+            >
+          </div>
+        </td>
+        <!-- <td>
+          <div>
+            <span *ngFor="let singer of authorMap[song.id]; let last = last">
+              {{ singer.fullname
+              }}{{ !last && authorMap[song.id].length > 1 ? ", " : "" }}</span
+            >
+          </div>
+        </td> -->
+        <td>
+          <div>
+            <span *ngFor="let singer of genreMap[song.id]; let last = last"
+              >{{ singer.name
+              }}{{ !last && genreMap[song.id].length > 1 ? ", " : "" }}</span
+            >
+          </div>
+        </td>
+        <td>3:15</td>
+        <td>
+          <i class="fa-solid fa-plus" (click)="openDialog(song)"></i
+          >&nbsp;&nbsp;
+          <!-- <i
+            class="favorite fa-heart"
+            [ngClass]="{
+              'fa-solid': song.isFav === true,
+              'fa-regular': song.isFav === false
+            }"
+            [ngStyle]="{ color: song.isFav === true ? 'rgb(212, 15, 15)' : '' }"
+            (click)="favoriteSong(song)"
+          >
+          </i> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
