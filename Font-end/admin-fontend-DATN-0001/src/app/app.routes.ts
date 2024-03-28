@@ -38,6 +38,7 @@ import {
 } from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
 import { UserGenreComponent } from './pages/client/user-genre/user-genre.component';
 import { UserGenredetailComponent } from './pages/client/user-genredetail/user-genredetail.component';
+import { UserPaymentComponent } from './pages/client/user-payment/user-payment.component';
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -113,7 +114,8 @@ export const routes: Routes = [
       {path: 'user/playlist', component: UserPlaylistFormComponent},
       {path: 'user/playlist/:id', component: UserSongInPlaylistComponent},
       // {path: 'PlayListSong/:id', component: PlayListSongComponent},
-      {path: 'PlayListSong/:id', component: PlayListSongComponent}
+      {path: 'PlayListSong/:id', component: PlayListSongComponent},
+      {path: 'payment', component: UserPaymentComponent},
     ],
   },
   {
