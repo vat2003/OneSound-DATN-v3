@@ -302,7 +302,6 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   view(id: number) {
-
     this.accountServiceService.getUserById(id).subscribe(
       async (data: account) => {
         this.Account = data;
@@ -324,26 +323,6 @@ export class ManageuserAdminComponent implements OnInit {
     const formattedDate = typeof date === 'string' ? date : date.toISOString();
     return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
   }
-
-  // formatDate(date: Date | string | undefined): string {
-  //   // Kiểm tra xem date có tồn tại không
-  //   if (!date) {
-  //     return '';
-  //   }
-  //
-  //   // Kiểm tra xem date có phải là một đối tượng Date hợp lệ không
-  //   if (!(date instanceof Date)) {
-  //     // Nếu không phải, kiểm tra xem date có phải là một chuỗi ngày hợp lệ không
-  //     if (typeof date === 'string' && isNaN(Date.parse(date))) {
-  //       return '';
-  //     }
-  //     // Nếu là chuỗi ngày hợp lệ, chuyển đổi nó thành một đối tượng Date
-  //     date = new Date(date);
-  //   }
-  //
-  //   // Sử dụng DatePipe để chuyển đổi ngày thành định dạng "yyyy-MM-dd"
-  //   return new DatePipe('en-US').transform(date, 'MM/dd/yyyy') || '';
-  // }
 
 
   checkAge() {
@@ -392,10 +371,8 @@ export class ManageuserAdminComponent implements OnInit {
         createdDate: formattedDate,
         accountRole: this.Account.accountRole,
       };
-      // this.setActiveStatus(this.Account.id);
       if (!UpdateUserForAdmin.fullname
       ) {
-        // alert("Please fill up the form");
         this.toast.warning({detail: 'Validate warning', summary: 'Fullname not be null', duration: 5000})
         return;
       }
@@ -408,7 +385,6 @@ export class ManageuserAdminComponent implements OnInit {
       }
 
       debugger
-      // UpdateUserForAdmin.birthday = this.registerForm.form.controls['birthday'].value;
       this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
         async (data) => {
           alert('asdfasd'+UpdateUserForAdmin.birthday)
@@ -435,11 +411,10 @@ export class ManageuserAdminComponent implements OnInit {
           return;
         }
       );
-      //
+
 
       if (UpdateUserForAdmin.active == false) {
-        // const shouldLock = window.confirm("Bạn có muốn khoá tài khoản không?");
-        // if (shouldLock) {
+     
         this.accountServiceService.hot("Your Account Has Been Locked", UpdateUserForAdmin.email).subscribe(
           async (data) => {
             debugger
@@ -451,19 +426,14 @@ export class ManageuserAdminComponent implements OnInit {
 
           }
         );
-        // } else {
-        //   console.log("Cancel block operation");
-        //   return;
-        // }
+   
 
       } else {
-        // const shouldLock = window.confirm("Bạn có muốn mở tài khoản không?");
-        // if (shouldLock) {
+   
         debugger
         this.accountServiceService.hot("Your Account Has Been Unlocked", UpdateUserForAdmin.email).subscribe(
           async (data) => {
             debugger
-            //  this.ngOnInit();
             console.log(data);
             return;
           },
@@ -473,19 +443,56 @@ export class ManageuserAdminComponent implements OnInit {
             return;
           }
         );
-        // } else {
-        //   alert("huỷ thao tác mở")
-        //   return
-        // }
+    
 
       }
-
-      //
 
     } else {
       console.error("ID is undefined");
     }
 
+  }
+
+  Reset(id: number){
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
+    const UpdateUserForAdmin: UpdateUserForAdmin = {
+      fullname: this.Account.fullname,
+      email: this.Account.email,
+      Phone: this.Account.Phone,
+      address: this.Account.address,
+      avatar_url: this.Account.avatar_url,
+      gender: this.Account.gender,
+      password: this.Account.password,
+      birthday: this.registerForm.form.controls['birthday'].value,
+      active: true,
+      createdDate: formattedDate,
+      accountRole: this.Account.accountRole,
+    };
+    this.accountServiceService.UpdateActive(id, UpdateUserForAdmin).subscribe(
+      async (data) => {
+   
+        debugger
+        if (this.imageFile) {
+          await this.firebaseStorage.uploadFile(
+            'adminManageImage/user/',
+            this.imageFile
+          );
+
+        }
+        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+        await this.getAllUsers(0, 10);
+        this.Account = createAccount();
+        this.removeUpload();
+
+
+      },
+      (error) => {
+        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+        console.log(error);
+        return;
+      }
+    );
   }
 
 

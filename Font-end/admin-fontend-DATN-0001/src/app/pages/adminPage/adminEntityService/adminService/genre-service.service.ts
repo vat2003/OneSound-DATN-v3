@@ -18,6 +18,7 @@ interface GenreResponse {
 })
 export class GenreServiceService {
   private baseUrl = 'http://localhost:8080/api/v1/Genre';
+  private apiUpdateActive = `${this.baseUrl}/UpdateActive`;
 
   constructor(private httpClient: HttpClient) {}
 
@@ -49,6 +50,11 @@ export class GenreServiceService {
   updateGenre(id: number, Genre: Genre): Observable<Object> {
     return this.httpClient.put(`${this.baseUrl}/${id}`, Genre);
   }
+
+  UpdateActive(id: number, accouGenrent: Genre): Observable<Object> {
+    return this.httpClient.put<Genre>(`${this.apiUpdateActive}/${id}`, accouGenrent);
+  }
+
 
   deleteGenre(id: number): Observable<Object> {
     console.log(`${this.baseUrl}/${id}`);

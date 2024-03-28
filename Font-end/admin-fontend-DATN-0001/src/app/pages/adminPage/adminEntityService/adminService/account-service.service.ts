@@ -45,6 +45,7 @@ export class accountServiceService {
   private apiLoginGoogle = `${this.baseUrl}/emails/users/`;
   private apiLoginFacebook = `${this.baseUrl}/facebooks/users/`;
   private apiLoginGit = `${this.baseUrl}/githubs/users/`;
+  private apiUpdateActive = `${this.baseUrl}/users/UpdateActive`;
 
 
   private apiConfig = {
@@ -134,6 +135,10 @@ export class accountServiceService {
 
   updateUser(id: number, account: UpdateUserForAdmin): Observable<Object> {
     return this.http.put<account>(`${this.apiupdateuseradmin}/${id}`, account);
+  }
+
+  UpdateActive(id: number, account: UpdateUserForAdmin): Observable<Object> {
+    return this.http.put<account>(`${this.apiUpdateActive}/${id}`, account);
   }
 
 
