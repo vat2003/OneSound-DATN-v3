@@ -78,7 +78,7 @@
         </div>
       </div>
       <div class="pop_song">
-        <li class="songItem" *ngFor="let hotArtistitem of genres">
+        <li class="songItem" *ngFor="let hotArtistitem of genres" (click)="gotoDetailGenre(hotArtistitem)">
           <div class="img_play">
             <img
               src="{{ hotArtistitem.image }}"
