@@ -88,6 +88,7 @@ export class UserResultSearchComponent implements OnInit {
       this.search();
       // this.reload();
     });
+
   }
 
   get_keyword_from_searchinput() {
@@ -106,32 +107,51 @@ export class UserResultSearchComponent implements OnInit {
     debugger;
     this.SongService.getAllSongs().subscribe(data => {
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.songs = data.filter( (song: Song) => {
+      this.songs = data.filter((song: Song) => {
         // song.image = await this.setImageURLFirebase(song.image);
         // song.path = await this.setImageURLFirebase(song.path);
         return song.name.toLowerCase().includes(this.query);
       });
     });
 
-    this.SingerService.getAllArtists().subscribe(data => {
+    this.SingerService.getAllArtists().subscribe(async (data) => {
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.singerforsearch = data.filter( (singer: Singer) => {
+      for (const singer of data) {
+        if (singer.image == null || singer.image == '') {
+          continue;
+        }
+        singer.image = await this.setImageURLFirebase(singer.image);
+      }
+      this.singerforsearch = data.filter((singer: Singer) => {
         // singer.image = await this.setImageURLFirebase(singer.image);
         return singer.fullname.toLowerCase().includes(this.query);
       });
     });
 
-    this.AlbumService.getAllAlbumNormal().subscribe(data => {
+    this.AlbumService.getAllAlbumNormal().subscribe(async (data) => {
+
+      for (const album of data) {
+        if (album.image == null || album.image == '') {
+          continue;
+        }
+        album.image = await this.setImageURLFirebase(album.image);
+      }
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.albums = data.filter( (album: Album) => {
+      this.albums = data.filter((album: Album) => {
         // album.image = await this.setImageURLFirebase(album.image);
         return album.title.toLowerCase().includes(this.query);
       });
     });
 
-    this.GenreServiceService.getAllGenres().subscribe(data => {
+    this.GenreServiceService.getAllGenres().subscribe(async (data) => {
+      for (const genre of data) {
+        if (genre.image == null || genre.image == '') {
+          continue;
+        }
+        genre.image = await this.setImageURLFirebase(genre.image);
+      }
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.genres = data.filter( (song: Genre) => {
+      this.genres = data.filter((song: Genre) => {
         // song.image = await this.setImageURLFirebase(song.image);
         return song.name.toLowerCase().includes(this.query);
       });
@@ -148,6 +168,7 @@ export class UserResultSearchComponent implements OnInit {
       }
     );
   }
+
 
   getSingersForSongs() {
     const observables = this.songs.map(song => {
