@@ -4,18 +4,18 @@
     <div class="menu-side">
       <div class="account-section">
         <span routerLink="/onesound/home" class="nav-brand"
-          ><img src="assets\img\logo.png" alt=""
+        ><img src="assets\img\logo.png" alt=""
         /></span>
       </div>
       <div class="web-nav">
         <p class="active" style="cursor: pointer">
           <span routerLink="/onesound/home"
-            ><i class="bi bi-music-note-beamed"></i> Home</span
+          ><i class="bi bi-music-note-beamed"></i> Home</span
           >
         </p>
         <p>
           <span routerLink="/onesound/home/explore" style="cursor: pointer"
-            ><i class="bi bi-music-note-beamed"></i> Explore</span
+          ><i class="bi bi-music-note-beamed"></i> Explore</span
           >
         </p>
       </div>
@@ -24,7 +24,7 @@
         <p><span></span><i class="fa-solid fa-podcast"></i> Mixes & Radio</p>
         <p *ngIf="this.acc">
           <span routerLink="/onesound/home/user/playlist"
-            ><i class="fa-solid fa-sliders"></i> Playlists</span
+          ><i class="fa-solid fa-sliders"></i> Playlists</span
           >
         </p>
         <p>
@@ -34,13 +34,8 @@
           <span routerLink="/onesound/home/favorite"><i class="fas fa-heart"></i> Favorite</span>
         </p>
         <p>
-          <span routerLink="/onesound/home/favorite"
-            ><i class="fas fa-heart"></i> Favorite</span
-          >
-        </p>
-        <p>
           <span routerLink="/onesound/home/genre"
-            ><i class="fa-solid fa-microphone"></i> Genre</span
+          ><i class="fa-solid fa-microphone"></i> Genre</span
           >
         </p>
       </div>
@@ -82,10 +77,10 @@
               routerLink="/signin"
               (click)="logout()"
               class="dropdown-item"
-              >Log Out</a
+            >Log Out</a
             >
             <a *ngIf="!acc" href="onesound/signin" class="dropdown-item"
-              >Login</a
+            >Login</a
             >
           </div>
         </div>
@@ -108,7 +103,7 @@
         <div class="modal" id="addToPlaylistModal">
           <div class="modal-content">
             <span class="close" onclick="closeAddToPlaylistModal()"
-              >&times;</span
+            >&times;</span
             >
             <h2>Add to Playlist</h2>
 

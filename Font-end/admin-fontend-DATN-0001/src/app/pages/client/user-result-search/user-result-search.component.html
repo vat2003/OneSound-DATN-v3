@@ -13,8 +13,8 @@
       <div class="h3">
         <h3>Hot Artists</h3>
         <div class="btn_s">
-          <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
-          <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+          <i class="fa-solid fa-circle-chevron-left"></i>
+          <i class="fa-solid fa-circle-chevron-right"></i>
         </div>
       </div>
       <div class="pop_song">
@@ -43,8 +43,8 @@
       <div class="h3">
         <h3>Album</h3>
         <div class="btn_s">
-          <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
-          <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+          <i class="fa-solid fa-circle-chevron-left"></i>
+          <i class="fa-solid fa-circle-chevron-right"></i>
         </div>
       </div>
       <div class="pop_song">
@@ -73,8 +73,8 @@
       <div class="h3">
         <h3>Genre</h3>
         <div class="btn_s">
-          <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
-          <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+          <i class="fa-solid fa-circle-chevron-left"></i>
+          <i class="fa-solid fa-circle-chevron-right"></i>
         </div>
       </div>
       <div class="pop_song">
@@ -124,52 +124,53 @@
 
     <table *ngIf="songs && songs.length > 0; else noDataMessage">
       <thead>
-        <tr>
-          <!-- <th>#</th> -->
-          <!-- <th>IMAGE</th> -->
-          <th>TITLE</th>
-          <th>ARTIST</th>
-          <!-- <th>GENRE</th>
-          <th>TIME</th> -->
-          <th></th>
-        </tr>
+      <tr>
+        <!-- <th>#</th> -->
+        <!-- <th>IMAGE</th> -->
+        <th>TITLE</th>
+        <th>ARTIST</th>
+        <!-- <th>GENRE</th>
+        <th>TIME</th> -->
+        <th></th>
+      </tr>
       </thead>
       <tbody id="list-songs">
-        <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
-          <!-- <td>{{ i + 1 }}</td> -->
-          <td>
-            <img [src]="s.image" alt="" />
-            <i class="bi fa-solid fa-circle-play"></i>
-          </td>
-          <td>
-            <div class="table-title">
-              <div class="line-clamp">{{ s.name }}</div>
-              <!-- <span class="table-song-type">HOT</span> -->
-            </div>
-          </td>
-          <td>
-            <div>
-              <span *ngFor="let singer of singerMap[s.id]; let last = last"
-                >{{ singer.fullname
-                }}{{ !last && singerMap[s.id].length > 1 ? ", " : "" }}</span
-              >
-            </div>
-          </td>
-          <!-- <td>
+      <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
+        <!-- <td>{{ i + 1 }}</td> -->
+        <td>
+          <img [src]="s.image" alt=""/>
+          <i class="bi fa-solid fa-circle-play"></i>
+        </td>
+        <td>
+          <div class="table-title">
+            <div class="line-clamp">{{ s.name }}</div>
+            <!-- <span class="table-song-type">HOT</span> -->
+          </div>
+        </td>
+        <td>
           <div>
-              <span *ngFor="let singer of genreMap[s.id]; let last = last"
+              <span *ngFor="let singer of singerMap[s.id]; let last = last"
               >{{
-                  singer.name
-                }}{{ !last && genreMap[s.id].length > 1 ? ", " : "" }}</span
+                  singer.fullname
+                }}{{ !last && singerMap[s.id].length > 1 ? ", " : "" }}</span
               >
           </div>
         </td>
-        <td>3:15</td> -->
-          <td *ngIf="this.acc">
-            <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
-            <i class="favorite fa-heart"> </i>
-          </td>
-        </tr>
+        <!-- <td>
+        <div>
+            <span *ngFor="let singer of genreMap[s.id]; let last = last"
+            >{{
+                singer.name
+              }}{{ !last && genreMap[s.id].length > 1 ? ", " : "" }}</span
+            >
+        </div>
+      </td>
+      <td>3:15</td> -->
+        <td *ngIf="this.acc">
+          <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
+          <i class="favorite fa-heart"> </i>
+        </td>
+      </tr>
       </tbody>
     </table>
     <ng-template #noDataMessage>
@@ -188,53 +189,53 @@
   </div>
   <table>
     <thead>
-      <tr>
-        <th></th>
-        <th>TITLE</th>
-        <th>ARTIST</th>
-        <!-- <th>GENRES</th>  -->
-        <!-- <th>TIME</th> -->
-        <th></th>
-      </tr>
+    <tr>
+      <th></th>
+      <th>TITLE</th>
+      <th>ARTIST</th>
+      <!-- <th>GENRES</th>  -->
+      <!-- <th>TIME</th> -->
+      <th></th>
+    </tr>
     </thead>
     <tbody id="list-songs-detail">
-      <tr *ngFor="let video of results">
-        <td (click)="showDetail(video)">
-          <img
-            *ngIf="video.snippet"
-            [src]="video.snippet.thumbnails?.high.url"
-            [alt]="video.snippet.title"
-          />
-        </td>
-        <td (click)="showDetail(video)">
-          <div class="table-title">
-            <div class="line-clamp" *ngIf="video.snippet">
-              {{ video.snippet.title }}
-            </div>
+    <tr *ngFor="let video of results">
+      <td (click)="showDetail(video)">
+        <img
+          *ngIf="video.snippet"
+          [src]="video.snippet.thumbnails?.high.url"
+          [alt]="video.snippet.title"
+        />
+      </td>
+      <td (click)="showDetail(video)">
+        <div class="table-title">
+          <div class="line-clamp" *ngIf="video.snippet">
+            {{ video.snippet.title }}
           </div>
-        </td>
-        <td *ngIf="video.snippet" (click)="showDetail(video)">
-          {{ video.snippet.channelTitle }}
-        </td>
-        <!-- <td *ngIf="video.snippet"></td> -->
-        <!-- <td>{{video.isFav}}</td> -->
-        <td>
-          <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
-          &nbsp; &nbsp;
-          <i
-            class="favorite fa-heart"
-            [ngClass]="{
+        </div>
+      </td>
+      <td *ngIf="video.snippet" (click)="showDetail(video)">
+        {{ video.snippet.channelTitle }}
+      </td>
+      <!-- <td *ngIf="video.snippet"></td> -->
+      <!-- <td>{{video.isFav}}</td> -->
+      <td>
+        <i class="fa-solid fa-plus" (click)="openDialog(video)"></i>
+        &nbsp; &nbsp;
+        <i
+          class="favorite fa-heart"
+          [ngClass]="{
               'fa-solid': video.isFav === true,
               'fa-regular': video.isFav === false
             }"
-            [ngStyle]="{
+          [ngStyle]="{
               color: video.isFav === true ? 'rgb(212, 15, 15)' : ''
             }"
-            (click)="favorite(video)"
-          >
-          </i>
-        </td>
-      </tr>
+          (click)="favorite(video)"
+        >
+        </i>
+      </td>
+    </tr>
     </tbody>
   </table>
 </div>
