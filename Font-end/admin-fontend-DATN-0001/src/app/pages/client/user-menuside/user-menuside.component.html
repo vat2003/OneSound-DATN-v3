@@ -3,50 +3,69 @@
   <header>
     <div class="menu-side">
       <div class="account-section">
-        <span routerLink="/onesound/home" class="nav-brand"><img src="assets\img\logo.png" alt=""/></span>
+        <span routerLink="/onesound/home" class="nav-brand"
+          ><img src="assets\img\logo.png" alt=""
+        /></span>
       </div>
       <div class="web-nav">
         <p class="active" style="cursor: pointer">
-          <span routerLink="/onesound/home"><i class="bi bi-music-note-beamed"></i> Home</span>
+          <span routerLink="/onesound/home"
+            ><i class="bi bi-music-note-beamed"></i> Home</span
+          >
         </p>
         <p>
-          <span routerLink="/onesound/home/explore" style="cursor: pointer"><i class="bi bi-music-note-beamed"></i>
-            Explore</span>
+          <span routerLink="/onesound/home/explore" style="cursor: pointer"
+            ><i class="bi bi-music-note-beamed"></i> Explore</span
+          >
         </p>
       </div>
       <div class="my-collection">
         <p class="my-collection-tilte">MY COLLECTION</p>
-        <p>
-          <span></span><i class="fa-solid fa-podcast"></i> Mixes &
-          Radio
-        </p>
+        <p><span></span><i class="fa-solid fa-podcast"></i> Mixes & Radio</p>
         <p *ngIf="this.acc">
-          <span routerLink="/onesound/home/user/playlist"><i class="fa-solid fa-sliders"></i> Playlists</span>
+          <span routerLink="/onesound/home/user/playlist"
+            ><i class="fa-solid fa-sliders"></i> Playlists</span
+          >
         </p>
         <p>
           <span><i class="fa-solid fa-compact-disc"></i> Albums</span>
         </p>
-        <p><span><i class="fa-solid fa-music"></i> Tracks</span></p>
         <p>
           <span routerLink="/onesound/home/favorite"><i class="fas fa-heart"></i> Favorite</span>
         </p>
         <p>
-          <span><i class="fa-solid fa-microphone"></i> Artists</span>
+          <span routerLink="/onesound/home/favorite"
+            ><i class="fas fa-heart"></i> Favorite</span
+          >
+        </p>
+        <p>
+          <span routerLink="/onesound/home/genre"
+            ><i class="fa-solid fa-microphone"></i> Genre</span
+          >
         </p>
       </div>
       <div class="create-playlist">
         <p class="create-playlist-title">
           PLAYLISTS
-          <svg width="20" height="20" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 512 512"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M256 304C282.51 304 304 282.51 304 256C304 229.49 282.51 208 256 208C229.49 208 208 229.49 208 256C208 282.51 229.49 304 256 304Z"
-              fill="gray"/>
+              fill="gray"
+            />
             <path
               d="M416 304C442.51 304 464 282.51 464 256C464 229.49 442.51 208 416 208C389.49 208 368 229.49 368 256C368 282.51 389.49 304 416 304Z"
-              fill="gray"/>
+              fill="gray"
+            />
             <path
               d="M96 304C122.51 304 144 282.51 144 256C144 229.49 122.51 208 96 208C69.4903 208 48 229.49 48 256C48 282.51 69.4903 304 96 304Z"
-              fill="gray"/>
+              fill="gray"
+            />
           </svg>
         </p>
         <div class="create-playlist-a">
@@ -58,10 +77,16 @@
         </div>
         <div style="margin-bottom: 30px;" id="list-playlists">
           <div class="playlist-items">
-
-
-            <a *ngIf="acc" routerLink="/signin" (click)="logout()" class="dropdown-item">Log Out</a>
-            <a *ngIf="!acc" href="onesound/signin" class="dropdown-item">Login</a>
+            <a
+              *ngIf="acc"
+              routerLink="/signin"
+              (click)="logout()"
+              class="dropdown-item"
+              >Log Out</a
+            >
+            <a *ngIf="!acc" href="onesound/signin" class="dropdown-item"
+              >Login</a
+            >
           </div>
         </div>
 
@@ -71,14 +96,20 @@
           <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Create Playlist</h2>
-            <input type="text" id="name-playlist" placeholder="Enter playlist name"/>
+            <input
+              type="text"
+              id="name-playlist"
+              placeholder="Enter playlist name"
+            />
             <button id="submit-playlist">Create</button>
           </div>
         </div>
         <!-- Modal Add Song-->
         <div class="modal" id="addToPlaylistModal">
           <div class="modal-content">
-            <span class="close" onclick="closeAddToPlaylistModal()">&times;</span>
+            <span class="close" onclick="closeAddToPlaylistModal()"
+              >&times;</span
+            >
             <h2>Add to Playlist</h2>
 
             <!-- Danh sách các playlist có sẵn -->
@@ -93,8 +124,6 @@
 
 
     <div class="song-side">
-
-
       <div class="song-side-header">
         <div class="song-side-header-navigation">
           <!-- <i class="fa-solid fa-circle-chevron-left"></i>
@@ -105,9 +134,11 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <!-- Trong template của bạn -->
             <!-- Trong template của bạn -->
-            <input type="text" placeholder="Search" (keyup.enter)="gotoSearchComp($event)"/>
-
-
+            <input
+              type="text"
+              placeholder="Search"
+              (keyup.enter)="gotoSearchComp($event)"
+            />
           </div>
           <div class="notification" routerLink="/onesound/home/profile">
             <i class="fa-regular fa-user"></i>
@@ -118,18 +149,21 @@
 
     </div>
 
-
     <!-- <app-user-player-api-youtube style="width: 100%; height: 15%;"></app-user-player-api-youtube> -->
-    <ng-container *ngIf="isYoutubePlayer; then compplayeryoutube else compplayeraudio"></ng-container>
+    <ng-container
+      *ngIf="isYoutubePlayer; then compplayeryoutube; else compplayeraudio"
+    ></ng-container>
 
     <ng-template #compplayeryoutube>
-      <app-user-player-api-youtube style="width: 100%; height: 15%;"></app-user-player-api-youtube>
-
+      <app-user-player-api-youtube
+        style="width: 100%; height: 15%"
+      ></app-user-player-api-youtube>
     </ng-template>
 
     <ng-template #compplayeraudio>
-      <app-user-player-audio style="width: 100%; height: 15%;"></app-user-player-audio>
-
+      <app-user-player-audio
+        style="width: 100%; height: 15%"
+      ></app-user-player-audio>
     </ng-template>
   </header>
 </div>

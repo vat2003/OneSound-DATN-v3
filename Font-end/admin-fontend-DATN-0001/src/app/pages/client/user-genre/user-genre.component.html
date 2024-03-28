@@ -1,0 +1,26 @@
+<div class="popular_song">
+  <div class="pop_song" id="list-categories">
+    <li
+      class="songItem"
+      *ngFor="let item of genres"
+      (click)="gotoDetailGenre(item)"
+    >
+      <div class="img_play">
+        <img
+          src="{{ item.image }}"
+          alt="alan"
+          style="height: 180px; object-fit: cover"
+        />
+        <i class="bi fa-solid fa-circle-play" i="1"></i>
+      </div>
+      <h5>
+        <p class="line-clamp">{{ item.name }}</p>
+        <div class="subtitle line-clamp line-2">{{ item.description }}</div>
+        <!--        <div class="subtitle line-clamp line-2">-->
+        <!--          {{ item.songs.length }} songs-->
+        <!--        </div>-->
+      </h5>
+    </li>
+    <!--  -->
+  </div>
+</div>
