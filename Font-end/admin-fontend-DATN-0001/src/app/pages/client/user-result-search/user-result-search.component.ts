@@ -106,33 +106,33 @@ export class UserResultSearchComponent implements OnInit {
     debugger;
     this.SongService.getAllSongs().subscribe(data => {
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.songs = data.filter(async (song: Song) => {
-        song.image = await this.setImageURLFirebase(song.image);
-        song.path = await this.setImageURLFirebase(song.path);
+      this.songs = data.filter( (song: Song) => {
+        // song.image = await this.setImageURLFirebase(song.image);
+        // song.path = await this.setImageURLFirebase(song.path);
         return song.name.toLowerCase().includes(this.query);
       });
     });
 
     this.SingerService.getAllArtists().subscribe(data => {
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.singerforsearch = data.filter(async (singer: Singer) => {
-        singer.image = await this.setImageURLFirebase(singer.image);
+      this.singerforsearch = data.filter( (singer: Singer) => {
+        // singer.image = await this.setImageURLFirebase(singer.image);
         return singer.fullname.toLowerCase().includes(this.query);
       });
     });
 
     this.AlbumService.getAllAlbumNormal().subscribe(data => {
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.albums = data.filter(async (album: Album) => {
-        album.image = await this.setImageURLFirebase(album.image);
+      this.albums = data.filter( (album: Album) => {
+        // album.image = await this.setImageURLFirebase(album.image);
         return album.title.toLowerCase().includes(this.query);
       });
     });
 
     this.GenreServiceService.getAllGenres().subscribe(data => {
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
-      this.genres = data.filter(async (song: Genre) => {
-        song.image = await this.setImageURLFirebase(song.image);
+      this.genres = data.filter( (song: Genre) => {
+        // song.image = await this.setImageURLFirebase(song.image);
         return song.name.toLowerCase().includes(this.query);
       });
     });
