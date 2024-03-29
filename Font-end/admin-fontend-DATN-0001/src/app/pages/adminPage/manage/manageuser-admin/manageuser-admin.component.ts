@@ -588,7 +588,7 @@ export class ManageuserAdminComponent implements OnInit {
     const searchTermLowerCase = this.searchTerm.trim().toLowerCase();
 
     this.Accounts = this.Accounts.filter(singers =>
-      singers.fullname.toLowerCase().includes(searchTermLowerCase) ||
+      // singers.fullname.toLowerCase().includes(searchTermLowerCase) ||
       singers.email.toLowerCase().includes(searchTermLowerCase)
     );
 

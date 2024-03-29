@@ -40,9 +40,9 @@ import {NgToastModule, NgToastService} from 'ng-angular-popup';
 import {format} from 'date-fns';
 import {FirebaseStorage, StorageModule} from '@angular/fire/storage';
 import {getDownloadURL, ref, StorageReference} from '@firebase/storage';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { account } from '../../adminEntityService/adminEntity/account/account';
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {account} from '../../adminEntityService/adminEntity/account/account';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
 
 @Component({
   selector: 'app-managesong-admin',
@@ -91,7 +91,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   setAudioUrl: string = '';
   audioFile: any;
   p: number = 1;
-  pageSize: number= 10;
+  pageSize: number = 10;
   id: number = -1;
   albums: Album[] = [];
   album: Album = new Album();
@@ -173,13 +173,13 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               private formBuilder: FormBuilder,
               private cdRef: ChangeDetectorRef,
               private accountServiceService: accountServiceService
-
   ) {
     const today = new Date();
     this.to = new Date(today.setDate(today.getDate() + 1));
     this.from = new Date('2015-11-05');
     // this.date = null;
   }
+
   search(): void {
     // this.searchTerms.next(this.searchTerm);
     const searchTermLowerCase = this.searchTerm.toLowerCase();
@@ -510,7 +510,8 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   deleteAlbumInTable(idSinger: number) {
-    if ( this.account?.accountRole?.id == 2) {const index = this.albumTable.findIndex(singer => singer.id === idSinger);
+    if (this.account?.accountRole?.id == 2) {
+      const index = this.albumTable.findIndex(singer => singer.id === idSinger);
       if (index !== -1) {
         const deletedSinger = this.albumTable[index];
         this.albumName.push(deletedSinger.title);
@@ -520,10 +521,11 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
         startWith(''), map(value => this._FILTERAlbum(value || ''))
       )
-      this.updateAlbumList();}else{
-        alert("nhân viên không được phép xoá")
+      this.updateAlbumList();
+    } else {
+      alert("nhân viên không được phép xoá")
 
-      }
+    }
 
   }
 
@@ -933,6 +935,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       this.removeUpload();
     }
   }
+
   fillAudio(url: string): void {
     this.renderer.setStyle(
       this.el.nativeElement.querySelector('.file-upload-wrapper'),
@@ -1143,7 +1146,6 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       (error: any) => {
         console.log(error);
       }
-    ;
   }
 
 
@@ -1212,6 +1214,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         break;
     }
   }
+
   // checkAge() {
   //   if (this.song.release) {
   //     const today = new Date();
@@ -1415,7 +1418,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 // }
 
   updateSong(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       if (!this.song.id) {
         alert("Please select a song to update.");
         return;
@@ -1505,7 +1508,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         console.error("Update song failed:", error);
         alert("Failed to update song. Please try again later.");
       });
-    }else{
+    } else {
       alert("nhân viên không được phép update")
 
     }
@@ -1531,10 +1534,10 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         //   console.log("Ngàyyyyyyyyyy: "+this.song.release);
         // });
 
-        console.log("BÀI HÁT T1:"+this.songs);
+        console.log("BÀI HÁT T1:" + this.songs);
 
         for (const song of this.songs) {
-          console.log("BÀI HÁT T2:"+data);
+          console.log("BÀI HÁT T2:" + data);
           // KIỂM TRA SỰ TỒN TẠI CỦA IMAGE PATH
           // NẾU TỒN TẠI - CHUYỂN TỪ PATH(SQL) SANG PATH(FIREBASE) - BẰNG CÁCH GÁN MỚI CHO SONG.IMAGE
           if (song.image && song.image != '') {
@@ -1564,12 +1567,15 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   deleteSong(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const isConfirmed = window.confirm('Are you sure you want to delete this song?');
       if (isConfirmed) {
-        this.SongAuthorService.deleteAllSongAuthorBySongId(id).subscribe(data=>{})
-        this.SongGenreService.deleteAllSongGenreBySongId(id).subscribe(data=>{})
-        this.SongSingerService.deleteAllSongSingerBySongId(id).subscribe(data=>{})
+        this.SongAuthorService.deleteAllSongAuthorBySongId(id).subscribe(data => {
+        })
+        this.SongGenreService.deleteAllSongGenreBySongId(id).subscribe(data => {
+        })
+        this.SongSingerService.deleteAllSongSingerBySongId(id).subscribe(data => {
+        })
         this.SongService.deleteSong(id).subscribe(data => {
           this.displayDataOnTable(0, 10);
           this.reload();
@@ -1577,7 +1583,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
         })
       }
-    }else{
+    } else {
       alert("nhân viên không được phép xoá")
 
     }
