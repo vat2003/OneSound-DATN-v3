@@ -13,7 +13,7 @@ import {FirebaseStorageCrudService} from "../../../services/firebase-storage-cru
     RouterOutlet
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   account?: account | null;
@@ -70,4 +70,14 @@ export class HomeComponent implements OnInit {
   profile() {
     this.router.navigate(['/onesound/admin/manage/profile']);
   }
+
+  toggleDropdown() {
+    const dropdown = document.getElementById("myDropdown") as HTMLElement;
+    if (dropdown.style.display === "block") {
+      dropdown.style.display = "none";
+    } else {
+      dropdown.style.display = "block";
+    }
+  }
+
 }

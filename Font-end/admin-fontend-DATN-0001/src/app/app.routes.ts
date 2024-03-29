@@ -1,5 +1,6 @@
 import {RouterModule, Routes} from '@angular/router';
 
+
 import {BlankComponent} from './pages/adminPage/blank/blank.component';
 import {Notfound404Component} from './pages/adminPage/notfound404/notfound404.component';
 import {HomeComponent} from './pages/adminPage/home/home.component';
@@ -36,10 +37,10 @@ import {UserSongInPlaylistComponent} from './pages/client/user-song-in-playlist/
 import {
   PlayListSongComponent
 } from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
-import { UserGenreComponent } from './pages/client/user-genre/user-genre.component';
-import { UserGenredetailComponent } from './pages/client/user-genredetail/user-genredetail.component';
+import {UserGenreComponent} from './pages/client/user-genre/user-genre.component';
+import {UserGenredetailComponent} from './pages/client/user-genredetail/user-genredetail.component';
 import {UpdateUserComponentComponent} from "./pages/client/update-user-component/update-user-component.component";
-import { UserPaymentComponent } from './pages/client/user-payment/user-payment.component';
+import {UserPaymentComponent} from './pages/client/user-payment/user-payment.component';
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -64,6 +65,7 @@ export const routes: Routes = [
         path: 'manage/statictical',
         component: StaticticalComponent,
         children: [
+          {path: '', component: StaticticalComponent},
           {path: 'report', component: ReportComponent},
           {path: 'count-access', component: CountAccessComponent},
         ],
@@ -72,7 +74,7 @@ export const routes: Routes = [
   },
   {
     path: 'onesound/admin',
-    canActivate: [AdminGuardFn],
+    // canActivate: [AdminGuardFn],
     component: HomeComponent,
     children: [
       {path: 'blank', component: BlankComponent},
@@ -100,7 +102,7 @@ export const routes: Routes = [
   {
     path: 'onesound/home',
     component: UserMenusideComponent,
-    canActivate: [AuthGuardFn],
+    // canActivate: [AuthGuardFn],
     children: [
       {path: '', component: UserExploreComponent},
       {path: 'explore', component: UserExploreComponent},
@@ -125,9 +127,7 @@ export const routes: Routes = [
     children: [
       {path: 'search/:keyword', component: UserResultSearchComponent},
       {path: 'feedback', component: FeedbackComponent},
-      { path: 'users/update', component: UpdateUserComponentComponent },
-
-      // http://localhost:4200/users/update?id=4&type=email
+      {path: 'users/update', component: UpdateUserComponentComponent},
     ],
   },
 ];
