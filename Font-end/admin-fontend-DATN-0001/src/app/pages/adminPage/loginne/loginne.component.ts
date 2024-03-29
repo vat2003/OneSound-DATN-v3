@@ -97,8 +97,11 @@ export class LoginneComponent implements OnInit {
 
                             this.router.navigate(['/onesound/home/explore']);
                           }
-                        } else {
+                          else if (this.account.accountRole.name === 'staff') {
 
+                            this.router.navigate(['/onesound/admin']);
+                          }
+                        } else {
                           alert('Error: User role information not found.');
                         }
                       },

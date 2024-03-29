@@ -8,6 +8,8 @@ import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-
 import {read} from 'node:fs';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
 import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
+import { account } from '../../adminEntityService/adminEntity/account/account';
 
 @Component({
   selector: 'app-manageartist-admin',
@@ -34,7 +36,7 @@ export class ManageartistAdminComponent {
   errorFieldsArr: String[] = [];
   searchTerm: string = '';
   titleAlbum: string[] = [];
-
+  account?: account | null;
   private searchTerms = new Subject<string>();
 
 
@@ -46,6 +48,8 @@ export class ManageartistAdminComponent {
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService,
+    private accountServiceService: accountServiceService,
+
     @Inject(DOCUMENT) private document: Document
   ) {
     this.localStorage = document.defaultView?.localStorage;
@@ -53,6 +57,8 @@ export class ManageartistAdminComponent {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.account = this.accountServiceService.getUserResponseFromLocalStorage();
+
     this.loadSingers(0, 10);
     this.loadSingerById();
     this.getArtist(this.id);
@@ -64,7 +70,7 @@ export class ManageartistAdminComponent {
       switchMap((term: string) => this.singerService.getAllAlbumByAuthorByName(term, 0, 10))
     )
     .subscribe(async (data) => {
-     
+
     });
   }
 
@@ -76,7 +82,7 @@ export class ManageartistAdminComponent {
         console.log(data);
         this.imageFile = data.content.map((album: Singer) => album.image);
         this.titleAlbum = data.content.map((album: Singer) => album.fullname);
-      
+
         this.singers = data.content;
 
         for (const singer of this.singers) {
@@ -126,6 +132,7 @@ export class ManageartistAdminComponent {
   }
 
   updateSinger(id: number) {
+    if ( this.account?.accountRole?.id == 2) {
       console.log('001 === ' + this.singer.image);
       if (this.imageFile) {
         this.singer.image = this.setImageUrl;
@@ -139,9 +146,7 @@ export class ManageartistAdminComponent {
         if (this.imageFile) {
           await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
         }
-        // this.singer = new Singer();
 
-        // this.singer = new Singer();
         this.removeUpload();
         this.goToSingerList();
         console.log(data);
@@ -153,16 +158,28 @@ export class ManageartistAdminComponent {
         this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
       }
     );
+    }else{
+      alert("nhân viên không được phép update")
+
+    }
+
+
+
 
   }
 
   deleteSinger(id: number) {
-    const isConfirmed = window.confirm('Are you sure you want to delete this singer?');
-    if (isConfirmed) {
-      this.singerService.deleteArtist(id).subscribe((data) => {
-        console.log(data);
-        this.loadSingers(0, 10);
-      });
+    if ( this.account?.accountRole?.id == 2) {
+      const isConfirmed = window.confirm('Are you sure you want to delete this singer?');
+      if (isConfirmed) {
+        this.singerService.deleteArtist(id).subscribe((data) => {
+          console.log(data);
+          this.loadSingers(0, 10);
+        });
+      }
+    }else{
+      alert("nhân viên không được phép xoá")
+
     }
   }
 
@@ -195,7 +212,7 @@ export class ManageartistAdminComponent {
       return;
     }
     this.singerService.createArtist(this.singer).subscribe(
-      
+
       async (data) => {
         debugger
         if (this.imageFile) {
@@ -370,7 +387,7 @@ export class ManageartistAdminComponent {
     return this.singers.some((singer) => singer.fullname === singerCheck.fullname);
   }
 
-  
+
   search(): void {
     const searchTermLowerCase = this.searchTerm.trim().toLowerCase();
     this.singers = this.singers.filter(singers =>

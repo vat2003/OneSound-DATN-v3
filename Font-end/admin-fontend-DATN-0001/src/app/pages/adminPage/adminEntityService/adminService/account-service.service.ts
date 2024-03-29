@@ -47,6 +47,7 @@ export class accountServiceService {
   private apiLoginGit = `${this.baseUrl}/githubs/users/`;
   private apiUpdateActive = `${this.baseUrl}/users/UpdateActive`;
 
+
   private apiConfig = {
     headers: this.httpUtilService.createHeaders(),
   }
@@ -67,7 +68,6 @@ export class accountServiceService {
   getFacebookUserInfo(id: number): Observable<any> {
     return this.http.get<any>(this.apiLoginFacebook + id.toString());
   }
-
   getGithubUserInfo(id: number): Observable<any> {
     return this.http.get<any>(this.apiLoginGit + id.toString());
   }
@@ -140,6 +140,7 @@ export class accountServiceService {
   UpdateActive(id: number, account: UpdateUserForAdmin): Observable<Object> {
     return this.http.put<account>(`${this.apiUpdateActive}/${id}`, account);
   }
+
 
   getUserById(id: number): Observable<account> {
     return this.http.get<account>(`${this.baseUrl}/users/${id}`);

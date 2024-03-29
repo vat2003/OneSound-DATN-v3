@@ -20,6 +20,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
 import {Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap} from 'rxjs';
+import { account } from '../../adminEntityService/adminEntity/account/account';
+import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
 
 @Component({
   selector: 'app-manageauthor',
@@ -55,6 +57,9 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   searchTerm: string = '';
   filteredAuthors: any[] = [];
   singerName: string[] = [];
+  account?: account | null;
+
+
   private searchTerms = new Subject<string>();
   // private _FILTER(value: string): any[] {
   //   const searchTermLowerCase = value.toLowerCase();
@@ -81,7 +86,9 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     private el: ElementRef,
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private accountServiceService: accountServiceService
+
   ) {
     this.filteredAuthors = this.Authors;
 
@@ -157,8 +164,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    // this.loadAuthors();
-    // this.getAllAuthor();
+    this.account = this.accountServiceService.getUserResponseFromLocalStorage();
     this.getAuthor(this.id);
     this.displayDataOnTable(0, 5);
     this.searchTerms
@@ -195,14 +201,20 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   deleteAuthor(id: number) {
-    const isConfirmed = window.confirm('Are you sure you want to delete this author?');
-    if (isConfirmed) {
-      this.AuthorService.deleteAuthor(id).subscribe(data => {
-        this.loadAuthors();
-        this.toast.warning({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
+    if ( this.account?.accountRole?.id == 2) {
+      const isConfirmed = window.confirm('Are you sure you want to delete this author?');
+      if (isConfirmed) {
+        this.AuthorService.deleteAuthor(id).subscribe(data => {
+          this.loadAuthors();
+          this.toast.warning({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
+  
+        })
+      }
+    }else{
+      alert("nhân viên không có quyền delete")
 
-      })
     }
+   
   }
 
   validateAuthorEmpty(valueCheck: any): string[] {
@@ -289,31 +301,38 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   // }
 
   updateAuthor(id: number) {
-    if (this.imageFile) {
-      this.Author.image = this.setImageUrl;
+
+    if ( this.account?.accountRole?.id == 2) {
+      if (this.imageFile) {
+        this.Author.image = this.setImageUrl;
+      }
+  
+      if (!this.imageFile && !this.setImageUrl) {
+        this.Author.image = 'adminManageImage/author/null.jpg';
+      }
+  
+      this.AuthorService.updateAuthor(id, this.Author).subscribe(
+        async (data) => {
+          if (this.imageFile) {
+            await this.firebaseStorage.uploadFile(
+              'adminManageImage/author/', this.imageFile);
+          }
+          this.Author = new Author();
+  
+          this.goToAuthorList();
+          this.removeUpload();
+          // this.reload();
+  
+          this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+          console.log(data);
+        },
+        (error) => console.log(error)
+      );
+    }else{
+      alert("nhân viên không có quyền update")
     }
 
-    if (!this.imageFile && !this.setImageUrl) {
-      this.Author.image = 'adminManageImage/author/null.jpg';
-    }
-
-    this.AuthorService.updateAuthor(id, this.Author).subscribe(
-      async (data) => {
-        if (this.imageFile) {
-          await this.firebaseStorage.uploadFile(
-            'adminManageImage/author/', this.imageFile);
-        }
-        this.Author = new Author();
-
-        this.goToAuthorList();
-        this.removeUpload();
-        // this.reload();
-
-        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
-        console.log(data);
-      },
-      (error) => console.log(error)
-    );
+    
   }
 
   getAuthor(id: number) {

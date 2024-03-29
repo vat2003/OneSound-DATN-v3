@@ -27,6 +27,8 @@
     "@angular/youtube-player": "^17.3.0",
     "@auth0/angular-jwt": "^5.2.0",
     "angular": "^1.8.3",
+    "ng-recaptcha": "^13.2.1",
+    "ngx-captcha": "^13.0.0",
     "angularx-social-login": "^4.1.0",
     "apexcharts": "^3.46.0",
     "chart.js": "^4.4.2",

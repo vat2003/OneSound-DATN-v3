@@ -1,11 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Genre} from '../adminEntity/genre/genre';
-import {validate} from 'class-validator';
-import {of} from 'rxjs';
-import {log} from 'console';
-
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Genre } from '../adminEntity/genre/genre';
+import { validate } from 'class-validator';
+import { of } from 'rxjs';
+import { log } from 'console';
 interface GenreResponse {
   content: Genre[];
   pageable: any; // Adjust the type as needed
@@ -14,7 +13,6 @@ interface GenreResponse {
   totalElements: number;
   // Add other properties as needed
 }
-
 @Injectable({
   providedIn: 'root',
 })
@@ -58,6 +56,7 @@ export class GenreServiceService {
   UpdateActive(id: number, accouGenrent: Genre): Observable<Object> {
     return this.httpClient.put<Genre>(`${this.apiUpdateActive}/${id}`, accouGenrent);
   }
+
 
   deleteGenre(id: number): Observable<Object> {
     console.log(`${this.baseUrl}/${id}`);

@@ -7,6 +7,8 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
 import {error, log} from 'console';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
+import { account } from '../../adminEntityService/adminEntity/account/account';
+import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
 
 @Component({
   selector: 'app-managegenre-admin',
@@ -33,6 +35,7 @@ export class ManagegenreAdminComponent implements OnInit {
   itempage: number = 6;
   visiblePages: number[] = [];
   localStorage?: Storage;
+  account?: account | null;
 
   constructor(
     private GenreService: GenreServiceService,
@@ -41,7 +44,9 @@ export class ManagegenreAdminComponent implements OnInit {
     private el: ElementRef,
     private renderer: Renderer2,
     private firebaseStorage: FirebaseStorageCrudService,
-    private toast: NgToastService
+    private toast: NgToastService,
+    private accountServiceService: accountServiceService,
+
   ) {
   }
 
@@ -69,6 +74,7 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.account = this.accountServiceService.getUserResponseFromLocalStorage();
     this.id = this.route.snapshot.params['id'];
     this.getListGenresPage(0, 5);
     this.loadSingerById();
@@ -292,34 +298,42 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   updateGenre(id: number) {
-    if (this.imageFile) {
-      this.Genree.image = this.setImageUrl;
-    }
 
-    if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
-      this.Genree.image = 'adminManageImage/genre/null.jpg';
-    }
-
-    this.GenreService.updateGenre(id, this.Genree).subscribe(
-      async (data) => {
-        if (this.imageFile) {
-          await this.firebaseStorage.uploadFile(
-            'adminManageImage/genre/',
-            this.imageFile
-          );
-        }
-        this.Genree = new Genre();
-
-        this.goToSingerList();
-        this.removeUpload();
-        console.log(data);
-        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
-      },
-      (error) => {
-        console.log(error)
-        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+    if ( this.account?.accountRole?.id == 2) {
+      if (this.imageFile) {
+        this.Genree.image = this.setImageUrl;
       }
-    );
+
+      if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
+        this.Genree.image = 'adminManageImage/genre/null.jpg';
+      }
+
+      this.GenreService.updateGenre(id, this.Genree).subscribe(
+        async (data) => {
+          if (this.imageFile) {
+            await this.firebaseStorage.uploadFile(
+              'adminManageImage/genre/',
+              this.imageFile
+            );
+          }
+          this.Genree = new Genre();
+
+          this.goToSingerList();
+          this.removeUpload();
+          console.log(data);
+          this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+        },
+        (error) => {
+          console.log(error)
+          this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
+        }
+      );
+    }else{
+      alert("nhân viên không được phép update")
+
+    }
+
+
   }
 
   getGenre(id: number) {
@@ -337,15 +351,18 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   deleteGender(id: number) {
-    const isConfirmed = window.confirm(
-      'Are you sure you want to delete this singer?'
-    );
-    if (isConfirmed) {
-      this.GenreService.deleteGenre(id).subscribe((data) => {
-        console.log(data);
+    if ( this.account?.accountRole?.id == 2) {
+      const isConfirmed = window.confirm('Are you sure you want to delete this singer?');
+      if (isConfirmed) {
+        this.GenreService.deleteGenre(id).subscribe((data) => {
+          console.log(data);
 
-        this.getListGenresPage(0, 4);
-      });
+          this.getListGenresPage(0, 4);
+        });
+      }
+    }else{
+      alert("nhân viên không được phép xoá")
+
     }
   }
 
