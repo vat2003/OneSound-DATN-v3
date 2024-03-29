@@ -212,6 +212,9 @@ export class UserResultSearchComponent implements OnInit {
   gotoDetailArtist(artist: Singer): void {
     this.router.navigate(['/onesound/home/profile/', artist.id]);
   }
+  gotoDetailGenre(artist: Genre): void {
+    this.router.navigate(['/onesound/home/genre/', artist.id]);
+  }
 
   gotoDetailAlbum(album: Album): void {
     this.router.navigate(['/onesound/home/album/', album.id]);
