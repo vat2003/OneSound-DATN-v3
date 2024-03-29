@@ -37,6 +37,7 @@ import {UserSongInPlaylistComponent} from './pages/client/user-song-in-playlist/
 import {
   PlayListSongComponent
 } from './pages/client/play-list-song-form-play-list/play-list-song-form-play-list.component';
+import { UserVipsongComponent } from './pages/client/user-vipsong/user-vipsong.component';
 import {UserGenreComponent} from './pages/client/user-genre/user-genre.component';
 import {UserGenredetailComponent} from './pages/client/user-genredetail/user-genredetail.component';
 import {UpdateUserComponentComponent} from "./pages/client/update-user-component/update-user-component.component";
@@ -74,7 +75,7 @@ export const routes: Routes = [
   },
   {
     path: 'onesound/admin',
-    // canActivate: [AdminGuardFn],
+    canActivate: [AdminGuardFn],
     component: HomeComponent,
     children: [
       {path: 'blank', component: BlankComponent},
@@ -102,10 +103,11 @@ export const routes: Routes = [
   {
     path: 'onesound/home',
     component: UserMenusideComponent,
-    // canActivate: [AuthGuardFn],
+    canActivate: [AuthGuardFn],
     children: [
       {path: '', component: UserExploreComponent},
       {path: 'explore', component: UserExploreComponent},
+      {path: 'vip', component: UserVipsongComponent},
       {path: 'genre', component: UserGenreComponent},
       {path: 'genre/:id', component: UserGenredetailComponent},
       {path: 'playsong', component: UserPlaysongComponent},

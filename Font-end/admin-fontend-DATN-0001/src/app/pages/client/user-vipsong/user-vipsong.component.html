@@ -1,0 +1,69 @@
+<div
+  class="list-tracks"
+  style="display: flex; flex-direction: column; align-items: center"
+>
+  <h1 class="text-center">#TOP SONG VIP</h1>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <th>TITLE</th>
+        <th>ARTIST</th>
+        <th>GENRE</th>
+        <th>TIME</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="list-songs-detail">
+      <tr
+        *ngFor="
+          let song of songs
+            | paginate
+              : {
+                  itemsPerPage: pageSize,
+                  currentPage: p,
+                  id: 'CountUser'
+                }
+        "
+        (click)="showDetail(song)"
+      >
+        <td>
+          <img [src]="song.image" alt="" />
+        </td>
+        <td>
+          <div class="table-title">
+            <div class="line-clamp">{{ song.name }}</div>
+            <span class="table-song-type">VIP</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <span *ngFor="let singer of singerMap[song.id]; let last = last"
+              >{{ singer.fullname
+              }}{{ !last && singerMap[song.id].length > 1 ? ", " : "" }}</span
+            >
+          </div>
+        </td>
+        <td>
+          <div>
+            <span *ngFor="let singer of genreMap[song.id]; let last = last"
+              >{{ singer.name
+              }}{{ !last && genreMap[song.id].length > 1 ? ", " : "" }}</span
+            >
+          </div>
+        </td>
+        <td>
+          <i class="fa-solid fa-plus" (click)="openDialog(song)"></i
+          >&nbsp;&nbsp;
+          <i class="favorite fa-heart"> </i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div style="display: flex; justify-content: center; align-items: center">
+  <pagination-controls
+    (pageChange)="p = $event"
+    id="CountUser"
+  ></pagination-controls>
+</div>
