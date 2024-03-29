@@ -80,5 +80,16 @@ export class StaticticalService {
     return this.httpClient.get<any[]>(`${this.baseURL}/statictical/listens/get-top10`)
   }
 
+  getCountSong() {
+    return this.httpClient.get<any[]>(`${this.baseURL}/statictical/get-song`)
+  }
+
+  getCountAlbum() {
+    return this.httpClient.get<any[]>(`${this.baseURL}/statictical/get-album`)
+  }
+  getCountGenres() {
+    return this.httpClient.get<any[]>(`${this.baseURL}/statictical/get-genres`)
+  }
+
 
 }
