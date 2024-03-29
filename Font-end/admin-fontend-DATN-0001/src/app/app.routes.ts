@@ -39,6 +39,7 @@ import {
 import { UserGenreComponent } from './pages/client/user-genre/user-genre.component';
 import { UserGenredetailComponent } from './pages/client/user-genredetail/user-genredetail.component';
 import { UserPaymentComponent } from './pages/client/user-payment/user-payment.component';
+import { UserVipsongComponent } from './pages/client/user-vipsong/user-vipsong.component';
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -103,6 +104,7 @@ export const routes: Routes = [
     children: [
       {path: '', component: UserExploreComponent},
       {path: 'explore', component: UserExploreComponent},
+      {path: 'vip', component: UserVipsongComponent},
       {path: 'genre', component: UserGenreComponent},
       {path: 'genre/:id', component: UserGenredetailComponent},
       {path: 'playsong', component: UserPlaysongComponent},

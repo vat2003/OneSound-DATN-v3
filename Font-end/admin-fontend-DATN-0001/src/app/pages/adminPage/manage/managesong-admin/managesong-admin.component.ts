@@ -75,6 +75,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   @ViewChild('currentTimeDisplay') currentTimeDisplay!: ElementRef;
   song: Song = new Song();
   songs!: Song[];
+  songsinactive!: Song[];
   currentTime: string = '00:00';
   totalTime: string = '00:00';
   imageUrl: string = '';
@@ -124,6 +125,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   page: number = 1;
   itempage: number = 4;
   searchTerm: string = '';
+  searchTerm2: string = '';
   to: Date = new Date();
   from: Date = new Date();
   date: Date = new Date();
@@ -132,6 +134,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   slide = false;
   songName: string = '';
   private searchTerms = new Subject<string>();
+  private searchTerms2 = new Subject<string>();
 
   private _FILTER(value: string): string[] {
     const searchValue = value.toLocaleLowerCase();
@@ -190,9 +193,25 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       this.displayDataOnTable(0, 10);
     }
   }
+  search2(): void {
+    // this.searchTerms.next(this.searchTerm);
+    const searchTermLowerCase = this.searchTerm2.toLowerCase();
+    // this.songs = this.songs.filter(author =>
+    //   author.name.toLowerCase().includes(searchTermLowerCase) ||
+    //   author.description.toLowerCase().includes(searchTermLowerCase)||
+    //   author.album.title.toLowerCase().includes(searchTermLowerCase)
+    // );
+    this.songsinactive = this.songsinactive.filter((song: Song) => {
+      return song.name.toLowerCase().includes(searchTermLowerCase);
+    });
+    if (searchTermLowerCase == '') {
+      this.displayDataOnTableInActive();
+    }
+  }
 
   onKey(event: any): void {
     this.searchTerms.next(event.target.value);
+    this.searchTerms2.next(event.target.value);
   }
 
   toggleUpload(event: any): void {
@@ -377,6 +396,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     )
 
     this.search();
+    this.search2();
   }
 
   filterGenre() {
@@ -399,6 +419,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     this.displayGenreBySearch();
     this.displayAuthorBySearch();
     this.displayDataOnTable(0, 10);
+    this.displayDataOnTableInActive();
     this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
     )
@@ -740,6 +761,24 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       this.setImageUrl = 'adminManageImage/song/null.jpg';
       this.removeUpload();
     }
+  }
+
+  restore(id:Song){
+    this.SongService.getSongById(id.id).subscribe(data=>{
+      data.active=true;
+      this.SongService.updateSong(data.id, data).subscribe();
+      this.displayDataOnTable(0, 10);
+      this.reload();
+    })
+  }
+
+  inactive(id:Song){
+    this.SongService.getSongById(id.id).subscribe(data=>{
+      data.active=false;
+      this.SongService.updateSong(data.id, data).subscribe();
+      this.displayDataOnTableInActive();
+      this.reload();
+    })
   }
 
   // onFileSelectedAudio(event: any) {
@@ -1406,11 +1445,24 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
   updateSong(id: number) {
     // Kiểm tra xem bài hát đã chọn để cập nhật có tồn tại không
-    if (!this.song.id) {
-      alert("Please select a song to update.");
+    if (this.song.release) {
+      const today = new Date();
+      const releaseDate = new Date(this.song.release);
+      if (releaseDate.getTime() > today.getTime()) {
+        this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
+        return;
+      }
+    } else {
+      this.toast.error({detail: 'Failed Message', summary: 'Release date is required', duration: 3000});
       return;
     }
 
+    // Kiểm tra xem tiêu đề bài hát có được nhập hay không
+    if (!this.song.name) {
+      this.toast.error({detail: 'Failed Message', summary: 'Title is required', duration: 3000});
+      return;
+    }
+//-----------------------------------------
     if (this.imageFile) {
       this.song.image = this.setImageUrl;
     }
@@ -1499,7 +1551,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   displayDataOnTable(page: number, limit: number) {
-    this.SongService.getAllSongsNonePage().subscribe(
+    this.SongService.getAllSongs().subscribe(
       async (data) => {
         console.log(data);
         this.imageSong = data.map((album: Song) => album.image);
@@ -1531,6 +1583,43 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
             song.path = await this.setImageURLFirebase(song.path);
           }
         }
+
+        //   // album.dateTemp=this.formatDate(album.release);
+        //   // const formattedDate = album.release.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        //   // album.dateTemp = formattedDate;
+        // }
+
+        // this.total = data.totalPages;
+        // this.visiblePages = this.PageArray(this.page, this.total);
+      },
+      (error) => {
+        console.log('Error huh data:', error);
+      }
+    );
+  }
+
+  displayDataOnTableInActive() {
+    this.SongService.getAllSongsInactive().subscribe(
+      async (data) => {
+        console.log(data);
+        this.imageSong = data.map((album: Song) => album.image);
+        this.audioSong = data.map((album: Song) => album.path);
+        this.titleSong = data.map((album: Song) => album.name);
+        this.songsinactive = data;
+        for(let a of  this.songsinactive ){
+        a.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
+        if (a.image && a.image != '') {
+          a.image = await this.setImageURLFirebase(a.image);
+        }
+
+        // KIỂM TRA SỰ TỒN TẠI CỦA SONG PATH
+        // NẾU TỒN TẠI - CHUYỂN TỪ PATH(SQL) SANG PATH(FIREBASE) - BẰNG CÁCH GÁN MỚI CHO SONG.PATH
+        if (a.path && a.path != '') {
+          a.path = await this.setImageURLFirebase(a.path);
+        }
+        }
+
+        console.log("BÀI HÁT T1:"+this.songsinactive);
 
         //   // album.dateTemp=this.formatDate(album.release);
         //   // const formattedDate = album.release.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });

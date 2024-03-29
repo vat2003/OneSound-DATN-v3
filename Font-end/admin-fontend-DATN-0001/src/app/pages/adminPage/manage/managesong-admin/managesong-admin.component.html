@@ -352,30 +352,28 @@
                       class="file-upload-wrapper bg-dark text-center"
                       #fileUploadWrapper
                     >
-<!--                      <div-->
-<!--                        class="card card-body w-100 view file-upload bg-dark text-center"-->
-<!--                      >-->
-<!--                        <input-->
-<!--                          type="file"-->
-<!--                          id="audiofile"-->
-<!--                          class="file_upload"-->
-<!--                          (change)="handleFiles($event)"-->
-<!--                          accept="audio/*"-->
-<!--                        />-->
-<!--                        <p class="file-upload-infos-message">-->
-<!--                          Audio upload - Drag and drop or click-->
-<!--                        </p>-->
-<!--                      </div>-->
+                      <!--                      <div-->
+                      <!--                        class="card card-body w-100 view file-upload bg-dark text-center"-->
+                      <!--                      >-->
+                      <!--                        <input-->
+                      <!--                          type="file"-->
+                      <!--                          id="audiofile"-->
+                      <!--                          class="file_upload"-->
+                      <!--                          (change)="handleFiles($event)"-->
+                      <!--                          accept="audio/*"-->
+                      <!--                        />-->
+                      <!--                        <p class="file-upload-infos-message">-->
+                      <!--                          Audio upload - Drag and drop or click-->
+                      <!--                        </p>-->
+                      <!--                      </div>-->
                     </div>
-                    <button
-                      class="file-upload-btn"
-                      type="button"
-                    ><input
-                      type="file"
-                      class="file_upload"
-                      (change)="handleFiles($event)"
-                      accept="audio/*"
-                    />
+                    <button class="file-upload-btn" type="button">
+                      <input
+                        type="file"
+                        class="file_upload"
+                        (change)="handleFiles($event)"
+                        accept="audio/*"
+                      />
                       Change Song
                     </button>
                   </div>
@@ -392,9 +390,10 @@
                       type="audio/mp3"
                       #track
                     ></audio> -->
-                    <div class="player d-none" style="width:100%" #player>
+                    <div class="player d-none" style="width: 100%" #player>
                       <div class="progress p-1">
-                        <input style="width:100%"
+                        <input
+                          style="width: 100%"
                           id="timeslider"
                           #timeslider
                           class="timeslider"
@@ -498,6 +497,13 @@
             >
               Update
             </button>
+            <button
+              class="btn btn-danger ms-3 fw-bold"
+              (click)="deleteSong(song.id)"
+              *ngIf="song.id != null"
+            >
+              Delete
+            </button>
             <button class="btn btn-warning ms-3 fw-bold" (click)="resetForm()">
               Reset
             </button>
@@ -565,10 +571,10 @@
                   Detail
                 </button>
                 <button
-                  (click)="deleteSong(album.id)"
+                  (click)="inactive(album)"
                   class="btn btn-outline-danger"
                 >
-                  Delete
+                  Inactive
                 </button>
               </td>
             </tr>
@@ -586,6 +592,90 @@
           <pagination-controls
             (pageChange)="p = $event"
             id="CountUser"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-xl-6"></div>
+    <div class="col-sm-12 col-xl-6">
+      <div class="bg-secondary rounded h-100 p-4">
+        <h6 class="mb-4">SONG LIST INACTIVE</h6>
+        <input
+          type="text"
+          class="form-control mb-4 border-light border-2"
+          style="border-radius: 20px"
+          placeholder="Search"
+          name="searchItem2"
+          [(ngModel)]="searchTerm2"
+          (ngModelChange)="search2()"
+          (keyup)="onKey($event)"
+        />
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">*</th>
+              <th scope="col">Image</th>
+              <th scope="col">Title</th>
+              <!-- <th scope="col">Artist</th> -->
+              <th scope="col">Release</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody
+            *ngIf="
+              songsinactive && songsinactive.length > 0;
+              else noDataMessage
+            "
+          >
+            <tr
+              *ngFor="
+                let album of this.songsinactive
+                  | paginate
+                    : {
+                        itemsPerPage: pageSize,
+                        currentPage: p,
+                        id: 'CountUser2'
+                      };
+                let i = index
+              "
+            >
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                <img
+                  src="{{ album.image }}"
+                  width="70"
+                  height="70"
+                  alt="{{ album.image }}"
+                />
+              </td>
+              <td>{{ album.name }}</td>
+              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+              <td>
+                <button
+                  (click)="getSong(album.id)"
+                  class="btn btn-outline-info me-3"
+                >
+                  Detail
+                </button>
+                <button (click)="restore(album)" class="btn btn-outline-danger">
+                  Restore
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+          <ng-template #noDataMessage>
+            <tr>
+              <td colspan="4">
+                <p class="text-center text-danger">No data available.</p>
+              </td>
+            </tr>
+          </ng-template>
+        </table>
+        <div class="text-center">
+          <pagination-controls
+            (pageChange)="p = $event"
+            id="CountUser2"
           ></pagination-controls>
         </div>
       </div>
