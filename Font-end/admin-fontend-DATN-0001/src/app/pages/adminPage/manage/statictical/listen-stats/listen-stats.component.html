@@ -1,0 +1,89 @@
+<h6 class="mb-4">USER LIST</h6>
+
+<div class="d-flex justify-content-center">
+
+    <div class="col-md-2 ms-5 ">
+        <label for="">Form date</label>
+        <input type="date" name="date" [(ngModel)]="dateCountUser1" placeholder="Date"
+            class=" form-control form-control mb-4 border-light border-2 datepicker" style="border-radius: 20px">
+    </div>
+
+
+
+
+    <div class="col-md-2 ms-5 ">
+        <label for="">To date</label>
+        <input type="date" name="date" [(ngModel)]="dateCountUser2" placeholder="Date"
+            class=" form-control form-control mb-4 border-light border-2 datepicker" style="border-radius: 20px">
+    </div>
+    <div class="mt-4">
+        <button class="ms-5 border-light border-2 btn btn-outline-light rounded-pill"
+            (click)="getListenBetweenLisDate()">Search</button>
+    </div>
+</div>
+
+
+
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Listens</th>
+            <th>Date Listen</th>
+        </tr>
+    </thead>
+    <tbody *ngIf="check!=1;else mess">
+
+        <tr
+            *ngFor="let item of listens | paginate: { itemsPerPage: pageSize, currentPage: pAllList,  id: 'UserId' }; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+                <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
+            </td>
+            <td>{{ item.song ? item.song.name : 'N/A' }}</td>
+            <td>{{ item.listens }}</td>
+            <td>{{ item.dateLis | date: 'dd/MM/yyyy' }}</td>
+        </tr>
+    </tbody>
+    <ng-template #mess>
+        <tr>
+            <td colspan="7">
+                <p class="fs-4 text-center text-danger">{{errorm}}</p>
+            </td>
+        </tr>
+    </ng-template>
+</table>
+<div class="text-center" *ngIf="listens.length > 0">
+    <pagination-controls (pageChange)="pAllList = $event" id="UserId"></pagination-controls>
+</div>
+
+<br>
+
+
+<h2>Top 10 most listened songs</h2>
+<table class="table table-hover text-center">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>Image</th>
+            <th>Title</th>
+            <th>Listens</th>
+            <th>Date Listen</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let item of top10Listen; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>
+                <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
+            </td>
+            <td>{{ item.song ? item.song.name : 'N/A' }}</td>
+            <td>{{ item.listens }}</td>
+            <td>{{ item.dateLis | date: 'dd/MM/yyyy' }}</td>
+        </tr>
+    </tbody>
+
+</table>

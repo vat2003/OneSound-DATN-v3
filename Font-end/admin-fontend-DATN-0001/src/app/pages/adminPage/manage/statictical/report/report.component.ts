@@ -313,13 +313,17 @@ export class ReportComponent implements OnInit {
   }
 
   getCountUserBetweenDate() {
-    const selectedTimestamp1 = new Date(this.dateCountUser1).getTime();
-    const selectedTimestamp2 = new Date(this.dateCountUser2).getTime();
-    this.staticticalService.getCountUserBetweenDate(selectedTimestamp1, selectedTimestamp2).subscribe((res) => {
-      this.countUser = res
-      console.log("List count User: " + res);
+    if (!this.dateCountUser1 || !this.dateCountUser2) {
+      alert("Please choose form date and to date!");
+    } else {
+      const selectedTimestamp1 = new Date(this.dateCountUser1).getTime();
+      const selectedTimestamp2 = new Date(this.dateCountUser2).getTime();
+      this.staticticalService.getCountUserBetweenDate(selectedTimestamp1, selectedTimestamp2).subscribe((res) => {
+        this.countUser = res
+        console.log("List count User: " + res);
 
-    })
+      })
+    }
   }
 
 

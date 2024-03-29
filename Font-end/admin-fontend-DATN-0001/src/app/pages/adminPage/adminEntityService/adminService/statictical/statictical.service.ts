@@ -68,7 +68,17 @@ export class StaticticalService {
 
   }
 
+  getAllListens() {
+    return this.httpClient.get<any[]>(`${this.baseURL}/statictical/listens`)
+  }
 
+  getListensBetweenLisDate(date1: number, date2: number): Observable<any[]> {
+    return this.httpClient.get<any[]>(`${this.baseURL}/statictical/listens/between/${date1}/${date2}`)
+  }
+
+  getTop10Listens() {
+    return this.httpClient.get<any[]>(`${this.baseURL}/statictical/listens/get-top10`)
+  }
 
 
 }

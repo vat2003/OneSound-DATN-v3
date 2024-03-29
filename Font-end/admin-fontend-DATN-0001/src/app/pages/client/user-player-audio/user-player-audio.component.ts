@@ -17,6 +17,7 @@ import { account } from '../../adminPage/adminEntityService/adminEntity/account/
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { FavoriteService } from '../../../services/favorite-service/favorite.service';
 import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import { ListeningStatsService } from '../../../services/listening-stats/listening-stats.service';
 
 @Component({
   selector: 'app-user-player-audio',
@@ -49,14 +50,15 @@ export class UserPlayerAudioComponent implements OnInit {
 
   currentIndex!: number;
   arrPreNext: any[] = [];
+  private increaseLisTimeout: any;
   constructor(
     private dataGlobal: DataGlobalService,
     private firebaseStorage: FirebaseStorageCrudService,
     private userService: accountServiceService,
     private favSong: FavoriteService,
-
+    private listenService: ListeningStatsService,
     private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
@@ -91,6 +93,7 @@ export class UserPlayerAudioComponent implements OnInit {
   }
 
   loadAudio(): void {
+
     this.audio = new Audio();
     this.audio.src = 'assets/audio/chayngaydi.mp3'; // đây là tao lưu cứng bài hát trong ổ, hãy dùng firebase service để lấy đường dẫn audio vào đây
     if (this.selectedSong) {
@@ -114,11 +117,33 @@ export class UserPlayerAudioComponent implements OnInit {
     });
   }
 
+  setIncreaseLisTimeout(): void {
+    // Hủy bỏ bất kỳ lên lịch tăng lượt nghe nào trước đó
+    this.clearIncreaseLisTimeout();
+
+    // Lên lịch tăng lượt nghe sau 30 giây
+    this.increaseLisTimeout = setTimeout(() => {
+      this.increaseLis(this.selectedSong.id);
+    }, 30000); // 30000 ms = 30 giây
+  }
+
+  clearIncreaseLisTimeout(): void {
+    if (this.increaseLisTimeout) {
+      clearTimeout(this.increaseLisTimeout);
+      this.increaseLisTimeout = null;
+    }
+  }
+
+  increaseLis(songId: number) {
+    this.listenService.incrementPlayCount(songId).subscribe();
+  }
+
   pauseMusic(): void {
     // let masterPlay = document.getElementById('masterPlay') as HTMLElement;
 
     if (this.audio.paused || this.audio.currentTime <= 0) {
       this.audio.play();
+      this.setIncreaseLisTimeout();
       this.masterPlay.nativeElement.classList.remove('fa-play');
       this.masterPlay.nativeElement.classList.add('fa-pause');
     } else {
@@ -240,10 +265,10 @@ export class UserPlayerAudioComponent implements OnInit {
         return;
       }
       song.isFav = false;
-      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => { });
     } else {
       song.isFav = true;
-      this.favSong.addFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.addFavoriteSong(favS).subscribe((data) => { });
     }
   }
 

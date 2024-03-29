@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterLink, RouterOutlet} from "@angular/router";
-import {account} from '../adminEntityService/adminEntity/account/account';
-import {TokenService} from '../adminEntityService/adminService/token.service';
-import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
-import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from "@angular/router";
+import { account } from '../adminEntityService/adminEntity/account/account';
+import { TokenService } from '../adminEntityService/adminService/token.service';
+import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
+import { FirebaseStorageCrudService } from "../../../services/firebase-storage-crud.service";
 
 @Component({
   selector: 'app-home',
@@ -13,7 +13,7 @@ import {FirebaseStorageCrudService} from "../../../services/firebase-storage-cru
     RouterOutlet
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   account?: account | null;
@@ -49,4 +49,14 @@ export class HomeComponent implements OnInit {
   profile() {
     this.router.navigate(['/onesound/admin/manage/profile']);
   }
+
+  toggleDropdown() {
+    const dropdown = document.getElementById("myDropdown") as HTMLElement;
+    if (dropdown.style.display === "block") {
+      dropdown.style.display = "none";
+    } else {
+      dropdown.style.display = "block";
+    }
+  }
+
 }
