@@ -34,7 +34,7 @@
             />
           </div>
 
-          <label class="form-label">Active</label> <br />
+          <label class="form-label">Active</label> <br/>
           <div class="btn-group mb-3" role="group">
             <input
               type="radio"
@@ -47,7 +47,7 @@
               [(ngModel)]="song.active"
             />
             <label class="btn btn-outline-primary" for="btnradio1"
-              >Active</label
+            >Active</label
             >
 
             <input
@@ -60,7 +60,7 @@
               [value]="false"
             />
             <label class="btn btn-outline-primary" for="btnradio3"
-              >Inactive</label
+            >Inactive</label
             >
           </div>
 
@@ -92,34 +92,34 @@
             <!-- Table display for singers -->
             <table class="table table-dark">
               <thead>
-                <tr>
-                  <th scope="col">No.</th>
-                  <th scope="col">Fullname</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Action</th>
-                </tr>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Fullname</th>
+                <th scope="col">Image</th>
+                <th scope="col">Action</th>
+              </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let singer of singerTable; let i = index">
-                  <th scope="row">{{ i + 1 }}</th>
-                  <td>{{ singer.fullname }}</td>
-                  <td>
-                    <img
-                      src="{{ singer.image }}"
-                      width="70"
-                      height="70"
-                      alt="{{ singer.image }}"
-                    />
-                  </td>
-                  <td>
-                    <button
-                      (click)="deleteSingerInTable(singer.id)"
-                      class="btn btn-outline-danger w-50"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+              <tr *ngFor="let singer of singerTable; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ singer.fullname }}</td>
+                <td>
+                  <img
+                    src="{{ singer.image }}"
+                    width="70"
+                    height="70"
+                    alt="{{ singer.image }}"
+                  />
+                </td>
+                <td>
+                  <button
+                    (click)="deleteSingerInTable(singer.id)"
+                    class="btn btn-outline-danger w-50"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -149,38 +149,38 @@
             </mat-autocomplete>
             <table class="table table-dark">
               <thead>
-                <tr>
-                  <!-- <th scope="col">No.</th> -->
-                  <th scope="col">Title</th>
-                  <th scope="col">Release</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Action</th>
-                </tr>
+              <tr>
+                <!-- <th scope="col">No.</th> -->
+                <th scope="col">Title</th>
+                <th scope="col">Release</th>
+                <th scope="col">Image</th>
+                <th scope="col">Action</th>
+              </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let album of albumTable; let i = index">
-                  <!-- <th scope="row">{{ i + 1 }}</th> -->
+              <tr *ngFor="let album of albumTable; let i = index">
+                <!-- <th scope="row">{{ i + 1 }}</th> -->
 
-                  <td>{{ album.title }}</td>
-                  <td>{{ album.releaseYear }}</td>
+                <td>{{ album.title }}</td>
+                <td>{{ album.releaseYear }}</td>
 
-                  <td>
-                    <img
-                      src="{{ album.image }}"
-                      width="70"
-                      height="70"
-                      alt="{{ album.image }}"
-                    />
-                  </td>
-                  <td>
-                    <button
-                      (click)="deleteAlbumInTable(album.id)"
-                      class="btn btn-outline-danger w-50"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                <td>
+                  <img
+                    src="{{ album.image }}"
+                    width="70"
+                    height="70"
+                    alt="{{ album.image }}"
+                  />
+                </td>
+                <td>
+                  <button
+                    (click)="deleteAlbumInTable(album.id)"
+                    class="btn btn-outline-danger w-50"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -209,36 +209,36 @@
             </mat-autocomplete>
             <table class="table table-dark">
               <thead>
-                <tr>
-                  <th scope="col">No.</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Action</th>
-                </tr>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Image</th>
+                <th scope="col">Action</th>
+              </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let album of genreTable; let i = index">
-                  <th scope="row">{{ i + 1 }}</th>
+              <tr *ngFor="let album of genreTable; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
 
-                  <td>{{ album.name }}</td>
+                <td>{{ album.name }}</td>
 
-                  <td>
-                    <img
-                      src="{{ album.image }}"
-                      width="70"
-                      height="70"
-                      alt="{{ album.image }}"
-                    />
-                  </td>
-                  <td>
-                    <button
-                      (click)="deleteGenreInTable(album.id)"
-                      class="btn btn-outline-danger w-50"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                <td>
+                  <img
+                    src="{{ album.image }}"
+                    width="70"
+                    height="70"
+                    alt="{{ album.image }}"
+                  />
+                </td>
+                <td>
+                  <button
+                    (click)="deleteGenreInTable(album.id)"
+                    class="btn btn-outline-danger w-50"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -270,36 +270,36 @@
 
             <table class="table table-dark">
               <thead>
-                <tr>
-                  <th scope="col">No.</th>
-                  <th scope="col">Title</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Action</th>
-                </tr>
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Image</th>
+                <th scope="col">Action</th>
+              </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let album of authorTable; let i = index">
-                  <th scope="row">{{ i + 1 }}</th>
+              <tr *ngFor="let album of authorTable; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
 
-                  <td>{{ album.fullname }}</td>
+                <td>{{ album.fullname }}</td>
 
-                  <td>
-                    <img
-                      src="{{ album.image }}"
-                      width="70"
-                      height="70"
-                      alt="{{ album.image }}"
-                    />
-                  </td>
-                  <td>
-                    <button
-                      (click)="deleteAuthorInTable(album.id)"
-                      class="btn btn-outline-danger w-50"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                <td>
+                  <img
+                    src="{{ album.image }}"
+                    width="70"
+                    height="70"
+                    alt="{{ album.image }}"
+                  />
+                </td>
+                <td>
+                  <button
+                    (click)="deleteAuthorInTable(album.id)"
+                    class="btn btn-outline-danger w-50"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
               </tbody>
             </table>
           </div>
@@ -393,23 +393,23 @@
                     <div class="player d-none" style="width: 100%" #player>
                       <div class="progress p-1">
                         <input style="width:100%"
-                          id="timeslider"
-                          #timeslider
-                          class="timeslider"
-                          type="range"
-                          value="0"
-                          min="0"
-                          max="100"
-                          step="0.001"
-                          (input)="handleSeekChange()"
+                               id="timeslider"
+                               #timeslider
+                               class="timeslider"
+                               type="range"
+                               value="0"
+                               min="0"
+                               max="100"
+                               step="0.001"
+                               (input)="handleSeekChange()"
                         />
                         <div
                           class="time d-flex justify-content-around"
                           style="width: 100%"
                         >
                           <span id="currentTime" style="width: 30px">{{
-                            currentTime
-                          }}</span>
+                              currentTime
+                            }}</span>
                           <div
                             id="pause"
                             #pause
@@ -435,8 +435,8 @@
                             <i class="fas fa-redo-alt"></i>
                           </div>
                           <span id="duration" #durationDisplay>{{
-                            totalTime
-                          }}</span>
+                              totalTime
+                            }}</span>
                         </div>
                         <!-- <span><a class="text-decoration-none pt-1 pb-1" href="#" target="_blank">Link</a></span> -->
                       </div>
@@ -516,7 +516,7 @@
 
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">SONG LIST</h6>
+        <h3 class="mb-4">SONG LIST</h3>
         <input
           type="text"
           class="form-control mb-4 border-light border-2"
@@ -529,18 +529,18 @@
         />
         <table class="table table-hover">
           <thead>
-            <tr>
-              <th scope="col">*</th>
-              <th scope="col">Image</th>
-              <th scope="col">Title</th>
-              <!-- <th scope="col">Artist</th> -->
-              <th scope="col">Release</th>
-              <th scope="col">Action</th>
-            </tr>
+          <tr>
+            <th scope="col">*</th>
+            <th scope="col">Image</th>
+            <th scope="col">Title</th>
+            <!-- <th scope="col">Artist</th> -->
+            <th scope="col">Release</th>
+            <th scope="col">Action</th>
+          </tr>
           </thead>
           <tbody *ngIf="songs && songs.length > 0; else noDataMessage">
-            <tr
-              *ngFor="
+          <tr
+            *ngFor="
                 let album of this.songs
                   | paginate
                     : {
@@ -550,33 +550,33 @@
                       };
                 let i = index
               "
-            >
-              <th scope="row">{{ i + 1 }}</th>
-              <td>
-                <img
-                  src="{{ album.image }}"
-                  width="70"
-                  height="70"
-                  alt="{{ album.image }}"
-                />
-              </td>
-              <td>{{ album.name }}</td>
-              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
-              <td>
-                <button
-                  (click)="getSong(album.id)"
-                  class="btn btn-outline-info me-3"
-                >
-                  Detail
-                </button>
-                <button
-                  (click)="inactive(album)"
-                  class="btn btn-outline-danger"
-                >
-                  Inactive
-                </button>
-              </td>
-            </tr>
+          >
+            <th scope="row">{{ i + 1 }}</th>
+            <td>
+              <img
+                src="{{ album.image }}"
+                width="70"
+                height="70"
+                alt="{{ album.image }}"
+              />
+            </td>
+            <td>{{ album.name }}</td>
+            <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+            <td>
+              <button
+                (click)="getSong(album.id)"
+                class="btn btn-outline-info me-3"
+              >
+                Detail
+              </button>
+              <button
+                (click)="inactive(album)"
+                class="btn btn-outline-warning"
+              >
+                Inactive
+              </button>
+            </td>
+          </tr>
           </tbody>
 
           <ng-template #noDataMessage>
@@ -595,10 +595,11 @@
         </div>
       </div>
     </div>
-    <div class="col-sm-12 col-xl-6"></div>
-    <div class="col-sm-12 col-xl-6">
+    <!--    <div class="col-sm-12 col-xl-6"></div>-->
+    <!--    <div class="col-sm-12 col-xl-6">-->
+    <div>
       <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-4">SONG LIST INACTIVE</h6>
+        <h3 class="mb-4">SONG LIST INACTIVE</h3>
         <input
           type="text"
           class="form-control mb-4 border-light border-2"
@@ -611,14 +612,14 @@
         />
         <table class="table table-hover">
           <thead>
-            <tr>
-              <th scope="col">*</th>
-              <th scope="col">Image</th>
-              <th scope="col">Title</th>
-              <!-- <th scope="col">Artist</th> -->
-              <th scope="col">Release</th>
-              <th scope="col">Action</th>
-            </tr>
+          <tr>
+            <th scope="col">*</th>
+            <th scope="col">Image</th>
+            <th scope="col">Title</th>
+            <!-- <th scope="col">Artist</th> -->
+            <th scope="col">Release</th>
+            <th scope="col">Action</th>
+          </tr>
           </thead>
           <tbody
             *ngIf="
@@ -626,8 +627,8 @@
               else noDataMessage
             "
           >
-            <tr
-              *ngFor="
+          <tr
+            *ngFor="
                 let album of this.songsinactive
                   | paginate
                     : {
@@ -637,30 +638,30 @@
                       };
                 let i = index
               "
-            >
-              <th scope="row">{{ i + 1 }}</th>
-              <td>
-                <img
-                  src="{{ album.image }}"
-                  width="70"
-                  height="70"
-                  alt="{{ album.image }}"
-                />
-              </td>
-              <td>{{ album.name }}</td>
-              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
-              <td>
-                <button
-                  (click)="getSong(album.id)"
-                  class="btn btn-outline-info me-3"
-                >
-                  Detail
-                </button>
-                <button (click)="restore(album)" class="btn btn-outline-danger">
-                  Restore
-                </button>
-              </td>
-            </tr>
+          >
+            <th scope="row">{{ i + 1 }}</th>
+            <td>
+              <img
+                src="{{ album.image }}"
+                width="70"
+                height="70"
+                alt="{{ album.image }}"
+              />
+            </td>
+            <td>{{ album.name }}</td>
+            <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+            <td>
+              <button
+                (click)="getSong(album.id)"
+                class="btn btn-outline-info me-3"
+              >
+                Detail
+              </button>
+              <button (click)="restore(album)" class="btn btn-outline-success">
+                Restore
+              </button>
+            </td>
+          </tr>
           </tbody>
 
           <ng-template #noDataMessage>
