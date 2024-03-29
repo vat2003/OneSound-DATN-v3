@@ -24,6 +24,7 @@ import { account } from '../../adminPage/adminEntityService/adminEntity/account/
 import { FavoriteService } from '../../../services/favorite-service/favorite.service';
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { DataGlobalService } from '../../../services/data-global.service';
+import { FavoriteAlbum } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-album';
 
 @Component({
   selector: 'app-user-playsong',
@@ -45,6 +46,8 @@ export class UserPlaysongComponent implements OnInit {
   acc?: account | null;
   favListSongs: any[] = [];
   songsfromdata: Song[] = [];
+
+  isFavAlbum!: boolean;
 
   filterOptionsSinger!: Observable<string[]>;
   formcontrol = new FormControl('');
@@ -214,6 +217,19 @@ export class UserPlaysongComponent implements OnInit {
       let found = this.favListSongs.find((fav) => fav.song.id === song.id);
       song.isFav = found ? true : false;
     }
+
+    if (this.acc?.id !== undefined) {
+      this.favSong
+        .isAlbumLikedByUser(this.acc.id, this.id)
+        .subscribe((data) => {
+          console.log('isAlbumLikedByUser', this.isFavAlbum);
+          if (data == null) {
+            this.isFavAlbum = false;
+          } else {
+            this.isFavAlbum = true;
+          }
+        });
+    }
   }
 
   favoriteSong(song: any) {
@@ -247,5 +263,30 @@ export class UserPlaysongComponent implements OnInit {
     this.dataGlobal.setItem('songHeardLast', item);
 
     this.dataGlobal.changeArr(this.songs);
+  }
+
+  favoriteAlbum() {
+    let albumId = this.id;
+    let favAlbum = new FavoriteAlbum(this.acc?.id, albumId);
+
+    if (
+      this.acc == null ||
+      this.acc == undefined ||
+      this.acc === null ||
+      this.acc === undefined
+    ) {
+      alert('Please log in to use this feature');
+      return;
+    }
+    if (this.isFavAlbum === true) {
+      if (!confirm('Are you sure you want to unlike?')) {
+        return;
+      }
+      this.isFavAlbum = false;
+      this.favSong.deleteFavoriteAlbum(favAlbum).subscribe((data) => {});
+    } else {
+      this.isFavAlbum = true;
+      this.favSong.addFavoriteAlbum(favAlbum).subscribe((data) => {});
+    }
   }
 }
