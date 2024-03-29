@@ -1,29 +1,30 @@
-import {AuthorService} from './../../adminPage/adminEntityService/adminService/author.service';
-import {GenreServiceService} from './../../adminPage/adminEntityService/adminService/genre-service.service';
-import {SongAuthorService} from './../../adminPage/adminEntityService/adminService/song-author.service';
-import {SongGenreService} from './../../adminPage/adminEntityService/adminService/song-genre.service';
-import {SongSingerService} from './../../adminPage/adminEntityService/adminService/song-singer.service';
-import {AlbumService} from './../../adminPage/adminEntityService/adminService/album/album.service';
-import {Component, OnInit, signal} from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {UserPlaylistModalComponent} from '../user-playlist-modal/user-playlist-modal.component';
-import {SongService} from '../../adminPage/adminEntityService/adminService/song.service';
-import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
-import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
-import {CommonModule, NgClass, NgForOf, NgStyle} from '@angular/common';
-import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
-import {ActivatedRoute} from '@angular/router';
-import {SingerService} from '../../adminPage/adminEntityService/adminService/singer-service.service';
-import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
+import { AuthorService } from './../../adminPage/adminEntityService/adminService/author.service';
+import { GenreServiceService } from './../../adminPage/adminEntityService/adminService/genre-service.service';
+import { SongAuthorService } from './../../adminPage/adminEntityService/adminService/song-author.service';
+import { SongGenreService } from './../../adminPage/adminEntityService/adminService/song-genre.service';
+import { SongSingerService } from './../../adminPage/adminEntityService/adminService/song-singer.service';
+import { AlbumService } from './../../adminPage/adminEntityService/adminService/album/album.service';
+import { Component, OnInit, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { UserPlaylistModalComponent } from '../user-playlist-modal/user-playlist-modal.component';
+import { SongService } from '../../adminPage/adminEntityService/adminService/song.service';
+import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
+import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
+import { CommonModule, NgClass, NgForOf, NgStyle } from '@angular/common';
+import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
+import { ActivatedRoute } from '@angular/router';
+import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
+import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
 import {Observable, forkJoin, map, startWith, switchMap, Subject} from 'rxjs';
-import {FormControl, FormsModule} from '@angular/forms';
-import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
-import {Author} from '../../adminPage/adminEntityService/adminEntity/author/author';
-import {FavoriteSong} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
-import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
-import {FavoriteService} from '../../../services/favorite-service/favorite.service';
-import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
-import {DataGlobalService} from '../../../services/data-global.service';
+import { FormControl, FormsModule } from '@angular/forms';
+import { Genre } from '../../adminPage/adminEntityService/adminEntity/genre/genre';
+import { Author } from '../../adminPage/adminEntityService/adminEntity/author/author';
+import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { FavoriteService } from '../../../services/favorite-service/favorite.service';
+import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
+import { DataGlobalService } from '../../../services/data-global.service';
+import { FavoriteAlbum } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-album';
 
 @Component({
   selector: 'app-user-playsong',
@@ -48,6 +49,8 @@ export class UserPlaysongComponent implements OnInit {
   searchTerm: string = '';
   private searchTerms = new Subject<string>();
 
+  isFavAlbum!: boolean;
+
   filterOptionsSinger!: Observable<string[]>;
   formcontrol = new FormControl('');
   singerMap: { [key: number]: any[] } = {};
@@ -69,8 +72,7 @@ export class UserPlaysongComponent implements OnInit {
     private favSong: FavoriteService,
     private userService: accountServiceService,
     private dataGlobal: DataGlobalService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
@@ -239,6 +241,19 @@ export class UserPlaysongComponent implements OnInit {
       let found = this.favListSongs.find((fav) => fav.song.id === song.id);
       song.isFav = found ? true : false;
     }
+
+    if (this.acc?.id !== undefined) {
+      this.favSong
+        .isAlbumLikedByUser(this.acc.id, this.id)
+        .subscribe((data) => {
+          console.log('isAlbumLikedByUser', this.isFavAlbum);
+          if (data == null) {
+            this.isFavAlbum = false;
+          } else {
+            this.isFavAlbum = true;
+          }
+        });
+    }
   }
 
   favoriteSong(song: any) {
@@ -274,5 +289,30 @@ export class UserPlaysongComponent implements OnInit {
     this.dataGlobal.setItem('songHeardLast', item);
 
     this.dataGlobal.changeArr(this.songs);
+  }
+
+  favoriteAlbum() {
+    let albumId = this.id;
+    let favAlbum = new FavoriteAlbum(this.acc?.id, albumId);
+
+    if (
+      this.acc == null ||
+      this.acc == undefined ||
+      this.acc === null ||
+      this.acc === undefined
+    ) {
+      alert('Please log in to use this feature');
+      return;
+    }
+    if (this.isFavAlbum === true) {
+      if (!confirm('Are you sure you want to unlike?')) {
+        return;
+      }
+      this.isFavAlbum = false;
+      this.favSong.deleteFavoriteAlbum(favAlbum).subscribe((data) => {});
+    } else {
+      this.isFavAlbum = true;
+      this.favSong.addFavoriteAlbum(favAlbum).subscribe((data) => {});
+    }
   }
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { FavoriteYoutbe } from '../../pages/adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
 import { Youtube } from '../../pages/adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
 import { FavoriteSong } from '../../pages/adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import { FavoriteAlbum } from '../../pages/adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-album';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { FavoriteSong } from '../../pages/adminPage/adminEntityService/adminEnti
 export class FavoriteService {
   private urlFavoriteYoutube = 'http://localhost:8080/api/v1/favoriteYoutube';
   private urlFavoriteSong = 'http://localhost:8080/api/v1/favoriteSong';
+  private urlFavoriteAlbum = 'http://localhost:8080/api/v1/favoriteAlbum';
   private urlYoutube = 'http://localhost:8080/api/v1/youtube';
   constructor(private httpClient: HttpClient) {}
 
@@ -69,6 +71,26 @@ export class FavoriteService {
   getAllFavSongByUser(userId: number): Observable<FavoriteSong[]> {
     return this.httpClient.get<FavoriteSong[]>(
       `${this.urlFavoriteSong}/${userId}`
+    );
+  }
+
+  //------------------fav album
+  addFavoriteAlbum(favAlbum: FavoriteAlbum): Observable<Object> {
+    return this.httpClient.post(`${this.urlFavoriteAlbum}`, favAlbum);
+  }
+  deleteFavoriteAlbum(favAlbum: FavoriteAlbum): Observable<Object> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: favAlbum,
+    };
+
+    return this.httpClient.delete(`${this.urlFavoriteAlbum}`, options);
+  }
+  isAlbumLikedByUser(accountId: number, albumId: number): Observable<Object> {
+    return this.httpClient.get<Object>(
+      `${this.urlFavoriteAlbum}/isAlbumLiked/${accountId}/${albumId}`
     );
   }
 }
