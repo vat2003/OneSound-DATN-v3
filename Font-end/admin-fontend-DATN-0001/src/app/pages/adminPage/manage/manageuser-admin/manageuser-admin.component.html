@@ -133,7 +133,7 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody *ngIf="this.Accounts.length > 0; else noActiveDataMessage">
+          <!-- <tbody *ngIf="this.Accounts.length > 0; else noActiveDataMessage">
             <ng-container *ngFor="let item of this.Accounts; let i = index">
               <tr *ngIf="item.active">
                 <td>{{ i + 1 }}</td>
@@ -150,7 +150,29 @@
                 </td>
               </tr>
             </ng-container>
+          </tbody> -->
+          <tbody *ngIf="Accounts.length > 0; else noActiveDataMessage">
+            <ng-container *ngFor="let item of Accounts; let i = index">
+              <ng-container *ngIf="item.accountRole?.name !== 'admin'">
+                <!-- <ng-container *ngIf="item.accountRole?.name !== 'staff'"> -->
+                <tr *ngIf="item.active">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item.fullname }}</td>
+                  <td>{{ item.email }}</td>
+                  <td>{{ item.birthday | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ item.gender ? 'Male' : 'Female' }}</td>
+                  <td><img src="{{ item.avatar_url }}" alt="{{ item.avatar_url }}" width="70" height="70"></td>
+                  <td>{{ item.address }}</td>
+                  <td>{{ item.createdDate | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ item.active ? 'Active' : 'Inactive' }}</td>
+                  <td>
+                    <button (click)="view(item.id!)" class="btn btn-primary">Detail</button>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
           </tbody>
+
           <ng-template #noActiveDataMessage>
             <tr>
               <td colspan="10">

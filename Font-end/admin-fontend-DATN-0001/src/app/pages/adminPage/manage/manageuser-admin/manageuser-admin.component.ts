@@ -84,6 +84,7 @@ export class ManageuserAdminComponent implements OnInit {
     this.accountServiceService.getPages(page, limit).subscribe(
       async (data) => {
         console.log(data);
+        debugger
         this.Accounts = data.content;
 
         for (const Accounts of this.Accounts) {
@@ -318,6 +319,7 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   view(id: number) {
+  
     this.accountServiceService.getUserById(id).subscribe(
       async (data: account) => {
         this.Account = data;

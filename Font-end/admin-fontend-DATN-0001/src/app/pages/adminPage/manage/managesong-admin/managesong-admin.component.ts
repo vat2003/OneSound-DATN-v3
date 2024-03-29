@@ -41,6 +41,8 @@ import {format} from 'date-fns';
 import {FirebaseStorage, StorageModule} from '@angular/fire/storage';
 import {getDownloadURL, ref, StorageReference} from '@firebase/storage';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { account } from '../../adminEntityService/adminEntity/account/account';
+import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
 
 @Component({
   selector: 'app-managesong-admin',
@@ -84,6 +86,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   imageSong: string[] = [];
   audioSong: string[] = [];
   titleSong: string[] = [];
+  account?: account | null;
   audioUrl: string = '';
   setAudioUrl: string = '';
   audioFile: any;
@@ -168,7 +171,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
               private SongAuthorService: SongAuthorService,
               private SongGenreService: SongGenreService,
               private formBuilder: FormBuilder,
-              private cdRef: ChangeDetectorRef
+              private cdRef: ChangeDetectorRef,
+              private accountServiceService: accountServiceService
+
   ) {
     const today = new Date();
     this.to = new Date(today.setDate(today.getDate() + 1));
@@ -393,7 +398,8 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-    // this.displaySelectedYear();
+    this.account = this.accountServiceService.getUserResponseFromLocalStorage();
+
     this.displaySingerBysearch();
     this.displayAlbumBySearch();
     this.displayGenreBySearch();
@@ -504,17 +510,21 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   deleteAlbumInTable(idSinger: number) {
-    const index = this.albumTable.findIndex(singer => singer.id === idSinger);
-    if (index !== -1) {
-      const deletedSinger = this.albumTable[index];
-      this.albumName.push(deletedSinger.title);
-      this.albumTable.splice(index, 1);
-      console.log("singerName: ", this.albumName)
-    }
-    this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
-      startWith(''), map(value => this._FILTERAlbum(value || ''))
-    )
-    this.updateAlbumList();
+    if ( this.account?.accountRole?.id == 2) {const index = this.albumTable.findIndex(singer => singer.id === idSinger);
+      if (index !== -1) {
+        const deletedSinger = this.albumTable[index];
+        this.albumName.push(deletedSinger.title);
+        this.albumTable.splice(index, 1);
+        console.log("singerName: ", this.albumName)
+      }
+      this.filterOptionsAlbum = this.formcontrolAlbum.valueChanges.pipe(
+        startWith(''), map(value => this._FILTERAlbum(value || ''))
+      )
+      this.updateAlbumList();}else{
+        alert("nhân viên không được phép xoá")
+
+      }
+    
   }
 
   addAuthortoTable(authorName: string) {
@@ -1405,96 +1415,102 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 // }
 
   updateSong(id: number) {
-    // Kiểm tra xem bài hát đã chọn để cập nhật có tồn tại không
-    if (!this.song.id) {
-      alert("Please select a song to update.");
-      return;
-    }
-
-    if (this.imageFile) {
-      this.song.image = this.setImageUrl;
-    }
-    if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
-      this.song.image = 'adminManageImage/song/null.jpg';
-    }
-
-    if (this.audioFile) {
-      this.song.path = this.setAudioUrl;
-    }
-    // if (!this.setAudioUrl || !this.audioFile) {
-    if ((!this.audioFile && !this.setAudioUrl) || (this.audioFile == '' && this.setAudioUrl == '')) {
-      this.song.path = 'adminManageAudio/song/null.mp3';
-    }
-
-    // Gọi API để cập nhật bài hát
-    this.SongService.updateSong(id, this.song).subscribe(async (data: any) => {
-      // try {
-      console.log("Updating song...");
-
-      // Upload hình ảnh nếu có
+    if ( this.account?.accountRole?.id == 2) {
+      if (!this.song.id) {
+        alert("Please select a song to update.");
+        return;
+      }
+  
       if (this.imageFile) {
-        await this.firebaseStorage.uploadFile('adminManageImage/song/', this.imageFile);
+        this.song.image = this.setImageUrl;
       }
-
-      // Upload file âm nhạc nếu có
+      if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
+        this.song.image = 'adminManageImage/song/null.jpg';
+      }
+  
       if (this.audioFile) {
-        await this.firebaseStorage.uploadFile('adminManageAudio/song/', this.audioFile);
+        this.song.path = this.setAudioUrl;
       }
-
-      // Cập nhật thông tin ca sĩ, thể loại, tác giả cho bài hát
-      const songId = data.id;
-      const singerIds = this.singerTable.map(singer => singer.id);
-      const authorIds = this.authorTable.map(singer => singer.id);
-      const genreIds = this.genreTable.map(singer => singer.id);
-
-      // Cập nhật thông tin ca sĩ
-      for (const singerId of singerIds) {
-        this.SongSingerService.createSongSinger(songId, singerId).subscribe(
-          () => {
-            console.log(`Updated SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
-          },
-          (error) => {
-            console.log(`Failed to update SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
-          }
-        );
+      // if (!this.setAudioUrl || !this.audioFile) {
+      if ((!this.audioFile && !this.setAudioUrl) || (this.audioFile == '' && this.setAudioUrl == '')) {
+        this.song.path = 'adminManageAudio/song/null.mp3';
       }
+  
+      // Gọi API để cập nhật bài hát
+      this.SongService.updateSong(id, this.song).subscribe(async (data: any) => {
+        // try {
+        console.log("Updating song...");
+  
+        // Upload hình ảnh nếu có
+        if (this.imageFile) {
+          await this.firebaseStorage.uploadFile('adminManageImage/song/', this.imageFile);
+        }
+  
+        // Upload file âm nhạc nếu có
+        if (this.audioFile) {
+          await this.firebaseStorage.uploadFile('adminManageAudio/song/', this.audioFile);
+        }
+  
+        // Cập nhật thông tin ca sĩ, thể loại, tác giả cho bài hát
+        const songId = data.id;
+        const singerIds = this.singerTable.map(singer => singer.id);
+        const authorIds = this.authorTable.map(singer => singer.id);
+        const genreIds = this.genreTable.map(singer => singer.id);
+  
+        // Cập nhật thông tin ca sĩ
+        for (const singerId of singerIds) {
+          this.SongSingerService.createSongSinger(songId, singerId).subscribe(
+            () => {
+              console.log(`Updated SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+            },
+            (error) => {
+              console.log(`Failed to update SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+            }
+          );
+        }
+  
+        // Cập nhật thông tin thể loại
+        for (const genreId of genreIds) {
+          this.SongGenreService.updateSongGenre(songId, genreId).subscribe(
+            () => {
+              console.log(`Updated SongGenre for genre with ID ${genreId} and song with ID ${songId}`);
+            },
+            (error) => {
+              console.log(`Failed to update SongGenre for genre with ID ${genreId} and song with ID ${songId}`);
+            }
+          );
+        }
+  
+        // Cập nhật thông tin tác giả
+        for (const authorId of authorIds) {
+          this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
+            () => {
+              console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+            },
+            (error) => {
+              console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+            }
+          );
+        }
+  
+        // Hiển thị lại dữ liệu trên bảng
+        this.displayDataOnTable(0, 10);
+        this.reload();
+        console.log("Update song successful!");
+        // } catch (error) {
+        //   console.error("Error occurred while updating song:", error);
+        //   alert("Failed to update song. Please try again later." + error);
+        // }
+      }, (error) => {
+        console.error("Update song failed:", error);
+        alert("Failed to update song. Please try again later.");
+      });
+    }else{
+      alert("nhân viên không được phép update")
 
-      // Cập nhật thông tin thể loại
-      for (const genreId of genreIds) {
-        this.SongGenreService.updateSongGenre(songId, genreId).subscribe(
-          () => {
-            console.log(`Updated SongGenre for genre with ID ${genreId} and song with ID ${songId}`);
-          },
-          (error) => {
-            console.log(`Failed to update SongGenre for genre with ID ${genreId} and song with ID ${songId}`);
-          }
-        );
-      }
-
-      // Cập nhật thông tin tác giả
-      for (const authorId of authorIds) {
-        this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
-          () => {
-            console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-          },
-          (error) => {
-            console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-          }
-        );
-      }
-
-      // Hiển thị lại dữ liệu trên bảng
-      this.displayDataOnTable(0, 10);
-      this.reload();
-      console.log("Update song successful!");
-      // } catch (error) {
-      //   console.error("Error occurred while updating song:", error);
-      //   alert("Failed to update song. Please try again later." + error);
-      // }
-    }, (error) => {
-      console.error("Update song failed:", error);
-      alert("Failed to update song. Please try again later.");
-    });
+    }
+    // Kiểm tra xem bài hát đã chọn để cập nhật có tồn tại không
+   
   }
 
 
@@ -1548,17 +1564,24 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   deleteSong(id: number) {
-    const isConfirmed = window.confirm('Are you sure you want to delete this song?');
-    if (isConfirmed) {
-      this.SongAuthorService.deleteAllSongAuthorBySongId(id).subscribe(data=>{})
-      this.SongGenreService.deleteAllSongGenreBySongId(id).subscribe(data=>{})
-      this.SongSingerService.deleteAllSongSingerBySongId(id).subscribe(data=>{})
-      this.SongService.deleteSong(id).subscribe(data => {
-        this.displayDataOnTable(0, 10);
-        this.reload();
-        this.toast.warning({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
+    if ( this.account?.accountRole?.id == 2) {
+      const isConfirmed = window.confirm('Are you sure you want to delete this song?');
+      if (isConfirmed) {
+        this.SongAuthorService.deleteAllSongAuthorBySongId(id).subscribe(data=>{})
+        this.SongGenreService.deleteAllSongGenreBySongId(id).subscribe(data=>{})
+        this.SongSingerService.deleteAllSongSingerBySongId(id).subscribe(data=>{})
+        this.SongService.deleteSong(id).subscribe(data => {
+          this.displayDataOnTable(0, 10);
+          this.reload();
+          this.toast.warning({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
+  
+        })
+      }
+    }else{
+      alert("nhân viên không được phép xoá")
 
-      })
     }
+
+   
   }
 }
