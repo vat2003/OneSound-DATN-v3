@@ -129,7 +129,7 @@ export class ManageuserAdminComponent implements OnInit {
       console.log(' FOREASCSLC === ' + x.name);
     }
 
-    this.Roles = this.Roles.filter(role => role.name !== 'admin');
+    this.Roles = this.Roles.filter(role => role.name != 'admin');
 
   }
 
@@ -148,7 +148,7 @@ export class ManageuserAdminComponent implements OnInit {
     this.getAllRole();
     this.activeStatus = this.registerForm.form.controls['active'].value;
 
-    console.log( "===><<<<"+this.account);
+    console.log("===><<<<" + this.account);
 
 
   }
@@ -322,6 +322,7 @@ export class ManageuserAdminComponent implements OnInit {
       async (data: account) => {
         this.Account = data;
         this.setImageUrl = this.Account.avatar_url;
+        this.imageUrl = this.setImageUrl;
         this.formatDate(this.Account.birthday);
         this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
       },
@@ -359,7 +360,7 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
   updateUser() {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       if (this.registerForm.valid) {
         if (!this.Account.fullname
         ) {
@@ -403,10 +404,9 @@ export class ManageuserAdminComponent implements OnInit {
 
 
         this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
-
           async (data) => {
 
-            alert('asdfasd'+UpdateUserForAdmin.birthday)
+            alert('asdfasd' + UpdateUserForAdmin.birthday)
             alert(this.registerForm.form.controls['birthday'].value)
 
             if (this.imageFile) {
@@ -467,16 +467,14 @@ export class ManageuserAdminComponent implements OnInit {
       } else {
         console.error("ID is undefined");
       }
-    }else{
+    } else {
       alert("nhân viên không có quyền update")
     }
 
 
-
-
   }
 
-  Reset(id: number){
+  Reset(id: number) {
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
     const UpdateUserForAdmin: UpdateUserForAdmin = {
@@ -522,7 +520,6 @@ export class ManageuserAdminComponent implements OnInit {
   saveUsers() {
 
 
-
     this.Account.avatar_url = this.setImageUrl;
     alert(this.Account)
     this.accountServiceService.createAccount(this.Account).subscribe(
@@ -558,27 +555,27 @@ export class ManageuserAdminComponent implements OnInit {
 
   deleteUser() {
 
-    if ( this.account?.accountRole?.id == 2) {
-            const confirm = window.confirm('Are you sure?');
-    if (confirm) {
-      this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
-        .pipe(
-          mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
-          catchError(error => {
-            console.error('Error deleting user:', error);
-            return of(null);
-          })
-        )
-        .subscribe(data => {
-          if (data !== null) {
-            console.log(data);
-            this.getAllUsers(0, 10);
-          }
-        });
+    if (this.account?.accountRole?.id == 2) {
+      const confirm = window.confirm('Are you sure?');
+      if (confirm) {
+        this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
+          .pipe(
+            mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
+            catchError(error => {
+              console.error('Error deleting user:', error);
+              return of(null);
+            })
+          )
+          .subscribe(data => {
+            if (data !== null) {
+              console.log(data);
+              this.getAllUsers(0, 10);
+            }
+          });
+      } else {
+        alert('Delete was denied!');
+      }
     } else {
-      alert('Delete was denied!');
-    }
-    }else{
       alert("nhân viên không được phép xoá")
 
     }

@@ -1,16 +1,16 @@
 <div class="detail-container">
-    <div class="detail-container-banner" id="category-detail">
-      <h3>Your favorite albums</h3>
-      <div class="detail-container-banner-first">
-        <img src="assets/img/client/explore/hiphop.png" alt=""/>
-  <!--      <img src="assets/img/client/explore/hiphop.png" alt=""/>-->
-        <div class="detail-container-banner-content">
-          <h1>{{ this.acc?.fullname }}</h1>
-          <p>Created by <i style="text-transform: uppercase;">{{ this.acc?.fullname }}</i></p>
-          <p>{{ this.favListSongs.length }} TRACKS </p>
-        </div>
+  <div class="detail-container-banner" id="category-detail">
+    <h3>Your favorite albums</h3>
+    <div class="detail-container-banner-first">
+      <img src="assets/img/client/explore/hiphop.png" alt=""/>
+      <!--      <img src="assets/img/client/explore/hiphop.png" alt=""/>-->
+      <div class="detail-container-banner-content">
+        <h1>{{ this.acc?.fullname }}</h1>
+        <p>Created by <i style="text-transform: uppercase;">{{ this.acc?.fullname }}</i></p>
+        <p>{{ this.favListSongs.length }} TRACKS </p>
       </div>
     </div>
+  </div>
 </div>
 
 <div class="suggested-new-tracks">
@@ -23,6 +23,7 @@
     <tr>
       <th></th>
       <th>TITLE</th>
+      <th>ARTIST</th>
       <th>ACTION</th>
       <!-- <th>LISTS</th>
       <th>TIME</th> -->
@@ -61,10 +62,8 @@
         </div>
       </td>
       <!--      <td>{{ song.song.name }}</td>-->
-      <!-- <td>POP</td>
-      <td>3:15</td> -->
+      <td>UNKNOWN</td>
       <td>
-        <!-- <i class="fa-solid fa-plus"></i>&nbsp;&nbsp; -->
         <i class="fa-solid fa-heart" style="color: rgb(212, 15, 15) ;" (click)="deleFavSong(song)"></i>
       </td>
     </tr>

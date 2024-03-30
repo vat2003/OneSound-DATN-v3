@@ -162,7 +162,9 @@ export class UserSongInPlaylistComponent {
     this.playlistSongService.removeSongFromPlaylist(id, idsong).subscribe(
       () => {
         this.PlaylistSong = this.PlaylistSong.filter(song => song.playlist?.id !== id);
-        this.cdr.detectChanges();
+        this.timname(this.id);
+        this.getPlaylist(this.id);
+        // this.cdr.detectChanges();
       },
       (error) => {
         console.error('Failed to remove song from playlist:', error);

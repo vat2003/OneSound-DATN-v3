@@ -21,9 +21,9 @@
       </div>
       <div class="my-collection">
         <p class="my-collection-tilte">MY COLLECTION</p>
-        <p>
+        <p *ngIf="this.acc">
           <span routerLink="/onesound/home/vip"
-            ><i class="fa-solid fa-fire-flame-curved"></i> VIP's</span
+          ><i class="fa-solid fa-fire-flame-curved"></i> VIP's</span
           >
         </p>
         <p *ngIf="this.acc">
@@ -49,7 +49,7 @@
         </p>
       </div>
       <div class="create-playlist">
-<!--        <p class="create-playlist-title">-->
+        <!--        <p class="create-playlist-title">-->
         <!--          PLAYLISTS-->
         <!--          <svg-->
         <!--            width="20"-->
@@ -72,13 +72,13 @@
         <!--            />-->
         <!--          </svg>-->
         <!--        </p>-->
-<!--        <div class="create-playlist-a">-->
-<!--          <a onclick="openModal()">-->
-<!--            <span></span>-->
-<!--            <i class="fa-solid fa-circle-plus"></i>-->
-<!--            Create...-->
-<!--          </a>-->
-<!--        </div>-->
+        <!--        <div class="create-playlist-a">-->
+        <!--          <a onclick="openModal()">-->
+        <!--            <span></span>-->
+        <!--            <i class="fa-solid fa-circle-plus"></i>-->
+        <!--            Create...-->
+        <!--          </a>-->
+        <!--        </div>-->
         <div style="margin-bottom: 30px;" id="list-playlists">
           <div class="playlist-items">
             <a
