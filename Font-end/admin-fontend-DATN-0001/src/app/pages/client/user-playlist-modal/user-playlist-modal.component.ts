@@ -234,7 +234,7 @@ export class UserPlaylistModalComponent implements OnInit {
 
             console.log('Song removed from playlist successfully.');
             this.playlistSongMap[playlistId] = false;
-            alert(this.playlistSongMap[playlistId])
+            // alert(this.playlistSongMap[playlistId])
             this.playlistInteractionService.updatePlaylist();
             this.timname(playlistId);
             this.findSongPlaylist(playlist);

@@ -1,65 +1,156 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #121212; /* Màu nền tối */
-  color: #fff; /* Màu chữ trắng */
-}
-
+/* Apply CSS to the container */
 .container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #1e1e1e; /* Màu nền container */
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Đổ bóng */
+  padding: 30px;
+  border-radius: 14px;
+  background-color: #1f1f1f; /* Dark background color */
+  color: #fff; /* Light text color */
 }
 
+/* Style the tables */
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  border: 1px solid #333; /* Dark border color */
+}
+
+.table th {
+  background-color: #333; /* Dark table header color */
+}
+
+/* Style the form */
 .form-group {
   margin-bottom: 15px;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
   font-weight: bold;
 }
 
-input[type="text"],
-select {
+input[type="text"] {
   width: 100%;
   padding: 8px;
-  border: 1px solid #333; /* Màu viền input */
-  border-radius: 3px;
-  box-sizing: border-box;
-  background-color: #333; /* Màu nền input */
-  color: #fff; /* Màu chữ trắng */
+  color: whitesmoke; /* Dark text color */
+  border: 1px solid #555; /* Dark border color */
+  border-radius: 4px;
+  background-color: #333; /* Dark background color */
+  cursor: pointer;
+
 }
 
 button {
-  padding: 8px 15px;
-  background-color: #007bff; /* Màu nền button */
-  color: #fff; /* Màu chữ trắng */
+  margin: 5px;
+  padding: 8px 16px;
+  background-color: gray;
+  color: #fff;
   border: none;
-  border-radius: 3px;
-  margin-top: 10px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3; /* Màu hover của button */
+  background-color: #0056b3;
+}
+
+/* Style the checkbox */
+.checkbox {
+  margin-right: 8px;
+  cursor: pointer;
+
+}
+
+.added {
+  color: green;
+}
+
+/* Style the toggle form button */
+.toggle-form-button {
+  margin-bottom: 20px;
 }
 
 
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
+/* Checkbox container */
+.checkbox-container {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
 }
 
-td, th {
-  //border: 1px solid #dddddd;
-  //text-align: center;
-}
-.playlistCol{
-  width: 100%;
+/* Hide the default checkbox */
+.checkbox-container input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  cursor: pointer;
 }
 
+/* Custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #555; /* Dark checkbox background color */
+  border: 1px solid #333; /* Dark border color */
+  cursor: pointer;
 
+}
+
+/* Checked checkbox */
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+  background-color: #007bff;
+  cursor: pointer;
+}
+
+/* Create the checkmark */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  cursor: pointer;
+}
+
+/* Show the checkmark when checkbox is checked */
+.checkbox-container input[type="checkbox"]:checked + .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark */
+.checkbox-container .checkmark:after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 3px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Action label */
+.action-label {
+  margin-left: 5px;
+}
+
+///
+.input-button-container {
+  display: flex;
+}
+
+.form-input {
+  flex: 1;
+  margin-right: 2px; /* Để tạo khoảng cách giữa input và button */
+}
+
+button .form-button {
+  padding: 8px;
+}

@@ -86,6 +86,10 @@ export class UserPlaysongComponent implements OnInit {
     this.link = 'https://www.youtube.com/watch?v=w7f0Kq-pReI';
   }
 
+  getAlbumFav() {
+    this.isFavAlbum
+  }
+
   getAllSongs(): void {
     this.SongService.getAllSongsByAlbumId(this.id).subscribe((data) => {
       data.forEach(async (song) => {
@@ -249,12 +253,8 @@ export class UserPlaysongComponent implements OnInit {
   }
 
   checkFav() {
-    for (let song of this.songs) {
-      let found = this.favListSongs.find((fav) => fav.song.id === song.id);
-      song.isFav = found ? true : false;
-    }
 
-    if (this.acc?.id !== undefined) {
+    if (this.acc?.id) {
       this.favSong
         .isAlbumLikedByUser(this.acc.id, this.id)
         .subscribe((data) => {
@@ -265,7 +265,27 @@ export class UserPlaysongComponent implements OnInit {
             this.isFavAlbum = true;
           }
         });
+
+      let album = this.favSong
+        .isAlbumLikedByUser(this.acc.id, this.id)
+        .subscribe((data) => {
+          console.log('isAlbumLikedByUser', this.isFavAlbum);
+          // if (data == null) {
+          //   this.isFavAlbum = false;
+          // } else {
+          //   this.isFavAlbum = true;
+          // }
+          this.isFavAlbum = data ? true : false;
+        });
+
+      // song.isFav = found ? true : false;
     }
+    for (let song of this.songs) {
+      let found = this.favListSongs.find((fav) => fav.song.id === song.id);
+      song.isFav = found ? true : false;
+    }
+
+
   }
 
   favoriteSong(song: any) {

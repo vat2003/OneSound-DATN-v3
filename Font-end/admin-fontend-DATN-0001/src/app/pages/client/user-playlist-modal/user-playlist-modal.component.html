@@ -2,72 +2,56 @@
 
   <hr>
   <div style="width: 400px;"></div>
-
+  <h3>PLAYLIST ADDING...</h3>
   <table class="table table-striped table-hover">
     <thead>
-      <tr>
-        <th>Action</th>
-        <th>Playlist</th>
-
-      </tr>
+    <tr>
+      <th>Action</th>
+      <th>Playlist</th>
+    </tr>
     </thead>
 
     <tbody>
-      <tr *ngFor="let playlist of PlaylistTable">
+    <tr *ngFor="let playlist of PlaylistTable">
 
-        <td>
+      <!--        <td>-->
+      <!--          <input #viet type="checkbox" class="checkbox" [ngClass]="{'added': playlistSongMap[playlist.id ?? 0]}"-->
+      <!--            (change)="toggleAddRemove(playlist)" [checked]="playlistSongMap[playlist.id ?? 0]">-->
+      <!--          <span *ngIf="viet.checked">ADDED</span>-->
+      <!--          <span *ngIf="!viet.checked">ADD</span>-->
+      <!--        </td>-->
+      <td class="playlist-action">
+        <label class="checkbox-container">
           <input #viet type="checkbox" class="checkbox" [ngClass]="{'added': playlistSongMap[playlist.id ?? 0]}"
-            (change)="toggleAddRemove(playlist)" [checked]="playlistSongMap[playlist.id ?? 0]">
-          <span *ngIf="viet.checked">Đã Thêm</span>
-          <span *ngIf="!viet.checked">Thêm</span>
-        </td>
-<!--        <td>-->
-<!--          <input #viet type="checkbox" class="checkbox" [ngClass]="{'added': playlistSongMap[playlist.id ?? 0]}"-->
-<!--                 (change)="toggleAddRemove(playlist)" [checked]="playlistSongMap[playlist.id ?? 0]">-->
-<!--          <span *ngIf="playlistSongMap[playlist.id ?? 0]">Đã Thêm</span>-->
-<!--          <span *ngIf="!playlistSongMap[playlist.id ?? 0]">Thêm</span>-->
-<!--        </td>-->
-
-
-        <td>
-          <a class="btn-link" (click)="timname(playlist.id)">{{ playlist.name }}</a>
-        </td>
-
-
-      </tr>
+                 (change)="toggleAddRemove(playlist)" [checked]="playlistSongMap[playlist.id ?? 0]">
+          <span class="checkmark"></span>
+        </label>
+        <span class="action-label">{{ viet.checked ? 'ADDED' : 'ADD' }}</span>
+      </td>
+      <td>
+        <a class="btn-link" (click)="timname(playlist.id)">{{ playlist.name }}</a>
+      </td>
+    </tr>
 
     </tbody>
 
   </table>
-  <table class="table table-striped table-hover">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let song of songsInPlaylist">
-        <td>{{ song.song.id }}</td>
-        <td>{{ song.song.name }}</td>
-        <td>{{ song.song.image }}</td>
-        <td>{{ song.song.album.title }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-
 
 
   <hr>
-  <div *ngIf="showForm">
+  <!--  <div *ngIf="showForm" class="form-container">-->
+  <div class="form-container">
     <div class="form-group">
-      <label for="playlistName">Playlist Name:</label>
-      <input type="text" id="playlistName" placeholder="Enter playlist name" [(ngModel)]="playlistName">
-      <button class="m-3" (click)="Playlist()">Create New Playlist</button>
+      <label for="playlistName" class="form-label">Create new Playlist:</label>
+      <div class="input-button-container">
+        <input type="text" id="playlistName" placeholder="Enter playlist name" [(ngModel)]="playlistName"
+               class="form-input">
+        <button class="form-button" (click)="Playlist()">Create</button>
+      </div>
     </div>
   </div>
 
-  <button (click)="toggleForm()">Toggle Form</button>
+
+  <!--  <button (click)="toggleForm()" class="toggle-form-button">Toggle Form</button>-->
   <hr>
-</div>
+

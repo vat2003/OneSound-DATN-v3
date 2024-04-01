@@ -19,20 +19,25 @@
       </div>
       <div class="detail-container-banner-favicon-more">
         <div class="more-item">
-          <!-- <i class="fa-regular fa-heart" (click)="favoriteAlbum()"></i> -->
 
-          <i class="favorite fa-heart" [ngClass]="{
-            'fa-solid': isFavAlbum,
-            'fa-regular': !isFavAlbum
-          }" [ngStyle]="{ color: isFavAlbum === true ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteAlbum()">
+          <!--          <i class="favorite fa-heart" [ngClass]="{-->
+          <!--            'fa-solid': isFavAlbum,-->
+          <!--            'fa-regular': !isFavAlbum-->
+          <!--          }" [ngStyle]="{ color: isFavAlbum === true ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteAlbum()">-->
+          <!--          </i>-->
+
+          <i *ngIf="!this.acc" class="favorite fa-heart fa-regular" (click)="favoriteSong(song)"></i>
+          <i *ngIf="this.acc" class="favorite fa-heart" [ngClass]="{
+              'fa-solid': isFavAlbum,
+              'fa-regular': isFavAlbum
+            }" [ngStyle]="{ color: isFavAlbum  ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteSong(song)">
           </i>
-
           Add
         </div>
         <div class="more-item" (click)="share()">
           <i class="fa-solid fa-arrow-up-from-bracket"></i>
-<!--          <app-share-social type='facebook'-->
-<!--                            [shareUrl]='link'></app-share-social>-->
+          <!--          <app-share-social type='facebook'-->
+          <!--                            [shareUrl]='link'></app-share-social>-->
           Share
         </div>
         <div class="more-item">
