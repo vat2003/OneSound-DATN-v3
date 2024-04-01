@@ -13,7 +13,13 @@ import {MatFormField, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
-import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, SocialAuthService } from 'angularx-social-login';
+import {
+  SocialLoginModule,
+  SocialAuthServiceConfig,
+  GoogleLoginProvider,
+  SocialAuthService
+} from 'angularx-social-login';
+import {BrowserModule} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -29,13 +35,13 @@ import { SocialLoginModule, SocialAuthServiceConfig, GoogleLoginProvider, Social
     NgToastModule,
     HttpClientModule,
     // HeaderComponent,
-    
+
   ],
-  
+
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [AdminUserServiceService, NgToastService,
-   
+
   ],
 
 })

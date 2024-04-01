@@ -42,6 +42,7 @@ import {UserGenreComponent} from './pages/client/user-genre/user-genre.component
 import {UserGenredetailComponent} from './pages/client/user-genredetail/user-genredetail.component';
 import {UpdateUserComponentComponent} from "./pages/client/update-user-component/update-user-component.component";
 import {UserPaymentComponent} from './pages/client/user-payment/user-payment.component';
+import {ShareSocialComponent} from "./pages/client/share-social/share-social.component";
 
 export const routes: Routes = [
   {path: '', component: UserExploreComponent},
@@ -130,6 +131,7 @@ export const routes: Routes = [
       {path: 'search/:keyword', component: UserResultSearchComponent},
       {path: 'feedback', component: FeedbackComponent},
       {path: 'users/update', component: UpdateUserComponentComponent},
+      {path: 'share', component: ShareSocialComponent},
     ],
   },
 ];

@@ -30,7 +30,7 @@ import {ShareSocialComponent} from "../share-social/share-social.component";
 @Component({
   selector: 'app-user-playsong',
   standalone: true,
-  imports: [NgForOf, NgClass, NgStyle, CommonModule, FormsModule],
+  imports: [NgForOf, NgClass, NgStyle, CommonModule, FormsModule, ShareSocialComponent],
   templateUrl: './user-playsong.component.html',
   styleUrl: './user-playsong.component.scss',
 })
@@ -57,6 +57,7 @@ export class UserPlaysongComponent implements OnInit {
   singerMap: { [key: number]: any[] } = {};
   genreMap: { [key: number]: any[] } = {};
   authorMap: { [key: number]: any[] } = {};
+  link!: string;
 
   constructor(
     private matDialog: MatDialog,
@@ -82,6 +83,7 @@ export class UserPlaysongComponent implements OnInit {
     this.getAllSongs();
     this.getAlbumById();
     this.getAllSongFavByUser();
+    this.link = 'https://www.youtube.com/watch?v=w7f0Kq-pReI';
   }
 
   getAllSongs(): void {
@@ -215,10 +217,12 @@ export class UserPlaysongComponent implements OnInit {
     }
   }
 
-  share(link: any) {
+  share() {
+    let link = 'http://localhost:4200/onesound/home/album/' + this.album.id;
     const dialogRef = this.matDialog.open(ShareSocialComponent, {
-      data: {link},
+      data: {link}
     });
+
   }
 
   openDialog(songInput: Song) {

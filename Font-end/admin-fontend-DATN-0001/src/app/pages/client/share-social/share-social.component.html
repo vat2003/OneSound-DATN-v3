@@ -1,13 +1,17 @@
 <div class="container">
-  <div style="width: 400px;"></div>
-  <share-buttons theme="modern-dark"
-                 [include]="['copy', 'facebook','linkedin', 'pinterest', 'reddit', 'telegram', 'twitter', 'whatsapp']"
-                 [showIcon]="true"
-                 class="pt-5"
-                 url="{{data}}"
-                 class="pt-2">>
-  </share-buttons>
-
-
-  <h1>SHARE BUTTON</h1>
+  <h2>Share with:</h2>
+  <div class="social-buttons">
+    <button (click)="share('facebook')" class="facebook">
+      <i class="fab fa-facebook-f"></i> Facebook
+    </button>
+    <button (click)="share('twitter')" class="twitter">
+      <i class="fab fa-twitter"></i> Twitter
+    </button>
+    <button (click)="share('instagram')" class="instagram">
+      <i class="fab fa-instagram"></i> Instagram
+    </button>
+    <button (click)="share('linkedin')" class="linkedin">
+      <i class="fab fa-linkedin"></i> Linkedin
+    </button>
+  </div>
 </div>
