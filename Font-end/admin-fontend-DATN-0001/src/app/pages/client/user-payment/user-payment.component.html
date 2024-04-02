@@ -3,10 +3,10 @@
 >
   <div class="flex justify-around flex-col items-center">
     <h1 class="text-[3em] font-bold" *ngIf="!walletConnected">
-      Connect Ethereum Wallet
+      Connect Solana Wallet
     </h1>
     <h1 class="text-[3em] font-bold" *ngIf="walletConnected">
-      Connected Ethereum Wallet
+      Connected Solana Wallet
     </h1>
     <button
       *ngIf="!walletConnected"
@@ -20,7 +20,7 @@
       *ngIf="walletConnected"
       class="bg-gradient-to-r from-green-500 to-blue-500 p-[2em] rounded-xl"
     >
-      <label class="text-white">{{ walletId }} --- {{ balanceETH }} ETH </label>
+      <label class="text-white">{{ walletId }} --- {{ balanceSOL }} ETH </label>
     </div>
   </div>
 </div>
