@@ -3,12 +3,12 @@
   "symbol": "OSNFT",
   "description": "Logo onesound",
   "seller_fee_basis_points": 0,
-  "image": "assets/img/logo.png",
+  "image": "https://github.com/vat2003/OneSound-DATN-v3/blob/main/logo.png?raw=true",
   "external_url": "link homepage dự án ko có bỏ trống",
   "properties": {
     "files": [
       {
-        "uri": "link hình ảnh",
+        "uri": "https://github.com/vat2003/OneSound-DATN-v3/blob/main/logo.png?raw=true",
         "type": "image/png"
       }
     ],
