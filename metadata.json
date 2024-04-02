@@ -1,17 +1,17 @@
 {
-  "name":"OneSound NFT Collection",
-  "symbol":"OSNFT",
-  "description":"Mô tả",
-  "seller_fee_basis_points":0,
-  "image":"tìm link hình ảnh nào bỏ dô",
-  "external_url":"link homepage dự án ko có bỏ trống",
-  "properties":{
-    "files":[
+  "name": "OneSound NFT Collection",
+  "symbol": "OSNFT",
+  "description": "Mô tả",
+  "seller_fee_basis_points": 0,
+  "image": "assets/img/logo.png",
+  "external_url": "link homepage dự án ko có bỏ trống",
+  "properties": {
+    "files": [
       {
-        "uri":"link hình ảnh",
-        "type":"image/png"
+        "uri": "link hình ảnh",
+        "type": "image/png"
       }
     ],
-    "category":"image"
+    "category": "image"
   }
 }
