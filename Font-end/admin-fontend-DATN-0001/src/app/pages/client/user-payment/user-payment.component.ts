@@ -1,60 +1,103 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../adminPage/adminEntityService/adminService/wallet.service';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'; // Import Solana Web3.js library
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import * as web3 from '@solana/web3.js'; // Import Solana Web3.js library
 
 @Component({
   selector: 'app-user-payment',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  standalone:true,
+  imports: [
+    FormsModule,
+    CommonModule
+  ],
   templateUrl: './user-payment.component.html',
-  styleUrl: './user-payment.component.scss'
+  styleUrls: ['./user-payment.component.scss']
 })
-export class UserPaymentComponent {
-  title = 'ng-connect-solana-wallet'; // Change the title
+export class UserPaymentComponent implements OnInit {
+  title = 'ng-connect-solana-wallet';
 
-  public walletConnected: boolean = false;
-  public walletId: string = '';
-  public balanceSOL: string = '0.00'; // Change the balance variable name
+  public walletConnected = false;
+  public walletId = '';
+  public balanceSOL: any;
+  balance:any;
 
   constructor(private walletService: WalletService) {}
 
-  connectToWallet = async () => {
+  async connectToWallet() {
     try {
-      await this.walletService.connectWallet(); // Connect to Solana wallet
-      this.walletConnected = true; // Update wallet connected status
-      this.walletId = this.walletService.publicKey.toBase58(); // Get wallet public key
-      await this.getBalance(this.walletId); // Get wallet balance
+      const provider = this.getProvider();
+      if (provider) {
+        await provider.connect();
+        this.walletConnected = true;
+        this.walletId = provider.publicKey.toString();
+        const balance = await provider.getBalance(provider.publicKey);
+        this.balanceSOL = balance.toString(); // Chuyển đổi balance thành chuỗi
+        console.log("Số tiền: ", this.balanceSOL);
+        // console.log("Số tiền: ", SOL);
+      } else {
+        console.error('Provider is not available');
+      }
     } catch (error) {
       console.error('Error connecting to Solana wallet:', error);
     }
   }
 
-  getBalance = async (walletAddress: string) => {
+
+  async getBalance(walletAddress: string) {
+    debugger
     try {
-      const connection = new web3.Connection(web3.clusterApiUrl('mainnet-beta')); // Connect to Solana mainnet
-      const balance = await connection.getBalance(new web3.PublicKey(walletAddress)); // Get wallet balance
-      this.balanceSOL = (balance / web3.LAMPORTS_PER_SOL).toFixed(2); // Convert balance from lamports to SOL
+       debugger
+      const connection = new Connection(clusterApiUrl('mainnet-beta'));
+      const balance = await connection.getBalance(new PublicKey(walletAddress));
+      this.balanceSOL = (balance / 10 ** 9).toFixed(2); // Convert balance from lamports to SOL
+      // alert("Lên button get Balance")
     } catch (error) {
+      // alert("Error getting wallet balance: "+error)
       console.error('Error getting wallet balance:', error);
     }
   }
 
-  checkWalletConnected = async () => {
+  async checkWalletConnected() {
     try {
-      const isConnected = await this.walletService.checkWalletConnected(); // Check if wallet is connected
+      const isConnected = await this.walletService.isConnected();
       if (isConnected) {
-        this.walletConnected = true; // Update wallet connected status
-        this.walletId = this.walletService.publicKey.toBase58(); // Get wallet public key
-        await this.getBalance(this.walletId); // Get wallet balance
+        this.walletConnected = true;
+        const provider = this.walletService.getProvider();
+        if (provider && provider.publicKey) {
+          this.walletId = provider.publicKey.toString();
+          console.log("ID: ",this.walletId)
+          await this.getBalance(this.walletId);
+        } else {
+          console.error('Provider or publicKey is null or undefined');
+        }
       }
     } catch (error) {
       console.error('Error checking wallet connection:', error);
     }
   }
 
+  private getProvider = () => {
+    if (WalletExtension.PHANTOM in window) {
+      const provider = (window as any).phantom?.solana;
+
+      if (provider?.isPhantom) {
+        return provider;
+      }
+    }
+    alert("Please install phantom extension for this request!");
+  };
+
+
+
   ngOnInit(): void {
-    this.checkWalletConnected(); // Check if wallet is connected on component initialization
+    this.checkWalletConnected();
+    // alert("Hehe")
   }
+}
+export enum WalletExtension {
+  PHANTOM = 'phantom',
+  METAMASK = 'metamask',
+  ARCANA = 'arcana',
+  GATE = 'gate'
 }

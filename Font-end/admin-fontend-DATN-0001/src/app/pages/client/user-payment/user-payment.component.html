@@ -1,16 +1,18 @@
 <div
-  class="flex justify-around items-center h-[100vh] w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+  class="flex justify-around items-center h-screen w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
 >
   <div class="flex justify-around flex-col items-center">
-    <h1 class="text-[3em] font-bold" *ngIf="!walletConnected">
+    <h1>{{ walletConnected }}</h1>
+    <h1 class="text-3xl font-bold" *ngIf="!walletConnected">
       Connect Solana Wallet
     </h1>
-    <h1 class="text-[3em] font-bold" *ngIf="walletConnected">
+    <h1 class="text-3xl font-bold" *ngIf="walletConnected">
       Connected Solana Wallet
     </h1>
+    <!-- <h1 class="text-3xl font-bold">{{ walletConnected }}</h1> -->
     <button
       *ngIf="!walletConnected"
-      class="bg-gradient-to-r from-green-500 to-blue-500 text-white w-[200px] p-4 rounded-full mt-4"
+      class="bg-gradient-to-r from-green-500 to-blue-500 text-white w-48 p-4 rounded-full mt-4"
       (click)="connectToWallet()"
     >
       Connect Wallet
@@ -18,9 +20,9 @@
 
     <div
       *ngIf="walletConnected"
-      class="bg-gradient-to-r from-green-500 to-blue-500 p-[2em] rounded-xl"
+      class="bg-gradient-to-r from-green-500 to-blue-500 p-8 rounded-xl mt-4"
     >
-      <label class="text-white">{{ walletId }} --- {{ balanceSOL }} ETH </label>
+      <label class="text-white">{{ walletId }} --- {{ balanceSOL }} SOL </label>
     </div>
   </div>
 </div>
