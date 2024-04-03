@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@solana/wallet-adapter-phantom": "^0.9.24",
-    "@solana/web3.js": "^1.91.3",
-    "web3": "^4.7.0"
-  }
-}

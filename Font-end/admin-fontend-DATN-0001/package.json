@@ -26,6 +26,7 @@
     "@angular/ssr": "^17.0.9",
     "@angular/youtube-player": "^17.3.0",
     "@auth0/angular-jwt": "^5.2.0",
+    "@metaplex-foundation/js": "0.18.3",
     "angular": "^1.8.3",
     "angularx-social-login": "^4.1.0",
     "apexcharts": "^3.46.0",
