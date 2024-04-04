@@ -24,6 +24,11 @@ export class AuthorService {
     return this.http.get<Author[]>(`${this.apiUrl}`);
   }
 
+
+  getAllAuthorsInactive(): Observable<Author[]> {
+    return this.http.get<Author[]>(`${this.apiUrl}/Inactive`);
+  }
+
   getCategories(page: number, size: number):Observable<AuthorResponse> {
     const params = new HttpParams()
       .set('page', page.toString())
