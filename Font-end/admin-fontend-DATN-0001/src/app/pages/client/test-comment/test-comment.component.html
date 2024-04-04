@@ -1,0 +1,46 @@
+<div class="all">
+    <div class="list-comment">
+        <div class="bac1" *ngFor="let bac1 of commentsWithReplies">
+            <div class="comment">
+                <img src="https://i.pinimg.com/736x/12/37/b3/1237b30268db9ee0c9cbe3a79b1ff8fa.jpg" alt="Avatar 1">
+                <div class="cmt-content">
+                    <h4>{{bac1.user.fullname}} <span class="time">1 day ago</span></h4>
+                    <p>{{bac1.text}}</p>
+                    <i class="fa-solid fa-reply"></i>
+                </div>
+            </div>
+            <div class="bac2" *ngFor="let bac2 of bac1.replies">
+                <div class="comment nested-comment">
+                    <img src="https://i.pinimg.com/736x/12/37/b3/1237b30268db9ee0c9cbe3a79b1ff8fa.jpg" alt="Avatar 2">
+                    <div class="cmt-content">
+                        <h4>{{bac2.user.fullname}} <span class="time">19 hours ago</span>
+                        </h4>
+                        <p>{{bac2.text}}</p>
+                        <i class="fa-solid fa-reply"></i>
+                    </div>
+                </div>
+                <div class="bac3" *ngFor="let bac3 of bac2.replies">
+                    <div class="comment deep-nested-comment">
+                        <img src="https://i.pinimg.com/736x/12/37/b3/1237b30268db9ee0c9cbe3a79b1ff8fa.jpg"
+                            alt="Avatar 3">
+                        <div class="cmt-content">
+                            <h4>{{bac3.user.fullname}} <span class="time">15 hours ago</span></h4>
+                            <p>{{bac3.text}}</p>
+                            <i class="fa-solid fa-reply"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="input-text">
+        <hr>
+        <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/229281131_991706791602342_6252576603173424201_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHiToYHM8DoiuUGbI7MUfIZndcnw04g_zWd1yfDTiD_Na8hco0fhHtsquj8_ZS466MRAYgmqZ_QTwMQMIVzlPrm&_nc_ohc=kEFDlydDaFYAX89p8Jp&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfBmJrcgtsKMOPE_PJs3L53p-Lk0Uhtfc86oPWI1kvdOxA&oe=6612C0AC"
+            alt="Avatar 1">
+        <textarea name="" id="inptextarea" cols="30" rows="10" (keyup.enter)="addCmt($event,null)"></textarea>
+        <i class="fa-solid fa-paper-plane-top"></i>
+    </div>
+
+</div>

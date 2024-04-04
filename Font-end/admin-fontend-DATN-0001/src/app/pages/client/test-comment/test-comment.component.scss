@@ -1,0 +1,150 @@
+
+.all {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgb(36, 37, 38);
+    height: 550px; /* Cố định chiều cao của .all */
+    overflow: hidden; /* Ẩn nội dung khi vượt quá kích thước */
+    position: relative; /* Cho phần input-text dựa vào vị trí tương đối của .all */
+}
+
+.list-comment {
+    overflow-y: auto; /* Tạo thanh cuộn dọc cho phần list-comment khi nội dung vượt quá kích thước */
+    max-height: calc(100% - 90px); /* Chiều cao tối đa của list-comment là chiều cao của .all trừ đi chiều cao của input-text */
+}
+
+.comment {
+    display: flex;
+    margin-bottom: 20px;
+   
+   
+  
+      position: relative; 
+}
+.cmt-content{
+    max-width: 550px;
+     background-color: rgb(58, 59, 60); 
+      border-radius: 5px;  padding: 10px;
+}
+
+.comment i.fa-solid.fa-reply {
+    position: absolute; /* Đặt vị trí của nút là absolute */
+    top: 15px; /* Đặt top là 0 để nằm ngay trên dòng đầu tiên */
+    right: 15px; /* Đặt right là 0 để nằm sát cạnh bên phải */
+    // margin-top: 0; /* Xóa margin-top để nút không cách xa dòng đầu tiên */
+}
+.comment img, .input-text img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+   
+}
+
+.comment h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    color: white;
+    font-weight: bold;
+
+}
+
+.comment p {
+    font-weight: 500;
+    margin-bottom: 0;
+    color: white;
+      white-space: pre-wrap; /* Cho phép xuống hàng tự động */
+    word-wrap: break-word; /* Tách các từ khi cần thiết */  
+}
+
+.time {
+    font-size: 12px;
+    color: #666;
+}
+
+
+.nested-comment {
+    margin-left: 50px;
+}
+
+
+.deep-nested-comment {
+    margin-left: 100px;
+}
+
+
+.input-text {
+    display: flex;
+    margin-top: 20px;
+    align-items: center;
+    position: absolute; /* Đặt phần input-text tại vị trí tuyệt đối trong .all */
+    bottom: 20px; /* Khoảng cách từ dưới cùng của .all */
+    width: calc(100% - 40px); /* Chiều rộng của input-text là chiều rộng của .all trừ đi các phần padding */
+    left: 20px; /* Khoảng cách từ mép trái của .all */
+    z-index: 1; /* Đảm bảo phần input-text hiển thị trên phần list-comment */
+    background-color: rgb(36, 37, 38);
+    border-top: 1px solid white;
+    padding-top: 10px;
+}
+
+#inptextarea {
+    flex: 1; /* Kích thước textarea mở rộng theo chiều ngang */
+    height: 90px;
+    min-height: 50px; /* Đặt chiều cao tối thiểu cho textarea */
+    padding: 10px; /* Thêm padding cho textarea */
+    border: 1px solid #ccc; /* Đặt viền cho textarea */
+    border-radius: 5px; /* Bo tròn góc cho textarea */
+    font-size: 16px; /* Đặt kích thước chữ cho textarea */
+    resize: vertical; /* Cho phép chỉnh sửa kích thước theo chiều dọc */
+    background-color: rgb(58, 59, 60);
+    // color: ;
+}
+
+#inptextarea:focus {
+    outline: none; /* Xóa đường viền khi textarea được chọn */
+    border-color: #4CAF50; /* Đổi màu viền khi textarea được chọn */
+}
+
+.bac2:before {
+    content: "";
+    width: 20px;
+    height: 100%;
+    background-color: #d3d3d3;
+    position: absolute;
+    left: -10px;
+    top: 0;
+  }
+  
+  .bac3:before {
+    content: "";
+    width: 20px;
+    height: 100%;
+    background-color: #d3d3d3;
+    position: absolute;
+    left: -10px;
+    top: 0;
+  }
+  
+  .bac2:after,
+  .bac3:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 10px solid #d3d3d3;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    position: absolute;
+    left: -12px;
+    top: 10px;
+  }
+  
+  .bac2:after {
+    border-left: 10px solid #4CAF50;
+  }
+  
+  .bac3:after {
+    border-left: 10px solid #4CAF50;
+    left: -10px;
+  }
