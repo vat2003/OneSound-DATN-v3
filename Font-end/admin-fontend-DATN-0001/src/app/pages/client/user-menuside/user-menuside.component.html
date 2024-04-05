@@ -3,33 +3,24 @@
   <header>
     <div class="menu-side">
       <div class="account-section">
-        <span routerLink="/onesound/home" class="nav-brand"
-        ><img src="assets\img\logo.png" alt=""
-        /></span>
+        <span routerLink="/onesound/home" class="nav-brand"><img src="assets\img\logo.png" alt="" /></span>
       </div>
       <div class="web-nav">
         <p class="active" style="cursor: pointer">
-          <span routerLink="/onesound/home"
-          ><i class="bi bi-music-note-beamed"></i> Home</span
-          >
+          <span routerLink="/onesound/home"><i class="bi bi-music-note-beamed"></i> Home</span>
         </p>
         <p>
-          <span routerLink="/onesound/home/explore" style="cursor: pointer"
-          ><i class="bi bi-music-note-beamed"></i> Explore</span
-          >
+          <span routerLink="/onesound/home/explore" style="cursor: pointer"><i class="bi bi-music-note-beamed"></i>
+            Explore</span>
         </p>
       </div>
       <div class="my-collection">
         <p class="my-collection-tilte">MY COLLECTION</p>
         <p *ngIf="this.acc">
-          <span routerLink="/onesound/home/vip"
-          ><i class="fa-solid fa-fire-flame-curved"></i> VIP's</span
-          >
+          <span routerLink="/onesound/home/vip"><i class="fa-solid fa-fire-flame-curved"></i> VIP's</span>
         </p>
         <p *ngIf="this.acc">
-          <span routerLink="/onesound/home/user/playlist"
-          ><i class="fa-solid fa-sliders"></i> Playlists</span
-          >
+          <span routerLink="/onesound/home/user/playlist"><i class="fa-solid fa-sliders"></i> Playlists</span>
         </p>
         <p>
           <span><i class="fa-solid fa-compact-disc"></i> Albums</span>
@@ -38,14 +29,14 @@
           <span routerLink="/onesound/home/favorite"><i class="fas fa-heart"></i> Favorite</span>
         </p>
         <p>
-          <span routerLink="/onesound/home/genre"
-          ><i class="fa-solid fa-microphone"></i> Genre</span
-          >
+          <span routerLink="/onesound/home/genre"><i class="fa-solid fa-microphone"></i> Genre</span>
         </p>
         <p *ngIf="this.acc">
-          <span routerLink="/onesound/home/payment"
-          ><i class="fa-solid fa-wallet"></i> Wallet</span
-          >
+          <span [routerLink]="['/onesound/home/history-listen', this.acc!.id]"><i
+              class="fa-solid fa-clock-rotate-left"></i> History</span>
+        </p>
+        <p *ngIf="this.acc">
+          <span routerLink="/onesound/home/payment"><i class="fa-solid fa-wallet"></i> Wallet</span>
         </p>
       </div>
       <div class="create-playlist">
@@ -81,16 +72,8 @@
         <!--        </div>-->
         <div style="margin-bottom: 30px;" id="list-playlists">
           <div class="playlist-items">
-            <a
-              *ngIf="acc"
-              routerLink="/signin"
-              (click)="logout()"
-              class="dropdown-item"
-            >Log Out</a
-            >
-            <a *ngIf="!acc" href="onesound/signin" class="dropdown-item"
-            >Login</a
-            >
+            <a *ngIf="acc" routerLink="/signin" (click)="logout()" class="dropdown-item">Log Out</a>
+            <a *ngIf="!acc" href="onesound/signin" class="dropdown-item">Login</a>
           </div>
         </div>
 
@@ -99,20 +82,14 @@
           <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Create Playlist</h2>
-            <input
-              type="text"
-              id="name-playlist"
-              placeholder="Enter playlist name"
-            />
+            <input type="text" id="name-playlist" placeholder="Enter playlist name" />
             <button id="submit-playlist">Create</button>
           </div>
         </div>
         <!-- Modal Add Song-->
         <div class="modal" id="addToPlaylistModal">
           <div class="modal-content">
-            <span class="close" onclick="closeAddToPlaylistModal()"
-            >&times;</span
-            >
+            <span class="close" onclick="closeAddToPlaylistModal()">&times;</span>
             <h2>Add to Playlist</h2>
 
             <!-- Danh sách các playlist có sẵn -->
@@ -136,11 +113,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <!-- Trong template của bạn -->
             <!-- Trong template của bạn -->
-            <input
-              type="text"
-              placeholder="Search"
-              (keyup.enter)="gotoSearchComp($event)"
-            />
+            <input type="text" placeholder="Search" (keyup.enter)="gotoSearchComp($event)" />
           </div>
           <div class="notification" routerLink="/onesound/home/profile">
             <i class="fa-regular fa-user"></i>
@@ -151,20 +124,14 @@
     </div>
 
     <!-- <app-user-player-api-youtube style="width: 100%; height: 15%;"></app-user-player-api-youtube> -->
-    <ng-container
-      *ngIf="isYoutubePlayer; then compplayeryoutube; else compplayeraudio"
-    ></ng-container>
+    <ng-container *ngIf="isYoutubePlayer; then compplayeryoutube; else compplayeraudio"></ng-container>
 
     <ng-template #compplayeryoutube>
-      <app-user-player-api-youtube
-        style="width: 100%; height: 15%"
-      ></app-user-player-api-youtube>
+      <app-user-player-api-youtube style="width: 100%; height: 15%"></app-user-player-api-youtube>
     </ng-template>
 
     <ng-template #compplayeraudio>
-      <app-user-player-audio
-        style="width: 100%; height: 15%"
-      ></app-user-player-audio>
+      <app-user-player-audio style="width: 100%; height: 15%"></app-user-player-audio>
     </ng-template>
   </header>
 </div>

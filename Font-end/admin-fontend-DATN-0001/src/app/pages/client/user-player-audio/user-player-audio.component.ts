@@ -19,6 +19,7 @@ import { FavoriteService } from '../../../services/favorite-service/favorite.ser
 import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
 import { ListeningStatsService } from '../../../services/listening-stats/listening-stats.service';
 import { HistoryListensService } from '../../../services/history-listens/history-listens.service';
+import { error } from 'console';
 
 @Component({
   selector: 'app-user-player-audio',
@@ -147,13 +148,24 @@ export class UserPlayerAudioComponent implements OnInit {
     if (this.audio.paused || this.audio.currentTime <= 0) {
       this.audio.play();
       this.setIncreaseLisTimeout();
-      this.historyListenService.addHisLis(this.selectedSong.id, this.acc!.id);
+
+
       this.masterPlay.nativeElement.classList.remove('fa-play');
       this.masterPlay.nativeElement.classList.add('fa-pause');
     } else {
       this.audio.pause();
       this.masterPlay.nativeElement.classList.add('fa-play');
       this.masterPlay.nativeElement.classList.remove('fa-pause');
+    }
+    if (this.audio.currentTime <= 1) {
+
+      this.historyListenService.addHisLis(this.selectedSong.id, this.acc!.id).subscribe(res => {
+        console.log("Add history Listen success++++++++++++++++++");
+      }, error => {
+        console.log("error add history: ", error);
+
+      }
+      )
     }
   }
 
