@@ -68,14 +68,15 @@ export class UserExploreComponent implements OnInit {
   index: number = 0;
 
   ngOnInit(): void {
+    debugger
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.getAllSongs();
     this.getAllArtist();
     this.recordVisit();
     this.getAllAlbum();
-    this.songs.reverse();
-    this.hotArtist.reverse();
-    this.albums.reverse();
+    // this.songs.reverse();
+    // this.hotArtist.reverse();
+    // this.albums.reverse();
     this.getAllSongFavByUser();
   }
 
@@ -114,10 +115,8 @@ export class UserExploreComponent implements OnInit {
   }
 
   getAllAlbum(): void {
+
     this.AlbumService.getAllAlbumNormal().subscribe(async (data) => {
-      this.albums = data;
-      console.log('aaa' + this.albums);
-      console.log('asa' + data);
       this.albums = data;
 
       for (const hotArt of this.albums) {
