@@ -26,6 +26,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserPlaylistYoutubeModalComponentComponent } from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
 import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
 import { ListeningStatsService } from '../../../services/listening-stats/listening-stats.service';
+import { CommentYoutubeComponent } from '../comment-youtube/comment-youtube.component';
 @Component({
   selector: 'app-user-player-api-youtube',
   standalone: true,
@@ -64,7 +65,7 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     private matDialog: MatDialog,
     private PlaylistYoutubeService: PlaylistYoutubeService,
     private listeningStatsService: ListeningStatsService
-  ) { }
+  ) {}
 
   ngOnInit() {
     // this.selectedVideo = this.dataGlobal.getItem('songHeardLastTimeYoutube');
@@ -149,8 +150,6 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     }
   }
 
-
-
   handleSeekChange() {
     if (
       this.player &&
@@ -192,7 +191,7 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
           }
         );
 
-        dialogRef.afterClosed().subscribe((result) => { });
+        dialogRef.afterClosed().subscribe((result) => {});
       },
       (error) => {
         console.error('Failed to add song to the playlist:', error);
@@ -260,11 +259,11 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
         return;
       }
       youtubeitem.isFav = false;
-      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => { });
+      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {});
     } else {
       youtubeitem.isFav = true;
-      this.favYoutube.createYt(youtube).subscribe((data) => { });
-      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => { });
+      this.favYoutube.createYt(youtube).subscribe((data) => {});
+      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
     }
   }
 
@@ -284,7 +283,12 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     this.selectedVideo = this.arrPreNext[this.currentIndex];
     this.videoId = this.selectedVideo.id.videoId;
   }
-  incrementPlayCount() {
+  incrementPlayCount() {}
 
+  openDialogComment() {
+    const dialogRef = this.matDialog.open(CommentYoutubeComponent, {
+      data: { song: this.selectedVideo },
+      // selectedSong
+    });
   }
 }

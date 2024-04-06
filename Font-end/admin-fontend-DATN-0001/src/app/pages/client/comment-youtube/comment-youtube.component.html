@@ -1,0 +1,169 @@
+<div class="all">
+
+    <div class="noCmt" *ngIf="commentsWithReplies.length==0">
+        <h2>No comments yet</h2>
+    </div>
+
+    <div class="list-comment">
+
+        <div class="bac1" *ngFor="let bac1 of commentsWithReplies">
+            <div class="comment">
+                <img src="https://i.pinimg.com/736x/12/37/b3/1237b30268db9ee0c9cbe3a79b1ff8fa.jpg" alt="Avatar 1">
+                <div class="cmt-content">
+                    <h4>{{bac1.user.fullname}} <span class="time text-danger">{{bac1.timeAgo}} ago</span>
+                    </h4>
+                    <div *ngIf="!bac1.edit">
+                        <p>{{bac1.text}}</p>
+                    </div>
+                    <div *ngIf="bac1.edit" class="divEdit">
+                        <textarea name="" [id]="bac1.id" class="inpEdit" cols="30" rows="10"
+                            [value]="bac1.text"></textarea>
+                        <i class="fa-solid fa-paper-plane" id="iconSend" (click)="sendEditComment(bac1, $event)"></i>
+                        <div class="cancleEdit" (click)="bac1.edit = false"><i class="fa-solid fa-xmark"></i></div>
+                    </div>
+                </div>
+                <div class="divXemThem" (click)="toggleOptions(bac1)">
+                    <i class="fa-solid fa-ellipsis">
+
+                        <div class="optionsxemthem" *ngIf="bac1.showOptions">
+                            <ul>
+                                <li (click)="reply(bac1)">Reply</li>
+                            </ul>
+                            <ul *ngIf="acc?.id != bac1.user.id">
+                                <li>Hide comment</li>
+                            </ul>
+                            <ul *ngIf="acc?.id == bac1.user.id">
+                                <li (click)="editComment(bac1)">Edit comment</li>
+                                <li (click)="deleteComment(bac1)">Delele comment</li>
+                            </ul>
+
+                        </div>
+                    </i>
+                </div>
+            </div>
+
+            <div *ngIf="bac1.reply" class="reply-content">
+                <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/229281131_991706791602342_6252576603173424201_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHiToYHM8DoiuUGbI7MUfIZndcnw04g_zWd1yfDTiD_Na8hco0fhHtsquj8_ZS466MRAYgmqZ_QTwMQMIVzlPrm&_nc_ohc=kEFDlydDaFYAX89p8Jp&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfBmJrcgtsKMOPE_PJs3L53p-Lk0Uhtfc86oPWI1kvdOxA&oe=6612C0AC"
+                    alt="Avatar 1">
+                <textarea name="" class="inptextarea" cols="30" rows="10"></textarea>
+
+                <i class="fa-solid fa-paper-plane" id="iconSend" (click)="sendReply($event, bac1, bac1.id)"></i>
+                <div class="cancleReply" (click)="bac1.reply = false"><i class="fa-solid fa-xmark"></i></div>
+
+            </div>
+
+            <div class="bac2" *ngFor="let bac2 of bac1.replies">
+                <div class="comment nested-comment">
+                    <img src="https://i.pinimg.com/736x/12/37/b3/1237b30268db9ee0c9cbe3a79b1ff8fa.jpg" alt="Avatar 2">
+                    <div class="cmt-content">
+                        <h4>{{bac2.user.fullname}} <span class="time">{{bac2.timeAgo}} ago</span>
+                        </h4>
+                        <div *ngIf="!bac2.edit">
+                            <p>{{bac2.text}}</p>
+                        </div>
+                        <div *ngIf="bac2.edit" class="divEdit">
+                            <textarea name="" [id]="bac2.id" class="inpEdit" cols="30" rows="10"
+                                [value]="bac2.text"></textarea>
+                            <i class="fa-solid fa-paper-plane" id="iconSend"
+                                (click)="sendEditComment(bac2, $event)"></i>
+                            <div class="cancleEdit" (click)="bac2.edit = false"><i class="fa-solid fa-xmark"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="divXemThem" (click)="toggleOptions(bac2)">
+                        <i class="fa-solid fa-ellipsis">
+
+
+                            <div class="optionsxemthem" *ngIf="bac2.showOptions">
+                                <ul>
+                                    <li (click)="reply(bac2)">Reply</li>
+                                </ul>
+                                <ul *ngIf="acc?.id != bac2.user.id">
+                                    <li>Hide comment</li>
+                                </ul>
+                                <ul *ngIf="acc?.id == bac2.user.id">
+                                    <li (click)="editComment(bac2)">Edit comment</li>
+                                    <li (click)="deleteComment(bac2)">Delele comment</li>
+                                </ul>
+
+                            </div>
+                        </i>
+                    </div>
+                </div>
+
+                <div *ngIf="bac2.reply" class="reply-content" style="margin-left: 100px;">
+                    <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/229281131_991706791602342_6252576603173424201_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHiToYHM8DoiuUGbI7MUfIZndcnw04g_zWd1yfDTiD_Na8hco0fhHtsquj8_ZS466MRAYgmqZ_QTwMQMIVzlPrm&_nc_ohc=kEFDlydDaFYAX89p8Jp&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfBmJrcgtsKMOPE_PJs3L53p-Lk0Uhtfc86oPWI1kvdOxA&oe=6612C0AC"
+                        alt="Avatar 1">
+                    <textarea name="" class="inptextarea" cols="30" rows="10"></textarea>
+
+                    <i class="fa-solid fa-paper-plane" id="iconSend" (click)="sendReply($event, bac2, bac2.id)"></i>
+                    <div class="cancleReply" (click)="bac2.reply = false"><i class="fa-solid fa-xmark"></i></div>
+                </div>
+                <div class="bac3" *ngFor="let bac3 of bac2.replies">
+                    <div class="comment deep-nested-comment">
+                        <img src="https://i.pinimg.com/736x/12/37/b3/1237b30268db9ee0c9cbe3a79b1ff8fa.jpg"
+                            alt="Avatar 3">
+                        <div class="cmt-content">
+                            <h4>{{bac3.user.fullname}} <span class="time">{{bac3.timeAgo}} ago</span></h4>
+                            <div *ngIf="!bac3.edit">
+                                <p>{{bac3.text}}</p>
+                            </div>
+                            <div *ngIf="bac3.edit" class="divEdit">
+                                <textarea name="" [id]="bac3.id" class="inpEdit" cols="30" rows="10"
+                                    [value]="bac3.text"></textarea>
+                                <i class="fa-solid fa-paper-plane" id="iconSend"
+                                    (click)="sendEditComment(bac3, $event)"></i>
+                                <div class="cancleEdit" (click)="bac3.edit = false"><i class="fa-solid fa-xmark"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="divXemThem" (click)="toggleOptions(bac3)">
+                            <i class="fa-solid fa-ellipsis">
+
+                                <div class="optionsxemthem" *ngIf="bac3.showOptions">
+                                    <ul>
+                                        <li (click)="reply(bac3)">Reply</li>
+                                    </ul>
+                                    <ul *ngIf="acc?.id != bac3.user.id">
+                                        <li>Hide comment</li>
+                                    </ul>
+                                    <ul *ngIf="acc?.id == bac3.user.id">
+                                        <li (click)="editComment(bac3)">Edit comment</li>
+                                        <li (click)="deleteComment(bac3)">Delele comment</li>
+                                    </ul>
+
+                                </div>
+                            </i>
+                        </div>
+
+
+                    </div>
+                    <div *ngIf="bac3.reply" class="reply-content" style="margin-left: 100px;">
+                        <img src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/229281131_991706791602342_6252576603173424201_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHiToYHM8DoiuUGbI7MUfIZndcnw04g_zWd1yfDTiD_Na8hco0fhHtsquj8_ZS466MRAYgmqZ_QTwMQMIVzlPrm&_nc_ohc=kEFDlydDaFYAX89p8Jp&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfBmJrcgtsKMOPE_PJs3L53p-Lk0Uhtfc86oPWI1kvdOxA&oe=6612C0AC"
+                            alt="Avatar 1">
+                        <textarea name="" class="inptextarea" cols="30" rows="10"></textarea>
+
+                        <i class="fa-solid fa-paper-plane" id="iconSend" (click)="sendReply($event, bac3, bac2.id)"></i>
+                        <div class="cancleReply" (click)="bac3.reply = false"><i class="fa-solid fa-xmark"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="input-text">
+
+        <img (click)="loaddata()"
+            src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-6/229281131_991706791602342_6252576603173424201_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHiToYHM8DoiuUGbI7MUfIZndcnw04g_zWd1yfDTiD_Na8hco0fhHtsquj8_ZS466MRAYgmqZ_QTwMQMIVzlPrm&_nc_ohc=kEFDlydDaFYAX89p8Jp&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfBmJrcgtsKMOPE_PJs3L53p-Lk0Uhtfc86oPWI1kvdOxA&oe=6612C0AC"
+            alt="Avatar 1">
+
+        <textarea name="" class="inptextarea" cols="30" rows="10" #textarea [(ngModel)]="textareaValue"></textarea>
+
+        <i class="fa-solid fa-paper-plane" id="iconSend" (click)="addCmt()"></i>
+
+
+    </div>
+
+</div>

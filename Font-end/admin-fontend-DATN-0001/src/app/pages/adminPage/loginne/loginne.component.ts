@@ -33,19 +33,12 @@ export class LoginneComponent implements OnInit {
     private router: Router,
     private userService: accountServiceService,
     private tokenService: TokenService,
-
-
-  )
-  {}
+  ) {
+  }
 
   ngOnInit(): void {
 
   }
-
-
-
-
-
 
 
   dangky() {
@@ -62,7 +55,6 @@ export class LoginneComponent implements OnInit {
           };
           debugger
           this.userService.checkactive1(login.email).subscribe({
-
             next: (data) => {
               debugger
               if (data != null) {
@@ -96,8 +88,7 @@ export class LoginneComponent implements OnInit {
                           } else if (this.account.accountRole.name === 'user') {
 
                             this.router.navigate(['/onesound/home/explore']);
-                          }
-                          else if (this.account.accountRole.name === 'staff') {
+                          } else if (this.account.accountRole.name === 'staff') {
 
                             this.router.navigate(['/onesound/admin']);
                           }
@@ -128,19 +119,19 @@ export class LoginneComponent implements OnInit {
               } else {
                 alert("Your account has been locked")
 
-        }
+              }
 
-      },
-      error: (error) => {
+            },
+            error: (error) => {
 
-        alert("Your account has been locked x2" )
-        console.log(error);
+              alert("Your account has been locked x2")
+              console.log(error);
 
-      },
-      complete: () => {
-        console.log('Yêu cầu hoàn thành');
-      }
-    });
+            },
+            complete: () => {
+              console.log('Yêu cầu hoàn thành');
+            }
+          });
 
 
         } else {
@@ -157,6 +148,7 @@ export class LoginneComponent implements OnInit {
   loginByGoogle() {
     window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
+
   loginByGithub() {
     window.location.href = 'http://localhost:8080/oauth2/authorization/github';
   }

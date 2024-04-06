@@ -1,38 +1,39 @@
-import {AlbumService} from './../../adminPage/adminEntityService/adminService/album/album.service';
-import {AuthorService} from './../../adminPage/adminEntityService/adminService/author.service';
-import {GenreServiceService} from './../../adminPage/adminEntityService/adminService/genre-service.service';
-import {SingerService} from './../../adminPage/adminEntityService/adminService/singer-service.service';
-import {SongSingerService} from './../../adminPage/adminEntityService/adminService/song-singer.service';
-import {SongService} from './../../adminPage/adminEntityService/adminService/song.service';
-import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
-import {Component, OnInit, Output, EventEmitter, HostListener} from '@angular/core';
-import {FormsModule} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {YoutubeApiSService} from '../../../services/youtube-api-s.service';
-import {DataGlobalService} from '../../../services/data-global.service';
-import {AdminUserServiceService} from '../../../services/admin-user-service.service';
-import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
-import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
-import {FavoriteYoutbe} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
-import {FavoriteService} from '../../../services/favorite-service/favorite.service';
-import {Youtube} from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
-import {PlaylistYoutubeService} from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import { AlbumService } from './../../adminPage/adminEntityService/adminService/album/album.service';
+import { AuthorService } from './../../adminPage/adminEntityService/adminService/author.service';
+import { GenreServiceService } from './../../adminPage/adminEntityService/adminService/genre-service.service';
+import { SingerService } from './../../adminPage/adminEntityService/adminService/singer-service.service';
+import { SongSingerService } from './../../adminPage/adminEntityService/adminService/song-singer.service';
+import { SongService } from './../../adminPage/adminEntityService/adminService/song.service';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import {
-  PlaylistInteractionService
-} from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
-import {MatDialog} from '@angular/material/dialog';
-import {
-  UserPlaylistYoutubeModalComponentComponent
-} from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
-import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
-import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
-import {forkJoin, map, switchMap} from 'rxjs';
-import {Author} from '../../adminPage/adminEntityService/adminEntity/author/author';
-import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
-import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
-import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
-
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  HostListener,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { YoutubeApiSService } from '../../../services/youtube-api-s.service';
+import { DataGlobalService } from '../../../services/data-global.service';
+import { AdminUserServiceService } from '../../../services/admin-user-service.service';
+import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
+import { FavoriteService } from '../../../services/favorite-service/favorite.service';
+import { Youtube } from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
+import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import { PlaylistInteractionService } from '../../adminPage/adminEntityService/adminService/PlaylistInteractionService.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UserPlaylistYoutubeModalComponentComponent } from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
+import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
+import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
+import { forkJoin, map, switchMap } from 'rxjs';
+import { Author } from '../../adminPage/adminEntityService/adminEntity/author/author';
+import { Genre } from '../../adminPage/adminEntityService/adminEntity/genre/genre';
+import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
+import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
 
 @Component({
   selector: 'app-user-result-search',
@@ -54,7 +55,7 @@ export class UserResultSearchComponent implements OnInit {
   genres: Genre[] = [];
   singerMap: { [key: number]: any[] } = {};
   singers: Singer[] = [];
-  albums: Album[] = []
+  albums: Album[] = [];
 
   // selectedVideo!: any;
 
@@ -74,9 +75,8 @@ export class UserResultSearchComponent implements OnInit {
     private AuthorService: AuthorService,
     private router: Router,
     private AlbumService: AlbumService,
-    private firebaseStorage: FirebaseStorageCrudService,
-  ) {
-  }
+    private firebaseStorage: FirebaseStorageCrudService
+  ) {}
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
@@ -88,7 +88,6 @@ export class UserResultSearchComponent implements OnInit {
       this.search();
       // this.reload();
     });
-
   }
 
   get_keyword_from_searchinput() {
@@ -103,9 +102,9 @@ export class UserResultSearchComponent implements OnInit {
   }
 
   search() {
-    console.log("Từ khóa: ", this.query)
+    console.log('Từ khóa: ', this.query);
     debugger;
-    this.SongService.getAllSongs().subscribe(data => {
+    this.SongService.getAllSongs().subscribe((data) => {
       // Lọc dữ liệu sau khi nhận được danh sách toàn bộ bài hát
       this.songs = data.filter((song: Song) => {
         // song.image = await this.setImageURLFirebase(song.image);
@@ -129,7 +128,6 @@ export class UserResultSearchComponent implements OnInit {
     });
 
     this.AlbumService.getAllAlbumNormal().subscribe(async (data) => {
-
       for (const album of data) {
         if (album.image == null || album.image == '') {
           continue;
@@ -169,30 +167,43 @@ export class UserResultSearchComponent implements OnInit {
     );
   }
 
-
   getSingersForSongs() {
-    const observables = this.songs.map(song => {
+    const observables = this.songs.map((song) => {
       return this.SongSingerService.getAllSingerBySong(song.id).pipe(
-        switchMap(singers => {
-          const singerObservables = singers.map(singer => this.SingerService.getArtistById(singer.singer.id));
+        switchMap((singers) => {
+          const singerObservables = singers.map((singer) =>
+            this.SingerService.getArtistById(singer.singer.id)
+          );
           return forkJoin(singerObservables).pipe(
-            map(singerDataArray => {
-              return {songId: song.id, singers: singerDataArray};
+            map((singerDataArray) => {
+              return { songId: song.id, singers: singerDataArray };
             })
           );
         })
       );
     });
 
-    forkJoin(observables).subscribe(results => {
-      results.forEach(result => {
+    forkJoin(observables).subscribe((results) => {
+      results.forEach((result) => {
         this.singerMap[result.songId] = result.singers;
       });
-      console.log("Singer Map:", this.singerMap);
+      console.log('Singer Map:', this.singerMap);
     });
   }
 
   showDetail(video: any) {
+    // let youtube = new Youtube(video.id.videoId);
+
+    const youtube: Youtube = {
+      id: video.id.videoId,
+      title: video.snippet.title,
+      description: video.snippet.description,
+      thumbnails: video.snippet.thumbnails.high.url,
+      channelTitle: video.snippet.channelTitle,
+      publishTime: video.snippet.publishTime,
+    };
+    this.favYoutube.createYt(youtube).subscribe((data) => {});
+
     //debugger;
     this.dataGlobal.changeId(video);
     // this.dataGlobal.setSongHeardLast(video);
@@ -254,14 +265,11 @@ export class UserResultSearchComponent implements OnInit {
         return;
       }
       youtubeitem.isFav = false;
-      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {
-      });
+      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {});
     } else {
       youtubeitem.isFav = true;
-      this.favYoutube.createYt(youtube).subscribe((data) => {
-      });
-      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {
-      });
+      this.favYoutube.createYt(youtube).subscribe((data) => {});
+      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
     }
   }
 
@@ -293,7 +301,7 @@ export class UserResultSearchComponent implements OnInit {
         const dialogRef = this.matDialog.open(
           UserPlaylistYoutubeModalComponentComponent,
           {
-            data: {youtubeId: Youtube.id},
+            data: { youtubeId: Youtube.id },
           }
         );
       },
