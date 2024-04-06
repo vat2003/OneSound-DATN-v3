@@ -1,0 +1,24 @@
+<h1 class="text-center">History listen</h1>
+
+<table class="table table-dark table-striped">
+    <thead>
+        <tr>
+            <th scope="col">No.</th>
+            <th scope="col">Image</th>
+            <th scope="col">Title</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let item of history, let i = index" (click)="showDetail(item.song)">
+            <th scope="row">{{i + 1}}</th>
+            <td>
+                <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
+            </td>
+            <td>{{ item.song ? item.song.name : 'N/A' }}</td>
+
+        </tr>
+
+    </tbody>
+</table>

@@ -1,8 +1,8 @@
-import {PasswordResetToken} from "../PasswordResetToken/PasswordResetToken";
-import {Role} from "../Role/Role";
+import { PasswordResetToken } from "../PasswordResetToken/PasswordResetToken";
+import { Role } from "../Role/Role";
 
 export class account {
-  id?: number;
+  id!: number;
   password: string;
   fullname: string;
   email: string;
