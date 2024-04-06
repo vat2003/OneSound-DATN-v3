@@ -1,33 +1,70 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { log } from 'console';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommentService {
-  private urlCommentBase = 'http://localhost:8080/api/v1/comments';
+  private urlCommentSongBase = 'http://localhost:8080/api/v1/comments';
+  private urlCommentYTBase = 'http://localhost:8080/api/v1/Comemtyt';
   constructor(private httpClient: HttpClient) {}
-  getCommentsWithReplies(songId: number): Observable<any[]> {
+
+  //Cmt song ----------------------------------------------------
+  getCommentsWithRepliesSong(songId: number): Observable<any[]> {
     return this.httpClient.get<any[]>(
-      `${this.urlCommentBase}/${songId}/with-replies`
+      `${this.urlCommentSongBase}/${songId}/with-replies`
     );
   }
-  addComment(comment: any, songId: number, userId: number): Observable<Object> {
+  addCommentSong(
+    comment: any,
+    songId: number,
+    userId: number
+  ): Observable<Object> {
     return this.httpClient.post(
-      `${this.urlCommentBase}?songId=${songId}&userId=${userId}`,
+      `${this.urlCommentSongBase}?songId=${songId}&userId=${userId}`,
       comment
     );
   }
-  editComment(newCmt: any, oldCmt: any): Observable<Object> {
+  editCommentSong(newCmt: any, oldCmt: any): Observable<Object> {
     return this.httpClient.put(
-      `${this.urlCommentBase}/${oldCmt.id}?songId=${oldCmt.song.id}&userId=${oldCmt.user.id}`,
+      `${this.urlCommentSongBase}/${oldCmt.id}?songId=${oldCmt.song.id}&userId=${oldCmt.user.id}`,
       newCmt
     );
   }
-  deleteComment(commentId: number, userId: number): Observable<Object> {
+  deleteCommentSong(commentId: number, userId: number): Observable<Object> {
     return this.httpClient.delete(
-      `${this.urlCommentBase}/byidandcommentid/${commentId}/${userId}`
+      `${this.urlCommentSongBase}/byidandcommentid/${commentId}/${userId}`
+    );
+  }
+
+  //Cmt YT ----------------------------------------------------
+  getCommentsWithRepliesYT(songId: string): Observable<any[]> {
+    console.log(`${this.urlCommentYTBase}/${songId}/with-replies`);
+    return this.httpClient.get<any[]>(
+      `${this.urlCommentYTBase}/${songId}/with-replies`
+    );
+  }
+  addCommentYT(
+    comment: any,
+    songId: string,
+    userId: number
+  ): Observable<Object> {
+    return this.httpClient.post(
+      `${this.urlCommentYTBase}?youtube_id=${songId}&userId=${userId}`,
+      comment
+    );
+  }
+  editCommentYT(newCmt: any, oldCmt: any): Observable<Object> {
+    return this.httpClient.put(
+      `${this.urlCommentYTBase}/${oldCmt.id}?youtube_id=${oldCmt.youtube.id}&userId=${oldCmt.user.id}`,
+      newCmt
+    );
+  }
+  deleteCommentYT(commentId: number, userId: number): Observable<Object> {
+    return this.httpClient.delete(
+      `${this.urlCommentYTBase}/byidandcommentid/${commentId}/${userId}`
     );
   }
 }

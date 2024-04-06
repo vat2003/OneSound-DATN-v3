@@ -305,7 +305,7 @@ export class UserPlayerAudioComponent implements OnInit {
     this.pauseMusic();
   }
 
-  openDialog() {
+  openDialogComment() {
     const dialogRef = this.matDialog.open(CommentSongComponent, {
       data: { song: this.selectedSong },
       // selectedSong

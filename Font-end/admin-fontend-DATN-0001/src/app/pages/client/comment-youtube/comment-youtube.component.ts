@@ -15,20 +15,19 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import e from 'express';
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { log } from 'console';
+import { error, log } from 'console';
 import { formatDistanceToNow } from 'date-fns';
 import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
 
 @Component({
-  selector: 'app-comment-song',
+  selector: 'app-comment-youtube',
   standalone: true,
   imports: [HttpClientModule, CommonModule, FormsModule],
-  templateUrl: './comment-song.component.html',
-  styleUrl: './comment-song.component.scss',
-})
-export class CommentSongComponent implements OnInit {
-  @ViewChild('inptextarea') inptextarea!: ElementRef;
 
+  templateUrl: './comment-youtube.component.html',
+  styleUrl: './comment-youtube.component.scss',
+})
+export class CommentYoutubeComponent implements OnInit {
   acc?: account | null;
 
   repComentUser: string = '';
@@ -50,7 +49,7 @@ export class CommentSongComponent implements OnInit {
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.loaddata();
 
-    // alert(this.data.song.id);
+    // alert(this.data.song.id.videoId);
   }
   setTimeAgo(comment: any): any {
     const timeAgo = this.getTimeAgo(comment.likeDate);
@@ -73,7 +72,7 @@ export class CommentSongComponent implements OnInit {
   }
   loaddata() {
     this.commentService
-      .getCommentsWithRepliesSong(this.data.song.id)
+      .getCommentsWithRepliesYT(this.data.song.id.videoId)
       .subscribe((comments) => {
         this.commentsWithReplies = comments;
 
@@ -83,13 +82,15 @@ export class CommentSongComponent implements OnInit {
         });
 
         console.log('comment', this.commentsWithReplies);
+        // alert('comment' + this.commentsWithReplies.length);
         this.cdRef.detectChanges();
       });
   }
+
   deleteComment(comment: any) {
     // alert(comment.id + '   ' + comment.user.id);
     this.commentService
-      .deleteCommentSong(comment.id, comment.user.id)
+      .deleteCommentYT(comment.id, comment.user.id)
       .subscribe((data) => {
         this.loaddata();
         this.reset();
@@ -100,14 +101,14 @@ export class CommentSongComponent implements OnInit {
     if (this.acc && this.acc.id && this.textareaValue.length > 0) {
       const comment = {
         accountId: this.acc?.id,
-        songId: this.data.song.id,
+        youtube_id: this.data.song.id.videoId,
         text: this.textareaValue,
         active: true,
         repCommentId: null,
       };
 
       this.commentService
-        .addCommentSong(comment, this.data.song.id, this.acc?.id)
+        .addCommentYT(comment, this.data.song.id.videoId, this.acc?.id)
         .subscribe((data) => {
           this.loaddata();
           this.reset();
@@ -137,13 +138,13 @@ export class CommentSongComponent implements OnInit {
 
     const newCmt = {
       accountId: oldCmt.user.id,
-      songId: oldCmt.song.id,
+      youtube_id: oldCmt.youtube.id,
       text: textEditCmt,
       active: true,
     };
     console.log('newCmtnewCmtnewCmt', newCmt);
 
-    this.commentService.editCommentSong(newCmt, oldCmt).subscribe((data) => {
+    this.commentService.editCommentYT(newCmt, oldCmt).subscribe((data) => {
       this.loaddata();
       this.reset();
     });
@@ -215,14 +216,14 @@ export class CommentSongComponent implements OnInit {
     if (this.acc && this.acc.id && textareaReplyValue.length > 0) {
       const comment = {
         accountId: this.acc?.id,
-        songId: this.data.song.id,
+        youtube_id: this.data.song.id.videoId,
         text: textareaReplyValue,
         active: true,
         repCommentId: repCmtId,
       };
 
       this.commentService
-        .addCommentSong(comment, this.data.song.id, this.acc?.id)
+        .addCommentYT(comment, this.data.song.id.videoId, this.acc?.id)
         .subscribe((data) => {
           this.loaddata();
           this.reset();

@@ -25,7 +25,7 @@ export class TestCommentComponent implements OnInit {
   }
 
   loaddata() {
-    this.commentService.getCommentsWithReplies(23).subscribe((comments) => {
+    this.commentService.getCommentsWithRepliesSong(23).subscribe((comments) => {
       this.commentsWithReplies = comments;
       console.log('comment', this.commentsWithReplies);
     });
@@ -33,7 +33,7 @@ export class TestCommentComponent implements OnInit {
   deleteComment(comment: any) {
     // alert(comment.id + '   ' + comment.user.id);
     this.commentService
-      .deleteComment(comment.id, comment.user.id)
+      .deleteCommentSong(comment.id, comment.user.id)
       .subscribe((data) => {});
     this.loaddata();
   }
@@ -50,7 +50,7 @@ export class TestCommentComponent implements OnInit {
       repCommentId: repCommentId,
     };
 
-    this.commentService.addComment(comment, 23, 32).subscribe((data) => {});
+    this.commentService.addCommentSong(comment, 23, 32).subscribe((data) => {});
     this.loaddata();
   }
   reply() {}
