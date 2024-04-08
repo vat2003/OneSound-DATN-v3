@@ -9,7 +9,10 @@ import {listAll} from "firebase/storage";
 })
 export class FirebaseStorageCrudService {
 
-  constructor() {
+  constructor(
+    // private firestore: AngularFirestore
+  ) {
+
   }
 
   uploadProgress$!: Observable<number>;
@@ -35,6 +38,32 @@ export class FirebaseStorageCrudService {
         console.log('LINK =>> ', url);
       })
   }
+
+  async uploadFile2(folderName: string, file: File): Promise<any> {
+    const filePath = folderName + `/${file.name}`;
+    const fileRef = ref(this.storage, filePath);
+    const uploadFile = uploadBytesResumable(fileRef, file);
+    return new Promise((resolve,reject) => {
+      uploadFile.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Uploading Progress ... ', progress, '%');
+      },
+      (error) => {
+        console.error('Error ... ', error);
+      },
+      async () => {
+        console.log(file.name);
+        const url = await getDownloadURL(fileRef);
+        console.log('LINK =>> ', url);
+        resolve(url)
+      })
+    })
+
+  }
+
+
+
 
 
 
@@ -100,5 +129,8 @@ export class FirebaseStorageCrudService {
     return await getDownloadURL(fileRef);
   }
 
+  // uploadData(collectionName: string, documentId: string, data: any): Promise<void> {
+  //   return this.storage.(collectionName).doc(documentId).set(data);
+  // }
 
 }

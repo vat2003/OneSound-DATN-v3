@@ -1,0 +1,28 @@
+/// <reference types="grecaptcha" />
+import { Observable } from "rxjs";
+import { RecaptchaLoaderOptions } from "./tokens";
+import * as i0 from "@angular/core";
+export declare class RecaptchaLoaderService {
+    private readonly platformId;
+    /**
+     * @internal
+     * @nocollapse
+     */
+    private static ready;
+    ready: Observable<ReCaptchaV2.ReCaptcha>;
+    /** @internal */
+    private language?;
+    /** @internal */
+    private baseUrl?;
+    /** @internal */
+    private nonce?;
+    /** @internal */
+    private v3SiteKey?;
+    /** @internal */
+    private options?;
+    constructor(platformId: Object, language?: string, baseUrl?: string, nonce?: string, v3SiteKey?: string, options?: RecaptchaLoaderOptions);
+    /** @internal */
+    private init;
+    static ɵfac: i0.ɵɵFactoryDeclaration<RecaptchaLoaderService, [null, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }, { optional: true; }]>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<RecaptchaLoaderService>;
+}

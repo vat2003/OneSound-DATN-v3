@@ -9,26 +9,27 @@ import { SongAlbum } from './../../adminPage/adminEntityService/adminEntity/song
 import { AlbumService } from './../../adminPage/adminEntityService/adminService/album/album.service';
 import { Component, OnInit } from '@angular/core';
 // import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
-import { Singer } from '../../adminPage/adminEntityService/adminEntity/singer/singer';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
-import { Router } from '@angular/router';
-import { StaticticalService } from '../../adminPage/adminEntityService/adminService/statictical/statictical.service';
-import { error } from 'console';
-import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
-import { Observable, forkJoin, map, switchMap } from 'rxjs';
-import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
-import { Genre } from '../../adminPage/adminEntityService/adminEntity/genre/genre';
-import { aborted } from 'node:util';
-import { addWarning } from '@angular-devkit/build-angular/src/utils/webpack-diagnostics';
-import { UserPlaylistModalComponent } from '../user-playlist-modal/user-playlist-modal.component';
-import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
-import { MatDialog } from '@angular/material/dialog';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { FavoriteService } from '../../../services/favorite-service/favorite.service';
-import { DataGlobalService } from '../../../services/data-global.service';
+import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
+import {Router} from '@angular/router';
+import {StaticticalService} from '../../adminPage/adminEntityService/adminService/statictical/statictical.service';
+import {error} from 'console';
+import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
+import {Observable, forkJoin, map, switchMap} from 'rxjs';
+import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
+import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
+import {aborted} from "node:util";
+import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
+import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
+import {FavoriteSong} from "../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song";
+import {MatDialog} from "@angular/material/dialog";
+import {accountServiceService} from "../../adminPage/adminEntityService/adminService/account-service.service";
+import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
+import {FavoriteService} from "../../../services/favorite-service/favorite.service";
+import {DataGlobalService} from '../../../services/data-global.service';
+import axios from 'axios';
 
 @Component({
   selector: 'app-user-explore',
@@ -74,10 +75,11 @@ export class UserExploreComponent implements OnInit {
     this.getAllArtist();
     this.recordVisit();
     this.getAllAlbum();
-    // this.songs.reverse();
-    // this.hotArtist.reverse();
-    // this.albums.reverse();
     this.getAllSongFavByUser();
+    this.songs.reverse();
+    this.hotArtist.reverse();
+    this.albums.reverse();
+    this.getAllNftsByOwner();
   }
 
   recordVisit() {
@@ -308,4 +310,31 @@ export class UserExploreComponent implements OnInit {
       this.favSong.addFavoriteSong(favS).subscribe((data) => {});
     }
   }
+
+  async getAllNftsByOwner () {
+    const res = await axios.post('https://api.devnet.solana.com', {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "getAssetsByOwner",
+        "params": {
+            "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
+            "page": 1,
+            "limit": 100
+        }
+    });
+
+    debugger
+
+    const data = res.data; // Lấy mảng dữ liệu từ phản hồi
+    console.log("date ne "+data);
+
+
+    // Sử dụng forEach để duyệt qua từng item trong mảng dữ liệu và log ra
+    data.forEach((item:any) => {
+        console.log("ITEM NÈ: ",item); // Log ra mỗi item
+    });
+
+}
+
+
 }

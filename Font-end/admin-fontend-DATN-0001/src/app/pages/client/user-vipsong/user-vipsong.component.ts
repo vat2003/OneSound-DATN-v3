@@ -19,6 +19,7 @@ import { UserPlaylistModalComponent } from '../user-playlist-modal/user-playlist
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
+import axios from 'axios';
 
 @Component({
   selector: 'app-user-vipsong',
@@ -31,6 +32,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 export class UserVipsongComponent {
  // songs: Song[] = [];
  songs: Song[] = [];
+ namevalue: string[] = [];;
+
  // songs1: any[] = [];
  id!: any;
  singers: Singer[] = [];
@@ -47,6 +50,7 @@ export class UserVipsongComponent {
  filterOptionsSinger!: Observable<string[]>;
  singerMap: { [key: number]: any[] } = {};
  genreMap: { [key: number]: any[] } = {};
+
 
  constructor(
    private matDialog: MatDialog,
@@ -65,7 +69,8 @@ export class UserVipsongComponent {
  ngOnInit(): void {
    this.acc = this.userService.getUserResponseFromLocalStorage();
    this.id = this.route.snapshot.params['id'];
-   this.getAllSongs();
+  //  this.getAllSongs();
+   this.getAllNftsByOwner();
  }
 
  getAllSongs(): void {
@@ -175,4 +180,83 @@ export class UserVipsongComponent {
 
    this.dataGlobal.changeArr(this.songs);
  }
+
+ async getAllNftsByOwner () {
+  const res = await axios.post('https://api.devnet.solana.com', {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "getAssetsByOwner",
+      "params": {
+          "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
+          "page": 1,
+          "limit": 100
+      }
+  });
+  // debugger
+  console.log("DATA NÈ EM", res.data);
+
+
+  const data: any[] = res.data.result.items;
+console.log("DỮ LIỆU: ",data);
+// Lặp qua mỗi mục (item) trong mảng result.items
+// res.data.result.items.forEach((item:any) => {
+//   // Lặp qua mỗi thuộc tính trong mảng attributes của mỗi mục
+//   debugger
+//   const id= item.metadata.attributes[1].trait_type==="id"
+
+//   console.log("ID NÈ: ",id);
+// });
+
+// Lặp qua mỗi mục (item) trong mảng result.items
+res.data.result.items.forEach((item:any) => {
+  // Lặp qua mỗi thuộc tính trong mảng attributes của mỗi mục
+  item.content.metadata.attributes.forEach((attribute:any) => {
+      // Kiểm tra nếu thuộc tính có trait_type là 'id'
+      if (attribute.trait_type === 'id') {
+          // Lấy giá trị của thuộc tính id
+          const idValue = attribute.value;
+          // In ra giá trị của thuộc tính id
+          console.log("ID NÈ: ", idValue);
+          // console.log("LENGTH: ", item.length);
+          this.namevalue.push(idValue);
+
+      }
+  });
+});
+
+  for(let i=0;i<this.namevalue.length;i++){
+    for(let j=1;j<i;j++){
+      console.log("MẢNG 2: ", this.namevalue[1])
+      if(this.namevalue[i]==this.namevalue[j]){
+        this.namevalue.splice(1,j);
+      }
+    }
+  }
+
+
+  // data.forEach((item: any) => {
+  //   debugger
+  //   this.namevalue = item.content.metadata.attributes[1];
+  //   debugger
+  //         // this.namevalue =  name[1].value;
+
+  //         // this.namevalue.push(name.value)
+
+  //         console.log("MẢNG THÍ NGHIỆM: ",this.namevalue)
+
+  //         this.namevalue.forEach((data:any) => {
+  //           this.SongService.getSongById(data.value).subscribe(data=>{
+  //             this.songs.push(data);
+  //             console.log("BÀI HÁT VIP: "+this.songs)
+  //           })
+  //         });{
+  //           // console.log("MẢNGGGGGG: ",this.namevalue[i]);
+  //         }
+
+
+  //   // console.table("Name ne x1:", name);
+  //   });
+  // }
+
+}
 }
