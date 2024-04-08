@@ -31,7 +31,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.account = this.UserService.getUserResponseFromLocalStorage();
     this.someFunction();
-    console.log(this.account);
   }
 
   async someFunction() {

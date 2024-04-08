@@ -1,7 +1,7 @@
-import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { CommentService } from '../../../services/comment-service/comment.service';
+import {CommonModule} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule} from '@angular/forms';
+import {CommentService} from '../../../services/comment-service/comment.service';
 import {
   ChangeDetectorRef,
   Component,
@@ -11,13 +11,13 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import e from 'express';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { log } from 'console';
-import { formatDistanceToNow } from 'date-fns';
-import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {log} from 'console';
+import {formatDistanceToNow} from 'date-fns';
+import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
 
 @Component({
   selector: 'app-comment-song',
@@ -38,13 +38,15 @@ export class CommentSongComponent implements OnInit {
 
   textareaValue: string = '';
   checkEditCmt!: boolean;
+  avatar: string | undefined;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { song: any },
     private commentService: CommentService,
     private userService: accountServiceService,
     private cdRef: ChangeDetectorRef,
     private firebaseStorage: FirebaseStorageCrudService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
@@ -52,6 +54,16 @@ export class CommentSongComponent implements OnInit {
 
     // alert(this.data.song.id);
   }
+  async setImageAvatar() {
+    this.avatar = await this.setImageURLFirebase(this.acc?.avatar_url ?? 'null');
+  }
+  loadImage() {
+    this.commentsWithReplies.forEach((data) => {
+      data.user.avatar_url = this.setImageURLFirebase(data.user.avatar_url);
+    });
+  }
+
+
   setTimeAgo(comment: any): any {
     const timeAgo = this.getTimeAgo(comment.likeDate);
     const updatedComment: any = {
@@ -68,9 +80,19 @@ export class CommentSongComponent implements OnInit {
 
     return updatedComment;
   }
+
   getTimeAgo(date: Date): string {
     return formatDistanceToNow(new Date(date));
   }
+
+  async setImageURLFirebase(image: string): Promise<string> {
+    if (image != null) {
+      return await this.firebaseStorage.getFile(image);
+    } else {
+      return 'null';
+    }
+  }
+
   loaddata() {
     this.commentService
       .getCommentsWithRepliesSong(this.data.song.id)
@@ -85,7 +107,9 @@ export class CommentSongComponent implements OnInit {
         console.log('comment', this.commentsWithReplies);
         this.cdRef.detectChanges();
       });
+    this.setImageAvatar();
   }
+
   deleteComment(comment: any) {
     // alert(comment.id + '   ' + comment.user.id);
     this.commentService
@@ -118,6 +142,7 @@ export class CommentSongComponent implements OnInit {
       );
     }
   }
+
   editComment(oldCmt: any) {
     oldCmt.edit = !oldCmt.edit;
   }
@@ -150,6 +175,7 @@ export class CommentSongComponent implements OnInit {
 
     // this.reset();
   }
+
   reply(cmtReply: any) {
     cmtReply.reply = !cmtReply.reply;
   }
@@ -163,6 +189,7 @@ export class CommentSongComponent implements OnInit {
       cmt.reply = false;
     });
   }
+
   hideAllOptions() {
     //bậc 1
     this.commentsWithReplies.forEach((cmt1) => {
@@ -185,6 +212,7 @@ export class CommentSongComponent implements OnInit {
       }
     });
   }
+
   toggleOptions(comment: any) {
     if (comment.showOptions) {
       comment.showOptions = false;
