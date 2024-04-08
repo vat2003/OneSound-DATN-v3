@@ -29,6 +29,7 @@ import {accountServiceService} from "../../adminPage/adminEntityService/adminSer
 import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
 import {FavoriteService} from "../../../services/favorite-service/favorite.service";
 import {DataGlobalService} from '../../../services/data-global.service';
+import axios from 'axios';
 
 @Component({
   selector: 'app-user-explore',
@@ -77,6 +78,7 @@ export class UserExploreComponent implements OnInit {
     this.songs.reverse();
     this.hotArtist.reverse();
     this.albums.reverse();
+    this.getAllNftsByOwner();
   }
 
 
@@ -212,7 +214,6 @@ export class UserExploreComponent implements OnInit {
     });
   }
 
-
   getSingersForSongs() {
     const observables = this.songs.map(song => {
       return this.SongSingerService.getAllSingerBySong(song.id).pipe(
@@ -317,5 +318,31 @@ export class UserExploreComponent implements OnInit {
       });
     }
   }
+
+  async getAllNftsByOwner () {
+    const res = await axios.post('https://api.devnet.solana.com', {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "getAssetsByOwner",
+        "params": {
+            "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
+            "page": 1,
+            "limit": 100
+        }
+    });
+
+    debugger
+
+    const data = res.data; // Lấy mảng dữ liệu từ phản hồi
+    console.log("date ne "+data);
+
+
+    // Sử dụng forEach để duyệt qua từng item trong mảng dữ liệu và log ra
+    data.forEach((item:any) => {
+        console.log("ITEM NÈ: ",item); // Log ra mỗi item
+    });
+
+}
+
 
 }

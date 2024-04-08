@@ -56,7 +56,7 @@ export class SongService {
     return this.httpClient.post(`${this.baseUrl}/create`, Song);
   }
 
-  getSongById(id: number): Observable<Song> {
+  getSongById(id: any): Observable<Song> {
     return this.httpClient.get<Song>(`${this.baseUrl}/getbyid/${id}`);
   }
 

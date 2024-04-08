@@ -1,6 +1,6 @@
 import {
   isPlatformBrowser
-} from "./chunk-IF26W7ND.js";
+} from "./chunk-GOYF7RWI.js";
 import {
   CSP_NONCE,
   ChangeDetectionStrategy,
@@ -45,11 +45,11 @@ import {
   ɵɵstyleProp,
   ɵɵtemplate,
   ɵɵviewQuery
-} from "./chunk-EIU4B7KG.js";
+} from "./chunk-DD4KGRNH.js";
 import {
   fromEventPattern
-} from "./chunk-FQ7W6U4F.js";
-import "./chunk-P3ZF7G4F.js";
+} from "./chunk-DDZSJGOH.js";
+import "./chunk-GRLKULYS.js";
 import {
   BehaviorSubject,
   Observable,
@@ -57,13 +57,13 @@ import {
   of,
   switchMap,
   takeUntil
-} from "./chunk-N6B2ISGR.js";
+} from "./chunk-QKENJYJC.js";
 import {
   __spreadProps,
   __spreadValues
 } from "./chunk-DCVVLKI7.js";
 
-// node_modules/@angular/youtube-player/fesm2022/youtube-player.mjs
+// ../../node_modules/@angular/youtube-player/fesm2022/youtube-player.mjs
 var _c0 = ["youtubeContainer"];
 function YouTubePlayer_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {

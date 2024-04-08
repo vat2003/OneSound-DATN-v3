@@ -194,12 +194,12 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   displayDataOnTable(page: number, limit: number) {
-    this.AuthorService.getCategories(page, limit).subscribe(
+    this.AuthorService.getAllAuthors().subscribe(
       async (data) => {
         console.log(data);
-        this.imageFile = data.content.map((album: Author) => album.image);
-        this.titleAlbum = data.content.map((album: Author) => album.fullname);
-        this.Authors = data.content;
+        this.imageFile = data.map((album: Author) => album.image);
+        this.titleAlbum = data.map((album: Author) => album.fullname);
+        this.Authors = data;
 
         for (const author of this.Authors) {
           if (author.image == '' || author.image == null) {
@@ -208,8 +208,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
           author.image = await this.setImageURLFirebase(author.image);
           // album.albumcreateDate = new Date(album.albumcreateDate);
         }
-        this.total = data.totalPages;
-        this.visiblePages = this.PageArray(this.page, this.total);
 
       }, (error) => {
         console.error('Error fetching data:', error);

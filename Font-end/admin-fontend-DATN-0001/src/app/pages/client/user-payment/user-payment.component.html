@@ -12,7 +12,8 @@
     <!-- <h1 class="text-3xl font-bold">{{ walletConnected }}</h1> -->
     <button
       class="bg-gradient-to-r from-green-500 to-blue-500 text-white w-48 p-4 rounded-full mt-4"
-      (click)="testing()"
+      *ngIf="!walletConnected"
+      (click)="connectToWallet()"
     >
       Connect Wallet
     </button>

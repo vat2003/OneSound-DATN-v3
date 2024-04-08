@@ -3,6 +3,9 @@
   style="display: flex; flex-direction: column; align-items: center"
 >
   <h1 class="text-center">#TOP SONG VIP</h1>
+  <h1 class="text-center">{{ namevalue }}</h1>
+  <h1 *ngFor="let namevalue of namevalue">{{ namevalue }}</h1>
+
   <table>
     <thead>
       <tr>
