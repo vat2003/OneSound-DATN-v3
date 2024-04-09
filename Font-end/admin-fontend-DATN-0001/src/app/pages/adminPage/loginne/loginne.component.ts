@@ -132,7 +132,6 @@ export class LoginneComponent implements OnInit {
 
       },
       error: (error) => {
-
         alert("Your account has been locked x2" )
         console.log(error);
 

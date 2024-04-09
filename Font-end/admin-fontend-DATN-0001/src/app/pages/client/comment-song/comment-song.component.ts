@@ -12,7 +12,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import e from 'express';
+
 import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
 import { log } from 'console';
@@ -32,6 +32,7 @@ export class CommentSongComponent implements OnInit {
   repComentUser: string = '';
   repCommentId: number | null = null;
   commentsWithReplies!: any[];
+  commentsWithReplies1!: any[];
 
   textareaValue: string = '';
   checkEditCmt!: boolean;
@@ -48,12 +49,28 @@ export class CommentSongComponent implements OnInit {
     alert(this.commentsWithReplies.length);
     // alert(this.data.song.id);
   }
+
+  aaaa(comment:any){
+  
+debugger
+    this.commentService.getCommentreplies(1,comment.id).subscribe((comments) => {
+      debugger
+      this.commentsWithReplies1 = comments;
+      console.log('comment', this.commentsWithReplies1);
+      this.cdRef.detectChanges(); // Bắt buộc Angular cập nhật giao diện
+    });
+  }
   loaddata() {
-    this.commentService.getCommentsWithReplies(23).subscribe((comments) => {
+    this.commentService.getCommenttops(1).subscribe((comments) => {
       this.commentsWithReplies = comments;
       console.log('comment', this.commentsWithReplies);
       this.cdRef.detectChanges(); // Bắt buộc Angular cập nhật giao diện
     });
+    // this.commentService.getCommentsWithReplies(1).subscribe((comments) => {
+    //   this.commentsWithReplies = comments;
+    //   console.log('comment', this.commentsWithReplies);
+    //   this.cdRef.detectChanges(); // Bắt buộc Angular cập nhật giao diện
+    // });
   }
   deleteComment(comment: any) {
     // alert(comment.id + '   ' + comment.user.id);
@@ -71,6 +88,9 @@ export class CommentSongComponent implements OnInit {
     }
   }
   addCmt() {
+
+    alert(this.acc?.id)
+
     if (this.repCommentId != null) {
       this.textareaValue = this.textareaValue.substring(
         this.repComentUser.length + 1
@@ -80,14 +100,15 @@ export class CommentSongComponent implements OnInit {
     if (this.acc && this.acc.id && this.textareaValue.length > 0) {
       const comment = {
         accountId: this.acc?.id,
-        songId: 23,
+        
+        songId: 1,
         text: this.textareaValue,
         active: true,
         repCommentId: this.repCommentId,
       };
 
       this.commentService
-        .addComment(comment, 23, this.acc?.id)
+        .addComment(comment, 1, this.acc?.id)
         .subscribe((data) => {});
 
       this.loaddata();

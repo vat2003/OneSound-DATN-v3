@@ -13,6 +13,18 @@ export class CommentService {
       `${this.urlCommentBase}/${songId}/with-replies`
     );
   }
+
+  getCommenttops(songId: number): Observable<any[]> {
+    return this.httpClient.get<any[]>(
+      `${this.urlCommentBase}/${songId}/top`
+    );
+  }
+
+  getCommentreplies(songId: number,commentId :number): Observable<any[]> {
+    return this.httpClient.get<any[]>(
+      `${this.urlCommentBase}/${songId}/${commentId}/replies`
+    );
+  }
   addComment(comment: any, songId: number, userId: number): Observable<Object> {
     return this.httpClient.post(
       `${this.urlCommentBase}?songId=${songId}&userId=${userId}`,

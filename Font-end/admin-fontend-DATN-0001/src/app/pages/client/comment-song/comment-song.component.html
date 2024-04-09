@@ -1,4 +1,9 @@
 <div class="all">
+
+
+
+
+    <li>Reply</li>
     <div class="list-comment">
         <div class="bac1" *ngFor="let bac1 of commentsWithReplies">
             <div class="comment">
@@ -8,6 +13,7 @@
                     <p>{{bac1.text}}</p>
 
                 </div>
+                <button id="login-btn" class="login-button" type="button" (click)="aaaa(bac1)">Continue</button>
 
 
                 <div class="divXemThem" (click)="toggleOptions(bac1)">
