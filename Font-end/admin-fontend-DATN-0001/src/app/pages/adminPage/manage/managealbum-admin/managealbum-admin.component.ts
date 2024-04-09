@@ -116,8 +116,8 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     this.searchTerms
       .pipe(
         debounceTime(500), // Tăng thời gian chờ
-        // Không sử dụng distinctUntilChanged tạm thời
         // distinctUntilChanged(),
+        // Không sử dụng distinctUntilChanged tạm thời
         switchMap((term: string) => this.albumService.getAllAlbumByAlbumTitle(term, 0, 10))
       )
       .subscribe(async (data) => {

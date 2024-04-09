@@ -102,6 +102,7 @@ export class UserPlaylistFormComponent {
         console.error('Failed to remove playlist:', error);
       }
     );
+    this.getAllPlaylists();
   }
 
   removeSongFromPlaylist(id: number, idsong: number): void {
