@@ -8,83 +8,34 @@
         <form>
           <div class="mb-3">
             <label class="form-label">Title</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              name="name"
-              [(ngModel)]="song.name"
-            />
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="song.name" />
           </div>
-          <input
-            type="text"
-            class="form-control"
-            name="id"
-            [(ngModel)]="song.id"
-            hidden
-          />
+          <input type="text" class="form-control" name="id" [(ngModel)]="song.id" hidden />
           <div class="mb-3">
             <label class="form-label">Release</label>
-            <input
-              type="date"
-              class="form-control calendar-icon-white"
-              name="release"
-              id="release"
-              [(ngModel)]="song.release"
-            />
+            <input type="date" class="form-control calendar-icon-white" name="release" id="release"
+              [(ngModel)]="song.release" />
           </div>
 
-          <label class="form-label">Active</label> <br/>
+          <label class="form-label">Active</label> <br />
           <div class="btn-group mb-3" role="group">
-            <input
-              type="radio"
-              class="btn-check"
-              name="active"
-              id="btnradio1"
-              autocomplete="off"
-              checked
-              [value]="true"
-              [(ngModel)]="song.active"
-            />
-            <label class="btn btn-outline-primary" for="btnradio1"
-            >Active</label
-            >
+            <input type="radio" class="btn-check" name="active" id="btnradio1" autocomplete="off" checked [value]="true"
+              [(ngModel)]="song.active" />
+            <label class="btn btn-outline-primary" for="btnradio1">Active</label>
 
-            <input
-              type="radio"
-              class="btn-check"
-              name="active"
-              id="btnradio3"
-              autocomplete="off"
-              [(ngModel)]="song.active"
-              [value]="false"
-            />
-            <label class="btn btn-outline-primary" for="btnradio3"
-            >Inactive</label
-            >
+            <input type="radio" class="btn-check" name="active" id="btnradio3" autocomplete="off"
+              [(ngModel)]="song.active" [value]="false" />
+            <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Artist</label>
             <!-- Input cho Singer -->
-            <input
-              type="text"
-              class="form-control mb-4 border-light border-2"
-              style="border-radius: 20px"
-              placeholder="Search Singer"
-              matInput
-              [matAutocomplete]="autoSinger"
-              [formControl]="formcontrol"
-            />
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoSinger="matAutocomplete"
-            >
-              <mat-option
-                (click)="addSingertoTable(item)"
-                *ngFor="let item of filterOptionsSinger | async"
-                [value]="item"
-              >
+            <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+              placeholder="Search Singer" matInput [matAutocomplete]="autoSinger" [formControl]="formcontrol" />
+            <mat-autocomplete autoActiveFirstOption #autoSinger="matAutocomplete">
+              <mat-option (click)="addSingertoTable(item)" *ngFor="let item of filterOptionsSinger | async"
+                [value]="item">
                 {{ item }}
               </mat-option>
             </mat-autocomplete>
@@ -92,266 +43,173 @@
             <!-- Table display for singers -->
             <table class="table table-dark">
               <thead>
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Fullname</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Fullname</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let singer of singerTable; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
-                <td>{{ singer.fullname }}</td>
-                <td>
-                  <img
-                    src="{{ singer.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ singer.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteSingerInTable(singer.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                <tr *ngFor="let singer of singerTable; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>{{ singer.fullname }}</td>
+                  <td>
+                    <img src="{{ singer.image }}" width="70" height="70" alt="{{ singer.image }}" />
+                  </td>
+                  <td>
+                    <button (click)="deleteSingerInTable(singer.id)" class="btn btn-outline-danger w-50">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Album</label>
-            <input
-              type="text"
-              class="form-control mb-4 border-light border-2"
-              style="border-radius: 20px"
-              placeholder="Search Album"
-              matInput
-              [matAutocomplete]="autoAlbum"
-              [formControl]="formcontrolAlbum"
-            />
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoAlbum="matAutocomplete"
-            >
-              <mat-option
-                (click)="addAlbumtoTable(item)"
-                *ngFor="let item of filterOptionsAlbum | async"
-                [value]="item"
-              >
+            <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+              placeholder="Search Album" matInput [matAutocomplete]="autoAlbum" [formControl]="formcontrolAlbum" />
+            <mat-autocomplete autoActiveFirstOption #autoAlbum="matAutocomplete">
+              <mat-option (click)="addAlbumtoTable(item)" *ngFor="let item of filterOptionsAlbum | async"
+                [value]="item">
                 {{ item }}
               </mat-option>
             </mat-autocomplete>
             <table class="table table-dark">
               <thead>
-              <tr>
-                <!-- <th scope="col">No.</th> -->
-                <th scope="col">Title</th>
-                <th scope="col">Release</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <!-- <th scope="col">No.</th> -->
+                  <th scope="col">Title</th>
+                  <th scope="col">Release</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let album of albumTable; let i = index">
-                <!-- <th scope="row">{{ i + 1 }}</th> -->
+                <tr *ngFor="let album of albumTable; let i = index">
+                  <!-- <th scope="row">{{ i + 1 }}</th> -->
 
-                <td>{{ album.title }}</td>
-                <td>{{ album.releaseYear }}</td>
+                  <td>{{ album.title }}</td>
+                  <td>{{ album.releaseYear }}</td>
 
-                <td>
-                  <img
-                    src="{{ album.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ album.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteAlbumInTable(album.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                  <td>
+                    <img src="{{ album.image }}" width="70" height="70" alt="{{ album.image }}" />
+                  </td>
+                  <td>
+                    <button (click)="deleteAlbumInTable(album.id)" class="btn btn-outline-danger w-50">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
           <div class="mb-3">
             <label class="form-label">Genre</label>
-            <input
-              type="text"
-              class="form-control mb-4 border-light border-2"
-              style="border-radius: 20px"
-              placeholder="Search Genre"
-              matInput
-              [matAutocomplete]="autoGenre"
-              [formControl]="formcontrolGenre"
-            />
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoGenre="matAutocomplete"
-            >
-              <mat-option
-                (click)="addGenretoTable(item)"
-                *ngFor="let item of filterOptionsGenre | async"
-                [value]="item"
-              >
+            <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+              placeholder="Search Genre" matInput [matAutocomplete]="autoGenre" [formControl]="formcontrolGenre" />
+            <mat-autocomplete autoActiveFirstOption #autoGenre="matAutocomplete">
+              <mat-option (click)="addGenretoTable(item)" *ngFor="let item of filterOptionsGenre | async"
+                [value]="item">
                 {{ item }}
               </mat-option>
             </mat-autocomplete>
             <table class="table table-dark">
               <thead>
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Title</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let album of genreTable; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
+                <tr *ngFor="let album of genreTable; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
 
-                <td>{{ album.name }}</td>
+                  <td>{{ album.name }}</td>
 
-                <td>
-                  <img
-                    src="{{ album.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ album.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteGenreInTable(album.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                  <td>
+                    <img src="{{ album.image }}" width="70" height="70" alt="{{ album.image }}" />
+                  </td>
+                  <td>
+                    <button (click)="deleteGenreInTable(album.id)" class="btn btn-outline-danger w-50">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Author</label>
-            <input
-              type="text"
-              class="form-control mb-4 border-light border-2"
-              style="border-radius: 20px"
-              placeholder="Search"
-              matInput
-              [matAutocomplete]="autoAuthor"
-              [formControl]="formcontrolAuthor"
-              [matAutocompleteDisabled]="!autoAuthor"
-            />
-            <mat-autocomplete
-              autoActiveFirstOption
-              #autoAuthor="matAutocomplete"
-            >
-              <mat-option
-                (click)="addAuthortoTable(item)"
-                *ngFor="let item of filterOptionsAuthor | async"
-                [value]="item"
-              >
+            <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+              placeholder="Search" matInput [matAutocomplete]="autoAuthor" [formControl]="formcontrolAuthor"
+              [matAutocompleteDisabled]="!autoAuthor" />
+            <mat-autocomplete autoActiveFirstOption #autoAuthor="matAutocomplete">
+              <mat-option (click)="addAuthortoTable(item)" *ngFor="let item of filterOptionsAuthor | async"
+                [value]="item">
                 {{ item }}
               </mat-option>
             </mat-autocomplete>
 
             <table class="table table-dark">
               <thead>
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Title</th>
-                <th scope="col">Image</th>
-                <th scope="col">Action</th>
-              </tr>
+                <tr>
+                  <th scope="col">No.</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Image</th>
+                  <th scope="col">Action</th>
+                </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let album of authorTable; let i = index">
-                <th scope="row">{{ i + 1 }}</th>
+                <tr *ngFor="let album of authorTable; let i = index">
+                  <th scope="row">{{ i + 1 }}</th>
 
-                <td>{{ album.fullname }}</td>
+                  <td>{{ album.fullname }}</td>
 
-                <td>
-                  <img
-                    src="{{ album.image }}"
-                    width="70"
-                    height="70"
-                    alt="{{ album.image }}"
-                  />
-                </td>
-                <td>
-                  <button
-                    (click)="deleteAuthorInTable(album.id)"
-                    class="btn btn-outline-danger w-50"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
+                  <td>
+                    <img src="{{ album.image }}" width="70" height="70" alt="{{ album.image }}" />
+                  </td>
+                  <td>
+                    <button (click)="deleteAuthorInTable(album.id)" class="btn btn-outline-danger w-50">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
 
           <div class="file-upload">
-            <button
-              class="file-upload-btn"
-              type="button"
-              onclick="$('.file-upload-input').trigger( 'click' )"
-            >
+            <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">
               Add Image
             </button>
 
             <div class="image-upload-wrap">
-              <input
-                class="file-upload-input"
-                type="file"
-                #fileInput
-                (change)="onFileSelected($event)"
-                accept="image/*"
-              />
+              <input class="file-upload-input" type="file" #fileInput (change)="onFileSelected($event)"
+                accept="image/*" />
               <div class="drag-text">
                 <h3>Drag and drop a file or select add Image</h3>
               </div>
             </div>
 
             <div class="file-upload-content">
-              <img
-                class="file-upload-image"
-                [src]="imageUrl"
-                alt="your image"
-              />
+              <img class="file-upload-image" [src]="imageUrl" alt="your image" />
               <div class="image-title-wrap">
-                <button
-                  type="button"
-                  (click)="removeUpload()"
-                  class="remove-image"
-                >
+                <button type="button" (click)="removeUpload()" class="remove-image">
                   Remove <span class="image-title">Uploaded Image</span>
                 </button>
               </div>
             </div>
             <div class="daddy mt-3">
               <div class="container">
-                <div
-                  class="row bg-dark p-3 pb-4 border border-light rounded shadow"
-                >
+                <div class="row bg-dark p-3 pb-4 border border-light rounded shadow">
                   <div class="col-md-12">
-                    <div
-                      class="file-upload-wrapper bg-dark text-center"
-                      #fileUploadWrapper
-                    >
+                    <div class="file-upload-wrapper bg-dark text-center" #fileUploadWrapper>
                       <!--                      <div-->
                       <!--                        class="card card-body w-100 view file-upload bg-dark text-center"-->
                       <!--                      >-->
@@ -368,22 +226,12 @@
                       <!--                      </div>-->
                     </div>
                     <button class="file-upload-btn" type="button">
-                      <input
-                        type="file"
-                        class="file_upload"
-                        (change)="handleFiles($event)"
-                        accept="audio/*"
-                      />
+                      <input type="file" class="file_upload" (change)="handleFiles($event)" accept="audio/*" />
                       Change Song
                     </button>
                   </div>
                   <div class="song-upload-content mx-auto">
-                    <audio
-                      id="track"
-                      [src]="audioUrl"
-                      type="audio/mp3"
-                      #track
-                    ></audio>
+                    <audio id="track" [src]="audioUrl" type="audio/mp3" #track></audio>
                     <!-- <audio
                       id="track"
                       src="adminManageAudio/song/yt1s.com - One Of The Girls.mp3"
@@ -392,50 +240,23 @@
                     ></audio> -->
                     <div class="player d-none" style="width: 100%" #player>
                       <div class="progress p-1">
-                        <input style="width:100%"
-                               id="timeslider"
-                               #timeslider
-                               class="timeslider"
-                               type="range"
-                               value="0"
-                               min="0"
-                               max="100"
-                               step="0.001"
-                               (input)="handleSeekChange()"
-                        />
-                        <div
-                          class="time d-flex justify-content-around"
-                          style="width: 100%"
-                        >
+                        <input style="width:100%" id="timeslider" #timeslider class="timeslider" type="range" value="0"
+                          min="0" max="100" step="0.001" (input)="handleSeekChange()" />
+                        <div class="time d-flex justify-content-around" style="width: 100%">
                           <span id="currentTime" style="width: 30px">{{
-                              currentTime
+                            currentTime
                             }}</span>
-                          <div
-                            id="pause"
-                            #pause
-                            class="control-icon d-none"
-                            (click)="pauseTrack()"
-                          >
+                          <div id="pause" #pause class="control-icon d-none" (click)="pauseTrack()">
                             <i class="fas fa-pause"></i>
                           </div>
-                          <div
-                            id="start"
-                            #start
-                            class="control-icon"
-                            (click)="playTrack()"
-                          >
+                          <div id="start" #start class="control-icon" (click)="playTrack()">
                             <i class="fas fa-play"></i>
                           </div>
-                          <div
-                            id="reset"
-                            #reset
-                            class="control-icon"
-                            (click)="resetTrack()"
-                          >
+                          <div id="reset" #reset class="control-icon" (click)="resetTrack()">
                             <i class="fas fa-redo-alt"></i>
                           </div>
                           <span id="duration" #durationDisplay>{{
-                              totalTime
+                            totalTime
                             }}</span>
                         </div>
                         <!-- <span><a class="text-decoration-none pt-1 pb-1" href="#" target="_blank">Link</a></span> -->
@@ -482,25 +303,13 @@
             </div> -->
           </div>
           <div class="text-center">
-            <button
-              class="btn btn-primary fw-bold"
-              (click)="createSong()"
-              *ngIf="song.id == null"
-            >
+            <button class="btn btn-primary fw-bold" (click)="createSong()" *ngIf="song.id == null">
               Save
             </button>
-            <button
-              class="btn btn-info ms-3 fw-bold"
-              (click)="updateSong(song.id)"
-              *ngIf="song.id != null"
-            >
+            <button class="btn btn-info ms-3 fw-bold" (click)="updateSong(song.id)" *ngIf="song.id != null">
               Update
             </button>
-            <button
-              class="btn btn-danger ms-3 fw-bold"
-              (click)="deleteSong(song.id)"
-              *ngIf="song.id != null"
-            >
+            <button class="btn btn-danger ms-3 fw-bold" (click)="deleteSong(song.id)" *ngIf="song.id != null">
               Delete
             </button>
             <button class="btn btn-warning ms-3 fw-bold" (click)="resetForm()">
@@ -517,30 +326,22 @@
     <div class="col-sm-12 col-xl-6">
       <div class="bg-secondary rounded h-100 p-4">
         <h3 class="mb-4">SONG LIST</h3>
-        <input
-          type="text"
-          class="form-control mb-4 border-light border-2"
-          style="border-radius: 20px"
-          placeholder="Search"
-          name="searchItem"
-          [(ngModel)]="searchTerm"
-          (ngModelChange)="search()"
-          (keyup)="onKey($event)"
-        />
+        <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" name="searchItem" [(ngModel)]="searchTerm" (ngModelChange)="search()"
+          (keyup)="onKey($event)" />
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">*</th>
-            <th scope="col">Image</th>
-            <th scope="col">Title</th>
-            <!-- <th scope="col">Artist</th> -->
-            <th scope="col">Release</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">*</th>
+              <th scope="col">Image</th>
+              <th scope="col">Title</th>
+              <!-- <th scope="col">Artist</th> -->
+              <th scope="col">Release</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
           <tbody *ngIf="songs && songs.length > 0; else noDataMessage">
-          <tr
-            *ngFor="
+            <tr *ngFor="
                 let album of this.songs
                   | paginate
                     : {
@@ -549,34 +350,22 @@
                         id: 'CountUser'
                       };
                 let i = index
-              "
-          >
-            <th scope="row">{{ i + 1 }}</th>
-            <td>
-              <img
-                src="{{ album.image }}"
-                width="70"
-                height="70"
-                alt="{{ album.image }}"
-              />
-            </td>
-            <td>{{ album.name }}</td>
-            <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
-            <td>
-              <button
-                (click)="getSong(album.id)"
-                class="btn btn-outline-info me-3"
-              >
-                Detail
-              </button>
-              <button
-                (click)="inactive(album)"
-                class="btn btn-outline-warning"
-              >
-                Inactive
-              </button>
-            </td>
-          </tr>
+              ">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                <img src="{{ album.image }}" width="70" height="70" alt="{{ album.image }}" />
+              </td>
+              <td>{{ album.name }}</td>
+              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+              <td>
+                <button (click)="getSong(album.id)" class="btn btn-outline-info me-3">
+                  Detail
+                </button>
+                <button (click)="inactive(album)" class="btn btn-outline-warning">
+                  Inactive
+                </button>
+              </td>
+            </tr>
           </tbody>
 
           <ng-template #noDataMessage>
@@ -588,10 +377,7 @@
           </ng-template>
         </table>
         <div class="text-center">
-          <pagination-controls
-            (pageChange)="p = $event"
-            id="CountUser"
-          ></pagination-controls>
+          <pagination-controls (pageChange)="p = $event" id="CountUser"></pagination-controls>
         </div>
       </div>
     </div>
@@ -600,35 +386,25 @@
     <div>
       <div class="bg-secondary rounded h-100 p-4">
         <h3 class="mb-4">SONG LIST INACTIVE</h3>
-        <input
-          type="text"
-          class="form-control mb-4 border-light border-2"
-          style="border-radius: 20px"
-          placeholder="Search"
-          name="searchItem2"
-          [(ngModel)]="searchTerm2"
-          (ngModelChange)="search2()"
-          (keyup)="onKey($event)"
-        />
+        <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" name="searchItem2" [(ngModel)]="searchTerm2" (ngModelChange)="search2()"
+          (keyup)="onKey($event)" />
         <table class="table table-hover">
           <thead>
-          <tr>
-            <th scope="col">*</th>
-            <th scope="col">Image</th>
-            <th scope="col">Title</th>
-            <!-- <th scope="col">Artist</th> -->
-            <th scope="col">Release</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">*</th>
+              <th scope="col">Image</th>
+              <th scope="col">Title</th>
+              <!-- <th scope="col">Artist</th> -->
+              <th scope="col">Release</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
-          <tbody
-            *ngIf="
+          <tbody *ngIf="
               songsinactive && songsinactive.length > 0;
               else noDataMessage
-            "
-          >
-          <tr
-            *ngFor="
+            ">
+            <tr *ngFor="
                 let album of this.songsinactive
                   | paginate
                     : {
@@ -637,31 +413,22 @@
                         id: 'CountUser2'
                       };
                 let i = index
-              "
-          >
-            <th scope="row">{{ i + 1 }}</th>
-            <td>
-              <img
-                src="{{ album.image }}"
-                width="70"
-                height="70"
-                alt="{{ album.image }}"
-              />
-            </td>
-            <td>{{ album.name }}</td>
-            <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
-            <td>
-              <button
-                (click)="getSong(album.id)"
-                class="btn btn-outline-info me-3"
-              >
-                Detail
-              </button>
-              <button (click)="restore(album)" class="btn btn-outline-success">
-                Restore
-              </button>
-            </td>
-          </tr>
+              ">
+              <th scope="row">{{ i + 1 }}</th>
+              <td>
+                <img src="{{ album.image }}" width="70" height="70" alt="{{ album.image }}" />
+              </td>
+              <td>{{ album.name }}</td>
+              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+              <td>
+                <button (click)="getSong(album.id)" class="btn btn-outline-info me-3">
+                  Detail
+                </button>
+                <button (click)="restore(album)" class="btn btn-outline-success">
+                  Restore
+                </button>
+              </td>
+            </tr>
           </tbody>
 
           <ng-template #noDataMessage>
@@ -673,10 +440,7 @@
           </ng-template>
         </table>
         <div class="text-center">
-          <pagination-controls
-            (pageChange)="p = $event"
-            id="CountUser2"
-          ></pagination-controls>
+          <pagination-controls (pageChange)="p = $event" id="CountUser2"></pagination-controls>
         </div>
       </div>
     </div>

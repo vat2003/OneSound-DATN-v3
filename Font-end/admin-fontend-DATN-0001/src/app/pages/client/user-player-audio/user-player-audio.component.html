@@ -44,13 +44,12 @@
     <div class="mode-type">HIFI</div>
 
     <i class="favorite fa-heart"
-       [ngClass]="{'fa-solid': selectedSong.isFav === true, 'fa-regular': selectedSong.isFav === false}"
-       [ngStyle]="{'color': selectedSong.isFav === true ? 'rgb(212, 15, 15)' : ''}"
-       (click)="favoriteSong(selectedSong)">
+      [ngClass]="{'fa-solid': selectedSong.isFav === true, 'fa-regular': selectedSong.isFav === false}"
+      [ngStyle]="{'color': selectedSong.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favoriteSong(selectedSong)">
     </i>
 
     <i class="fa-solid fa-ellipsis"></i>
-    <i class="fa-solid fa-bars"></i>
+    <i class="bi bi-chat-dots-fill" (click)="openDialog()"></i>
     <i class="fa-solid fa-square-arrow-up-right"></i>
   </div>
 </div>

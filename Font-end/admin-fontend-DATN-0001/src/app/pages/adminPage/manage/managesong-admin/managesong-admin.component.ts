@@ -710,11 +710,11 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     const selectedFile = event.target.files[0];
     const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
     //Kiểm tra giới hạn kích thước ảnh
-    if (selectedFile.size > maxSizeInBytes) {
-      alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
-      this.resetFileInput();
-      return;
-    }
+    // if (selectedFile.size > maxSizeInBytes) {
+    //   alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+    //   this.resetFileInput();
+    //   return;
+    // }
     debugger
     if (selectedFile && !selectedFile.type.startsWith('image/')) {
       alert('Please select an image file.');
@@ -840,12 +840,12 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     const selectedFile = event.target.files[0];
     const maxSizeInBytes = 8 * 1024 * 1024; // giới hạn 8 MB
 
-    // Kiểm tra giới hạn kích thước tệp
-    if (selectedFile.size > maxSizeInBytes) {
-      alert("File size exceeds the allowed limit (8 MB). Please choose a smaller file.");
-      this.resetFileInput();
-      return;
-    }
+    // // Kiểm tra giới hạn kích thước tệp
+    // if (selectedFile.size > maxSizeInBytes) {
+    //   alert("File size exceeds the allowed limit (8 MB). Please choose a smaller file.");
+    //   this.resetFileInput();
+    //   return;
+    // }
 
     if (selectedFile && !selectedFile.type.startsWith('audio/')) {
       alert('Please select an audio file.');
@@ -1324,7 +1324,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       this.song.path = 'adminManageAudio/song/null.mp3';
     }
     // Kiểm tra các trường cần thiết trước khi tạo bài hát mới
-    if (!this.song.name || !this.song.release || !this.song.album || !this.setImageUrl || !this.setAudioUrl) {
+    if (!this.song.name || !this.song.release || !this.setImageUrl || !this.setAudioUrl) {
       alert("Vui lòng điền đầy đủ thông tin để tạo bài hát mới.");
       return; // Dừng việc thực hiện hàm nếu có trường trống
     }

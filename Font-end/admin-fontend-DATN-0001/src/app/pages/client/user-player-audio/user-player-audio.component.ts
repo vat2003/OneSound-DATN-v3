@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -18,6 +18,9 @@ import { accountServiceService } from '../../adminPage/adminEntityService/adminS
 import { FavoriteService } from '../../../services/favorite-service/favorite.service';
 import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
 import { ListeningStatsService } from '../../../services/listening-stats/listening-stats.service';
+import { MatDialog } from '@angular/material/dialog';
+import { TestCommentComponent } from '../test-comment/test-comment.component';
+import { CommentSongComponent } from '../comment-song/comment-song.component';
 
 @Component({
   selector: 'app-user-player-audio',
@@ -57,8 +60,9 @@ export class UserPlayerAudioComponent implements OnInit {
     private userService: accountServiceService,
     private favSong: FavoriteService,
     private listenService: ListeningStatsService,
-    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
-  ) { }
+    private cdr: ChangeDetectorRef, // Inject ChangeDetectorRef
+    private matDialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
@@ -93,7 +97,6 @@ export class UserPlayerAudioComponent implements OnInit {
   }
 
   loadAudio(): void {
-
     this.audio = new Audio();
     this.audio.src = 'assets/audio/chayngaydi.mp3'; // đây là tao lưu cứng bài hát trong ổ, hãy dùng firebase service để lấy đường dẫn audio vào đây
     if (this.selectedSong) {
@@ -266,12 +269,10 @@ export class UserPlayerAudioComponent implements OnInit {
         return;
       }
       song.isFav = false;
-      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {
-      });
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {});
     } else {
       song.isFav = true;
-      this.favSong.addFavoriteSong(favS).subscribe((data) => {
-      });
+      this.favSong.addFavoriteSong(favS).subscribe((data) => {});
     }
   }
 
@@ -297,13 +298,17 @@ export class UserPlayerAudioComponent implements OnInit {
     this.selectedSong = this.arrPreNext[this.currentIndex];
     this.loadAudio();
     this.changeSong();
-
-
   }
 
   async changeSong() {
     this.audio.src = await this.firebaseStorage.getFile(this.selectedSong.path);
     this.pauseMusic();
+  }
 
+  openDialog() {
+    const dialogRef = this.matDialog.open(CommentSongComponent, {
+      data: { song: this.selectedSong },
+      // selectedSong
+    });
   }
 }
