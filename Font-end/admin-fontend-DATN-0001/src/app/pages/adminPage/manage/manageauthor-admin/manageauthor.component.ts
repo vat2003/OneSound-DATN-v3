@@ -20,8 +20,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
 import {Observable, Subject, debounceTime, distinctUntilChanged, map, startWith, switchMap} from 'rxjs';
-import { account } from '../../adminEntityService/adminEntity/account/account';
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
+import {account} from '../../adminEntityService/adminEntity/account/account';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
 
 @Component({
   selector: 'app-manageauthor',
@@ -39,7 +39,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   id!: number;
   Author: Author = new Author();
   Authors!: Author[];
-  AuthorsInactive!:Author[];
+  AuthorsInactive!: Author[];
   imageUrl: string = '';
   setImageUrl: string = '';
   imageFile: any;
@@ -64,19 +64,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
   private searchTerms = new Subject<string>();
   private searchTerms2 = new Subject<string>();
-  // private _FILTER(value: string): any[] {
-  //   const searchTermLowerCase = value.toLowerCase();
 
-  //   // Lọc danh sách tác giả dựa trên từ khóa tìm kiếm
-  //   this.filteredAuthors = this.Authors.filter(author =>
-  //     author.fullname.toLowerCase().includes(searchTermLowerCase)
-  //   );
-
-  //   // Lọc các tùy chọn trong ô tìm kiếm
-  //   return this.singerName.filter(option =>
-  //     option.toLowerCase().includes(searchTermLowerCase)
-  //   );
-  // }
   private _FILTER(value: string): string[] {
     const searchValue = value.toLocaleLowerCase();
     return this.singerName.filter(option => option.toLocaleLowerCase().includes(searchValue));
@@ -91,7 +79,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService,
     private accountServiceService: accountServiceService
-
   ) {
     this.filteredAuthors = this.Authors;
 
@@ -120,17 +107,10 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
 
   search(): void {
-    // this.searchTerms.next(this.searchTerm);
     const searchTermLowerCase = this.searchTerm.toLowerCase();
 
-    // Lọc danh sách tác giả dựa trên từ khóa tìm kiếm
-    // this.Authors=this.Authors.filter(author =>
-    //   author.fullname.toLowerCase().includes(searchTermLowerCase)
-    // );
-
     this.Authors = this.Authors.filter(author =>
-      author.fullname.toLowerCase().includes(searchTermLowerCase) ||
-      author.description.toLowerCase().includes(searchTermLowerCase)
+      author.fullname.toLowerCase().includes(searchTermLowerCase)
     );
 
 
@@ -140,25 +120,14 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   search2(): void {
-    // this.searchTerms.next(this.searchTerm);
     const searchTermLowerCase = this.searchTerm2.toLowerCase();
-    // this.songs = this.songs.filter(author =>
-    //   author.name.toLowerCase().includes(searchTermLowerCase) ||
-    //   author.description.toLowerCase().includes(searchTermLowerCase)||
-    //   author.album.title.toLowerCase().includes(searchTermLowerCase)
-    // );
     this.AuthorsInactive = this.AuthorsInactive.filter((author: Author) => {
-      author.fullname.toLowerCase().includes(searchTermLowerCase) ||
-      author.description.toLowerCase().includes(searchTermLowerCase)
+      author.fullname.toLowerCase().includes(searchTermLowerCase)
     });
     if (searchTermLowerCase == '') {
       this.displayDataOnTableInActive();
     }
   }
-
-  // search() {
-  //   this.searchTerms.next(this.searchTerm);
-  // }
 
   ngAfterViewInit(): void {
     this.filterOptions = this.formcontrol.valueChanges.pipe(
@@ -168,9 +137,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // this.filterOptions = this.formcontrol.valueChanges.pipe(
-    //   startWith(''), map(value => this._FILTER(value || ''))
-    // );
     this.search();
     this.search2();
   }
@@ -190,12 +156,12 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     this.getAuthor(this.id);
     this.displayDataOnTable(0, 5);
     this.displayDataOnTableInActive();
-    this.searchTerms
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
-      )
+    // this.searchTerms
+    //   .pipe(
+    //     debounceTime(300),
+    //     distinctUntilChanged(),
+    //     switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
+    //   )
   }
 
   displayDataOnTable(page: number, limit: number) {
@@ -211,7 +177,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
             continue;
           }
           author.image = await this.setImageURLFirebase(author.image);
-          // album.albumcreateDate = new Date(album.albumcreateDate);
         }
 
       }, (error) => {
@@ -232,7 +197,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
             continue;
           }
           author.image = await this.setImageURLFirebase(author.image);
-          // album.albumcreateDate = new Date(album.albumcreateDate);
         }
       },
       (error) => {
@@ -241,26 +205,28 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     );
   }
 
-  restore(id:Author){
-    this.AuthorService.getAuthorById(id.id).subscribe(data=>{
-      data.active=true;
+  restore(id: Author) {
+    this.AuthorService.getAuthorById(id.id).subscribe(data => {
+      data.active = true;
       this.AuthorService.updateAuthor(data.id, data).subscribe();
-      this.displayDataOnTableInActive();
-      this.reload();
+      // this.reload();
     })
+    this.displayDataOnTable(0, 5);
+    this.displayDataOnTableInActive();
+
   }
 
-  inactive(id:Author){
-    this.AuthorService.getAuthorById(id.id).subscribe(data=>{
-      data.active=false;
+  inactive(id: Author) {
+    this.AuthorService.getAuthorById(id.id).subscribe(data => {
+      data.active = false;
       this.AuthorService.updateAuthor(data.id, data).subscribe();
       this.displayDataOnTableInActive();
-      this.reload();
+      // this.reload();
     })
   }
 
   deleteAuthor(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const isConfirmed = window.confirm('Are you sure you want to delete this author?');
       if (isConfirmed) {
         this.AuthorService.deleteAuthor(id).subscribe(data => {
@@ -269,7 +235,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
         })
       }
-    }else{
+    } else {
       alert("nhân viên không có quyền delete")
 
     }
@@ -361,7 +327,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
   updateAuthor(id: number) {
 
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       if (this.imageFile) {
         this.Author.image = this.setImageUrl;
       }
@@ -387,7 +353,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         },
         (error) => console.log(error)
       );
-    }else{
+    } else {
       alert("nhân viên không có quyền update")
     }
 
