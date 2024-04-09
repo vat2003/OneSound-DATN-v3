@@ -110,7 +110,7 @@ export class LoginneComponent implements OnInit {
 
                     if (this.incorrectLoginAttempts >= this.maxIncorrectLoginAttempts) {
                       alert('Too many incorrect login attempts. Please try again later.');
-                      this.router.navigate(['/onesound/dangky']);
+                      this.router.navigate(['/onesound/signup']);
                     }
                   },
                   complete: () => {

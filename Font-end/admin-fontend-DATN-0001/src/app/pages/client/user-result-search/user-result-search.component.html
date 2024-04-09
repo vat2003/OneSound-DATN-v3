@@ -85,7 +85,7 @@
               alt="alan"
               style="height: 180px; object-fit: cover"
             />
-            <i class="bi fa-solid fa-circle-play" i="1"></i>
+            <!--            <i class="bi fa-solid fa-circle-play" i="1"></i>-->
           </div>
           <h5>
             <p class="line-clamp">{{ hotArtistitem.name }}</p>
@@ -111,7 +111,7 @@
               alt="alan"
               style="height: 180px; object-fit: cover"
             />
-            <i class="bi fa-solid fa-circle-play" i="1"></i>
+            <!--            <i class="bi fa-solid fa-circle-play" i="1"></i>-->
           </div>
           <h5>
             <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
@@ -139,7 +139,7 @@
         <!-- <td>{{ i + 1 }}</td> -->
         <td>
           <img [src]="s.image" alt=""/>
-          <i class="bi fa-solid fa-circle-play"></i>
+<!--          <i class="bi fa-solid fa-circle-play"></i>-->
         </td>
         <td>
           <div class="table-title">
@@ -156,19 +156,19 @@
               >
           </div>
         </td>
-        <!-- <td>
-        <div>
-            <span *ngFor="let singer of genreMap[s.id]; let last = last"
-            >{{
-                singer.name
-              }}{{ !last && genreMap[s.id].length > 1 ? ", " : "" }}</span
-            >
-        </div>
-      </td>
-      <td>3:15</td> -->
         <td *ngIf="this.acc">
           <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
-          <i class="favorite fa-heart"> </i>
+<!--          <i-->
+<!--            class="favorite fa-heart"-->
+<!--            [ngClass]="{-->
+<!--              'fa-solid': s.isFav,-->
+<!--              'fa-regular': !s.isFav-->
+<!--            }"-->
+<!--            [ngStyle]="{-->
+<!--              color: s.isFav === true ? 'rgb(212, 15, 15)' : ''-->
+<!--            }"-->
+<!--            (click)="favorite(s)"-->
+<!--          >-->
         </td>
       </tr>
       </tbody>
@@ -225,8 +225,8 @@
         <i
           class="favorite fa-heart"
           [ngClass]="{
-              'fa-solid': video.isFav === true,
-              'fa-regular': video.isFav === false
+              'fa-solid': video.isFav,
+              'fa-regular': !video.isFav
             }"
           [ngStyle]="{
               color: video.isFav === true ? 'rgb(212, 15, 15)' : ''

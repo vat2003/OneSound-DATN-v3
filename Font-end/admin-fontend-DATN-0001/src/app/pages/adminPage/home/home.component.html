@@ -1,12 +1,12 @@
 <div class="container-fluid position-relative d-flex p-0">
   <!-- Spinner Start -->
-  <!--  <div id="spinner"-->
-  <!--       class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">-->
-  <!--    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">-->
-  <!--      <span class="sr-only">Loading...</span>-->
+  <!--    <div id="spinner"-->
+  <!--         class="show bg-dark position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">-->
+  <!--      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">-->
+  <!--        <span class="sr-only">Loading...</span>-->
+  <!--      </div>-->
   <!--    </div>-->
-  <!--  </div>-->
-  <!-- Spinner End -->
+  <!--   Spinner End -->
 
 
   <!-- Sidebar Start -->
@@ -31,35 +31,42 @@
         <!--        <a routerLink="" class="nav-item nav-link active"><i-->
         <a href="onesound/admin" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
         <!-- dropdown -->
-        <div class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-              class="fa fa-laptop me-2"></i>Management</a>
-          <div class="dropdown-menu bg-transparent border-0">
-            <!--            <a routerLink="manage/statistical/report" class="dropdown-item">Statistical</a>-->
-            <a routerLink="manage/statictical/report" class="dropdown-item">Statiscal</a>
-            <a routerLink="manage/album" class="dropdown-item">Album</a>
-            <a routerLink="manage/artist" class="dropdown-item">Artist</a>
-            <a routerLink="manage/genre" class="dropdown-item">Genre</a>
-            <a routerLink="manage/song" class="dropdown-item">Song</a>
-            <a routerLink="manage/user" class="dropdown-item">User</a>
-            <a routerLink="manage/author" class="dropdown-item">Author</a>
+<!--        <div class="nav-item dropdown">-->
+<!--          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i-->
+<!--            class="fa fa-laptop me-2"></i>Management</a>-->
+<!--          <div class="dropdown-menu bg-transparent border-0">-->
+<!--            &lt;!&ndash;            <a routerLink="manage/statistical/report" class="dropdown-item">Statistical</a>&ndash;&gt;-->
+<!--            <a routerLink="manage/statictical/report" class="dropdown-item">Statiscal</a>-->
+<!--            <a routerLink="manage/album" class="dropdown-item">Album</a>-->
+<!--            <a routerLink="manage/artist" class="dropdown-item">Artist</a>-->
+<!--            <a routerLink="manage/genre" class="dropdown-item">Genre</a>-->
+<!--            <a routerLink="manage/song" class="dropdown-item">Song</a>-->
+<!--            <a routerLink="manage/user" class="dropdown-item">User</a>-->
+<!--            <a routerLink="manage/author" class="dropdown-item">Author</a>-->
 
-          </div>
-        </div>
-        <a routerLink="404" class="nav-item nav-link"><i class="fa fa-th me-2"></i>Widgets</a>
-        <a routerLink="404" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-        <a routerLink="404" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
-        <a routerLink="chart" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
-        <div class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-              class="far fa-file-alt me-2"></i>Pages</a>
-          <div class="dropdown-menu bg-transparent border-0">
-            <a routerLink="/onesound/signin" class="dropdown-item">Sign In</a>
-            <a routerLink="/onesound/signup" class="dropdown-item">Sign Up</a>
-            <a routerLink="404" class="dropdown-item">404 Error</a>
-            <a routerLink="blank" class="dropdown-item">Blank Page</a>
-          </div>
-        </div>
+<!--          </div>-->
+<!--        </div>-->
+        <a routerLink="404" class="nav-item nav-link" routerLink="manage/statictical/report"><i
+          class="fa fa-pie-chart me-2"></i>Report</a>
+        <a routerLink="404" class="nav-item nav-link" routerLink="manage/album"><i class="fa fa-record-vinyl me-2"></i>Albums</a>
+        <a routerLink="404" class="nav-item nav-link" routerLink="manage/artist"><i class="fa fa-table me-2"></i>Artists</a>
+        <a routerLink="chart" class="nav-item nav-link" routerLink="manage/genre"><i
+          class="fa fa-bars-staggered me-2"></i>Genres</a>
+        <a routerLink="chart" class="nav-item nav-link" routerLink="manage/song"><i
+          class="fa fa-music me-2"></i>Songs</a>
+        <a routerLink="chart" class="nav-item nav-link" routerLink="manage/user"><i class="fa fa-user-circle me-2"></i>Users</a>
+        <a routerLink="chart" class="nav-item nav-link" routerLink="manage/author"><i
+          class="fa-brands fa-creative-commons-by me-2"></i>Authors</a>
+<!--        <div class="nav-item dropdown">-->
+<!--          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i-->
+<!--            class="far fa-file-alt me-2"></i>Pages</a>-->
+<!--          <div class="dropdown-menu bg-transparent border-0">-->
+<!--            <a routerLink="/onesound/signin" class="dropdown-item">Sign In</a>-->
+<!--            <a routerLink="/onesound/signup" class="dropdown-item">Sign Up</a>-->
+<!--            <a routerLink="404" class="dropdown-item">404 Error</a>-->
+<!--            <a routerLink="blank" class="dropdown-item">Blank Page</a>-->
+<!--          </div>-->
+<!--        </div>-->
       </div>
     </nav>
   </div>
@@ -149,7 +156,7 @@
             <span class="d-none d-lg-inline-flex">{{ account?.fullname }}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-            <a routerLink="/onesound/admin/manage/profile" (click)="profile()" class="dropdown-item">My Profile</a>
+<!--            <a routerLink="/onesound/admin/manage/profile" (click)="profile()" class="dropdown-item">My Profile</a>-->
             <!--            <a href="#" class="dropdown-item">Settings</a>-->
             <a routerLink="/signin" (click)="logout()" class="dropdown-item">Log Out</a>
           </div>

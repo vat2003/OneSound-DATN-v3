@@ -1,9 +1,9 @@
 <div class="master_play">
 
-  <img [src]="selectedVideo.snippet.thumbnails?.high.url" alt="Alan" id="poster_master_play" />
+  <img [src]="selectedVideo.snippet.thumbnails?.high.url" alt="Alan" id="poster_master_play"/>
   <h5 id="title">
     <p class="line-clamp" id="song-title">
-      {{selectedVideo.snippet.title }}
+      {{ selectedVideo.snippet.title }}
 
     </p>
 
@@ -24,7 +24,7 @@
   </div>
   <span id="currentStart">{{ currentTime }}</span>
   <div class="bar">
-    <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()" />
+    <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()"/>
     <div class="bar2" id="bar2" #seek_bar></div>
     <div class="dot" id="seek_dot" #seek_dot></div>
   </div>
@@ -32,7 +32,7 @@
 
   <div class="vol">
     <i class="fa-solid fa-volume-low" id="vol_icon" #vol_icon></i>
-    <input type="range" id="vol" #vol min="0" value="30" max="100" (input)="setVolume()" />
+    <input type="range" id="vol" #vol min="0" value="30" max="100" (input)="setVolume()"/>
     <div class="vol_bar" #vol_bar></div>
     <div class="dot" id="vol_dot" #vol_dot></div>
 
@@ -40,8 +40,8 @@
   <div class="mode">
     <div class="mode-type">HIFI</div>
     <i class="favorite fa-heart"
-      [ngClass]="{'fa-solid': selectedVideo.isFav === true, 'fa-regular': selectedVideo.isFav === false}"
-      [ngStyle]="{'color': selectedVideo.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favorite(selectedVideo)">
+       [ngClass]="{'fa-solid': selectedVideo.isFav, 'fa-regular': !selectedVideo.isFav}"
+       [ngStyle]="{'color': selectedVideo.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favorite(selectedVideo)">
     </i>
 
     <i class="fa-solid fa-ellipsis"></i>

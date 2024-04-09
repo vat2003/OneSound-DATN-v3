@@ -39,6 +39,7 @@ export class CommentSongComponent implements OnInit {
   textareaValue: string = '';
   checkEditCmt!: boolean;
   avatar: string | undefined;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { song: any },
     private commentService: CommentService,
@@ -51,12 +52,13 @@ export class CommentSongComponent implements OnInit {
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.loaddata();
-
     // alert(this.data.song.id);
   }
+
   async setImageAvatar() {
     this.avatar = await this.setImageURLFirebase(this.acc?.avatar_url ?? 'null');
   }
+
   loadImage() {
     this.commentsWithReplies.forEach((data) => {
       data.user.avatar_url = this.setImageURLFirebase(data.user.avatar_url);
@@ -103,6 +105,24 @@ export class CommentSongComponent implements OnInit {
           const updatedComment = this.setTimeAgo(comment);
           return updatedComment;
         });
+
+
+        this.commentsWithReplies.forEach((bac1) => {
+          bac1.user.avatar_url = this.setImageURLFirebase(bac1.user.avatar_url);
+          if (bac1.replies){
+            bac1.replies.forEach((bac2 : any) => {
+              bac2.user.avatar_url = this.setImageURLFirebase(bac2.user.avatar_url);
+              if (bac2.replies){
+                bac2.replies.forEach((bac3 : any) => {
+                  bac3.user.avatar_url = this.setImageURLFirebase(bac3.user.avatar_url);
+
+                })
+              }
+            })
+          }
+        })
+
+
 
         console.log('comment', this.commentsWithReplies);
         this.cdRef.detectChanges();

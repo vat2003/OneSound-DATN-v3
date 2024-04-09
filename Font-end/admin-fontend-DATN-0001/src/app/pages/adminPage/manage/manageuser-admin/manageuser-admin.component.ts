@@ -406,7 +406,6 @@ export class ManageuserAdminComponent implements OnInit {
         this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
           async (data) => {
 
-            alert('asdfasd' + UpdateUserForAdmin.birthday)
             alert(this.registerForm.form.controls['birthday'].value)
 
             if (this.imageFile) {
@@ -521,7 +520,6 @@ export class ManageuserAdminComponent implements OnInit {
 
 
     this.Account.avatar_url = this.setImageUrl;
-    alert(this.Account)
     this.accountServiceService.createAccount(this.Account).subscribe(
       async (data) => {
 

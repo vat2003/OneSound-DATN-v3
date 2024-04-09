@@ -3,7 +3,7 @@
   <header>
     <div class="menu-side">
       <div class="account-section">
-        <span routerLink="/onesound/home" class="nav-brand"><img src="assets\img\logo.png" alt="" /></span>
+        <span routerLink="/onesound/home" class="nav-brand"><img src="assets\img\logo.png" alt=""/></span>
       </div>
       <div class="web-nav">
         <p class="active" style="cursor: pointer">
@@ -22,9 +22,9 @@
         <p *ngIf="this.acc">
           <span routerLink="/onesound/home/user/playlist"><i class="fa-solid fa-sliders"></i> Playlists</span>
         </p>
-<!--        <p>-->
-<!--          <span><i class="fa-solid fa-compact-disc"></i> Albums</span>-->
-<!--        </p>-->
+        <!--        <p>-->
+        <!--          <span><i class="fa-solid fa-compact-disc"></i> Albums</span>-->
+        <!--        </p>-->
         <p>
           <span routerLink="/onesound/home/favorite"><i class="fas fa-heart"></i> Favorite</span>
         </p>
@@ -33,7 +33,7 @@
         </p>
         <p *ngIf="this.acc">
           <span [routerLink]="['/onesound/home/history-listen', this.acc!.id]"><i
-              class="fa-solid fa-clock-rotate-left"></i> History</span>
+            class="fa-solid fa-clock-rotate-left"></i> History</span>
         </p>
         <p *ngIf="this.acc">
           <span routerLink="/onesound/home/payment"><i class="fa-solid fa-wallet"></i> Wallet</span>
@@ -70,10 +70,11 @@
         <!--            Create...-->
         <!--          </a>-->
         <!--        </div>-->
+        <hr>
         <div style="margin-bottom: 30px;" id="list-playlists">
           <div class="playlist-items">
-            <a *ngIf="acc" routerLink="/signin" (click)="logout()" class="dropdown-item">Log Out</a>
-            <a *ngIf="!acc" href="onesound/signin" class="dropdown-item">Login</a>
+            <a *ngIf="acc" routerLink="/signin" (click)="logout()" class="text-white">Log Out</a>
+            <a *ngIf="!acc" href="onesound/signin" class="text-white">Login</a>
           </div>
         </div>
 
@@ -82,7 +83,7 @@
           <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>Create Playlist</h2>
-            <input type="text" id="name-playlist" placeholder="Enter playlist name" />
+            <input type="text" id="name-playlist" placeholder="Enter playlist name"/>
             <button id="submit-playlist">Create</button>
           </div>
         </div>
@@ -113,7 +114,7 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <!-- Trong template của bạn -->
             <!-- Trong template của bạn -->
-            <input type="text" placeholder="Search" (keyup.enter)="gotoSearchComp($event)" />
+            <input type="text" placeholder="Search" (keyup.enter)="gotoSearchComp($event)"/>
           </div>
           <div class="notification" routerLink="/onesound/home/profile">
             <i class="fa-regular fa-user"></i>

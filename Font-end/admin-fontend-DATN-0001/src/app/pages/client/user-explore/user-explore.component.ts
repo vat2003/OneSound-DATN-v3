@@ -76,9 +76,9 @@ export class UserExploreComponent implements OnInit {
     this.recordVisit();
     this.getAllAlbum();
     this.getAllSongFavByUser();
-    this.songs.reverse();
-    this.hotArtist.reverse();
-    this.albums.reverse();
+    // this.songs.reverse();
+    // this.hotArtist.reverse();
+    // this.albums.reverse();
     this.getAllNftsByOwner();
   }
 
