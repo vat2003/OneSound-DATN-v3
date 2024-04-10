@@ -1,7 +1,4 @@
-<div
-  class="list-tracks"
-  style="display: flex; flex-direction: column; align-items: center"
->
+<div class="list-tracks" style="display: flex; flex-direction: column; align-items: center">
   <h1 class="text-center">#TOP SONG VIP</h1>
   <table>
     <thead>
@@ -15,18 +12,15 @@
       </tr>
     </thead>
     <tbody id="list-songs-detail">
-      <tr
-        *ngFor="
-          let song of songs
-            | paginate
-              : {
-                  itemsPerPage: pageSize,
-                  currentPage: p,
-                  id: 'CountUser'
-                }
-        "
-        (click)="showDetail(song)"
-      >
+      <tr *ngFor="
+        let song of songs
+        | paginate
+          : {
+              itemsPerPage: pageSize,
+              currentPage: p,
+              id: 'CountUser'
+            }
+      " (click)="showDetail(song)">
         <td>
           <img [src]="song.image" alt="" />
         </td>
@@ -37,33 +31,29 @@
           </div>
         </td>
         <td>
+        <td>
+          <div *ngFor="let singer of SongSinger11">
+            {{ singer.fullname }}
+          </div>
+        </td>
+
+        <td>
           <div>
-            <span *ngFor="let singer of singerMap[song.id]; let last = last"
-              >{{ singer.fullname
-              }}{{ !last && singerMap[song.id].length > 1 ? ", " : "" }}</span
-            >
+            <span *ngFor="let singer of genreMap[song.id]; let last = last">{{ singer.name
+              }}{{ !last && genreMap[song.id].length > 1 ? ", " : "" }}</span>
           </div>
         </td>
         <td>
-          <div>
-            <span *ngFor="let singer of genreMap[song.id]; let last = last"
-              >{{ singer.name
-              }}{{ !last && genreMap[song.id].length > 1 ? ", " : "" }}</span
-            >
-          </div>
-        </td>
-        <td>
-          <i class="fa-solid fa-plus" (click)="openDialog(song)"></i
-          >&nbsp;&nbsp;
+          <i class="fa-solid fa-plus" (click)="openDialog(song)"></i>&nbsp;&nbsp;
           <i class="favorite fa-heart"> </i>
         </td>
       </tr>
     </tbody>
+
+
+
   </table>
 </div>
 <div style="display: flex; justify-content: center; align-items: center">
-  <pagination-controls
-    (pageChange)="p = $event"
-    id="CountUser"
-  ></pagination-controls>
+  <pagination-controls (pageChange)="p = $event" id="CountUser"></pagination-controls>
 </div>

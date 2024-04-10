@@ -12,10 +12,7 @@ export class SongGenreService {
 
   constructor(private httpClient: HttpClient) { }
 
-  // createSongGenre(GenreId: number, albumId: number): Observable<SongGenre> {
-  //   const body = { GenreId, albumId };
-  //   return this.httpClient.post<SongGenre>(`${this.baseURL}/create`, body);
-  // }
+
 
   getAllGenreBySong(id:number):Observable<any[]> {
     return this.httpClient.get<SongGenre[]>(`${this.baseURL}/get-by-song/${id}`);

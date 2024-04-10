@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SongSinger } from '../adminEntity/song/songSinger';
+import { SongSinger1 } from '../adminEntity/song/SongSinger1';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +10,16 @@ import { SongSinger } from '../adminEntity/song/songSinger';
 export class SongSingerService {
 
   private baseURL = 'http://localhost:8080/api/v1/SongSinger';
+  private baseURL1 = 'http://localhost:8080/api/v1/SongSinger';
 
   constructor(private httpClient: HttpClient) { }
 
-  // createSongSinger(singerId: number, albumId: number): Observable<SongSinger> {
-  //   const body = { singerId, albumId };
-  //   return this.httpClient.post<SongSinger>(`${this.baseURL}/create`, body);
-  // }
+
+
+  getsinger(id:number): Observable<SongSinger1> {
+    return this.httpClient.get<SongSinger1>(`${this.baseURL1}/${id}`);
+  }
+  
 
   getAllSingerBySong(id:number):Observable<any[]> {
     return this.httpClient.get<SongSinger[]>(`${this.baseURL}/get-by-song/${id}`);

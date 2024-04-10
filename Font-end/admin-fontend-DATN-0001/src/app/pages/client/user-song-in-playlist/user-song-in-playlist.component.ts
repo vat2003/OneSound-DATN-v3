@@ -149,7 +149,8 @@ export class UserSongInPlaylistComponent {
           , song.song?.path
           , song.song?.lyrics
           , song.song?.album
-          , song.song?.dateTemp);
+          , song.song?.dateTemp
+        );
         this.songEntity.id = <number>song.song?.id;
         song.song = this.songEntity;
       })
