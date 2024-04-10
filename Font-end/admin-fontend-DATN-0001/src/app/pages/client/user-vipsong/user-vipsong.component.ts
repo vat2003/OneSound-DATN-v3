@@ -32,7 +32,7 @@ import axios from 'axios';
 export class UserVipsongComponent {
  // songs: Song[] = [];
  songs: Song[] = [];
- namevalue: string[] = [];
+ namevalue!: any[];
  namevalue2: any[] = [];
 
  // songs1: any[] = [];
@@ -199,77 +199,47 @@ export class UserVipsongComponent {
 
   const data: any[] = res.data.result.items;
 console.log("DỮ LIỆU: ",data);
-// Lặp qua mỗi mục (item) trong mảng result.items
-// res.data.result.items.forEach((item:any) => {
-//   // Lặp qua mỗi thuộc tính trong mảng attributes của mỗi mục
-//   debugger
-//   const id= item.metadata.attributes[1].trait_type==="id"
-
-//   console.log("ID NÈ: ",id);
-// });
-
-// Lặp qua mỗi mục (item) trong mảng result.items
-res.data.result.items.forEach((item:any) => {
-  // Lặp qua mỗi thuộc tính trong mảng attributes của mỗi mục
-  item.content.metadata.attributes.forEach((attribute:any) => {
-      // Kiểm tra nếu thuộc tính có trait_type là 'id'
-      if (attribute.trait_type === 'id') {
-          // Lấy giá trị của thuộc tính id
-          const idValue = attribute.value;
-          // In ra giá trị của thuộc tính id
-          console.log("ID NÈ: ", idValue.type);
-          // console.log("LENGTH: ", item.length);
-          this.namevalue.push(attribute.value);
-          console.log("BẢNGGGGGGG: ",this.namevalue)
-
-      }
- 
-      const uniqueValues: Map<any, boolean> = new Map();
-      const result: any='';
-      debugger
-      for (const nameValue of this.namevalue) {
-      debugger
-      if (!uniqueValues.has(nameValue)) {
-      debugger
-      uniqueValues.set(nameValue, true);
-      debugger
-      result.push(nameValue);
-          }
-      }
-      debugger
-      
-      console.log(result);
+const transformedData = data.map(m => {
+  const att :any= {};
+  const originAtt = m?.content?.metadata?.attributes || [];
+  originAtt.forEach((element : any) => {
+    if(element?.value){
+      att[element?.trait_type] = element?.value
+    }
   });
+  const dto = {
+    image_uri :m?.content?.files[0]?.uri,
+    path_uri: m?.content?.files[1]?.uri,
+    ...att,
+    owner:m?.ownership?.owner
+  }
+  return dto
 });
 
- 
+// console.log("HEEEEE:",transformedData);
+const lisIds = Array.from(new Set(transformedData.map(m => m?.id)));
+const d = lisIds.map(m => {
+  const r = transformedData.filter(f => f.id === m);
+  return {
+    ...r[0],numberOfCopies:r.length
+  };
+})
+  console.log("NHẠC NÈ: ",d)
+  try {
+    for(let a of d){
+      console.log("ID NHẠC: ",a.id)
+        this.SongService.getSongById(a.id).subscribe(data=>{
+          this.songs.push(data);
+          console.log("BÀI HÁT: ",this.songs)
+        })
+    }
+  } catch (error) {
+    console.log("CAN't load: ",error)
+  }
 
 
 
 
-  // data.forEach((item: any) => {
-  //   debugger
-  //   this.namevalue = item.content.metadata.attributes[1];
-  //   debugger
-  //         // this.namevalue =  name[1].value;
-
-  //         // this.namevalue.push(name.value)
-
-  //         console.log("MẢNG THÍ NGHIỆM: ",this.namevalue)
-
-  //         this.namevalue.forEach((data:any) => {
-  //           this.SongService.getSongById(data.value).subscribe(data=>{
-  //             this.songs.push(data);
-  //             console.log("BÀI HÁT VIP: "+this.songs)
-  //           })
-  //         });{
-  //           // console.log("MẢNGGGGGG: ",this.namevalue[i]);
-  //         }
-
-
-  //   // console.table("Name ne x1:", name);
-  //   });
-  // }
 
 }
 
