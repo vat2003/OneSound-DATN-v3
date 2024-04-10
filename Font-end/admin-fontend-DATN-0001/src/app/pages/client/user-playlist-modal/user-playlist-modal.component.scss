@@ -36,7 +36,7 @@ label {
 input[type="text"] {
   width: 100%;
   padding: 8px;
-  color: whitesmoke; /* Dark text color */
+  //color: whitesmoke; /* Dark text color */
   border: 1px solid #555; /* Dark border color */
   border-radius: 4px;
   background-color: #333; /* Dark background color */
@@ -139,6 +139,7 @@ button:hover {
 /* Action label */
 .action-label {
   margin-left: 5px;
+  color: black;
 }
 
 ///

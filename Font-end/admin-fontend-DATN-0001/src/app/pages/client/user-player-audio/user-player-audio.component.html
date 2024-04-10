@@ -1,10 +1,10 @@
 <div class="master_play">
 
-  <img src="{{selectedSong.image}}" alt="{{selectedSong.image}}" id="poster_master_play" />
+  <img src="{{selectedSong.image}}" alt="{{selectedSong.image}}" id="poster_master_play"/>
   <!-- thay dùm tao cái ảnh bẳng firebase service -->
   <h5 id="title">
     <p class="line-clamp" id="song-title">
-      {{selectedSong.name}}
+      {{ selectedSong.name }}
 
     </p>
 
@@ -27,7 +27,7 @@
   </div>
   <span id="currentStart">{{ currentTime }}</span>
   <div class="bar">
-    <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()" />
+    <input type="range" id="seek" #seek min="0" value="0" max="100" (input)="handleSeekChange()"/>
     <div class="bar2" id="bar2" #seek_bar></div>
     <div class="dot" id="seek_dot" #seek_dot></div>
   </div>
@@ -35,7 +35,7 @@
 
   <div class="vol">
     <i class="fa-solid fa-volume-low" id="vol_icon" #vol_icon></i>
-    <input type="range" id="vol" #vol min="0" value="30" max="100" />
+    <input type="range" id="vol" #vol min="0" value="30" max="100"/>
     <div class="vol_bar" #vol_bar></div>
     <div class="dot" id="vol_dot" #vol_dot></div>
 
@@ -44,12 +44,12 @@
     <div class="mode-type">HIFI</div>
 
     <i class="favorite fa-heart"
-      [ngClass]="{'fa-solid': selectedSong.isFav === true, 'fa-regular': selectedSong.isFav === false}"
-      [ngStyle]="{'color': selectedSong.isFav === true ? 'rgb(212, 15, 15)' : ''}" (click)="favoriteSong(selectedSong)">
+       [ngClass]="{'fa-solid': selectedSong.isFav, 'fa-regular': !selectedSong.isFav}"
+       [ngStyle]="{'color': selectedSong.isFav === true ? 'rgb(212, 15, 15)' : ''}"
+       (click)="favoriteSong(selectedSong)">
     </i>
 
-    <i class="fa-solid fa-ellipsis"></i>
-    <i class="bi bi-chat-dots-fill" (click)="openDialogComment()"></i>
-    <i class="fa-solid fa-square-arrow-up-right"></i>
+    <i class="fa-solid fa-comment-dots" (click)="openDialogComment()"></i>
+    <i class="fa-solid fa-square-arrow-up-right" (click)="openDialog(selectedSong)"></i>
   </div>
 </div>

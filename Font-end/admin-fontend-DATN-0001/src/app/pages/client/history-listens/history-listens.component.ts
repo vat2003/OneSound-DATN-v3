@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import bootstrap from '../../../../main.server';
-import { ActivatedRoute } from '@angular/router';
-import { HistoryListensService } from '../../../services/history-listens/history-listens.service';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { DataGlobalService } from '../../../services/data-global.service';
-import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
+import {ActivatedRoute} from '@angular/router';
+import {HistoryListensService} from '../../../services/history-listens/history-listens.service';
+import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
+import {DataGlobalService} from '../../../services/data-global.service';
+import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
 
 @Component({
   selector: 'app-history-listens',
@@ -19,11 +19,13 @@ export class HistoryListensComponent {
   accountId!: number;
   history: any[] = [];
   song: any[] = [];
+
   constructor(private route: ActivatedRoute,
-    private historyListen: HistoryListensService,
-    private dataGlobal: DataGlobalService,
-    private firebaseStorage: FirebaseStorageCrudService,
-  ) { }
+              private historyListen: HistoryListensService,
+              private dataGlobal: DataGlobalService,
+              private firebaseStorage: FirebaseStorageCrudService,
+  ) {
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -32,17 +34,16 @@ export class HistoryListensComponent {
       // Sau khi lấy được accountId, bạn có thể sử dụng nó ở đây hoặc thực hiện các thao tác khác.
     });
     this.getLisByUserId();
+
   }
 
   getLisByUserId() {
     this.historyListen.getHisByUserId(this.accountId).subscribe((res) => {
       this.history = res;
+      console.log('likq', this.history)
       res.forEach(async (histo) => {
         this.song.push(histo.song)
       });
-
-
-
       res.forEach(async (his) => {
         his.song.image = await this.setImageURLFirebase(his.song.image);
       });
@@ -64,11 +65,6 @@ export class HistoryListensComponent {
       return 'null';
     }
   }
-
-
-
-
-
 
 
 }

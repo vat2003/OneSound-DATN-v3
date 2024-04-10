@@ -63,7 +63,7 @@
               <th scope="col">Email</th>
               <th scope="col">Birthday</th>
               <th scope="col">Gender</th>
- 
+
               <th scope="col">Role</th>
               <th scope="col">Image</th>
               <th scope="col">Address</th>
@@ -92,7 +92,7 @@
             [legend]="lineChartLegend">
           </canvas> -->
         </div>
-        <!-- 
+        <!--
         <div style="display: block;">
           <div>Bar Chart</div>
           <div class="  col-md-2">
@@ -109,7 +109,7 @@
             [legend]="BarChartLegend">
           </canvas>
 
-         
+
 
         </div> -->
 
@@ -121,18 +121,7 @@
           Update
         </button> -->
 
-        <div class="  col-md-2">
-          <label for="floatingSelect">Year</label>
-          <select class="form-select barYear" id="barYear" name="barYear" [(ngModel)]="barYear"
-            aria-label="Floating label select example" (change)="changeUserData()">
 
-          </select>
-
-
-        </div>
-
-
-        <app-bar-chart [userData]="countUserOrderByMonth"></app-bar-chart>
 
 
 
@@ -222,6 +211,19 @@
         <div class="text-center" *ngIf="user.length > 0">
           <pagination-controls (pageChange)="pU = $event" id="UserId"></pagination-controls>
         </div>
+
+        <div class="  col-md-2">
+          <label for="floatingSelect">Year</label>
+          <select class="form-select barYear" id="barYear" name="barYear" [(ngModel)]="barYear"
+                  aria-label="Floating label select example" (change)="changeUserData()">
+
+          </select>
+
+
+        </div>
+
+
+        <app-bar-chart [userData]="countUserOrderByMonth"></app-bar-chart>
 
       </div>
     </div>

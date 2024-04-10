@@ -13,13 +13,6 @@
 
     <tbody>
     <tr *ngFor="let playlist of PlaylistTable">
-
-      <!--        <td>-->
-      <!--          <input #viet type="checkbox" class="checkbox" [ngClass]="{'added': playlistSongMap[playlist.id ?? 0]}"-->
-      <!--            (change)="toggleAddRemove(playlist)" [checked]="playlistSongMap[playlist.id ?? 0]">-->
-      <!--          <span *ngIf="viet.checked">ADDED</span>-->
-      <!--          <span *ngIf="!viet.checked">ADD</span>-->
-      <!--        </td>-->
       <td class="playlist-action">
         <label class="checkbox-container">
           <input #viet type="checkbox" class="checkbox" [ngClass]="{'added': playlistSongMap[playlist.id ?? 0]}"
@@ -29,7 +22,7 @@
         <span class="action-label">{{ viet.checked ? 'ADDED' : 'ADD' }}</span>
       </td>
       <td>
-        <a class="btn-link" (click)="timname(playlist.id)">{{ playlist.name }}</a>
+        <a class="action-label">{{ playlist.name }}</a>
       </td>
     </tr>
 
@@ -50,8 +43,5 @@
       </div>
     </div>
   </div>
-
-
-  <!--  <button (click)="toggleForm()" class="toggle-form-button">Toggle Form</button>-->
-  <hr>
+</div>
 

@@ -21,6 +21,7 @@ import { ListeningStatsService } from '../../../services/listening-stats/listeni
 import { HistoryListensService } from '../../../services/history-listens/history-listens.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CommentSongComponent } from '../comment-song/comment-song.component';
+import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
 
 @Component({
   selector: 'app-user-player-audio',
@@ -323,6 +324,18 @@ export class UserPlayerAudioComponent implements OnInit {
     const dialogRef = this.matDialog.open(CommentSongComponent, {
       data: { song: this.selectedSong },
       // selectedSong
+    });
+  }
+
+  openDialog(songInput: Song) {
+    const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
+      data: {song: songInput},
+    });
+
+    dialogRef.afterOpened().subscribe(() => {
+      // this.getAllSongs();
+    });
+    dialogRef.afterClosed().subscribe((result) => {
     });
   }
 }

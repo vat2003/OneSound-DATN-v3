@@ -30,22 +30,6 @@
       <div class="navbar-nav w-100">
         <!--        <a routerLink="" class="nav-item nav-link active"><i-->
         <a href="onesound/admin" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-        <!-- dropdown -->
-<!--        <div class="nav-item dropdown">-->
-<!--          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i-->
-<!--            class="fa fa-laptop me-2"></i>Management</a>-->
-<!--          <div class="dropdown-menu bg-transparent border-0">-->
-<!--            &lt;!&ndash;            <a routerLink="manage/statistical/report" class="dropdown-item">Statistical</a>&ndash;&gt;-->
-<!--            <a routerLink="manage/statictical/report" class="dropdown-item">Statiscal</a>-->
-<!--            <a routerLink="manage/album" class="dropdown-item">Album</a>-->
-<!--            <a routerLink="manage/artist" class="dropdown-item">Artist</a>-->
-<!--            <a routerLink="manage/genre" class="dropdown-item">Genre</a>-->
-<!--            <a routerLink="manage/song" class="dropdown-item">Song</a>-->
-<!--            <a routerLink="manage/user" class="dropdown-item">User</a>-->
-<!--            <a routerLink="manage/author" class="dropdown-item">Author</a>-->
-
-<!--          </div>-->
-<!--        </div>-->
         <a routerLink="404" class="nav-item nav-link" routerLink="manage/statictical/report"><i
           class="fa fa-pie-chart me-2"></i>Report</a>
         <a routerLink="404" class="nav-item nav-link" routerLink="manage/album"><i class="fa fa-record-vinyl me-2"></i>Albums</a>
@@ -57,16 +41,14 @@
         <a routerLink="chart" class="nav-item nav-link" routerLink="manage/user"><i class="fa fa-user-circle me-2"></i>Users</a>
         <a routerLink="chart" class="nav-item nav-link" routerLink="manage/author"><i
           class="fa-brands fa-creative-commons-by me-2"></i>Authors</a>
-<!--        <div class="nav-item dropdown">-->
-<!--          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i-->
-<!--            class="far fa-file-alt me-2"></i>Pages</a>-->
-<!--          <div class="dropdown-menu bg-transparent border-0">-->
-<!--            <a routerLink="/onesound/signin" class="dropdown-item">Sign In</a>-->
-<!--            <a routerLink="/onesound/signup" class="dropdown-item">Sign Up</a>-->
-<!--            <a routerLink="404" class="dropdown-item">404 Error</a>-->
-<!--            <a routerLink="blank" class="dropdown-item">Blank Page</a>-->
-<!--          </div>-->
-<!--        </div>-->
+        <hr>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+            class="far fa-file-alt me-2"></i>Others</a>
+          <div class="dropdown-menu bg-transparent border-0">
+            <a href="onesound/home" class="dropdown-item">Client Side</a>
+          </div>
+        </div>
       </div>
     </nav>
   </div>
@@ -76,87 +58,18 @@
   <!-- Content Start -->
   <div class="content">
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-4 py-0">
+    <nav class="navbar navbar-expand bg-secondary navbar-dark sticky-top px-2 py-0 mb-2">
       <a href="onesound/admin" class="navbar-brand d-flex d-lg-none me-4">
         <h2 class="text-primary mb-0"><i class="fa fa-user-edit"></i></h2>
       </a>
-      <a href="onesound/admin" class="sidebar-toggler flex-shrink-0">
-        <i class="fa fa-bars"></i>
-      </a>
-      <!--      <form class="d-none d-md-flex ms-4">-->
-      <!--        <input class="form-control bg-dark border-0" type="search" placeholder="Search">-->
-      <!--      </form>-->
       <div class="navbar-nav align-items-center ms-auto">
-        <!--        <div class="nav-item dropdown">-->
-        <!--          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
-        <!--            <i class="fa fa-envelope me-lg-2"></i>-->
-        <!--            <span class="d-none d-lg-inline-flex">Message</span>-->
-        <!--          </a>-->
-        <!--          <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">-->
-        <!--            <a href="#" class="dropdown-item">-->
-        <!--              <div class="d-flex align-items-center">-->
-        <!--                <img class="rounded-circle" src="assets/img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
-        <!--                <div class="ms-2">-->
-        <!--                  <h6 class="fw-normal mb-0">Jhon send you a message</h6>-->
-        <!--                  <small>15 minutes ago</small>-->
-        <!--                </div>-->
-        <!--              </div>-->
-        <!--            </a>-->
-        <!--            <hr class="dropdown-divider">-->
-        <!--            <a href="#" class="dropdown-item">-->
-        <!--              <div class="d-flex align-items-center">-->
-        <!--                <img class="rounded-circle" src="assets/img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
-        <!--                <div class="ms-2">-->
-        <!--                  <h6 class="fw-normal mb-0">Jhon send you a message</h6>-->
-        <!--                  <small>15 minutes ago</small>-->
-        <!--                </div>-->
-        <!--              </div>-->
-        <!--            </a>-->
-        <!--            <hr class="dropdown-divider">-->
-        <!--            <a href="#" class="dropdown-item">-->
-        <!--              <div class="d-flex align-items-center">-->
-        <!--                <img class="rounded-circle" src="assets/img/user.jpg" alt="" style="width: 40px; height: 40px;">-->
-        <!--                <div class="ms-2">-->
-        <!--                  <h6 class="fw-normal mb-0">Jhon send you a message</h6>-->
-        <!--                  <small>15 minutes ago</small>-->
-        <!--                </div>-->
-        <!--              </div>-->
-        <!--            </a>-->
-        <!--            <hr class="dropdown-divider">-->
-        <!--            <a href="#" class="dropdown-item text-center">See all message</a>-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--        <div class="nav-item dropdown">-->
-        <!--          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
-        <!--            <i class="fa fa-bell me-lg-2"></i>-->
-        <!--            <span class="d-none d-lg-inline-flex">Notification</span>-->
-        <!--          </a>-->
-        <!--          <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">-->
-        <!--            <a href="#" class="dropdown-item">-->
-        <!--              <h6 class="fw-normal mb-0">Profile updated</h6>-->
-        <!--              <small>15 minutes ago</small>-->
-        <!--            </a>-->
-        <!--            <hr class="dropdown-divider">-->
-        <!--            <a href="#" class="dropdown-item">-->
-        <!--              <h6 class="fw-normal mb-0">New user added</h6>-->
-        <!--              <small>15 minutes ago</small>-->
-        <!--            </a>-->
-        <!--            <hr class="dropdown-divider">-->
-        <!--            <a href="#" class="dropdown-item">-->
-        <!--              <h6 class="fw-normal mb-0">Password changed</h6>-->
-        <!--              <small>15 minutes ago</small>-->
-        <!--            </a>-->
-        <!--            <hr class="dropdown-divider">-->
-        <!--            <a href="#" class="dropdown-item text-center">See all notifications</a>-->
-        <!--          </div>-->
-        <!--        </div>-->
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
             <img class="rounded-circle me-lg-2" src="{{account?.avatar_url}}" alt="" style="width: 40px; height: 40px;">
             <span class="d-none d-lg-inline-flex">{{ account?.fullname }}</span>
           </a>
           <div class="dropdown-menu dropdown-menu-end bg-secondary border-0 rounded-0 rounded-bottom m-0">
-<!--            <a routerLink="/onesound/admin/manage/profile" (click)="profile()" class="dropdown-item">My Profile</a>-->
+            <!--            <a routerLink="/onesound/admin/manage/profile" (click)="profile()" class="dropdown-item">My Profile</a>-->
             <!--            <a href="#" class="dropdown-item">Settings</a>-->
             <a routerLink="/signin" (click)="logout()" class="dropdown-item">Log Out</a>
           </div>

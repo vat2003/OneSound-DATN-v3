@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {
   Component,
   ElementRef,
@@ -7,26 +7,29 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
-import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
-import { YouTubePlayerModule, YouTubePlayer } from '@angular/youtube-player';
-import { HttpClientModule } from '@angular/common/http';
-import { YoutubeApiSService } from '../../../services/youtube-api-s.service';
-import { Subscription } from 'rxjs';
-import { DataGlobalService } from '../../../services/data-global.service';
-import { log } from 'node:console';
-import { FavoriteService } from '../../../services/favorite-service/favorite.service';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { FavoriteYoutbe } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
-import { Youtube } from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
-import { UserPlaylistModalComponent } from '../user-playlist-modal/user-playlist-modal.component';
-import { MatDialog } from '@angular/material/dialog';
-import { UserPlaylistYoutubeModalComponentComponent } from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
-import { PlaylistYoutubeService } from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
-import { ListeningStatsService } from '../../../services/listening-stats/listening-stats.service';
-import { CommentYoutubeComponent } from '../comment-youtube/comment-youtube.component';
+import {FormsModule} from '@angular/forms';
+import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
+import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
+import {YouTubePlayerModule, YouTubePlayer} from '@angular/youtube-player';
+import {HttpClientModule} from '@angular/common/http';
+import {YoutubeApiSService} from '../../../services/youtube-api-s.service';
+import {Subscription} from 'rxjs';
+import {DataGlobalService} from '../../../services/data-global.service';
+import {log} from 'node:console';
+import {FavoriteService} from '../../../services/favorite-service/favorite.service';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {FavoriteYoutbe} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-youtbe';
+import {Youtube} from '../../adminPage/adminEntityService/adminEntity/youtube-entity/youtube';
+import {UserPlaylistModalComponent} from '../user-playlist-modal/user-playlist-modal.component';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  UserPlaylistYoutubeModalComponentComponent
+} from '../user-playlist-youtube-modal-component/user-playlist-youtube-modal-component.component';
+import {PlaylistYoutubeService} from '../../adminPage/adminEntityService/adminService/PlaylistYoutubeService.service';
+import {ListeningStatsService} from '../../../services/listening-stats/listening-stats.service';
+import {CommentYoutubeComponent} from '../comment-youtube/comment-youtube.component';
+
 @Component({
   selector: 'app-user-player-api-youtube',
   standalone: true,
@@ -57,6 +60,7 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
   favList: any[] = [];
   currentIndex!: number;
   arrPreNext: any[] = [];
+
   constructor(
     private youtubeService: YoutubeApiSService,
     private dataGlobal: DataGlobalService,
@@ -65,7 +69,8 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     private matDialog: MatDialog,
     private PlaylistYoutubeService: PlaylistYoutubeService,
     private listeningStatsService: ListeningStatsService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     // this.selectedVideo = this.dataGlobal.getItem('songHeardLastTimeYoutube');
@@ -130,6 +135,7 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
       }
     }, 1000); // Cập nhật mỗi giây
   }
+
   formatDuration(duration: number): string {
     let minutes = Math.floor(duration / 60);
     let seconds = Math.floor(duration % 60);
@@ -167,6 +173,17 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     }
   }
 
+  openDialog2(songInput: Song) {
+    const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
+      data: {song: songInput},
+    });
+
+    dialogRef.afterOpened().subscribe(() => {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+    });
+  }
+
   openDialog() {
     debugger;
     this.selectedVideo = this.dataGlobal.getItem('songHeardLast');
@@ -187,11 +204,12 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
         const dialogRef = this.matDialog.open(
           UserPlaylistYoutubeModalComponentComponent,
           {
-            data: { youtubeId: this.videoId },
+            data: {youtubeId: this.videoId},
           }
         );
 
-        dialogRef.afterClosed().subscribe((result) => {});
+        dialogRef.afterClosed().subscribe((result) => {
+        });
       },
       (error) => {
         console.error('Failed to add song to the playlist:', error);
@@ -259,11 +277,14 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
         return;
       }
       youtubeitem.isFav = false;
-      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {});
+      this.favYoutube.deleteFavoriteYoutube(favyt).subscribe((data) => {
+      });
     } else {
       youtubeitem.isFav = true;
-      this.favYoutube.createYt(youtube).subscribe((data) => {});
-      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {});
+      this.favYoutube.createYt(youtube).subscribe((data) => {
+      });
+      this.favYoutube.addFavoriteYoutube(favyt).subscribe((data) => {
+      });
     }
   }
 
@@ -275,6 +296,7 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     this.selectedVideo = this.arrPreNext[this.currentIndex];
     this.videoId = this.selectedVideo.id.videoId;
   }
+
   next() {
     this.currentIndex = this.currentIndex + 1;
     if (this.currentIndex > this.arrPreNext.length - 1) {
@@ -283,11 +305,13 @@ export class UserPlayerApiYoutubeComponent implements OnInit {
     this.selectedVideo = this.arrPreNext[this.currentIndex];
     this.videoId = this.selectedVideo.id.videoId;
   }
-  incrementPlayCount() {}
+
+  incrementPlayCount() {
+  }
 
   openDialogComment() {
     const dialogRef = this.matDialog.open(CommentYoutubeComponent, {
-      data: { song: this.selectedVideo },
+      data: {song: this.selectedVideo},
       // selectedSong
     });
   }

@@ -621,12 +621,7 @@
             <th scope="col">Action</th>
           </tr>
           </thead>
-          <tbody
-            *ngIf="
-              songsinactive && songsinactive.length > 0;
-              else noDataMessage
-            "
-          >
+          <tbody *ngIf="songsinactive.length > 0">
           <tr
             *ngFor="
                 let album of this.songsinactive

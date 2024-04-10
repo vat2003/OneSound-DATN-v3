@@ -26,6 +26,9 @@ export class SongService {
   getAllSongsInactive(): Observable<Song[]> {
     return this.httpClient.get<Song[]>(`${this.baseUrl}/activeFalse`);
   }
+  getAllSongsActive(): Observable<Song[]> {
+    return this.httpClient.get<Song[]>(`${this.baseUrl}/activeTrue`);
+  }
 
   getAllSongsNonePage(): Observable<Song[]> {
     return this.httpClient.get<Song[]>(`${this.baseUrl}/findAll`);

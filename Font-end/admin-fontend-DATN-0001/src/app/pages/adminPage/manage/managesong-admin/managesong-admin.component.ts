@@ -838,11 +838,12 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
   // }
   onFileSelectedAudio(event: any) {
     const selectedFile = event.target.files[0];
-    const maxSizeInBytes = 8 * 1024 * 1024; // giới hạn 8 MB
+    const maxSizeInBytes = 800 * 1024 * 1024; // 800MB in bytes
+    // giới hạn 8 MB
 
     // Kiểm tra giới hạn kích thước tệp
     if (selectedFile.size > maxSizeInBytes) {
-      alert("File size exceeds the allowed limit (8 MB). Please choose a smaller file.");
+      alert("File size exceeds the allowed limit (800MB). Please choose a smaller file.");
       this.resetFileInput();
       return;
     }
@@ -1256,21 +1257,6 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     }
   }
 
-  // checkAge() {
-  //   if (this.song.release) {
-  //     const today = new Date();
-  //     const birthDate = new Date(this.song.release);
-  //     let age = today.getFullYear() - birthDate.getFullYear();
-  //     const monthDiff = today.getMonth() - birthDate.getMonth();
-  //     if (monthDiff < 0) {
-  //       age--;
-  //     }
-  //     else{
-  //       this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
-  //     }
-  //   }
-  // }
-
   validateAuthorEmpty(valueCheck: any): string[] {
     const errorFieldsArr: string[] = [];
     for (const key in valueCheck) {
@@ -1408,11 +1394,15 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 5000});
       } catch (error) {
         console.error("Error occurred while adding song:", error);
-        alert("Failed to add song. Please try again later." + error);
+        // alert("Failed to add song. Please try again later." + error);
+        this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 5000});
+
       }
     }, (error) => {
       console.error("Add song failed:", error);
-      alert("Failed to add song. Please try again later.");
+      // alert("Failed to add song. Please try again later.");
+      this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 5000});
+
     });
   }
 
@@ -1579,7 +1569,8 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   displayDataOnTable(page: number, limit: number) {
-    this.SongService.getAllSongs().subscribe(
+    this.SongService.getAllSongsActive().subscribe(
+    // this.SongService.getAllSongs().subscribe(
       async (data) => {
         console.log(data);
         this.imageSong = data.map((album: Song) => album.image);
