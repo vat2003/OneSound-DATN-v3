@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SongSinger } from '../adminEntity/song/songSinger';
 import { SongSinger1 } from '../adminEntity/song/SongSinger1';
+import { Singer } from '../adminEntity/singer/singer';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,10 @@ export class SongSingerService {
 
 
 
-  getsinger(id:number): Observable<SongSinger1> {
-    return this.httpClient.get<SongSinger1>(`${this.baseURL1}/${id}`);
+  getsinger(id:number): Observable<Singer> {
+    return this.httpClient.get<Singer>(`${this.baseURL1}/${id}`);
   }
-  
+
 
   getAllSingerBySong(id:number):Observable<any[]> {
     return this.httpClient.get<SongSinger[]>(`${this.baseURL}/get-by-song/${id}`);

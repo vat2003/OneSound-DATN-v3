@@ -33,7 +33,7 @@ import { SongSinger1 } from '../../adminPage/adminEntityService/adminEntity/song
 export class UserVipsongComponent {
  // songs: Song[] = [];
  songs: Song[] = [];
- SongSinger1: SongSinger1[] = [];
+ SongSinger1: Singer[] = [];
 
  namevalue!: any[];
  namevalue2: any[] = [];
@@ -74,8 +74,9 @@ export class UserVipsongComponent {
    this.acc = this.userService.getUserResponseFromLocalStorage();
    this.id = this.route.snapshot.params['id'];
   //  this.getAllSongs();
+  // this.getSingersForSongs();
    this.getAllNftsByOwner();
-   this.getSingersForSongs();
+  //  this.getAllSongs();
  }
 
  getAllSongs(): void {
@@ -95,15 +96,18 @@ export class UserVipsongComponent {
   }
      // this.songs1 = this.songsfromdata;
 
-     this.getGenresForSongs();
-     this.getSingersForSongs();
+    //  this.getGenresForSongs();
+    //  this.getSingersForSongs();
    });
  }
 
  getSingersForSongs() {
+  debugger
    const observables = this.songs.map((song) => {
      return this.SongSingerService.getAllSingerBySong(song.id).pipe(
        switchMap((singers) => {
+  debugger
+
          const singerObservables = singers.map((singer) =>
            this.singerService.getArtistById(singer.singer.id)
          );
@@ -118,6 +122,7 @@ export class UserVipsongComponent {
 
    forkJoin(observables).subscribe((results) => {
      results.forEach((result) => {
+  debugger
        this.singerMap[result.songId] = result.singers;
      });
      console.log('Singer Map:', this.singerMap);
@@ -186,8 +191,6 @@ export class UserVipsongComponent {
    this.dataGlobal.changeArr(this.songs);
  }
 
-
-
 async getAllNftsByOwner() {
   try {
     const res = await axios.post('https://api.devnet.solana.com', {
@@ -202,10 +205,10 @@ async getAllNftsByOwner() {
     });
 
     console.log("DATA NÈ EM", res.data);
-    
+
     const data: any[] = res.data.result.items;
     console.log("DỮ LIỆU: ", data);
-    
+
     const transformedData = data.map(m => {
       const att: any = {};
       const originAtt = m?.content?.metadata?.attributes || [];
@@ -236,35 +239,136 @@ async getAllNftsByOwner() {
 
     for (let a of d) {
       console.log("ID NHẠC: ", a.id);
-      try {
-        const song = await this.SongService.getSongById(a.id).toPromise();
-        if (song) {
-          const SongSinger1 = await this.SongSingerService.getsinger(a.id).toPromise();
-      
-          song.image = await this.setImageURLFirebase(song.image);
-      
-          this.songs.push(song);
-          if (SongSinger1) {
-            this.SongSinger1.push(SongSinger1);
-          }
-          console.log("BÀI HÁT: ", this.songs);
-          debugger
-          console.log("CA SĨ: ", this.SongSinger1);
+      // try {
+      //   const song = await this.SongService.getSongById(a.id).toPromise();
+      //   if (song) {
+      //     // const SongSinger1:Singer[]|undefined = await this.SongSingerService.getsinger(a.id).toPromise();
+      //     this.SongSingerService.getAllSingerBySong(a.id).subscribe(data=>{
+      //       // song.singer.push(data.singer.);
+      //     })
+      //     song.image = await this.setImageURLFirebase(song.image);
 
-     
-     
-        } else {
-          console.error(`Không tìm thấy bài hát với ID ${a.id}`);
-        }
-      } catch (error) {
-        console.error('Lỗi khi lấy thông tin bài hát hoặc ca sĩ:', error);
-      }
+      //     this.songs.push(song);
+      //     if (SongSinger1) {
+      //       // this.SongSinger1.push(SongSinger1);
+      //     }
+      //     console.log("BÀI HÁT: ", this.songs);
+      //     debugger
+      //     console.log("CA SĨ: ", this.SongSinger1);
+
+      //     song.singer=this.SongSinger1
+
+
+      //   } else {
+      //     console.error(`Không tìm thấy bài hát với ID ${a.id}`);
+      //   }
+      // } catch (error) {
+      //   console.error('Lỗi khi lấy thông tin bài hát hoặc ca sĩ:', error);
+      // }
+try {
+  if(!a.id.NaN){
+    this.SongService.getSongById(a.id).subscribe( async data=>{
+      data.image = await this.setImageURLFirebase(data.image);
+      data.singer=a.numberOfCopies;
+      this.songs.push(data);
+      this.getSingersForSongs();
+    })
+  }
+
+} catch (error) {
+  console.error("LỖI: ",error)
+}
+
+
     }
   } catch (error) {
     console.log("CAN't load: ", error)
   }
 }
 
+// async getAllNftsByOwner() {
+//   try {
+//     const res = await axios.post('https://api.devnet.solana.com', {
+//       "jsonrpc": "2.0",
+//       "id": 1,
+//       "method": "getAssetsByOwner",
+//       "params": {
+//         "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
+//         "page": 1,
+//         "limit": 100
+//       }
+//     });
+
+//     console.log("DATA NÈ EM", res.data);
+
+//     const data: any[] = res.data.result.items;
+//     console.log("DỮ LIỆU: ", data);
+
+//     const transformedData = data.map(m => {
+//       const att: any = {};
+//       const originAtt = m?.content?.metadata?.attributes || [];
+//       originAtt.forEach((element: any) => {
+//         if (element?.value) {
+//           att[element?.trait_type] = element?.value
+//         }
+//       });
+//       const dto = {
+//         id: m.id, // Thêm trường id vào DTO
+//         image_uri: m?.content?.files[0]?.uri,
+//         path_uri: m?.content?.files[1]?.uri,
+//         ...att,
+//         owner: m?.ownership?.owner
+//       }
+//       return dto
+//     });
+
+//     const lisIds = Array.from(new Set(transformedData.map(m => m?.id)));
+//     const d = lisIds.map(m => {
+//       const r = transformedData.filter(f => f.id === m);
+//       return {
+//         ...r[0], numberOfCopies: r.length
+//       };
+//     })
+
+//     console.log("NHẠC NÈ: ", d);
+
+//     for (let a of d) {
+//       console.log("ID NHẠC: ", a.id);
+//       await this.processSong(a.id);
+//     }
+//   } catch (error) {
+//     console.log("CAN't load: ", error)
+//   }
+// }
+
+// async processSong(id: number) {
+//   try {
+//     const song = await this.SongService.getSongById(id).toPromise();
+//     if (song) {
+//       song.image = await this.setImageURLFirebase(song.image);
+//       this.songs.push(song);
+//       await this.processSingersForSong(id);
+//     } else {
+//       console.error(`Không tìm thấy bài hát với ID ${id}`);
+//     }
+//   } catch (error) {
+//     console.error('Lỗi khi lấy thông tin bài hát:', error);
+//   }
+// }
+
+// async processSingersForSong(songId: number) {
+//   try {
+//     const id: any = await this.SongSingerService.getAllSingerBySong(songId).toPromise();
+//     const singerObservables = id.map((singer: any) =>
+//       this.singerService.getArtistById(singer.singer.id)
+//     );
+//     const singerDataArray: any = await forkJoin(singerObservables).toPromise();
+//     this.singerMap[songId] = singerDataArray;
+//     console.log('Singer Map:', this.singerMap);
+//   } catch (error) {
+//     console.error('Lỗi khi lấy thông tin các ca sĩ:', error);
+//   }
+// }
 
 
 }

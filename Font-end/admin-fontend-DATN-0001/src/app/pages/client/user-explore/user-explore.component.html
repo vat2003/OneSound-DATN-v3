@@ -1,12 +1,12 @@
 <div class="popular_song">
   <div class="h3">
     <h3>Explore your vibes</h3>
-    <div class="btn_s">
+    <!-- <div class="btn_s">
       <i class="fa-solid fa-circle-chevron-left"></i>
       <i class="fa-solid fa-circle-chevron-right"></i>
-    </div>
+    </div> -->
   </div>
-  <div class="pop_song" id="list-categories">
+  <!-- <div class="pop_song" id="list-categories">
     <li class="songItem" *ngFor="let item of albums" (click)="gotoDetailAlbum(item)">
       <div class="img_play">
         <img src="{{ item.image }}" alt="alan" style="height: 180px; object-fit: cover" />
@@ -14,78 +14,90 @@
       </div>
       <h5>
         <p class="line-clamp">{{ item.title }}</p>
-        <div class="subtitle line-clamp line-2">{{ item.releaseYear }}</div>
-        <!--        <div class="subtitle line-clamp line-2">-->
-        <!--          {{ item.songs.length }} songs-->
-        <!--        </div>-->
-      </h5>
-    </li>
-    <!--  -->
-  </div>
-</div>
+        <div class="subtitle line-clamp line-2">{{ item.releaseYear }}</div> -->
+  <!--        <div class="subtitle line-clamp line-2">-->
+  <!--          {{ item.songs.length }} songs-->
+  <!--        </div>-->
+  <!-- </h5>
+    </li> -->
+  <!--  -->
+  <!-- </div>
+</div> -->
 
-<div class="popular_song">
-  <div class="h3">
-    <h3>Hot Artists</h3>
-    <div class="btn_s">
-      <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
-      <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+  <div class="popular_song">
+    <div class="h3">
+      <h3>Hot Artists</h3>
+      <div class="btn_s">
+        <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
+        <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+      </div>
+    </div>
+    <div class="pop_song">
+      <li
+        class="songItem"
+        *ngFor="let hotArtistitem of hotArtist"
+        (click)="gotoDetailArtist(hotArtistitem)"
+      >
+        <div class="img_play">
+          <img
+            src="{{ hotArtistitem.image }}"
+            alt="alan"
+            style="height: 180px; object-fit: cover"
+          />
+          <i class="bi fa-solid fa-circle-play" i="1"></i>
+        </div>
+        <h5>
+          <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
+
+          <div class="subtitle line-clamp line-2">1M follow</div>
+        </h5>
+      </li>
     </div>
   </div>
-  <div class="pop_song">
-    <li class="songItem" *ngFor="let hotArtistitem of hotArtist" (click)="gotoDetailArtist(hotArtistitem)">
-      <div class="img_play">
-        <img src="{{ hotArtistitem.image }}" alt="alan" style="height: 180px; object-fit: cover" />
-        <i class="bi fa-solid fa-circle-play" i="1"></i>
-      </div>
-      <h5>
-        <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
 
-        <div class="subtitle line-clamp line-2">1M follow</div>
-      </h5>
-    </li>
-  </div>
-</div>
-
-<div class="suggested-new-tracks">
-  <div class="h3">
-    <h3>Suggested new tracks</h3>
-    <!-- <div class="btn_s">
+  <div class="suggested-new-tracks">
+    <div class="h3">
+      <h3>Suggested new tracks</h3>
+      <!-- <div class="btn_s">
       <button>VIEW ALL</button>
     </div> -->
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>IMAGE</th>
-        <th>TITLE</th>
-        <th>ARTIST</th>
-        <!-- <th>GENRE</th>
-        <th>TIME</th> -->
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="list-songs">
-      <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
-        <td>{{ i + 1 }}</td>
-        <td>
-          <img [src]="s.image" alt="" />
-          <i class="bi fa-solid fa-circle-play"></i>
-        </td>
-        <td>
-          <div class="table-title">
-            <div class="line-clamp">{{ s.name }}</div>
-            <span class="table-song-type">HOT</span>
-          </div>
-        </td>
-        <td>
-          <div>
-            <span *ngFor="let singer of singerMap[s.id]; let last = last">{{ singer.fullname
-              }}{{ !last && singerMap[s.id].length > 1 ? ", " : "" }}</span>
-          </div>
-        </td>
-        <!-- <td>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>IMAGE</th>
+          <th>TITLE</th>
+          <th>ARTIST</th>
+          <th>QUANTITY</th>
+          <!-- <th>TIME</th> -->
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="list-songs">
+        <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <!-- <i class="bi fa-solid fa-circle-play"></i> -->
+            <img [src]="s.image" alt="" />
+          </td>
+          <td>
+            <div class="table-title">
+              <div class="line-clamp">{{ s.name }}</div>
+              <span class="table-song-type">HOT</span>
+            </div>
+          </td>
+          <!-- <td>
+            <div>
+              <span *ngFor="let singer of singerMap[s.id]">{{
+                singer.fullname
+              }}</span>
+            </div>
+          </td> -->
+
+          <td>{{ s.sg }}</td>
+          <td>{{ s.singer }}</td>
+          <!-- <td>
         <div>
             <span *ngFor="let singer of genreMap[s.id]; let last = last"
             >{{
@@ -95,94 +107,100 @@
         </div>
       </td>
       <td>3:15</td> -->
-        <td *ngIf="this.acc">
-          <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
-          <i class="favorite fa-heart" [ngClass]="{
-              'fa-solid': s.isFav === true,
-              'fa-regular': s.isFav === false
-            }" [ngStyle]="{ color: s.isFav === true ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteSong(s)">
-          </i>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+          <td *ngIf="this.acc">
+            <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
+            <i
+              class="favorite fa-heart"
+              [ngClass]="{
+                'fa-solid': s.isFav === true,
+                'fa-regular': s.isFav === false
+              }"
+              [ngStyle]="{ color: s.isFav === true ? 'rgb(212, 15, 15)' : '' }"
+              (click)="favoriteSong(s)"
+            >
+            </i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<div class="popular_song">
-  <!--  <div class="h3">-->
-  <!--    <h3>Suggested new album</h3>-->
-  <!--    <div class="btn_s">-->
-  <!--      <i class="fa-solid fa-circle-chevron-left"></i>-->
-  <!--      <i class="fa-solid fa-circle-chevron-right"></i>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--  <div class="pop_song">-->
-  <!--    <li class="songItem">-->
-  <!--      <div class="img_play">-->
-  <!--        <img src="assets/img/client/album/taylor.jpg" alt="alan" />-->
-  <!--        <i class="bi fa-solid fa-circle-play" i="1"></i>-->
-  <!--      </div>-->
-  <!--      <h5>-->
-  <!--        <p class="line-clamp">Speak Now</p>-->
+  <div class="popular_song">
+    <!--  <div class="h3">-->
+    <!--    <h3>Suggested new album</h3>-->
+    <!--    <div class="btn_s">-->
+    <!--      <i class="fa-solid fa-circle-chevron-left"></i>-->
+    <!--      <i class="fa-solid fa-circle-chevron-right"></i>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <!--  <div class="pop_song">-->
+    <!--    <li class="songItem">-->
+    <!--      <div class="img_play">-->
+    <!--        <img src="assets/img/client/album/taylor.jpg" alt="alan" />-->
+    <!--        <i class="bi fa-solid fa-circle-play" i="1"></i>-->
+    <!--      </div>-->
+    <!--      <h5>-->
+    <!--        <p class="line-clamp">Speak Now</p>-->
 
-  <!--        <div class="subtitle line-clamp line-2">Taylor Swift</div>-->
-  <!--      </h5>-->
-  <!--    </li>-->
-  <!--    <li class="songItem">-->
-  <!--      <div class="img_play">-->
-  <!--        <img src="assets/img/client/album/conway.jpg" alt="alan" />-->
-  <!--        <i class="bi playListPlay bi-play-circle-fill" id="8"></i>-->
-  <!--        &lt;!&ndash; change All id  &ndash;&gt;-->
-  <!--      </div>-->
-  <!--      <h5>-->
-  <!--        <p class="line-clamp">Conway The Machine Present</p>-->
+    <!--        <div class="subtitle line-clamp line-2">Taylor Swift</div>-->
+    <!--      </h5>-->
+    <!--    </li>-->
+    <!--    <li class="songItem">-->
+    <!--      <div class="img_play">-->
+    <!--        <img src="assets/img/client/album/conway.jpg" alt="alan" />-->
+    <!--        <i class="bi playListPlay bi-play-circle-fill" id="8"></i>-->
+    <!--        &lt;!&ndash; change All id  &ndash;&gt;-->
+    <!--      </div>-->
+    <!--      <h5>-->
+    <!--        <p class="line-clamp">Conway The Machine Present</p>-->
 
-  <!--        <div class="subtitle line-clamp line-2">Conway The Machine</div>-->
-  <!--      </h5>-->
-  <!--    </li>-->
-  <!--    <li class="songItem">-->
-  <!--      <div class="img_play">-->
-  <!--        <img src="assets/img/client/album/sunburn.jpg" alt="alan" />-->
-  <!--        <i class="bi playListPlay bi-play-circle-fill" id="9"></i>-->
-  <!--      </div>-->
-  <!--      <h5>-->
-  <!--        <p class="line-clamp">Sunburn</p>-->
+    <!--        <div class="subtitle line-clamp line-2">Conway The Machine</div>-->
+    <!--      </h5>-->
+    <!--    </li>-->
+    <!--    <li class="songItem">-->
+    <!--      <div class="img_play">-->
+    <!--        <img src="assets/img/client/album/sunburn.jpg" alt="alan" />-->
+    <!--        <i class="bi playListPlay bi-play-circle-fill" id="9"></i>-->
+    <!--      </div>-->
+    <!--      <h5>-->
+    <!--        <p class="line-clamp">Sunburn</p>-->
 
-  <!--        <div class="subtitle line-clamp line-2">Dominice Fike</div>-->
-  <!--      </h5>-->
-  <!--    </li>-->
-  <!--    <li class="songItem">-->
-  <!--      <div class="img_play">-->
-  <!--        <img src="assets/img/client/album/lifedivided.jpg" alt="alan" />-->
-  <!--        <i class="bi playListPlay bi-play-circle-fill" id="10"></i>-->
-  <!--      </div>-->
-  <!--      <h5>-->
-  <!--        <p class="line-clamp">Down The Spiral Of A Soul</p>-->
+    <!--        <div class="subtitle line-clamp line-2">Dominice Fike</div>-->
+    <!--      </h5>-->
+    <!--    </li>-->
+    <!--    <li class="songItem">-->
+    <!--      <div class="img_play">-->
+    <!--        <img src="assets/img/client/album/lifedivided.jpg" alt="alan" />-->
+    <!--        <i class="bi playListPlay bi-play-circle-fill" id="10"></i>-->
+    <!--      </div>-->
+    <!--      <h5>-->
+    <!--        <p class="line-clamp">Down The Spiral Of A Soul</p>-->
 
-  <!--        <div class="subtitle line-clamp line-2">A life Divided</div>-->
-  <!--      </h5>-->
-  <!--    </li>-->
-  <!--    <li class="songItem">-->
-  <!--      <div class="img_play">-->
-  <!--        <img src="assets/img/client/album/reflection.jpg" alt="alan" />-->
-  <!--        <i class="bi playListPlay bi-play-circle-fill" id="11"></i>-->
-  <!--      </div>-->
-  <!--      <h5>-->
-  <!--        <p class="line-clamp">Reflections Revisited</p>-->
+    <!--        <div class="subtitle line-clamp line-2">A life Divided</div>-->
+    <!--      </h5>-->
+    <!--    </li>-->
+    <!--    <li class="songItem">-->
+    <!--      <div class="img_play">-->
+    <!--        <img src="assets/img/client/album/reflection.jpg" alt="alan" />-->
+    <!--        <i class="bi playListPlay bi-play-circle-fill" id="11"></i>-->
+    <!--      </div>-->
+    <!--      <h5>-->
+    <!--        <p class="line-clamp">Reflections Revisited</p>-->
 
-  <!--        <div class="subtitle line-clamp line-2">ILUITEQ</div>-->
-  <!--      </h5>-->
-  <!--    </li>-->
-  <!--    <li class="songItem">-->
-  <!--      <div class="img_play">-->
-  <!--        <img src="assets/img/client/album/mistake.jpg" alt="alan" />-->
-  <!--        <i class="bi playListPlay bi-play-circle-fill" id="12"></i>-->
-  <!--      </div>-->
-  <!--      <h5>-->
-  <!--        <p class="line-clamp">Mistakes & Contradictions</p>-->
+    <!--        <div class="subtitle line-clamp line-2">ILUITEQ</div>-->
+    <!--      </h5>-->
+    <!--    </li>-->
+    <!--    <li class="songItem">-->
+    <!--      <div class="img_play">-->
+    <!--        <img src="assets/img/client/album/mistake.jpg" alt="alan" />-->
+    <!--        <i class="bi playListPlay bi-play-circle-fill" id="12"></i>-->
+    <!--      </div>-->
+    <!--      <h5>-->
+    <!--        <p class="line-clamp">Mistakes & Contradictions</p>-->
 
-  <!--        <div class="subtitle line-clamp line-2">Eyelar</div>-->
-  <!--      </h5>-->
-  <!--    </li>-->
-  <!--  </div>-->
+    <!--        <div class="subtitle line-clamp line-2">Eyelar</div>-->
+    <!--      </h5>-->
+    <!--    </li>-->
+    <!--  </div>-->
+  </div>
 </div>
