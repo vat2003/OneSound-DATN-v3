@@ -8,7 +8,7 @@
         <form (ngSubmit)="onSubmit()">
           <div class="form-group m-3">
             <label for="name">Genre name</label>
-            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="Genree.name" required/>
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="Genree.name" required />
             <span *ngIf="errorFieldsArr.includes('name')" class="text-warning">*Please enter the music genre name</span>
             <span *ngIf="errorFieldsArr.includes('existGenreName')" class="text-warning">The name of the music genre
               already exists</span>
@@ -16,7 +16,7 @@
           <div class="form-group m-3">
             <label for="description">Description</label>
             <textarea type="text" class="form-control" id="description" rows="5" name="description"
-                      [(ngModel)]="Genree.description"></textarea>
+              [(ngModel)]="Genree.description"></textarea>
 
             <span *ngIf="errorFieldsArr.includes('description')" class="text-warning">*Please enter the music genre
               description</span>
@@ -25,11 +25,11 @@
 
           <div class="btn-group mb-3" role="group">
             <input type="radio" class="btn-check" name="active" id="btnradio1" autocomplete="off" checked [value]="true"
-                   [(ngModel)]="Genree.active"/>
+              [(ngModel)]="Genree.active" />
             <label class="btn btn-outline-primary" for="btnradio1">Active</label>
 
             <input type="radio" class="btn-check" name="active" id="btnradio3" autocomplete="off"
-                   [(ngModel)]="Genree.active" [value]="false"/>
+              [(ngModel)]="Genree.active" [value]="false" />
             <label class="btn btn-outline-primary" for="btnradio3">Inactive</label>
           </div>
 
@@ -41,7 +41,7 @@
               </button>
               <div class="image-upload-wrap">
                 <input class="file-upload-input" type="file" #fileInput (change)="onFileSelected($event)"
-                       accept="image/*"/>
+                  accept="image/*" />
 
                 <div class="drag-text">
                   <h3>Drag and drop a file or select add Image</h3>
@@ -51,7 +51,7 @@
                 image</span>
 
               <div class="file-upload-content">
-                <img class="file-upload-image" ignorePerformanceWarnings [src]="imageUrl" alt="{{ imageUrl }}"/>
+                <img class="file-upload-image" ignorePerformanceWarnings [src]="imageUrl" alt="{{ imageUrl }}" />
                 <div class="image-title-wrap">
                   <button type="button" (click)="removeUpload()" class="remove-image">
                     Remove <span class="image-title">Uploaded Image</span>
@@ -71,75 +71,97 @@
       </div>
     </div>
 
+
     <div class="col-sm-12 col-xl-6">
       <div class="table-content-wrapper bg-secondary rounded h-100 p-4">
         <h6 class="header-genre-list mb-4">GENRES LIST</h6>
         <input type="search" placeholder="Filter by music genre name" class="form-control mb-3" id="search"
-               name="search" [(ngModel)]="filterName" (ngModelChange)="filterName_Search()"/>
+          name="search" [(ngModel)]="filterName" (ngModelChange)="filterName_Search()" />
 
-        <table class="table table-hover">
+        <table class="table table-hover" *ngIf="Genre.length > 0">
           <thead>
-          <tr>
-            <th scope="col">Series</th>
-            <th scope="col">Name</th>
-            <th scope="col">Image</th>
-            <th scope="col">Description</th>
-            <th scope="col">Action</th>
-          </tr>
+            <tr>
+              <th scope="col">Series</th>
+              <th scope="col">Name</th>
+              <th scope="col">Image</th>
+              <th scope="col">Description</th>
+              <th scope="col">Action</th>
+            </tr>
           </thead>
-
           <tbody>
-          <tr *ngFor="let Genre of Genre; let i = index">
-            <th scope="row">{{ i + 1 }}</th>
-            <td>{{ Genre.name }}</td>
-            <td>
-              <img src="{{ Genre.image }}" width="70" height="70" alt="{{ Genre.image }}"/>
-            </td>
-
-            <td>{{ Genre.description.slice(0, 70) }}</td>
-
-            <td>
-              <button (click)="getGenre(Genre.id)" class="btn btn-outline-info w-100">
-                Detail
-              </button>
-              <button (click)="deleteGender(Genre.id)" class="btn btn-outline-danger w-100">
-                Delete
-              </button>
-            </td>
-          </tr>
+            <ng-container *ngFor="let Genre of Genre; let i = index">
+              <tr *ngIf="Genre.active">
+                <td>{{ Genre.name }}</td>
+                <td>
+                  <img src="{{ Genre.image }}" width="70" height="70" alt="{{ Genre.image }}" />
+                </td>
+                <td>{{ Genre.description.slice(0, 70) }}</td>
+                <td>
+                  <button (click)="getGenre(Genre.id)" class="btn btn-outline-info w-100">Detail</button>
+                  <button (click)="deleteGender(Genre.id)" class="btn btn-outline-danger w-100">Delete</button>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
 
         <span *ngIf="Genre.length === 0" class="text-warning">No similar names</span>
         <div class="d-flex justify-content-center" *ngIf="Genre">
           <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" style="cursor: pointer" (click)="Page(0)">First</a>
-              </li>
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" (click)="Page(page - 1)" style="cursor: pointer">
-                  <i class="fa fa-chevron-left"></i>
-                </a>
-              </li>
-              <ng-container *ngFor="let page of visiblePages">
-                <li class="page-item" [ngClass]="{ active: page === page + 1 }">
-                  <a class="page-link" (click)="Page(page - 1)" style="cursor: pointer">{{ page }}</a>
-                </li>
-              </ng-container>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a class="page-link" (click)="Page(page + 1)" style="cursor: pointer">
-                  <i class="fa fa-chevron-right"></i>
-                </a>
-              </li>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a class="page-link" (click)="Page(total - 1)" style="cursor: pointer">Last</a>
-              </li>
-            </ul>
+            <!-- Pagination Code -->
           </nav>
         </div>
       </div>
     </div>
+
+    <div class="col-sm-12 col-xl-6" *ngIf="Genre.length > 0">
+      <div class="table-content-wrapper bg-secondary rounded h-100 p-4">
+        <h6 class="header-genre-list mb-4">GENRES LIST</h6>
+        <input type="search" placeholder="Filter by music genre name" class="form-control mb-3" id="search"
+          name="search" [(ngModel)]="filterName" (ngModelChange)="filterName_Search()" />
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Series</th>
+              <th scope="col">Name</th>
+              <th scope="col">Image</th>
+              <th scope="col">Description</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let Genre of Genre; let i = index">
+              <tr *ngIf="!Genre.active">
+                <td>{{ Genre.name }}</td>
+                <td>
+                  <img src="{{ Genre.image }}" width="70" height="70" alt="{{ Genre.image }}" />
+                </td>
+                <td>{{ Genre.description.slice(0, 70) }}</td>
+                <td>
+                  <button (click)="getGenre(Genre.id)" class="btn btn-outline-info w-100">Detail</button>
+                  <button (click)="deleteGender(Genre.id)" class="btn btn-outline-danger w-100">Delete</button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <ng-template #noInactiveDataMessage>
+            <tr>
+              <td colspan="10">
+                <p class="text-center text-danger">No inactive users available.</p>
+              </td>
+            </tr>
+          </ng-template>
+        </table>
+
+        <span *ngIf="Genre.length === 0" class="text-warning">No similar names</span>
+        <div class="d-flex justify-content-center" *ngIf="Genre">
+          <nav aria-label="Page navigation">
+            <!-- Pagination Code -->
+          </nav>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
-<!-- Form End -->

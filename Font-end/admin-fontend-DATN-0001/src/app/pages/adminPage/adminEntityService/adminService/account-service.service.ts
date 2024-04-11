@@ -28,6 +28,7 @@ export class accountServiceService {
   private apiRegister = `${this.baseUrl}/users/register`;
   private apiUserDetail = `${this.baseUrl}/users/details`;
   private apiUsercreate = `${this.baseUrl}/users/create`;
+  private apiUserdelete = `${this.baseUrl}/users`;
   localStorage?: Storage;
   private apicheckmail = `${this.baseUrl}/users/email`;
   private apicheckmailuser = `${this.baseUrl}/users/emailUser`;
@@ -154,7 +155,7 @@ export class accountServiceService {
   }
 
   deleteUser(id: number): Observable<Object> {
-    return this.http.delete(`${this.baseUrl}/users/${id}`);
+    return this.http.delete(`${this.apiUserdelete}/${id}`);
   }
 
   UpdateProfile(updateUserDTO: UpdateUserDTO) {

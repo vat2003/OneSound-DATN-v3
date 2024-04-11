@@ -568,6 +568,7 @@ export class ManageuserAdminComponent implements OnInit {
             if (data !== null) {
               console.log(data);
               this.getAllUsers(0, 10);
+              
             }
           });
       } else {

@@ -67,15 +67,14 @@
       </div>
     </div>
 
+
     <div class="col-sm-12 col-xl-6">
-
-      <div class="bg-secondary rounded h-100 p-4">
-        <h6 class="mb-3">ARTIST LIST</h6>
-
+      <div class="table-content-wrapper bg-secondary rounded h-100 p-4">
+        <h6 class="header-genre-list mb-4">GENRES LIST</h6>
         <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
           placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="search()" (keyup)="onKey($event)" />
-        <table class="table table-hover">
 
+        <table class="table table-hover" *ngIf="singers.length > 0">
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -85,56 +84,79 @@
               <th scope="col">Action</th>
             </tr>
           </thead>
-          <tbody *ngIf="singers.length > 0; else noDataMessage">
-            <tr *ngFor="let singer of singers">
-              <th scope="row">{{ singer.id }}</th>
-              <td>{{ singer.fullname }}</td>
-              <td>{{ singer.description.slice(0, 70) }}</td>
-              <td><img src="{{singer.image }}" width="70" height="70" alt="{{singer.image}}"></td>
-
-              <td>
-                <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-100">Detail</button>
-                <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-100">Delete</button>
-              </td>
-            </tr>
-
+          <tbody>
+            <ng-container *ngFor="let singer of singers; let i = index">
+              <tr *ngIf="singer.active">
+                <td>{{ singer.fullname }}</td>
+                <td>
+                  <img src="{{ singer.image }}" width="70" height="70" alt="{{ singer.image }}" />
+                </td>
+                <td>{{ singer.description.slice(0, 70) }}</td>
+                <td>
+                  <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-100">Detail</button>
+                  <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-100">Delete</button>
+                </td>
+              </tr>
+            </ng-container>
           </tbody>
-          <ng-template #noDataMessage>
+        </table>
+
+        <span *ngIf="singers.length === 0" class="text-warning">No similar names</span>
+        <div class="d-flex justify-content-center" *ngIf="singer">
+          <nav aria-label="Page navigation">
+            <!-- Pagination Code -->
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-xl-6" *ngIf="singers.length > 0">
+      <div class="table-content-wrapper bg-secondary rounded h-100 p-4">
+        <h6 class="header-genre-list mb-4">GENRES LIST</h6>
+        <input type="text" class="form-control mb-4 border-light border-2" style="border-radius: 20px"
+          placeholder="Search" [(ngModel)]="searchTerm" (ngModelChange)="search()" (keyup)="onKey($event)" />
+
+
+        <table class="table table-hover">
+          <thead>
             <tr>
-              <td colspan="4">
-                <p class="text-center text-danger">No data available.</p>
+              <th scope="col">ID</th>
+              <th scope="col">Arist name</th>
+              <th scope="col">Description</th>
+              <th scope="col">Image</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let singer of singers; let i = index">
+              <tr *ngIf="!singer.active">
+                <td>{{ singer.fullname }}</td>
+                <td>
+                  <img src="{{ singer.image }}" width="70" height="70" alt="{{ singer.image }}" />
+                </td>
+                <td>{{ singer.description.slice(0, 70) }}</td>
+                <td>
+                  <button (click)="getArtist(singer.id)" class="btn btn-outline-info w-100">Detail</button>
+                  <button (click)="deleteSinger(singer.id)" class="btn btn-outline-danger w-100">Delete</button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <ng-template #noInactiveDataMessage>
+            <tr>
+              <td colspan="10">
+                <p class="text-center text-danger">No inactive users available.</p>
               </td>
             </tr>
           </ng-template>
         </table>
-        <div class="d-flex justify-content-center">
+
+        <span *ngIf="singers.length === 0" class="text-warning">No similar names</span>
+        <div class="d-flex justify-content-center" *ngIf="singer">
           <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" (click)="Page(0)">First</a>
-              </li>
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" (click)="Page(page - 1)">
-                  <i class="fa fa-chevron-left"></i>
-                </a>
-              </li>
-              <ng-container *ngFor="let page of visiblePages">
-                <li class="page-item" [ngClass]="{'active': page === page + 1}">
-                  <a class="page-link" (click)="Page(page - 1)">{{ page }}</a>
-                </li>
-              </ng-container>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a class="page-link" (click)="Page(page + 1)">
-                  <i class="fa fa-chevron-right"></i>
-                </a>
-              </li>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a class="page-link" (click)="Page(total - 1)">Last</a>
-              </li>
-            </ul>
+            <!-- Pagination Code -->
           </nav>
         </div>
-
       </div>
     </div>
 
