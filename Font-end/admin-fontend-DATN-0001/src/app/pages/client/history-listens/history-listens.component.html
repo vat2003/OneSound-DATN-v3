@@ -18,7 +18,7 @@
       <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
     </td>
     <td>{{ item.song ? item.song.name : 'N/A' }}</td>
-    <td>{{ item.song ? (item.listenTime | date: 'yyyy-MM-dd') : '' }}</td>
+    <td>{{ item.song ? (item.listenTime | date: 'yyyy-MM-dd || H:MM:ss') : '' }}</td>
 
   </tr>
 

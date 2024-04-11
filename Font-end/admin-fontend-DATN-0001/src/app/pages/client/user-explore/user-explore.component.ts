@@ -1,13 +1,13 @@
-import { GenreServiceService } from './../../adminPage/adminEntityService/adminService/genre-service.service';
-import { SingerService } from './../../adminPage/adminEntityService/adminService/singer-service.service';
-import { SongGenreService } from './../../adminPage/adminEntityService/adminService/song-genre.service';
-import { SongSingerService } from './../../adminPage/adminEntityService/adminService/song-singer.service';
-import { SongGenre } from './../../adminPage/adminEntityService/adminEntity/song/songGenre';
-import { SongSinger } from './../../adminPage/adminEntityService/adminEntity/song/songSinger';
-import { SongService } from './../../adminPage/adminEntityService/adminService/song.service';
-import { SongAlbum } from './../../adminPage/adminEntityService/adminEntity/song/songAlbum';
-import { AlbumService } from './../../adminPage/adminEntityService/adminService/album/album.service';
-import { Component, OnInit } from '@angular/core';
+import {GenreServiceService} from './../../adminPage/adminEntityService/adminService/genre-service.service';
+import {SingerService} from './../../adminPage/adminEntityService/adminService/singer-service.service';
+import {SongGenreService} from './../../adminPage/adminEntityService/adminService/song-genre.service';
+import {SongSingerService} from './../../adminPage/adminEntityService/adminService/song-singer.service';
+import {SongGenre} from './../../adminPage/adminEntityService/adminEntity/song/songGenre';
+import {SongSinger} from './../../adminPage/adminEntityService/adminEntity/song/songSinger';
+import {SongService} from './../../adminPage/adminEntityService/adminService/song.service';
+import {SongAlbum} from './../../adminPage/adminEntityService/adminEntity/song/songAlbum';
+import {AlbumService} from './../../adminPage/adminEntityService/adminService/album/album.service';
+import {Component, OnInit} from '@angular/core';
 // import { SingerService } from '../../adminPage/adminEntityService/adminService/singer-service.service';
 import {Singer} from '../../adminPage/adminEntityService/adminEntity/singer/singer';
 import {CommonModule} from '@angular/common';
@@ -20,15 +20,16 @@ import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album'
 import {Observable, forkJoin, map, switchMap} from 'rxjs';
 import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
 import {Genre} from '../../adminPage/adminEntityService/adminEntity/genre/genre';
-import {aborted} from "node:util";
-import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
-import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
-import {FavoriteSong} from "../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song";
-import {MatDialog} from "@angular/material/dialog";
-import {accountServiceService} from "../../adminPage/adminEntityService/adminService/account-service.service";
-import {account} from "../../adminPage/adminEntityService/adminEntity/account/account";
-import {FavoriteService} from "../../../services/favorite-service/favorite.service";
+import {aborted} from 'node:util';
+import {addWarning} from '@angular-devkit/build-angular/src/utils/webpack-diagnostics';
+import {UserPlaylistModalComponent} from '../user-playlist-modal/user-playlist-modal.component';
+import {FavoriteSong} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import {MatDialog} from '@angular/material/dialog';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {FavoriteService} from '../../../services/favorite-service/favorite.service';
 import {DataGlobalService} from '../../../services/data-global.service';
+
 import axios from 'axios';
 
 @Component({
@@ -64,14 +65,16 @@ export class UserExploreComponent implements OnInit {
     // private SingerService:SingerService,
     private dataGlobal: DataGlobalService,
     private GenreServiceService: GenreServiceService
-  ) {}
+  ) {
+  }
 
   index: number = 0;
 
   ngOnInit(): void {
     debugger
     this.acc = this.userService.getUserResponseFromLocalStorage();
-    this.getAllSongs();
+    // this.getAllSongs();
+    this.getAllNftsByOwner();
     this.getAllArtist();
     this.recordVisit();
     this.getAllAlbum();
@@ -218,7 +221,7 @@ export class UserExploreComponent implements OnInit {
           );
           return forkJoin(singerObservables).pipe(
             map((singerDataArray) => {
-              return { songId: song.id, singers: singerDataArray };
+              return {songId: song.id, singers: singerDataArray};
             })
           );
         })
@@ -242,7 +245,7 @@ export class UserExploreComponent implements OnInit {
           );
           return forkJoin(singerObservables).pipe(
             map((singerDataArray) => {
-              return { songId: song.id, genres: singerDataArray };
+              return {songId: song.id, genres: singerDataArray};
             })
           );
         })
@@ -259,13 +262,14 @@ export class UserExploreComponent implements OnInit {
 
   openDialog(songInput: Song) {
     const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
-      data: { song: songInput },
+      data: {song: songInput},
     });
 
     dialogRef.afterOpened().subscribe(() => {
       this.getAllSongs();
     });
-    dialogRef.afterClosed().subscribe((result) => {});
+    dialogRef.afterClosed().subscribe((result) => {
+    });
   }
 
   getAllSongFavByUser() {
@@ -304,37 +308,88 @@ export class UserExploreComponent implements OnInit {
         return;
       }
       song.isFav = false;
-      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {
+      });
     } else {
       song.isFav = true;
-      this.favSong.addFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.addFavoriteSong(favS).subscribe((data) => {
+      });
     }
   }
 
-  async getAllNftsByOwner () {
-    const res = await axios.post('https://api.devnet.solana.com', {
+  async getAllNftsByOwner() {
+    try {
+      const res = await axios.post('https://api.devnet.solana.com', {
         "jsonrpc": "2.0",
         "id": 1,
         "method": "getAssetsByOwner",
         "params": {
-            "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
-            "page": 1,
-            "limit": 100
+          "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
+          "page": 1,
+          "limit": 100
         }
-    });
+      });
 
-    debugger
+      console.log("DATA NÈ EM", res.data);
 
-    const data = res.data; // Lấy mảng dữ liệu từ phản hồi
-    console.log("date ne "+data);
+      const data: any[] = res.data.result.items;
+      console.log("DỮ LIỆU: ", data);
+
+      const transformedData = data.map(m => {
+        const att: any = {};
+        const originAtt = m?.content?.metadata?.attributes || [];
+        originAtt.forEach((element: any) => {
+          if (element?.value) {
+            att[element?.trait_type] = element?.value
+          }
+        });
+        const dto = {
+          id: m.id, // Thêm trường id vào DTO
+          image_uri: m?.content?.files[0]?.uri,
+          path_uri: m?.content?.files[1]?.uri,
+          ...att,
+          owner: m?.ownership?.owner
+        }
+        return dto
+      });
+
+      const lisIds = Array.from(new Set(transformedData.map(m => m?.id)));
+      const d = lisIds.map(m => {
+        const r = transformedData.filter(f => f.id === m);
+        return {
+          ...r[0], numberOfCopies: r.length
+        };
+      })
+
+      console.log("NHẠC NÈ: ", d)
+
+      for (let a of d) {
+        console.log("ID NHẠC: ", a.id);
+        try {
+          if (!a.id.NaN) {
+            this.SongService.getSongById(a.id).subscribe(async data => {
+              data.image = await this.setImageURLFirebase(data.image);
+              data.singer = a.numberOfCopies;
+              this.SongSingerService.getAllSingerBySong(a.id).subscribe(ss => {
+                for (let a of ss) {
+                  this.SingerService.getArtistById(a.singer.id).subscribe(casi => {
+                    data.sg = casi.fullname;
+                  })
+                }
+              })
+              this.songs.push(data);
+              this.getSingersForSongs();
+            })
+          }
+
+        } catch (error) {
+          console.error("LỖI: ", error)
+        }
 
 
-    // Sử dụng forEach để duyệt qua từng item trong mảng dữ liệu và log ra
-    data.forEach((item:any) => {
-        console.log("ITEM NÈ: ",item); // Log ra mỗi item
-    });
-
-}
-
-
+      }
+    } catch (error) {
+      console.log("CAN't load: ", error)
+    }
+  }
 }

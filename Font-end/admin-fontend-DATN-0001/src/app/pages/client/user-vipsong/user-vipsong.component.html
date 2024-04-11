@@ -11,9 +11,9 @@
       <tr>
         <th></th>
         <th>TITLE</th>
-        <th>ARTIST</th>
-        <th>GENRE</th>
-        <th>TIME</th>
+        <th>QUANTITY</th>
+        <!-- <th>GENRE</th>
+        <th>TIME</th> -->
         <th></th>
       </tr>
     </thead>
@@ -35,10 +35,14 @@
         </td>
         <td>
           <div class="table-title">
+            <!-- <div class="line-clamp">{{ song.id }}</div> -->
             <div class="line-clamp">{{ song.name }}</div>
             <span class="table-song-type">VIP</span>
           </div>
         </td>
+
+        <td>{{ song.singer }}</td>
+
         <td>
           <div>
             <span *ngFor="let singer of singerMap[song.id]; let last = last"
@@ -48,17 +52,9 @@
           </div>
         </td>
         <td>
-          <div>
-            <span *ngFor="let singer of genreMap[song.id]; let last = last"
-              >{{ singer.name
-              }}{{ !last && genreMap[song.id].length > 1 ? ", " : "" }}</span
-            >
-          </div>
-        </td>
-        <td>
           <i class="fa-solid fa-plus" (click)="openDialog(song)"></i
           >&nbsp;&nbsp;
-          <i class="favorite fa-heart"> </i>
+<!--          <i class="fa-solid fa-heart-"> </i>-->
         </td>
       </tr>
     </tbody>

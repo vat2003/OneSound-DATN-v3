@@ -11,6 +11,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import e from 'express';
 import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
@@ -18,6 +19,8 @@ import {account} from '../../adminPage/adminEntityService/adminEntity/account/ac
 import {log} from 'console';
 import {formatDistanceToNow} from 'date-fns';
 import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
+
+
 
 @Component({
   selector: 'app-comment-song',
@@ -35,6 +38,7 @@ export class CommentSongComponent implements OnInit {
   repCommentId: number | null = null;
   commentsWithReplies!: any[];
   oldEditCmt: any;
+  commentsWithReplies1!: any[];
 
   textareaValue: string = '';
   checkEditCmt!: boolean;
@@ -109,11 +113,11 @@ export class CommentSongComponent implements OnInit {
 
         this.commentsWithReplies.forEach((bac1) => {
           bac1.user.avatar_url = this.setImageURLFirebase(bac1.user.avatar_url);
-          if (bac1.replies){
-            bac1.replies.forEach((bac2 : any) => {
+          if (bac1.replies) {
+            bac1.replies.forEach((bac2: any) => {
               bac2.user.avatar_url = this.setImageURLFirebase(bac2.user.avatar_url);
-              if (bac2.replies){
-                bac2.replies.forEach((bac3 : any) => {
+              if (bac2.replies) {
+                bac2.replies.forEach((bac3: any) => {
                   bac3.user.avatar_url = this.setImageURLFirebase(bac3.user.avatar_url);
 
                 })
@@ -121,7 +125,6 @@ export class CommentSongComponent implements OnInit {
             })
           }
         })
-
 
 
         console.log('comment', this.commentsWithReplies);

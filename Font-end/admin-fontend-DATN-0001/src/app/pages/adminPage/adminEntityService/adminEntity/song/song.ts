@@ -1,4 +1,5 @@
 import {Album} from "../album/album";
+import { Singer } from "../singer/singer";
 
 export class Song {
   id!: number;
@@ -11,6 +12,8 @@ export class Song {
   dateTemp: string;
   album: Album;
   active:boolean;
+  singer!: any;
+  sg!:any;
 
   constructor(
     name: string = '',
@@ -22,7 +25,7 @@ export class Song {
     lyrics: string = '',
     album: Album = new Album(),
     dateTemp: string = '',
-    active:boolean=true
+    active:boolean=true,
   ) {
     this.name = name;
     this.image = image;

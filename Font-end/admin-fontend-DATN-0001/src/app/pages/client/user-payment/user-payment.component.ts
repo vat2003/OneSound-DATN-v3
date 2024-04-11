@@ -3,7 +3,6 @@ import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js'; // Impor
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WalletService } from '../../adminPage/adminEntityService/adminService/wallet.service';
-import axios from 'axios';
 
 @Component({
   selector: 'app-user-payment',
@@ -46,35 +45,6 @@ export class UserPaymentComponent implements OnInit {
       console.error('Error connecting to Solana wallet:', error);
     }
   }
-
-
-  async getAllNftsByOwner () {
-    const res = await axios.post('https://api.devnet.solana.com', {
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": "getAssetsByOwner",
-        "params": {
-            "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
-            "page": 1,
-            "limit": 100
-        }
-    });
-    debugger
-    console.log("DATA NÈ EM", res.data);
-
-
-    const data: any[] = res.data.result.items;
-    data.forEach((item: any) => {
-      const name = item.content.metadata.attributes.name;
-      // const name = item.content.metadata;
-      console.table("Name ne:", name);
-      });
-
-
-
-
-}
-
 
   testing(){
     // this.walletService.();
@@ -140,7 +110,6 @@ export class UserPaymentComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkWalletConnected();
-    this.getAllNftsByOwner();
     // alert("Hehe")
   }
 }
