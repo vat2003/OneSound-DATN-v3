@@ -96,8 +96,8 @@ export class accountServiceService {
     return this.http.get<account[]>(`${this.baseUrl}/users/user`);
   }
 
-  getemailuser(email: string): Observable<account[]> {
-    return this.http.get<account[]>(`${this.baseUrl}/users/emailUser/${email}`);
+  getemailuser(email: string): Observable<account> {
+    return this.http.get<account>(`${this.baseUrl}/users/emailUser/${email}`);
   }
 
   getAllAlbumByAuthorByName(title: string, page: number, size: number): Observable<account> {

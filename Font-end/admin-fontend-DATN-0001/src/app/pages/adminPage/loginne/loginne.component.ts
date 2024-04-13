@@ -7,6 +7,7 @@ import {login} from '../adminEntityService/adminEntity/DTO/login';
 import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
 import {TokenService} from '../adminEntityService/adminService/token.service';
 import {LoginResponse} from '../adminEntityService/adminEntity/utils/login.response';
+import {map} from "rxjs";
 
 @Component({
   selector: 'app-loginne',
@@ -53,13 +54,12 @@ export class LoginneComponent implements OnInit {
             email: this.email,
             password: this.password,
           };
-          debugger
-          this.userService.checkactive1(login.email).subscribe({
-            next: (data) => {
-              debugger
-              if (data != null) {
-                debugger
-                console.log(data);
+          const a = this.userService.getemailuser(login.email).pipe(
+            map(response => response) // Lấy phần tử đầu tiên nếu muốn
+          ).subscribe(
+            (user: account) => {
+              console.log(user); // In ra đối tượng user
+              if (user.active) {
                 this.userService.login(login).subscribe({
                   next: (response: LoginResponse) => {
                     alert('Login successful!');
@@ -122,16 +122,26 @@ export class LoginneComponent implements OnInit {
               }
 
             },
-            error: (error) => {
-
-              alert("Your account has been locked x2")
-              console.log(error);
-
-            },
-            complete: () => {
-              console.log('Yêu cầu hoàn thành');
+            error => {
+              console.error('Error:', error); // Xử lý lỗi nếu có
             }
-          });
+          );
+          // this.userService.checkactive1(login.email).subscribe({
+          //   next: (data) => {
+          //     debugger
+          //     //data here
+          //
+          //   },
+          //   error: (error) => {
+          //
+          //     alert("Your account has been locked x2")
+          //     console.log(error);
+          //
+          //   },
+          //   complete: () => {
+          //     console.log('Yêu cầu hoàn thành');
+          //   }
+          // });
 
 
         } else {

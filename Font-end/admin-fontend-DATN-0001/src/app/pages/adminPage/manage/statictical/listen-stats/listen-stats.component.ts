@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { ListeningStatsService } from '../../../../../services/listening-stats/listening-stats.service';
-import { CommonModule } from '@angular/common';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
-import { StaticticalService } from '../../../adminEntityService/adminService/statictical/statictical.service';
-import { isThisSecond } from 'date-fns';
-import { Listens } from '../../../adminEntityService/adminEntity/listens/listens';
+import {Component, OnInit} from '@angular/core';
+import {ListeningStatsService} from '../../../../../services/listening-stats/listening-stats.service';
+import {CommonModule} from '@angular/common';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {FormsModule} from '@angular/forms';
+import {StaticticalService} from '../../../adminEntityService/adminService/statictical/statictical.service';
+import {isThisSecond} from 'date-fns';
+import {Listens} from '../../../adminEntityService/adminEntity/listens/listens';
+import {FirebaseStorageCrudService} from "../../../../../services/firebase-storage-crud.service";
 
 @Component({
   selector: 'app-listen-stats',
@@ -33,7 +34,8 @@ export class ListenStatsComponent implements OnInit {
 
   constructor(
     private listeningService: ListeningStatsService,
-    private statictical: StaticticalService
+    private statictical: StaticticalService,
+    private firebaseStorage: FirebaseStorageCrudService,
   ) {
     const day = new Date();
     const today = new Date();
@@ -50,14 +52,26 @@ export class ListenStatsComponent implements OnInit {
   ngOnInit(): void {
     this.getAllListens();
     this.getTop10Listens();
+
   }
 
   getAllListens() {
     this.statictical.getAllListens().subscribe((res) => {
+      res.forEach((data) => {
+        data.song.image = this.setImageURLFirebase(data.song.image);
+        console.log(data.song.image)
+      })
       this.listens = res;
     })
   }
 
+  async setImageURLFirebase(image: string): Promise<string> {
+    if (image != null) {
+      return await this.firebaseStorage.getFile(image);
+    } else {
+      return 'null';
+    }
+  }
 
 
   getListenBetweenLisDate() {
@@ -83,8 +97,11 @@ export class ListenStatsComponent implements OnInit {
 
   getTop10Listens() {
     this.statictical.getTop10Listens().subscribe((res) => {
+      res.forEach((data) => {
+        data.song.image = this.setImageURLFirebase(data.song.image);
+      })
       this.top10Listen = res;
-    })
+    });
   }
 
 }

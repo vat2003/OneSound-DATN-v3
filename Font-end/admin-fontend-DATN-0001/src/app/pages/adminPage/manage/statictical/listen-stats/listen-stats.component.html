@@ -40,7 +40,7 @@
             *ngFor="let item of listens | paginate: { itemsPerPage: pageSize, currentPage: pAllList,  id: 'UserId' }; let i = index">
             <td>{{ i + 1 }}</td>
             <td>
-                <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
+                <img *ngIf="item.song" src="{{item.song.image.__zone_symbol__value }}" width="70" height="70" alt="Song Image">
             </td>
             <td>{{ item.song ? item.song.name : 'N/A' }}</td>
             <td>{{ item.listens }}</td>
@@ -78,7 +78,7 @@
         <tr *ngFor="let item of top10Listen; let i = index">
             <td>{{ i + 1 }}</td>
             <td>
-                <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
+                <img *ngIf="item.song" src="{{item.song.image.__zone_symbol__value }}" width="70" height="70" alt="Song Image">
             </td>
             <td>{{ item.song ? item.song.name : 'N/A' }}</td>
             <td>{{ item.listens }}</td>
