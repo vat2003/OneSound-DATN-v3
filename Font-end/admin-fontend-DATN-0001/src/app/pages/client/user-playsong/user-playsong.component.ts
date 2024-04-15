@@ -83,6 +83,7 @@ export class UserPlaysongComponent implements OnInit {
     this.getAllSongs();
     this.getAlbumById();
     this.getAllSongFavByUser();
+    this.checkFav();
     this.link = 'https://www.youtube.com/watch?v=w7f0Kq-pReI';
   }
 

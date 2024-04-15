@@ -6,91 +6,107 @@
       <i class="fa-solid fa-circle-chevron-right"></i>
     </div> -->
   </div>
-
-  <div class="popular_song">
-    <div class="h3">
-      <h3>Hot Artists</h3>
-      <div class="btn_s">
-        <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
-        <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
+  <div class="pop_song" id="list-categories">
+    <li class="songItem" *ngFor="let item of albums" (click)="gotoDetailAlbum(item)">
+      <div class="img_play">
+        <img src="{{ item.image }}" alt="alan" style="height: 180px; object-fit: cover"/>
+        <i class="bi fa-solid fa-circle-play" i="1"></i>
       </div>
-    </div>
-    <div class="pop_song">
-      <li
-        class="songItem"
-        *ngFor="let hotArtistitem of hotArtist"
-        (click)="gotoDetailArtist(hotArtistitem)"
-      >
-        <div class="img_play">
-          <img
-            src="{{ hotArtistitem.image }}"
-            alt="alan"
-            style="height: 180px; object-fit: cover"
-          />
-          <i class="bi fa-solid fa-circle-play" i="1"></i>
-        </div>
-        <h5>
-          <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
+      <h5>
+        <p class="line-clamp">{{ item.title }}</p>
+        <div class="subtitle line-clamp line-2">{{ item.releaseYear }}</div>
+        <!--        <div class="subtitle line-clamp line-2">-->
+        <!--          {{ item.songs.length }} songs-->
+        <!--        </div>-->
+      </h5>
+    </li>
+    <!--  -->
+  </div>
+</div>
 
-          <div class="subtitle line-clamp line-2">1M follow</div>
-        </h5>
-      </li>
+<div class="popular_song">
+  <div class="h3">
+    <h3>Hot Artists</h3>
+    <div class="btn_s">
+      <i id="left_scroll" class="fa-solid fa-circle-chevron-left"></i>
+      <i id="right_scroll" class="fa-solid fa-circle-chevron-right"></i>
     </div>
   </div>
+  <div class="pop_song">
+    <li
+      class="songItem"
+      *ngFor="let hotArtistitem of hotArtist"
+      (click)="gotoDetailArtist(hotArtistitem)"
+    >
+      <div class="img_play">
+        <img
+          src="{{ hotArtistitem.image }}"
+          alt="alan"
+          style="height: 180px; object-fit: cover"
+        />
+        <i class="bi fa-solid fa-circle-play" i="1"></i>
+      </div>
+      <h5>
+        <p class="line-clamp">{{ hotArtistitem.fullname }}</p>
 
-  <div class="suggested-new-tracks">
-    <div class="h3">
-      <h3>Suggested new tracks</h3>
-      <!-- <div class="btn_s">
-      <button>VIEW ALL</button>
-    </div> -->
-    </div>
-    <table>
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>IMAGE</th>
-        <th>TITLE</th>
-        <th>ARTIST</th>
-        <th>QUANTITY</th>
-        <!-- <th>TIME</th> -->
-        <th></th>
-      </tr>
-      </thead>
-      <tbody id="list-songs">
-      <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
-        <td>{{ i + 1 }}</td>
-        <td>
-          <!-- <i class="bi fa-solid fa-circle-play"></i> -->
-          <img [src]="s.image" alt=""/>
-        </td>
-        <td>
-          <div class="table-title">
-            <div class="line-clamp">{{ s.name }}</div>
-            <span class="table-song-type">HOT</span>
-          </div>
-        </td>
+        <div class="subtitle line-clamp line-2">1M follow</div>
+      </h5>
+    </li>
+  </div>
+</div>
 
-        <td>{{ s.sg }}</td>
-        <td>{{ s.singer }}</td>
-        <td *ngIf="this.acc">
-          <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
-          <i
-            class="favorite fa-heart"
-            [ngClass]="{
+<div class="suggested-new-tracks">
+  <div class="h3">
+    <h3>Suggested new tracks</h3>
+    <!-- <div class="btn_s">
+    <button>VIEW ALL</button>
+  </div> -->
+  </div>
+  <table>
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>IMAGE</th>
+      <th>TITLE</th>
+      <th>ARTIST</th>
+      <th>QUANTITY</th>
+      <!-- <th>TIME</th> -->
+      <th></th>
+    </tr>
+    </thead>
+    <tbody id="list-songs">
+    <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
+      <td>{{ i + 1 }}</td>
+      <td>
+        <!-- <i class="bi fa-solid fa-circle-play"></i> -->
+        <img [src]="s.image" alt=""/>
+      </td>
+      <td>
+        <div class="table-title">
+          <div class="line-clamp">{{ s.name }}</div>
+          <span class="table-song-type">HOT</span>
+        </div>
+      </td>
+
+      <td>{{ s.sg }}</td>
+      <td>{{ s.singer }}</td>
+      <td *ngIf="this.acc">
+        <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
+        <i
+          class="favorite fa-heart"
+          [ngClass]="{
                 'fa-solid': s.isFav,
                 'fa-regular': !s.isFav
               }"
-            [ngStyle]="{ color: s.isFav === true ? 'rgb(212, 15, 15)' : '' }"
-            (click)="favoriteSong(s)"
-          >
-          </i>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+          [ngStyle]="{ color: s.isFav === true ? 'rgb(212, 15, 15)' : '' }"
+          (click)="favoriteSong(s)"
+        >
+        </i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 
-  <div class="popular_song">
-  </div>
+<div class="popular_song">
 </div>

@@ -26,11 +26,11 @@
           <!--          }" [ngStyle]="{ color: isFavAlbum === true ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteAlbum()">-->
           <!--          </i>-->
 
-          <i *ngIf="!this.acc" class="favorite fa-heart fa-regular" (click)="favoriteSong(song)"></i>
+          <i *ngIf="!this.acc" class="favorite fa-heart fa-regular" (click)="favoriteAlbum()"></i>
           <i *ngIf="this.acc" class="favorite fa-heart" [ngClass]="{
               'fa-solid': isFavAlbum,
-              'fa-regular': isFavAlbum
-            }" [ngStyle]="{ color: isFavAlbum  ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteSong(song)">
+              'fa-regular': !isFavAlbum
+            }" [ngStyle]="{ color: isFavAlbum === true ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteAlbum()">
           </i>
           Add
         </div>
