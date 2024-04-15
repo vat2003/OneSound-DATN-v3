@@ -126,23 +126,6 @@ export class LoginneComponent implements OnInit {
               console.error('Error:', error); // Xử lý lỗi nếu có
             }
           );
-          // this.userService.checkactive1(login.email).subscribe({
-          //   next: (data) => {
-          //     debugger
-          //     //data here
-          //
-          //   },
-          //   error: (error) => {
-          //
-          //     alert("Your account has been locked x2")
-          //     console.log(error);
-          //
-          //   },
-          //   complete: () => {
-          //     console.log('Yêu cầu hoàn thành');
-          //   }
-          // });
-
 
         } else {
           alert("Email does not exist. Please check or register.");

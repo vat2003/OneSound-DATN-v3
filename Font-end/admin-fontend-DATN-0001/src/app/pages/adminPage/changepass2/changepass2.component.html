@@ -1,0 +1,54 @@
+<!-- Sign Up Start -->
+<ng-toast></ng-toast>
+<form #registerForm="ngForm" (ngSubmit)="changepass()">
+  <div class="bg-dark rounded p-4 p-sm-5 m-1">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h3>OneSound - Change Password</h3>
+    </div>
+    <div class="form-floating input-group mb-3">
+      <input [(ngModel)]="currentpassword" type="{{ showCurrentPassword ? 'text' : 'password' }}" required minlength="8"
+             class="form-control" id="oldPassword" name="currentpassword" placeholder="Password">
+      <label for="oldPassword" class="text-black-50">Current Password</label>
+      <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowCurrentPassword()">
+        <i class="password-toggle fas" [ngClass]="showCurrentPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+      </button>
+    </div>
+
+    <div class="form-floating input-group mb-3">
+      <input [(ngModel)]="password" type="{{ showPassword ? 'text' : 'password' }}" required minlength="8"
+             class="form-control" id="password" name="password" placeholder="Password">
+      <label for="password" class="text-black-50">New Password</label>
+      <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowPassword()">
+        <i class="password-toggle fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+      </button>
+    </div>
+    <div class="mb-3 text-warning" *ngIf="registerForm.controls['password'].hasError('minlength')">
+      Please enter a password with at least 8 characters.
+    </div>
+    <div
+      *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].dirty || registerForm.controls['password'].touched)"
+      class="mb-3 text-warning">
+      Please enter password
+    </div>
+
+    <div class="form-floating input-group mb-3">
+      <input [(ngModel)]="retypePassword" type="{{ showRePassword ? 'text' : 'password' }}" required minlength="8"
+             class="form-control" id="retypePassword" name="retypePassword" placeholder="Password">
+      <label for="retypePassword" class="text-black-50">Retype Password</label>
+      <button type="button" class="btn btn-secondary input-group-text" (click)="toggleShowRePassword()">
+        <i class="password-toggle fas" [ngClass]="showRePassword ? 'fa-eye' : 'fa-eye-slash'"></i>
+      </button>
+    </div>
+    <div class="mb-3 text-warning" *ngIf="registerForm.controls['retypePassword'].hasError('minlength')">
+      Please enter a password with at least 8 characters.
+    </div>
+    <div
+      *ngIf="registerForm.controls['retypePassword'].invalid && (registerForm.controls['retypePassword'].dirty || registerForm.controls['retypePassword'].touched)"
+      class="mb-3 text-warning">
+      Please enter retype password
+    </div>
+
+    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Change Password</button>
+  </div>
+</form>
+<!-- Sign Up End -->

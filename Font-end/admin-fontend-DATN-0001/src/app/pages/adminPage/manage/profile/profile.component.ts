@@ -1,5 +1,5 @@
 // import { Connection } from '@solana/web3.js';
-import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import {Connection, PublicKey, clusterApiUrl} from '@solana/web3.js';
 import {CommonModule, DatePipe, isPlatformBrowser} from '@angular/common';
 import {ChangeDetectorRef, Component, OnInit, Renderer2, ElementRef, PLATFORM_ID, Inject} from '@angular/core';
 import {
@@ -19,7 +19,11 @@ import {TokenService} from '../../adminEntityService/adminService/token.service'
 import {UpdateUserDTO} from '../../adminEntityService/adminEntity/DTO/update.user.dto';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
 import {NgToastModule, NgToastService} from 'ng-angular-popup';
-import { WalletService } from '../../adminEntityService/adminService/wallet.service';
+import {WalletService} from '../../adminEntityService/adminService/wallet.service';
+import {Song} from "../../adminEntityService/adminEntity/song/song";
+import {UserPlaylistModalComponent} from "../../../client/user-playlist-modal/user-playlist-modal.component";
+import {MatDialog} from "@angular/material/dialog";
+import {Changepass2Component} from "../../changepass2/changepass2.component";
 // import { NgxCaptchaModule } from 'ngx-captcha';
 // import { RecaptchaModule } from 'ng-recaptcha';
 
@@ -42,6 +46,7 @@ export class ProfileComponent implements OnInit {
   userResponse?: account;
   token: string = '';
   account?: account | null;
+  account2?: account | null;
   userProfileForm: FormGroup;
   imageUrl: string = '';
   setImageUrl: string = '';
@@ -56,10 +61,11 @@ export class ProfileComponent implements OnInit {
   public walletConnected = false;
   public walletId = '';
   public balanceSOL: any;
-  balance:any;
- clusterApiUrl = (network: string) => `https://api.devnet.solana.com`;
+  balance: any;
+  clusterApiUrl = (network: string) => `https://api.devnet.solana.com`;
 
   constructor(
+    private matDialog: MatDialog,
     private formBuilder: FormBuilder,
     private userService: accountServiceService,
     private router: Router,
@@ -85,12 +91,28 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.account = this.userService.getUserResponseFromLocalStorage();
+    this.fill();
+  }
 
+  getUser(id: number) {
+    this.userService.getUserById(id).subscribe(
+      async (data: account) => {
+
+        this.account2 = data;
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
+  fill() {
+    this.account = this.userService.getUserResponseFromLocalStorage();
+    this.getUser(this.account?.id ?? 0);
+    // this.account = this.account2;
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(this.account?.birthday, 'yyyy-MM-dd') ?? '';
     this.userProfileForm.patchValue({
-
       fullname: this.account?.fullname ?? '',
       id: this.account?.id ?? '',
       email: this.account?.email ?? '',
@@ -110,6 +132,7 @@ export class ProfileComponent implements OnInit {
 
   async setImageAvatar() {
     this.avatar = await this.setImageURLFirebase(this.account?.avatar_url ?? 'null');
+    this.imageUrl = await this.setImageURLFirebase(this.account?.avatar_url ?? 'null');
   }
 
   async setImage(avatar_url: string) {
@@ -126,6 +149,16 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+  openDialog() {
+    const dialogRef = this.matDialog.open(Changepass2Component, {
+      data: {acc: this.account},
+    });
+
+    dialogRef.afterOpened().subscribe(() => {
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+    });
+  }
 
   save() {
     debugger
@@ -134,13 +167,17 @@ export class ProfileComponent implements OnInit {
       email: this.userProfileForm.get('email')?.value,
       fullname: this.userProfileForm.get('fullname')?.value,
       address: this.userProfileForm.get('address')?.value,
-      avatar_url: this.userProfileForm.get('avatar_url')?.value,
+      avatar_url: this.setImageUrl,
+      // avatar_url: this.userProfileForm.get('avatar_url')?.value,
       gender: this.userProfileForm.get('gender')?.value,
       createdDate: this.userProfileForm.get('createdDate')?.value,
       birthday: this.userProfileForm.get('birthday')?.value,
       role_id: this.userProfileForm.get('role_id')?.value
     };
-
+    if (!this.setImageUrl) {
+      updateUserDTO.avatar_url = this.account?.avatar_url ?? 'null';
+    }
+    alert('IMAGE == ' + updateUserDTO.avatar_url)
     if (this.userProfileForm.get('fullname')?.value === null || this.userProfileForm.get('fullname')?.value.trim() === '') {
       alert('Full name cannot be empty.');
       return; // Stop the function execution if full name is empty
@@ -149,22 +186,25 @@ export class ProfileComponent implements OnInit {
 
     this.userService.UpdateProfile(updateUserDTO)
       .subscribe({
-
         next: (response: any) => {
-
-
-          this.router.navigate(['/onesound/dangnhap']);
           console.log(response);
-
-          alert('update profile successfully');
-
-
+          this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+          if (this.imageFile) {
+            this.firebaseStorage.uploadFile(
+              'adminManageImage/user/',
+              this.imageFile
+            );
+          }
+          this.userService.removeUserFromLocalStorage();
+          this.router.navigate(['/onesound/singin']);
         },
         error: (error: any) => {
           debugger
           alert(error.error.message);
         }
       });
+
+
   }
 
   onFileSelected(event: any) {
@@ -177,12 +217,12 @@ export class ProfileComponent implements OnInit {
         this.fillImage(this.imageUrl);
       };
       //Set path ảnh theo thư mục
-      this.setImageUrl = 'adminManageImage/profile/' + archivoSelectcionado.name;
+      this.setImageUrl = 'adminManageImage/user/' + archivoSelectcionado.name;
       this.imageFile = archivoSelectcionado;
       console.log(this.imageUrl);
       reader.readAsDataURL(archivoSelectcionado);
     } else {
-      this.setImageUrl = 'adminManageImage/profile/null.jpg';
+      this.setImageUrl = 'adminManageImage/user/null.jpg';
 
       this.removeUpload();
     }
@@ -229,6 +269,7 @@ export class ProfileComponent implements OnInit {
       'block'
     );
   }
+
   async connectToWallet() {
     try {
       const provider = this.getProvider();
@@ -258,7 +299,7 @@ export class ProfileComponent implements OnInit {
         const provider = this.walletService.getProvider();
         if (provider && provider.publicKey) {
           this.walletId = provider.publicKey.toString();
-          console.log("ID: ",this.walletId)
+          console.log("ID: ", this.walletId)
           await this.getBalance(this.walletId);
         } else {
           console.error('Provider or publicKey is null or undefined');
