@@ -156,12 +156,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     this.getAuthor(this.id);
     this.displayDataOnTable(0, 5);
     this.displayDataOnTableInActive();
-    // this.searchTerms
-    //   .pipe(
-    //     debounceTime(300),
-    //     distinctUntilChanged(),
-    //     switchMap((term: string) => this.AuthorService.getAllAlbumByAuthorByName(term, 0, 10))
-    //   )
   }
 
   displayDataOnTable(page: number, limit: number) {
@@ -209,19 +203,19 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     this.AuthorService.getAuthorById(id.id).subscribe(data => {
       data.active = true;
       this.AuthorService.updateAuthor(data.id, data).subscribe();
-      // this.reload();
+      this.displayDataOnTable(0, 5);
+      this.displayDataOnTableInActive();
     })
-    this.displayDataOnTable(0, 5);
-    this.displayDataOnTableInActive();
+
 
   }
 
   inactive(id: Author) {
-    this.AuthorService.getAuthorById(id.id).subscribe(data => {
+    this.AuthorService.getAuthorById(id.id).subscribe((data) => {
       data.active = false;
       this.AuthorService.updateAuthor(data.id, data).subscribe();
       this.displayDataOnTableInActive();
-      // this.reload();
+      this.displayDataOnTable(0, 5);
     })
   }
 

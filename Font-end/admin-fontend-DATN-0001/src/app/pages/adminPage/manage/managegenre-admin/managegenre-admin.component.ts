@@ -7,13 +7,14 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
 import {error, log} from 'console';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
-import { account } from '../../adminEntityService/adminEntity/account/account';
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
+import {account} from '../../adminEntityService/adminEntity/account/account';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
+import {NgxPaginationModule} from "ngx-pagination";
 
 @Component({
   selector: 'app-managegenre-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgOptimizedImage, RouterLink, NgToastModule],
+  imports: [CommonModule, FormsModule, NgOptimizedImage, RouterLink, NgToastModule, NgxPaginationModule],
   templateUrl: './managegenre-admin.component.html',
   styleUrl: './managegenre-admin.component.scss',
 })
@@ -36,7 +37,9 @@ export class ManagegenreAdminComponent implements OnInit {
   visiblePages: number[] = [];
   localStorage?: Storage;
   account?: account | null;
-
+  pU: number = 1;
+  pI: number = 1;
+  pageSize: number = 5;
   constructor(
     private GenreService: GenreServiceService,
     private router: Router,
@@ -46,7 +49,6 @@ export class ManagegenreAdminComponent implements OnInit {
     private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService,
     private accountServiceService: accountServiceService,
-
   ) {
   }
 
@@ -76,7 +78,7 @@ export class ManagegenreAdminComponent implements OnInit {
   ngOnInit(): void {
     this.account = this.accountServiceService.getUserResponseFromLocalStorage();
     this.id = this.route.snapshot.params['id'];
-    this.getListGenresPage(0, 5);
+    this.getListGenresPage(0, 10000);
     this.loadSingerById();
     this.getGenre(this.id);
   }
@@ -299,7 +301,7 @@ export class ManagegenreAdminComponent implements OnInit {
 
   updateGenre(id: number) {
 
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       if (this.imageFile) {
         this.Genree.image = this.setImageUrl;
       }
@@ -328,7 +330,7 @@ export class ManagegenreAdminComponent implements OnInit {
           this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
         }
       );
-    }else{
+    } else {
       alert("nhân viên không được phép update")
 
     }
@@ -351,7 +353,7 @@ export class ManagegenreAdminComponent implements OnInit {
   }
 
   deleteGender(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const isConfirmed = window.confirm('Are you sure you want to delete this singer?');
       if (isConfirmed) {
         this.GenreService.deleteGenre(id).subscribe((data) => {
@@ -360,7 +362,7 @@ export class ManagegenreAdminComponent implements OnInit {
           this.getListGenresPage(0, 4);
         });
       }
-    }else{
+    } else {
       alert("nhân viên không được phép xoá")
 
     }

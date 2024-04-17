@@ -79,10 +79,6 @@ export class UserExploreComponent implements OnInit {
     this.recordVisit();
     this.getAllAlbum();
     this.getAllSongFavByUser();
-    // this.songs.reverse();
-    // this.hotArtist.reverse();
-    // this.albums.reverse();
-    this.getAllNftsByOwner();
   }
 
   recordVisit() {
@@ -152,39 +148,6 @@ export class UserExploreComponent implements OnInit {
     this.router.navigate(['/onesound/home/album/', album.id]);
   }
 
-  // getAllSongs():void{
-  //   this.SongService.getAllSongs().subscribe(async (data)  => {
-  //     if(data.length>10){
-  //       this.songs.slice(data.length-11)
-  //       for (const hotArt of this.songs) {
-  //         if (hotArt.image == null || hotArt.image == '') {
-  //           continue;
-  //         }
-  //         hotArt.image = await this.setImageURLFirebase(hotArt.image);
-  //       }
-  //     this.getSingersForSongs();
-  //     this.getGenresForSongs();
-  //     }
-  //     else{
-  //       this.songs = data;
-  //       for (const hotArt of this.songs) {
-  //         if (hotArt.image == null || hotArt.image == '') {
-  //           continue;
-  //         }
-  //         hotArt.image = await this.setImageURLFirebase(hotArt.image);
-  //       }
-  //     this.getSingersForSongs();
-  //     this.getGenresForSongs();
-  //     }
-
-  //     for (let i = 0; i < this.songs.length; i++) {
-  //       this.songs[i].image = await this.setImageURLFirebase(this.songs[i].image);
-  //     }
-  //       console.log("BÀI HÁT NÈ: ", this.songs);
-
-  //   });
-
-  // }
 
   getAllSongs(): void {
     this.SongService.getAllSongs().subscribe(async (data) => {
@@ -267,7 +230,6 @@ export class UserExploreComponent implements OnInit {
     });
 
     dialogRef.afterOpened().subscribe(() => {
-      this.getAllSongs();
     });
     dialogRef.afterClosed().subscribe((result) => {
     });

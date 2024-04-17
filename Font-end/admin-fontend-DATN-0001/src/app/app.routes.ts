@@ -62,6 +62,7 @@ export const routes: Routes = [
   {
     path: 'onesound/admin',
     component: HomeComponent,
+    canActivate: [AdminGuardFn],
     children: [
       {path: '', component: ReportComponent},
       {
@@ -77,7 +78,7 @@ export const routes: Routes = [
   },
   {
     path: 'onesound/admin',
-    // canActivate: [AdminGuardFn],
+    canActivate: [AdminGuardFn],
     component: HomeComponent,
     children: [
       {path: 'blank', component: BlankComponent},

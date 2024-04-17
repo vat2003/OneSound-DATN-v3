@@ -10,11 +10,12 @@ import {NgToastModule, NgToastService} from "ng-angular-popup";
 import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
 import { account } from '../../adminEntityService/adminEntity/account/account';
+import {NgxPaginationModule} from "ngx-pagination";
 
 @Component({
   selector: 'app-manageartist-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgToastModule],
+    imports: [CommonModule, FormsModule, NgToastModule, NgxPaginationModule],
 
   templateUrl: './manageartist-admin.component.html',
   styleUrl: './manageartist-admin.component.scss',
@@ -37,6 +38,9 @@ export class ManageartistAdminComponent {
   searchTerm: string = '';
   titleAlbum: string[] = [];
   account?: account | null;
+  pU: number = 1;
+  pI: number = 1;
+  pageSize: number = 5;
   private searchTerms = new Subject<string>();
 
 
