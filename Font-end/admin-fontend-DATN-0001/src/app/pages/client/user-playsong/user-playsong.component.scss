@@ -1,0 +1,26 @@
+.play-button {
+  position: relative;
+  /* Các style khác để định dạng nút như mong muốn */
+}
+
+.audio-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.songnhac {
+  background-color: black; /* Đặt màu cho thanh sóng nhạc */
+  width: 2px; /* Đặt độ rộng của thanh sóng nhạc */
+  height: 10px;
+  margin: 0 2px; /* Khoảng cách giữa các thanh */
+  animation: wave-animation 1s infinite ease-in-out;
+  /* Điều chỉnh animation-duration, timing-function theo ý thích */
+}
+
+@keyframes wave-animation {
+  0%, 100% { height: 20%; } /* Các thanh nhỏ nhất */
+  25% { height: 50%; } /* Các thanh cao hơn một chút */
+  50% { height: 100%; } /* Các thanh cao nhất */
+  75% { height: 50%; } /* Các thanh giảm xuống */
+}

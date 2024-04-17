@@ -117,6 +117,7 @@ export class UserExploreComponent implements OnInit {
     item.path = await this.setImageURLFirebase(item.path);
     this.dataGlobal.changeId(item);
     this.dataGlobal.setItem('songHeardLast', item);
+    this.dataGlobal.changeArr(this.songs);
   }
 
   getAllAlbum(): void {
