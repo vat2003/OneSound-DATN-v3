@@ -50,7 +50,7 @@ export class UserPlayerAudioComponent implements OnInit {
   acc?: account | null;
   favListSongs: any[] = [];
   prevIsYoutubePlayer!: boolean;
-
+  playall!: boolean;
   currentIndex!: number;
   arrPreNext: any[] = [];
   private increaseLisTimeout: any;
@@ -92,6 +92,10 @@ export class UserPlayerAudioComponent implements OnInit {
       // alert(this.currentIndex);
     });
 
+    this.dataGlobal.playall.subscribe((playall) => {
+      this.playall = playall;
+    });
+
     this.seek_bar.nativeElement.style.width = '0%';
     this.seek_dot.nativeElement.style.left = '0%';
   }
@@ -117,6 +121,11 @@ export class UserPlayerAudioComponent implements OnInit {
 
     this.audio.addEventListener('timeupdate', () => {
       this.updateSeekBar();
+    });
+    this.audio.addEventListener('ended', () => {
+      if (this.playall) {
+        this.next();
+      }
     });
   }
 
@@ -277,6 +286,7 @@ export class UserPlayerAudioComponent implements OnInit {
   }
 
   previus() {
+    this.audio.pause();
     this.currentIndex = this.currentIndex - 1;
 
     if (this.currentIndex < 0) {

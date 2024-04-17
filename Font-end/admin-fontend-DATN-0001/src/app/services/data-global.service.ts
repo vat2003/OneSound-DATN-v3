@@ -5,6 +5,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class DataGlobalService {
+  private playallSource = new BehaviorSubject<boolean>(false);
+  playall = this.playallSource.asObservable();
+
   private idSource = new BehaviorSubject<any>(null);
   YtGlobalId = this.idSource.asObservable();
 
@@ -12,6 +15,10 @@ export class DataGlobalService {
   arrPreNext = this.arrPreNextSource.asObservable();
 
   constructor() {}
+
+  onoffplayall(setturn: boolean) {
+    this.playallSource.next(setturn);
+  }
 
   changeArr(arr: any[]) {
     this.arrPreNextSource.next(arr);
