@@ -83,7 +83,6 @@ export class UserPlaylistFormComponent {
         this.firstPlaylistId = this.playlists[0].id;
 
         console.log(this.playlists);
-        console.log(this.firstPlaylistId + "<0000000000000000");
       },
       (error) => {
         console.error('Error fetching playlists:', error);

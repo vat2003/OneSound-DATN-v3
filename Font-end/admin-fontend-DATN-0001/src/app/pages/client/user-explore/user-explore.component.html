@@ -1,10 +1,6 @@
 <div class="popular_song">
   <div class="h3">
     <h3>Explore your vibes</h3>
-    <!-- <div class="btn_s">
-      <i class="fa-solid fa-circle-chevron-left"></i>
-      <i class="fa-solid fa-circle-chevron-right"></i>
-    </div> -->
   </div>
   <div class="pop_song" id="list-categories">
     <li class="songItem" *ngFor="let item of albums" (click)="gotoDetailAlbum(item)">
@@ -15,9 +11,6 @@
       <h5>
         <p class="line-clamp">{{ item.title }}</p>
         <div class="subtitle line-clamp line-2">{{ item.releaseYear }}</div>
-        <!--        <div class="subtitle line-clamp line-2">-->
-        <!--          {{ item.songs.length }} songs-->
-        <!--        </div>-->
       </h5>
     </li>
     <!--  -->

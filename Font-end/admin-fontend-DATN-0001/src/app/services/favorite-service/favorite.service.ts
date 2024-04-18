@@ -73,6 +73,11 @@ export class FavoriteService {
       `${this.urlFavoriteSong}/${userId}`
     );
   }
+  getAllFavAlbumByUser(userId: number): Observable<FavoriteSong[]> {
+    return this.httpClient.get<FavoriteSong[]>(
+      `${this.urlFavoriteAlbum}/${userId}`
+    );
+  }
 
   //------------------fav album
   addFavoriteAlbum(favAlbum: FavoriteAlbum): Observable<Object> {

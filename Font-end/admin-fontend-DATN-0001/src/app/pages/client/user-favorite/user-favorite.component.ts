@@ -29,12 +29,14 @@ export class UserFavoriteComponent implements OnInit {
     private favYoutube: FavoriteService,
     private dataGlobal: DataGlobalService,
     private firebaseStorage: FirebaseStorageCrudService,
+    private favAlbum: FavoriteService
   ) {
   }
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
     this.getAllYoutubeFavByUser();
+    this.getAllAlbumFavByUser();
   }
 
   async setImageURLFirebase(image: string): Promise<string> {
@@ -64,6 +66,18 @@ export class UserFavoriteComponent implements OnInit {
         }
         console.log('getAll Song FavByUser', this.favListSongs);
       });
+    }
+  }
+
+  getAllAlbumFavByUser() {
+    if (this.acc && this.acc.id) {
+      this.favAlbum.getAllFavAlbumByUser(this.acc.id).subscribe((data) => {
+        this.favListAlbums = data;
+        this.favListAlbums.forEach((album) => {
+          album.album.image = this.setImageURLFirebase(album.album.image);
+        })
+        console.log('albun', data)
+      })
     }
   }
 

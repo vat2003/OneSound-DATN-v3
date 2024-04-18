@@ -195,15 +195,14 @@ export class ProfileComponent implements OnInit {
               this.imageFile
             );
           }
-          this.userService.removeUserFromLocalStorage();
-          this.router.navigate(['/onesound/singin']);
+          this.router.navigate(['onesound/singin']);
+          // this.userService.removeUserFromLocalStorage();
         },
         error: (error: any) => {
           debugger
           alert(error.error.message);
         }
       });
-
 
   }
 

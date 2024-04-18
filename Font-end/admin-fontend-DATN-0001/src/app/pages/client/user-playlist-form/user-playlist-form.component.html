@@ -1,7 +1,7 @@
 <div class="detail-container">
   <div class="detail-container-banner" id="category-detail">
     <div class="detail-container-banner-first">
-      <img src="assets/img/client/explore/hiphop.png" alt=""/>
+      <img src="assets/img/client/explore/How_to_clear_Spotify_queue.png" alt=""/>
       <div class="detail-container-banner-content">
         <h1>{{ this.account?.fullname }}</h1>
         <p>Created by <i style="text-transform: uppercase;">{{ this.account?.fullname }}</i></p>
@@ -40,11 +40,11 @@
 
       <li class="songItem" *ngFor="let playlist of playlists">
         <div class="img_play" (click)="a(playlist.id)">
-          <img src="assets/img/client/explore/hiphop.png" alt="alan"/>
+          <img src="assets/img/client/explore/How_to_clear_Spotify_queue.png" alt="alan"/>
           <i class="bi fa-solid fa-circle-play" i="1"></i>
         </div>
         <h5>
-          <p class="line-clamp">{{ playlist.name }}</p>
+          <p class="line-clamp">Title: {{ playlist.name }}</p>
 
           <div class="subtitle line-clamp line-2">
             Date Created: {{ playlist.likeDate | date:'yyyy-MM-dd' }}

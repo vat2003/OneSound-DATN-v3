@@ -63,7 +63,7 @@ export class ManageartistAdminComponent {
     this.id = this.route.snapshot.params['id'];
     this.account = this.accountServiceService.getUserResponseFromLocalStorage();
 
-    this.loadSingers(0, 10);
+    this.loadSingers(0, 10000);
     this.loadSingerById();
     this.getArtist(this.id);
 
@@ -178,7 +178,7 @@ export class ManageartistAdminComponent {
       if (isConfirmed) {
         this.singerService.deleteArtist(id).subscribe((data) => {
           console.log(data);
-          this.loadSingers(0, 10);
+          this.loadSingers(0, 10000);
         });
       }
     }else{
@@ -241,7 +241,7 @@ export class ManageartistAdminComponent {
   }
 
   goToSingerList() {
-    this.loadSingers(0, 10);
+    this.loadSingers(0, 1000);
     this.router.navigate(['/manage/artist']);
   }
 
@@ -401,7 +401,7 @@ export class ManageartistAdminComponent {
 
 
     if (searchTermLowerCase == '') {
-      this.loadSingers(0, 5);
+      this.loadSingers(0, 1000);
     }
   }
 
