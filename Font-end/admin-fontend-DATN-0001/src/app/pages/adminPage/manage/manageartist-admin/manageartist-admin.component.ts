@@ -356,6 +356,7 @@ export class ManageartistAdminComponent {
     this.singerService.getArtistById(id).subscribe(
       async (data: Singer) => {
         this.singer = data;
+        this.setImageUrl = this.singer.image;
         this.fillImage(await this.setImageURLFirebase(this.singer.image));
       },
       (error: any) => {

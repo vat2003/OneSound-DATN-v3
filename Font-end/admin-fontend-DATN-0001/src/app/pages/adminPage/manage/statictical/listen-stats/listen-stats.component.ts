@@ -83,6 +83,9 @@ export class ListenStatsComponent implements OnInit {
 
       this.statictical.getListensBetweenLisDate(selectedTimestamp1, selectedTimestamp2).subscribe((res) => {
         this.listens = res;
+        this.listens.forEach((data) => {
+          data.song.image = this.setImageURLFirebase(data.song.image);
+        })
         if (res.length == 0) {
           this.check = 1;
           console.log(this.check);
