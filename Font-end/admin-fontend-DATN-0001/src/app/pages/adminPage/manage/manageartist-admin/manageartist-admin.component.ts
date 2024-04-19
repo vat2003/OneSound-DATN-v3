@@ -179,11 +179,11 @@ export class ManageartistAdminComponent {
         this.singerService.deleteArtist(id).subscribe((data) => {
           console.log(data);
           this.loadSingers(0, 10000);
+
         });
       }
     }else{
       alert("nhân viên không được phép xoá")
-
     }
   }
 

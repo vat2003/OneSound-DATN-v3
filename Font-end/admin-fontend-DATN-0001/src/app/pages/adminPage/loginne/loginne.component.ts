@@ -62,7 +62,7 @@ export class LoginneComponent implements OnInit {
               if (user.active) {
                 this.userService.login(login).subscribe({
                   next: (response: LoginResponse) => {
-                    alert('Login successful!');
+                    // alert('Login successful!');
 
                     const {token} = response;
                     console.log(token);
@@ -80,7 +80,7 @@ export class LoginneComponent implements OnInit {
                         this.userService.saveUserResponseToLocalStorage(response);
                         if (this.account && this.account.accountRole) {
 
-                          alert(this.account.accountRole.name);
+                          // alert(this.account.accountRole.name);
 
                           if (this.account.accountRole.name === 'admin') {
 

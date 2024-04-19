@@ -177,7 +177,7 @@ export class ProfileComponent implements OnInit {
     if (!this.setImageUrl) {
       updateUserDTO.avatar_url = this.account?.avatar_url ?? 'null';
     }
-    alert('IMAGE == ' + updateUserDTO.avatar_url)
+    // alert('IMAGE == ' + updateUserDTO.avatar_url)
     if (this.userProfileForm.get('fullname')?.value === null || this.userProfileForm.get('fullname')?.value.trim() === '') {
       alert('Full name cannot be empty.');
       return; // Stop the function execution if full name is empty
@@ -195,8 +195,8 @@ export class ProfileComponent implements OnInit {
               this.imageFile
             );
           }
-          this.router.navigate(['onesound/singin']);
-          // this.userService.removeUserFromLocalStorage();
+          this.userService.removeUserFromLocalStorage();
+          this.router.navigate(['onesound/signin']);
         },
         error: (error: any) => {
           debugger

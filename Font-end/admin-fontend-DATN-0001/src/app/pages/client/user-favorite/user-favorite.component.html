@@ -20,16 +20,17 @@
       <h3>Your favorite albums</h3>
     </div>
     <div class="pop_song" id="list-categories">
-      <li class="songItem" *ngFor="let item of favListAlbums">
+      <li class="songItem" *ngFor="let item of favListAlbums" (click)="gotoDetailAlbum(item.album)">
         <div class="img_play">
           <img src="{{ item.album.image.__zone_symbol__value }}" alt="album"
                style="height: 180px; object-fit: cover"/>
           <i class="bi fa-solid fa-circle-play" i="1"></i>
         </div>
         <h5>
-          <p class="line-clamp">Title: {{ item.album.title }}</p>
+          <p class="line-clamp">Album: {{ item.album.title }}</p>
           <div class="subtitle line-clamp line-2">Date liked: {{ item.likeDate | date: 'yyyy-MM-dd' }}</div>
         </h5>
+        <a class="btn btn-outline-danger w-100" (click)="unlike(item.album)">UnLike</a>
       </li>
       <!--  -->
     </div>

@@ -9,6 +9,9 @@ import {FavoriteYoutbe} from '../../adminPage/adminEntityService/adminEntity/fav
 import {FavoriteSong} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
 import {DataGlobalService} from "../../../services/data-global.service";
 import {FirebaseStorageCrudService} from "../../../services/firebase-storage-crud.service";
+import {FavoriteAlbum} from "../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-album";
+import {Album} from "../../adminPage/adminEntityService/adminEntity/album/album";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-favorite',
@@ -29,7 +32,8 @@ export class UserFavoriteComponent implements OnInit {
     private favYoutube: FavoriteService,
     private dataGlobal: DataGlobalService,
     private firebaseStorage: FirebaseStorageCrudService,
-    private favAlbum: FavoriteService
+    private favAlbum: FavoriteService,
+    private router: Router
   ) {
   }
 
@@ -45,6 +49,13 @@ export class UserFavoriteComponent implements OnInit {
     } else {
       return 'null';
     }
+  }
+
+  unlike(favAlbum: Album) {
+    let favAlbum2 = new FavoriteAlbum(this.acc?.id, favAlbum.id);
+    this.favAlbum.deleteFavoriteAlbum(favAlbum2).subscribe((data) => {
+    });
+    this.getAllAlbumFavByUser();
   }
 
   async showDetail(item: any) {
@@ -68,7 +79,9 @@ export class UserFavoriteComponent implements OnInit {
       });
     }
   }
-
+  gotoDetailAlbum(album: Album): void {
+    this.router.navigate(['/onesound/home/album/', album.id]);
+  }
   getAllAlbumFavByUser() {
     if (this.acc && this.acc.id) {
       this.favAlbum.getAllFavAlbumByUser(this.acc.id).subscribe((data) => {

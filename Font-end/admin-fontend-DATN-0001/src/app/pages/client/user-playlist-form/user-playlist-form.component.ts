@@ -16,6 +16,7 @@ import {playlistService} from "../../adminPage/adminEntityService/adminService/p
 import {Router, RouterLink} from "@angular/router";
 import {PlaylistSong} from '../../adminPage/PlaylistSong/PlaylistSong';
 import {PlayListSongService} from '../../adminPage/adminEntityService/adminService/PlayListSongService.service';
+import {Album} from "../../adminPage/adminEntityService/adminEntity/album/album";
 
 @Component({
   selector: 'app-user-playlist-form',
@@ -47,6 +48,8 @@ export class UserPlaylistFormComponent {
     this.account = this.userService.getUserResponseFromLocalStorage();
     this.getAllPlaylists();
   }
+
+
 
   a(id: number | undefined) {
     if (id !== undefined) {
