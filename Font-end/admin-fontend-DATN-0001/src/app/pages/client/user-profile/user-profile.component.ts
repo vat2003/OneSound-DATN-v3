@@ -182,8 +182,8 @@ export class UserProfileComponent implements OnInit {
       }
       Promise.all(promises).then(songs => {
         for (let song of songs) {
-          this.forceDate = new DatePipe('en-US').transform(song.release, 'MM-dd-yyyy');
-          song.release = this.forceDate;
+          this.forceDate = new DatePipe('en-US').transform(song.release_date, 'MM-dd-yyyy');
+          song.release_date = this.forceDate;
           // song.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
         }
         this.songs = songs;

@@ -203,20 +203,22 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     this.AuthorService.getAuthorById(id.id).subscribe(data => {
       data.active = true;
       this.AuthorService.updateAuthor(data.id, data).subscribe();
-      this.displayDataOnTable(0, 5);
-      this.displayDataOnTableInActive();
+      this.reload()
     })
 
 
   }
 
-  inactive(id: Author) {
-    this.AuthorService.getAuthorById(id.id).subscribe((data) => {
+  inactive(id:any) {
+    this.AuthorService.getAuthorById(id).subscribe((data) => {
       data.active = false;
       this.AuthorService.updateAuthor(data.id, data).subscribe();
-      this.displayDataOnTableInActive();
-      this.displayDataOnTable(0, 5);
+      this.reload()
     })
+    // this.displayDataOnTable(0, 5);
+    // this.displayDataOnTableInActive();
+    // this.reload()
+    // alert("HEHHEEHHE")
   }
 
   deleteAuthor(id: number) {
@@ -230,7 +232,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
         })
       }
     } else {
-      alert("nhân viên không có quyền delete")
+      alert("Staff can't delete")
 
     }
 
@@ -344,6 +346,8 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
           this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
           console.log(data);
+          this.reload()
+
         },
         (error) => console.log(error)
       );

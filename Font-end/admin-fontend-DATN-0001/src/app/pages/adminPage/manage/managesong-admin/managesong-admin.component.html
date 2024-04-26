@@ -13,8 +13,8 @@
           <input type="text" class="form-control" name="id" [(ngModel)]="song.id" hidden />
           <div class="mb-3">
             <label class="form-label">Release</label>
-            <input type="date" class="form-control calendar-icon-white" name="release" id="release"
-              [(ngModel)]="song.release" />
+            <input type="date" class="form-control calendar-icon-white" name="release_date" id="release_date"
+              [(ngModel)]="song.release_date" />
           </div>
 
           <label class="form-label">Active</label> <br />
@@ -356,7 +356,7 @@
                 <img src="{{ album.image }}" width="70" height="70" alt="{{ album.image }}" />
               </td>
               <td>{{ album.name }}</td>
-              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+              <td>{{ album.release_date | date : "dd-MM-yyyy" }}</td>
               <td>
                 <button (click)="getSong(album.id)" class="btn btn-outline-info me-3">
                   Detail
@@ -417,7 +417,7 @@
                 <img src="{{ album.image }}" width="70" height="70" alt="{{ album.image }}" />
               </td>
               <td>{{ album.name }}</td>
-              <td>{{ album.release | date : "dd-MM-yyyy" }}</td>
+              <td>{{ album.release_date | date : "dd-MM-yyyy" }}</td>
               <td>
                 <button (click)="getSong(album.id)" class="btn btn-outline-info me-3">
                   Detail

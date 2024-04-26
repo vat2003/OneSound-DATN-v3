@@ -104,7 +104,7 @@
 
         <span *ngIf="singers.length === 0" class="text-warning">No similar names</span>
         <div class="d-flex justify-content-center" *ngIf="singer">
-          <nav aria-label="Page navigation">
+          <nav aria-label="Page navigation" style="color:white">
             <pagination-controls (pageChange)="pU = $event" id="albumActive"></pagination-controls>
           </nav>
         </div>

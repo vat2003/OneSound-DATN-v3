@@ -144,7 +144,7 @@ export class UserSongInPlaylistComponent {
         console.log('Image string:', imageString);
         this.songEntity = new Song(song.song?.name
           , imageString
-          , song.song?.release
+          , song.song?.release_date
           , song.song?.description
           , song.song?.path
           , song.song?.lyrics

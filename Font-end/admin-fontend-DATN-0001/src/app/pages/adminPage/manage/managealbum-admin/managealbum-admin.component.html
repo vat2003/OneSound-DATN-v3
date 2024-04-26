@@ -145,7 +145,7 @@
             </tr>
           </ng-template>
         </table>
-        <div class="text-center" *ngIf="albums.length > 0">
+        <div class="text-center" *ngIf="albums.length > 0" style="color:white">
           <pagination-controls (pageChange)="pU = $event" id="albumActive"></pagination-controls>
         </div>
         <br>
@@ -188,7 +188,7 @@
             </tr>
           </ng-template>
         </table>
-        <div class="text-center" *ngIf="inactiveList.length > 0">
+        <div class="text-center" *ngIf="inactiveList.length > 0" style="color:white">
           <pagination-controls (pageChange)="pI = $event" id="albumInactive"></pagination-controls>
         </div>
       </div>

@@ -58,6 +58,7 @@ export class ChangePasswordComponent {
   }
 
   register() {
+    debugger
     if (!this.password || !this.retypePassword) {
       alert("Please enter both password and retype password.");
       return;
@@ -77,6 +78,7 @@ export class ChangePasswordComponent {
       this.tokenn = this.extractEmailFromToken(test);
 
       this.userService.getchecktokem(this.tokenn).subscribe({
+
         next: (response: any) => {
           debugger
           alert("Token successfully");

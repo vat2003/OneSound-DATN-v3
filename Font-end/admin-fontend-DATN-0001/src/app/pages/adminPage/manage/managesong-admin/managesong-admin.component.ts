@@ -780,17 +780,17 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     this.SongService.getSongById(id.id).subscribe(data => {
       data.active = true;
       this.SongService.updateSong(data.id, data).subscribe();
-      this.displayDataOnTable(0, 10);
+      // this.displayDataOnTable(0, 10);
       this.reload();
     });
-    this.displayDataOnTableInActive();
+    // this.displayDataOnTableInActive();
   }
 
   inactive(id: Song) {
     this.SongService.getSongById(id.id).subscribe(data => {
       data.active = false;
       this.SongService.updateSong(data.id, data).subscribe();
-      this.displayDataOnTableInActive();
+      // this.displayDataOnTableInActive();
       this.reload();
     })
   }
@@ -1055,9 +1055,8 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         this.song.image = await this.setImageURLFirebase(this.song.image);
         console.log("Bài hát gì đó:" + this.song)
         this.id = result.song.id;
-        // alert("Date" + new DatePipe('en-US').transform(this.song.release, 'yyyy-MM-dd'));
-        this.forceDate = new DatePipe('en-US').transform(this.song.release, 'yyyy-MM-dd');
-        this.song.release = this.forceDate;
+        this.forceDate = new DatePipe('en-US').transform(this.song.release_date, 'yyyy-MM-dd');
+        this.song.release_date = this.forceDate;
         if (this.albumTable.length > 0) {
           this.albumTable.forEach((data, index) => {
             this.albumTable.splice(index, 1);
@@ -1188,6 +1187,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       (error: any) => {
         console.log(error);
       }
+
+    console.log('aat', this.song.release_date);
+
   }
 
 
@@ -1274,9 +1276,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
 
   createSong() {
-    if (this.song.release) {
+    if (this.song.release_date) {
       const today = new Date();
-      const releaseDate = new Date(this.song.release);
+      const releaseDate = new Date(this.song.release_date);
       if (releaseDate.getTime() > today.getTime()) {
         this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
         return;
@@ -1310,7 +1312,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       this.song.path = 'adminManageAudio/song/null.mp3';
     }
     // Kiểm tra các trường cần thiết trước khi tạo bài hát mới
-    if (!this.song.name || !this.song.release || !this.setImageUrl || !this.setAudioUrl) {
+    if (!this.song.name || !this.song.release_date || !this.setImageUrl || !this.setAudioUrl) {
       alert("Vui lòng điền đầy đủ thông tin để tạo bài hát mới.");
       return; // Dừng việc thực hiện hàm nếu có trường trống
     }
@@ -1450,9 +1452,9 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
   updateSong(id: number) {
     // Kiểm tra xem bài hát đã chọn để cập nhật có tồn tại không
-    if (this.song.release) {
+    if (this.song.release_date) {
       const today = new Date();
-      const releaseDate = new Date(this.song.release);
+      const releaseDate = new Date(this.song.release_date);
       if (releaseDate.getTime() > today.getTime()) {
         this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
         return;
@@ -1524,7 +1526,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
       // Cập nhật thông tin thể loại
       for (const genreId of genreIds) {
-        this.SongGenreService.updateSongGenre(songId, genreId).subscribe(
+        this.SongGenreService.createSongGenre(songId, genreId).subscribe(
           () => {
             console.log(`Updated SongGenre for genre with ID ${genreId} and song with ID ${songId}`);
           },
@@ -1577,7 +1579,7 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         this.audioSong = data.map((album: Song) => album.path);
         this.titleSong = data.map((album: Song) => album.name);
         this.songs = data;
-        this.song.release.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
+        this.song.release_date.toLocaleDateString('en-US', {year: 'numeric', month: '2-digit', day: '2-digit'});
         // this.song.dateTemp = formattedDate;
 
         // Định dạng ngày tháng cho từng bài hát

@@ -213,7 +213,7 @@
               >
                 Detail
               </button>
-              <button (click)="inactive(item)" class="btn btn-outline-danger">
+              <button (click)="inactive(item.id)" class="btn btn-outline-danger">
                 Inactive
               </button>
             </td>
@@ -227,53 +227,7 @@
             </tr>
           </ng-template>
         </table>
-        <div class="d-flex justify-content-center">
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li class="page-item" *ngIf="page > 0">
-                <a class="page-link" style="cursor: pointer" (click)="Page(0)"
-                >First</a
-                >
-              </li>
-              <li class="page-item" *ngIf="page > 0">
-                <a
-                  class="page-link"
-                  (click)="Page(page - 1)"
-                  style="cursor: pointer"
-                >
-                  <i class="fa fa-chevron-left"></i>
-                </a>
-              </li>
-              <ng-container *ngFor="let page of visiblePages">
-                <li class="page-item" [ngClass]="{ active: page === page + 1 }">
-                  <a
-                    class="page-link"
-                    (click)="Page(page - 1)"
-                    style="cursor: pointer"
-                  >{{ page }}</a
-                  >
-                </li>
-              </ng-container>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a
-                  class="page-link"
-                  (click)="Page(page + 1)"
-                  style="cursor: pointer"
-                >
-                  <i class="fa fa-chevron-right"></i>
-                </a>
-              </li>
-              <li class="page-item" *ngIf="page < total - 1">
-                <a
-                  class="page-link"
-                  (click)="Page(total - 1)"
-                  style="cursor: pointer"
-                >Last</a
-                >
-              </li>
-            </ul>
-          </nav>
-        </div>
+
       </div>
     </div>
     <div class="col-sm-12 col-xl-12">

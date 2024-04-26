@@ -7,7 +7,7 @@ export class Song {
   image: string;
   path: string;
   lyrics: string;
-  release: Date;
+  release_date: Date;
   description: string;
   dateTemp: string;
   album: Album;
@@ -19,7 +19,7 @@ export class Song {
     name: string = '',
     image: string = '',
     // release: number = new Date().getFullYear(),
-    release: Date = new Date(),
+    release_date: Date = new Date(),
     description: string = '',
     path: string = '',
     lyrics: string = '',
@@ -29,7 +29,7 @@ export class Song {
   ) {
     this.name = name;
     this.image = image;
-    this.release = release;
+    this.release_date = release_date;
     // this.albumcreateDate = albumcreateDate;
     this.description = description;
     this.path = path;
