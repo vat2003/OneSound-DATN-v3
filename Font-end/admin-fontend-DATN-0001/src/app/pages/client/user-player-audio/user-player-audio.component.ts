@@ -21,7 +21,7 @@ import { ListeningStatsService } from '../../../services/listening-stats/listeni
 import { HistoryListensService } from '../../../services/history-listens/history-listens.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CommentSongComponent } from '../comment-song/comment-song.component';
-import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
+import { UserPlaylistModalComponent } from "../user-playlist-modal/user-playlist-modal.component";
 
 @Component({
   selector: 'app-user-player-audio',
@@ -64,7 +64,7 @@ export class UserPlayerAudioComponent implements OnInit {
     private historyListenService: HistoryListensService,
     private cdr: ChangeDetectorRef, // Inject ChangeDetectorRef
     private matDialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
@@ -129,7 +129,7 @@ export class UserPlayerAudioComponent implements OnInit {
     // Lên lịch tăng lượt nghe sau 30 giây
     this.increaseLisTimeout = setTimeout(() => {
       this.increaseLis(this.selectedSong.id);
-    }, 30000); // 30000 ms = 30 giây
+    }, 5000); // 30000 ms = 30 giây
   }
 
   clearIncreaseLisTimeout(): void {
@@ -284,10 +284,10 @@ export class UserPlayerAudioComponent implements OnInit {
         return;
       }
       song.isFav = false;
-      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => { });
     } else {
       song.isFav = true;
-      this.favSong.addFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.addFavoriteSong(favS).subscribe((data) => { });
     }
   }
 
@@ -329,7 +329,7 @@ export class UserPlayerAudioComponent implements OnInit {
 
   openDialog(songInput: Song) {
     const dialogRef = this.matDialog.open(UserPlaylistModalComponent, {
-      data: {song: songInput},
+      data: { song: songInput },
     });
 
     dialogRef.afterOpened().subscribe(() => {

@@ -1,26 +1,34 @@
 <h1 class="text-center">History listen</h1>
 
-<table class="table table-dark table-striped">
-  <thead>
-  <tr>
-    <th scope="col">No.</th>
-    <th scope="col">Image</th>
-    <th scope="col">Title</th>
-    <th scope="col">Time</th>
+<div>
+  <a (click)="deleteHis()" class="btn btn-outline-danger">Delete all history</a>
+</div>
 
-  </tr>
+<table class="table table-dark table-striped mt-5">
+  <thead>
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Image</th>
+      <th scope="col">Title</th>
+      <th scope="col">Time</th>
+     
+
+    </tr>
   </thead>
   <tbody>
 
-  <tr *ngFor="let item of history, let i = index" (click)="showDetail(item.song)">
-    <th scope="row">{{ i + 1 }}</th>
-    <td>
-      <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
-    </td>
-    <td>{{ item.song ? item.song.name : 'N/A' }}</td>
-    <td>{{ item.song ? (item.listenTime | date: 'yyyy-MM-dd || H:MM:ss') : '' }}</td>
+    <tr *ngFor="let item of history, let i = index" (click)="showDetail(item.song)">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>
+        <img *ngIf="item.song" src="{{item.song.image }}" width="70" height="70" alt="Song Image">
+      </td>
+      <td>{{ item.song ? item.song.name : 'N/A' }}</td>
+      <td>{{ item.song ? (item.listenTime | date: 'yyyy-MM-dd || H:MM:ss') : '' }}</td>
 
-  </tr>
+      <!-- <td>
+        <input type="checkbox" style="transform: scale(1.5);" />
+      </td> -->
+    </tr>
 
   </tbody>
 </table>
