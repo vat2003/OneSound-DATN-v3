@@ -1,33 +1,37 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import bootstrap from '../../../../main.server';
-import {ActivatedRoute} from '@angular/router';
-import {HistoryListensService} from '../../../services/history-listens/history-listens.service';
-import {FormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
-import {DataGlobalService} from '../../../services/data-global.service';
-import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
+import { ActivatedRoute } from '@angular/router';
+import { HistoryListensService } from '../../../services/history-listens/history-listens.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { DataGlobalService } from '../../../services/data-global.service';
+import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
+import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
+import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
 
 @Component({
   selector: 'app-history-listens',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './history-listens.component.html',
-  styleUrl: './history-listens.component.scss'
+  styleUrl: './history-listens.component.css'
 })
 export class HistoryListensComponent {
 
   accountId!: number;
   history: any[] = [];
   song: any[] = [];
-
+  acc!: account | null;
   constructor(private route: ActivatedRoute,
-              private historyListen: HistoryListensService,
-              private dataGlobal: DataGlobalService,
-              private firebaseStorage: FirebaseStorageCrudService,
+    private historyListen: HistoryListensService,
+    private dataGlobal: DataGlobalService,
+    private firebaseStorage: FirebaseStorageCrudService,
+    private userService: accountServiceService
   ) {
   }
 
   ngOnInit(): void {
+    this.acc = this.userService.getUserResponseFromLocalStorage();
     this.route.params.subscribe(params => {
       this.accountId = params['id'];
 
@@ -64,6 +68,20 @@ export class HistoryListensComponent {
     } else {
       return 'null';
     }
+  }
+
+  deleteHis() {
+    const id = this.acc?.id;
+    const isConfirmed = window.confirm('Are you sure you want to delete all history?');
+    if (isConfirmed) {
+      this.historyListen.deleteAllHistory(id).subscribe(() => {
+        this.getLisByUserId();
+      })
+
+    }
+
+
+
   }
 
 

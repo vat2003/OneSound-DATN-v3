@@ -1,12 +1,17 @@
 <h1 class="text-center">History listen</h1>
 
-<table class="table table-dark table-striped">
+<div class="m-5">
+  <a (click)="deleteHis()" class="btn btn-outline-danger">Delete all history</a>
+</div>
+
+<table class="table table-dark table-striped mt-5">
   <thead>
   <tr>
     <th scope="col">No.</th>
     <th scope="col">Image</th>
     <th scope="col">Title</th>
     <th scope="col">Time</th>
+
 
   </tr>
   </thead>
@@ -20,6 +25,9 @@
     <td>{{ item.song ? item.song.name : 'N/A' }}</td>
     <td>{{ item.song ? (item.listenTime | date: 'yyyy-MM-dd || H:MM:ss') : '' }}</td>
 
+    <!-- <td>
+      <input type="checkbox" style="transform: scale(1.5);" />
+    </td> -->
   </tr>
 
   </tbody>

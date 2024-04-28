@@ -36,8 +36,8 @@ export class FeedbackComponent {
     debugger
     this.userService.EmailFeedBack(feedbackInstance).subscribe(
       async (data) => {
-        debugger
-        alert("thành công")
+        alert("thành công");
+        console.log('data feed', data)
       },
       (error) => {
         debugger

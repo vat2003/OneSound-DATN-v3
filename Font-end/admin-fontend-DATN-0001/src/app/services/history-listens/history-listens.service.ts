@@ -19,5 +19,8 @@ export class HistoryListensService {
     return this._httpClient.get<any[]>(`${this.baseURL}/get-by-user-id/${userId}`)
   }
 
+  deleteAllHistory(userId: any) {
+    return this._httpClient.delete(`${this.baseURL}/delete/${userId}`)
+  }
 
 }
