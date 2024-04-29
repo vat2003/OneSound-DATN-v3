@@ -45,7 +45,6 @@ export class SongSingerService {
     return this.httpClient.delete(`${this.baseURL}/delete-by-singer/${albumId}`);
   }
   deleteAllSongSingerBySongId(albumId: number): Observable<Object> {
-
     return this.httpClient.delete(`${this.baseURL}/delete-by-song/${albumId}`);
   }
 }

@@ -1089,15 +1089,13 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
         // Process singers
         this.SongSingerService.getAllSingerBySong(id).subscribe((data) => {
           if (data && data.length > 0) {
-            console.log("Dữ liệu t1: ", data);
+            console.log("Dữ liệu CA SI t1: ", data);
             for (const song1 of data) {
               console.log("CA SĨ ĐÂYYYYY: " + song1.singer.id)
               this.singerService.getArtistById(song1.singer.id).subscribe(async (datasinger) => {
                 if (datasinger) {
-                  console.log("Dữ liệu t2: ", datasinger);
-                  if (this.singerTable.length > 0) {
-                    this.singerTable.splice(0, this.singerTable.length);
-                  }
+                  console.log("Dữ liệu CA SI t2: ", datasinger);
+
                   this.singerTable.push(datasinger);
                   console.log("Dữ liệu t3: ", this.singerTable);
                   this.filterOptionsSinger = this.formcontrol.valueChanges.pipe(
@@ -1512,17 +1510,38 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       const authorIds = this.authorTable.map(singer => singer.id);
       const genreIds = this.genreTable.map(singer => singer.id);
 
-      // Cập nhật thông tin ca sĩ
-      for (const singerId of singerIds) {
-        this.SongSingerService.createSongSinger(songId, singerId).subscribe(
-          () => {
-            console.log(`Updated SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
-          },
-          (error) => {
-            console.log(`Failed to update SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+
+      // this.SongSingerService.deleteAllSongSingerBySongId(songId).subscribe(data={});
+      // this.SongAuthorService.deleteAllSongAuthorBySongId(songId).subscribe(data={});
+
+      this.SongGenreService.deleteAllSongGenreBySongId(songId).subscribe(data={});
+
+      this.SongSingerService.deleteAllSongSingerBySongId(songId).subscribe((data) => {
+        console.log("--------Delete all SingerAlbum successful!");
+
+        //----------------------Thêm Singer Album-------------------------
+        const singerIds = this.singerTable.map(singer => singer.id);
+        console.log("---------------test--------------------------")
+        for (const singerId of singerIds) {
+
+          console.log("singerId: ", singerId + " albumId: ", id);
+
+          for (const singerId of singerIds) {
+            this.SongSingerService.createSongSinger(songId, singerId).subscribe(
+              () => {
+                console.log(`Updated SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+              },
+              (error) => {
+                console.log(`Failed to update SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+              }
+            );
           }
-        );
-      }
+        }
+        this.resetForm();
+        alert("Update successful!")
+      })
+      // Cập nhật thông tin ca sĩ
+
 
       // Cập nhật thông tin thể loại
       for (const genreId of genreIds) {
@@ -1537,16 +1556,36 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       }
 
       // Cập nhật thông tin tác giả
-      for (const authorId of authorIds) {
-        this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
-          () => {
-            console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-          },
-          (error) => {
-            console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-          }
-        );
-      }
+      // for (const authorId of authorIds) {
+      //   this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
+      //     () => {
+      //       console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+      //     },
+      //     (error) => {
+      //       console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+      //     }
+      //   );
+      // }
+
+      this.SongAuthorService.deleteAllSongAuthorBySongId(songId).subscribe((data) => {
+        console.log("--------Delete all SingerAlbum successful!");
+
+        //----------------------Thêm Singer Album-------------------------
+        const authorIds = this.authorTable.map(singer => singer.id);
+        console.log("---------------test--------------------------")
+        for (const authorId of authorIds) {
+          this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
+            () => {
+              console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+            },
+            (error) => {
+              console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+            }
+          );
+        }
+        this.resetForm();
+        alert("Update successful!")
+      })
 
       // Hiển thị lại dữ liệu trên bảng
       this.displayDataOnTable(0, 10);
