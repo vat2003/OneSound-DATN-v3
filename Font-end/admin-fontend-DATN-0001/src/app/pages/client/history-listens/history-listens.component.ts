@@ -22,6 +22,7 @@ export class HistoryListensComponent {
   history: any[] = [];
   song: any[] = [];
   acc!: account | null;
+  historyDel: any[] = [];
   constructor(private route: ActivatedRoute,
     private historyListen: HistoryListensService,
     private dataGlobal: DataGlobalService,
@@ -77,11 +78,46 @@ export class HistoryListensComponent {
       this.historyListen.deleteAllHistory(id).subscribe(() => {
         this.getLisByUserId();
       })
-
     }
+  }
 
+  updateSelectedHistories(item: any) {
+    if (item.selected) {
+      this.historyDel.push(item);
+    } else {
+      this.historyDel = this.historyDel.filter(h => h !== item);
+    }
+  }
 
+  deleteSelectedHistories() {
+    const idsToDelete = this.historyDel.map(h => h.id);
+    idsToDelete.forEach(id => {
+      this.historyListen.deleteLisHis(id).subscribe({
+        next: () => {
+          console.log(`History with id ${id} deleted successfully`);
+          this.history = this.history.filter(item => item.id !== id);
+        },
+        error: err => {
+          console.error('Error deleting history: ', err);
+        },
+        complete: () => {
+          // This callback doesn't need to do anything here but is available if needed
+        }
+      });
+    });
+    this.historyDel = [];
+  }
 
+  toggleAll() {
+    const allChecked = this.allSelected();
+    this.history.forEach(item => {
+      item.selected = !allChecked;
+      this.updateSelectedHistories(item);
+    });
+  }
+
+  allSelected(): boolean {
+    return this.history.every(item => item.selected);
   }
 
 

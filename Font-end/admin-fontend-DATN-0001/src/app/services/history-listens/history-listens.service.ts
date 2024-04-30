@@ -23,4 +23,8 @@ export class HistoryListensService {
     return this._httpClient.delete(`${this.baseURL}/delete/${userId}`)
   }
 
+  deleteLisHis(lisHisId: any) {
+    return this._httpClient.delete(`${this.baseURL}/delete/one/${lisHisId}`)
+  }
+
 }
