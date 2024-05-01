@@ -34,6 +34,7 @@ import { Author } from '../../adminPage/adminEntityService/adminEntity/author/au
 import { Genre } from '../../adminPage/adminEntityService/adminEntity/genre/genre';
 import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
 import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
+import {SongGenreService} from "../../adminPage/adminEntityService/adminService/song-genre.service";
 
 @Component({
   selector: 'app-user-result-search',
@@ -54,6 +55,7 @@ export class UserResultSearchComponent implements OnInit {
   authors: Author[] = [];
   genres: Genre[] = [];
   singerMap: { [key: number]: any[] } = {};
+  genreMap: { [key: number]: any[] } = {};
   singers: Singer[] = [];
   albums: Album[] = [];
 
@@ -70,6 +72,7 @@ export class UserResultSearchComponent implements OnInit {
     private playlistInteractionService: PlaylistInteractionService,
     private SongService: SongService,
     private SongSingerService: SongSingerService,
+    private SongGenreService: SongGenreService,
     private SingerService: SingerService,
     private GenreServiceService: GenreServiceService,
     private AuthorService: AuthorService,
@@ -111,6 +114,8 @@ export class UserResultSearchComponent implements OnInit {
         // song.path = await this.setImageURLFirebase(song.path);
         return song.name.toLowerCase().includes(this.query);
       });
+      this.getGenresForSongs();
+
     });
 
     this.SingerService.getAllArtists().subscribe(async (data) => {
@@ -168,26 +173,33 @@ export class UserResultSearchComponent implements OnInit {
   }
 
   getSingersForSongs() {
-    const observables = this.songs.map((song) => {
-      return this.SongSingerService.getAllSingerBySong(song.id).pipe(
-        switchMap((singers) => {
-          const singerObservables = singers.map((singer) =>
-            this.SingerService.getArtistById(singer.singer.id)
-          );
-          return forkJoin(singerObservables).pipe(
-            map((singerDataArray) => {
-              return { songId: song.id, singers: singerDataArray };
-            })
-          );
-        })
-      );
-    });
+    this.songs.forEach(song => {
+      this.SongSingerService.getAllSingerBySong(song.id).subscribe(data => {
+        console.log("DATA GENRE: ",data)
+        const genres = data.map(item => item.singer);
+        console.log("DATA GENRE T2: ",genres)
+        debugger
+        this.singerMap[song.id] = genres;
+        console.log("DATA GENRE T3: ",this.singerMap[song.id])
 
-    forkJoin(observables).subscribe((results) => {
-      results.forEach((result) => {
-        this.singerMap[result.songId] = result.singers;
       });
-      console.log('Singer Map:', this.singerMap);
+    });
+  }
+
+  getGenresForSongs() {
+    debugger
+    this.songs.forEach(song => {
+      debugger
+      this.SongGenreService.getAllGenreBySong(song.id).subscribe(data => {
+        console.log("DATA GENRE: ",data)
+        debugger
+        const genres = data.map(item => item.genre);
+        console.log("DATA GENRE T2: ",genres)
+        debugger
+        this.genreMap[song.id] = genres;
+        console.log("DATA GENRE T3: ",this.genreMap[song.id])
+
+      });
     });
   }
 

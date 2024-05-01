@@ -1,9 +1,9 @@
-import { NgClass, NgIf } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { accountServiceService } from '../adminEntityService/adminService/account-service.service';
-import { Register } from '../adminEntityService/adminEntity/DTO/Register';
+import {NgClass, NgIf} from '@angular/common';
+import {Component, ViewChild} from '@angular/core';
+import {FormsModule, NgForm} from '@angular/forms';
+import {Router, RouterLink} from '@angular/router';
+import {accountServiceService} from '../adminEntityService/adminService/account-service.service';
+import {Register} from '../adminEntityService/adminEntity/DTO/Register';
 
 @Component({
   selector: 'app-dangky',
@@ -63,12 +63,12 @@ export class DangkyComponent {
         return;
       }
       debugger;
-     
+
       if (this.password !== this.retypePassword) {
         alert('The password does not match');
         return;
       }
-   
+
       debugger;
       const registerData: Register = {
         fullname: this.fullname,
@@ -82,7 +82,18 @@ export class DangkyComponent {
         role_id: 1,
       };
       debugger;
+      this.userService.hot("create", registerData.email).subscribe(
+        async (data) => {
 
+          console.log(data);
+          return;
+        },
+        (error) => {
+
+          console.log(error);
+          return;
+        }
+      );
       this.userService.checkEmailExists(this.email).subscribe({
         next: (emailExists: boolean) => {
           debugger
@@ -97,7 +108,8 @@ export class DangkyComponent {
                 console.log(response);
                 this.router.navigate(['onesound/dangnhap']);
               },
-              complete: () => {},
+              complete: () => {
+              },
               error: (error: any) => {
                 alert('Thất bại');
                 console.error(error);

@@ -62,12 +62,13 @@
       <th>IMAGE</th>
       <th>TITLE</th>
       <th>ARTIST</th>
-      <th>QUANTITY</th>
+      <th>GENRE</th>
+      <th>AUTHOR</th>
       <!-- <th>TIME</th> -->
       <th></th>
     </tr>
     </thead>
-    <tbody id="list-songs">
+    <tbody id="list-songs" >
     <tr *ngFor="let s of songs; let i = index" (click)="showDetail(s)">
       <td>{{ i + 1 }}</td>
       <td>
@@ -81,8 +82,35 @@
         </div>
       </td>
 
-      <td>{{ s.sg }}</td>
-      <td>{{ s.singer }}</td>
+<!--      <td>{{ s.sg }}</td>-->
+      <td><div class="track__explicit">
+
+                      <span
+                        *ngFor="
+                          let singer of singerMap[s.id];
+                          let last = last
+                        "
+                      > {{
+                          singer.fullname
+                        }}{{
+                          !last && singerMap[s.id].length > 1 ? ", " : ""
+                        }}</span
+                      >
+      </div></td>
+
+      <td><div>
+            <span *ngFor="let singer of genreMap[s.id]; let last = last">{{
+                singer.name
+              }}{{ !last && genreMap[s.id].length > 1 ? ", " : "" }}</span>
+      </div></td>
+      <td>
+        <div>
+            <span *ngFor="let singer of authorMap[s.id]; let last = last">
+              {{
+                singer.fullname
+              }}{{ !last && authorMap[s.id].length > 1 ? ", " : "" }}</span>
+        </div>
+      </td>
       <td *ngIf="this.acc">
         <i class="fa-solid fa-plus" (click)="openDialog(s)"></i>&nbsp;&nbsp;
         <i

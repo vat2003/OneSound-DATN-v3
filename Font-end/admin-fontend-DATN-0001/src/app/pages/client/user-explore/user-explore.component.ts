@@ -31,6 +31,8 @@ import {FavoriteService} from '../../../services/favorite-service/favorite.servi
 import {DataGlobalService} from '../../../services/data-global.service';
 
 import axios from 'axios';
+import {Author} from "../../adminPage/adminEntityService/adminEntity/author/author";
+import {SongAuthorService} from "../../adminPage/adminEntityService/adminService/song-author.service";
 
 @Component({
   selector: 'app-user-explore',
@@ -45,8 +47,10 @@ export class UserExploreComponent implements OnInit {
   songs: any[] = [];
   singers: Singer[] = [];
   genres: Genre[] = [];
+  authors: Author[] = [];
   singerMap: { [key: number]: any[] } = {};
   genreMap: { [key: number]: any[] } = {};
+  authorMap: { [key: number]: any[] } = {};
   acc?: account | null;
   favListSongs: any[] = [];
 
@@ -62,6 +66,7 @@ export class UserExploreComponent implements OnInit {
     private SongService: SongService,
     private SongSingerService: SongSingerService,
     private SongGenreService: SongGenreService,
+    private SongAuthorService: SongAuthorService,
     // private SingerService:SingerService,
     private dataGlobal: DataGlobalService,
     private GenreServiceService: GenreServiceService
@@ -74,7 +79,7 @@ export class UserExploreComponent implements OnInit {
     debugger
     this.acc = this.userService.getUserResponseFromLocalStorage();
     // this.getAllSongs();
-    this.getAllNftsByOwner();
+    this.getAllSongs();
     this.getAllArtist();
     this.recordVisit();
     this.getAllAlbum();
@@ -164,7 +169,6 @@ export class UserExploreComponent implements OnInit {
         this.songs = data;
         console.log('Tất cả các bài hát mới: ', this.songs);
       }
-      this.songs.reverse();
       // console.log("SẮP XÊP")
       for (const hotArt of this.songs) {
         if (hotArt.image == null || hotArt.image == '') {
@@ -174,55 +178,51 @@ export class UserExploreComponent implements OnInit {
       }
       this.getSingersForSongs();
       this.getGenresForSongs();
+      this.getAuthorsForSongs();
+      this.songs.reverse();
+
       // console.log(data);
     });
   }
 
   getSingersForSongs() {
-    const observables = this.songs.map((song) => {
-      return this.SongSingerService.getAllSingerBySong(song.id).pipe(
-        switchMap((singers) => {
-          const singerObservables = singers.map((singer) =>
-            this.SingerService.getArtistById(singer.singer.id)
-          );
-          return forkJoin(singerObservables).pipe(
-            map((singerDataArray) => {
-              return {songId: song.id, singers: singerDataArray};
-            })
-          );
-        })
-      );
-    });
-
-    forkJoin(observables).subscribe((results) => {
-      results.forEach((result) => {
-        this.singerMap[result.songId] = result.singers;
+    this.songs.forEach(song => {
+      this.SongSingerService.getAllSingerBySong(song.id).subscribe(data => {
+        const singers = data.map(item => item.singer);
+        this.singerMap[song.id] = singers;
       });
-      console.log('Singer Map:', this.singerMap);
     });
   }
 
   getGenresForSongs() {
-    const observables = this.songs.map((song) => {
-      return this.SongGenreService.getAllGenreBySong(song.id).pipe(
-        switchMap((genres) => {
-          const singerObservables = genres.map((genres) =>
-            this.GenreServiceService.getGenre(genres.genre.id)
-          );
-          return forkJoin(singerObservables).pipe(
-            map((singerDataArray) => {
-              return {songId: song.id, genres: singerDataArray};
-            })
-          );
-        })
-      );
-    });
+    debugger
+    this.songs.forEach(song => {
+      debugger
+      this.SongGenreService.getAllGenreBySong(song.id).subscribe(data => {
+       console.log("DATA GENRE: ",data)
+        debugger
+        const genres = data.map(item => item.genre);
+        console.log("DATA GENRE T2: ",genres)
+        debugger
+        this.genreMap[song.id] = genres;
+        console.log("DATA GENRE T3: ",this.genreMap[song.id])
 
-    forkJoin(observables).subscribe((results) => {
-      results.forEach((result) => {
-        this.genreMap[result.songId] = result.genres;
       });
-      console.log('Genre Map:', this.genreMap);
+    });
+  }
+
+
+  getAuthorsForSongs() {
+    this.songs.forEach(song => {
+      this.SongAuthorService.getAllAuthorBySong(song.id).subscribe(data => {
+        console.log("DATA GENRE: ",data)
+        const genres = data.map(item => item.author);
+        console.log("DATA GENRE T2: ",genres)
+        debugger
+        this.authorMap[song.id] = genres;
+        console.log("DATA GENRE T3: ",this.genreMap[song.id])
+
+      });
     });
   }
 
@@ -282,79 +282,79 @@ export class UserExploreComponent implements OnInit {
     }
   }
 
-  async getAllNftsByOwner() {
-    try {
-      const res = await axios.post('https://api.devnet.solana.com', {
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": "getAssetsByOwner",
-        "params": {
-          "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
-          "page": 1,
-          "limit": 100
-        }
-      });
-
-      console.log("DATA NÈ EM", res.data);
-
-      const data: any[] = res.data.result.items;
-      console.log("DỮ LIỆU: ", data);
-
-      const transformedData = data.map(m => {
-        const att: any = {};
-        const originAtt = m?.content?.metadata?.attributes || [];
-        originAtt.forEach((element: any) => {
-          if (element?.value) {
-            att[element?.trait_type] = element?.value
-          }
-        });
-        const dto = {
-          id: m.id, // Thêm trường id vào DTO
-          image_uri: m?.content?.files[0]?.uri,
-          path_uri: m?.content?.files[1]?.uri,
-          ...att,
-          owner: m?.ownership?.owner
-        }
-        return dto
-      });
-
-      const lisIds = Array.from(new Set(transformedData.map(m => m?.id)));
-      const d = lisIds.map(m => {
-        const r = transformedData.filter(f => f.id === m);
-        return {
-          ...r[0], numberOfCopies: r.length
-        };
-      })
-
-      console.log("NHẠC NÈ: ", d)
-
-      for (let a of d) {
-        console.log("ID NHẠC: ", a.id);
-        try {
-          if (!a.id.NaN) {
-            this.SongService.getSongById(a.id).subscribe(async data => {
-              data.image = await this.setImageURLFirebase(data.image);
-              data.singer = a.numberOfCopies;
-              this.SongSingerService.getAllSingerBySong(a.id).subscribe(ss => {
-                for (let a of ss) {
-                  this.SingerService.getArtistById(a.singer.id).subscribe(casi => {
-                    data.sg = casi.fullname;
-                  })
-                }
-              })
-              this.songs.push(data);
-              this.getSingersForSongs();
-            })
-          }
-
-        } catch (error) {
-          console.error("LỖI: ", error)
-        }
-
-
-      }
-    } catch (error) {
-      console.log("CAN't load: ", error)
-    }
-  }
+  // async getAllNftsByOwner() {
+  //   try {
+  //     const res = await axios.post('https://api.devnet.solana.com', {
+  //       "jsonrpc": "2.0",
+  //       "id": 1,
+  //       "method": "getAssetsByOwner",
+  //       "params": {
+  //         "ownerAddress": "HiSpfJLbLW7H14s1NAQzCD6aM4K96nkmaiBjpNcFyjN7",
+  //         "page": 1,
+  //         "limit": 100
+  //       }
+  //     });
+  //
+  //     console.log("DATA NÈ EM", res.data);
+  //
+  //     const data: any[] = res.data.result.items;
+  //     console.log("DỮ LIỆU: ", data);
+  //
+  //     const transformedData = data.map(m => {
+  //       const att: any = {};
+  //       const originAtt = m?.content?.metadata?.attributes || [];
+  //       originAtt.forEach((element: any) => {
+  //         if (element?.value) {
+  //           att[element?.trait_type] = element?.value
+  //         }
+  //       });
+  //       const dto = {
+  //         id: m.id, // Thêm trường id vào DTO
+  //         image_uri: m?.content?.files[0]?.uri,
+  //         path_uri: m?.content?.files[1]?.uri,
+  //         ...att,
+  //         owner: m?.ownership?.owner
+  //       }
+  //       return dto
+  //     });
+  //
+  //     const lisIds = Array.from(new Set(transformedData.map(m => m?.id)));
+  //     const d = lisIds.map(m => {
+  //       const r = transformedData.filter(f => f.id === m);
+  //       return {
+  //         ...r[0], numberOfCopies: r.length
+  //       };
+  //     })
+  //
+  //     console.log("NHẠC NÈ: ", d)
+  //
+  //     for (let a of d) {
+  //       console.log("ID NHẠC: ", a.id);
+  //       try {
+  //         if (!a.id.NaN) {
+  //           this.SongService.getSongById(a.id).subscribe(async data => {
+  //             data.image = await this.setImageURLFirebase(data.image);
+  //             data.singer = a.numberOfCopies;
+  //             this.SongSingerService.getAllSingerBySong(a.id).subscribe(ss => {
+  //               for (let a of ss) {
+  //                 this.SingerService.getArtistById(a.singer.id).subscribe(casi => {
+  //                   data.sg = casi.fullname;
+  //                 })
+  //               }
+  //             })
+  //             this.songs.push(data);
+  //             this.getSingersForSongs();
+  //           })
+  //         }
+  //
+  //       } catch (error) {
+  //         console.error("LỖI: ", error)
+  //       }
+  //
+  //
+  //     }
+  //   } catch (error) {
+  //     console.log("CAN't load: ", error)
+  //   }
+  // }
 }

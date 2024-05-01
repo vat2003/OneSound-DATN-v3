@@ -209,7 +209,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
   }
 
-  inactive(id:any) {
+  inactive(id: any) {
     this.AuthorService.getAuthorById(id).subscribe((data) => {
       data.active = false;
       this.AuthorService.updateAuthor(data.id, data).subscribe();
@@ -227,12 +227,18 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
       if (isConfirmed) {
         this.AuthorService.deleteAuthor(id).subscribe(data => {
           this.loadAuthors();
-          this.toast.warning({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
+          this.reload();
+          this.toast.success({detail: 'Success Delete Message', summary: 'Delete successfully', duration: 3000});
 
         })
       }
     } else {
-      alert("Staff can't delete")
+      // alert("Staff can't delete")
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 3000
+      });
 
     }
 
@@ -304,22 +310,6 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     );
   }
 
-  // saveAuthor() {
-  //   // alert('hehe')
-  //   debugger
-  //   this.Author.image = this.setImageUrl;
-  //   this.AuthorService.createAuthor(this.Author).subscribe(
-  //     async (data) => {
-  //       if (this.Author.image != null) {
-  //         await this.firebaseStorage.uploadFile('adminManageImage/author/', this.imageFile);
-  //       }
-  //       this.loadAuthors();
-  //       // this.goToSingerList();
-  //       console.log(data);
-  //     },
-  //     (error) => console.log(error)
-  //   );
-  // }
 
   updateAuthor(id: number) {
 
@@ -349,10 +339,20 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
           this.reload()
 
         },
-        (error) => console.log(error)
+        (error) => {
+          console.log(error);
+          this.toast.error({detail: 'Error Message', summary: 'Update Falied!', duration: 3000});
+
+        }
       );
     } else {
-      alert("nhân viên không có quyền update")
+      // alert("nhân viên không có quyền update")
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 3000
+      });
+
     }
 
 
@@ -420,13 +420,21 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
     const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
     //Kiểm tra giới hạn kích thước ảnh
     if (selectedFile.size > maxSizeInBytes) {
-      alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      // alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      this.toast.warning(
+        {
+          detail: 'Warning Message',
+          summary: 'File size axceeds the allowed limit (8 MB). Please choose a smaller file.failed',
+          duration: 3000
+        });
       this.resetFileInput();
       return;
     }
 
     if (selectedFile && !selectedFile.type.startsWith('image/')) {
-      alert('Please select an image file.');
+      // alert('Please select an image file.');
+      this.toast.warning({detail: 'Warning Message', summary: 'Please select an image file', duration: 3000});
+
       this.resetFileInput(); // Hàm này để đặt lại input file sau khi thông báo lỗi
       return;
     }

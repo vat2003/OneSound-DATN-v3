@@ -116,26 +116,28 @@ export class UserPlaysongComponent implements OnInit {
   }
 
   getSingersForSongs() {
-    const observables = this.songs.map((song) => {
-      return this.SongSingerService.getAllSingerBySong(song.id).pipe(
-        switchMap((singers) => {
-          const singerObservables = singers.map((singer) =>
-            this.singerService.getArtistById(singer.singer.id)
-          );
-          return forkJoin(singerObservables).pipe(
-            map((singerDataArray) => {
-              return {songId: song.id, singers: singerDataArray};
-            })
-          );
-        })
-      );
-    });
-
-    forkJoin(observables).subscribe((results) => {
-      results.forEach((result) => {
-        this.singerMap[result.songId] = result.singers;
+    this.songs.forEach(song => {
+      this.SongSingerService.getAllSingerBySong(song.id).subscribe(data => {
+        const singers = data.map(item => item.singer);
+        this.singerMap[song.id] = singers;
       });
-      console.log('Singer Map:', this.singerMap);
+    });
+  }
+
+  getGenresForSongs() {
+    debugger
+    this.songs.forEach(song => {
+      debugger
+      this.SongGenreService.getAllGenreBySong(song.id).subscribe(data => {
+        console.log("DATA GENRE: ", data)
+        debugger
+        const genres = data.map(item => item.genre);
+        console.log("DATA GENRE T2: ", genres)
+        debugger
+        this.genreMap[song.id] = genres;
+        console.log("DATA GENRE T3: ", this.genreMap[song.id])
+
+      });
     });
   }
 
@@ -159,51 +161,17 @@ export class UserPlaysongComponent implements OnInit {
     this.searchTerms.next(event.target.value);
   }
 
-  getGenresForSongs() {
-    const observables = this.songs.map((song) => {
-      return this.SongGenreService.getAllGenreBySong(song.id).pipe(
-        switchMap((genres) => {
-          const singerObservables = genres.map((genres) =>
-            this.GenreServiceService.getGenre(genres.genre.id)
-          );
-          return forkJoin(singerObservables).pipe(
-            map((singerDataArray) => {
-              return {songId: song.id, genres: singerDataArray};
-            })
-          );
-        })
-      );
-    });
-
-    forkJoin(observables).subscribe((results) => {
-      results.forEach((result) => {
-        this.genreMap[result.songId] = result.genres;
-      });
-      console.log('Genre Map:', this.genreMap);
-    });
-  }
-
   getAuthorsForSongs() {
-    const observables = this.songs.map((song) => {
-      return this.SongAuthorService.getAllAuthorBySong(song.id).pipe(
-        switchMap((authors) => {
-          const singerObservables = authors.map((genres) =>
-            this.AuthorService.getAuthorById(genres.author.id)
-          );
-          return forkJoin(singerObservables).pipe(
-            map((singerDataArray) => {
-              return {songId: song.id, authors: singerDataArray};
-            })
-          );
-        })
-      );
-    });
+    this.songs.forEach(song => {
+      this.SongAuthorService.getAllAuthorBySong(song.id).subscribe(data => {
+        console.log("DATA GENRE: ", data)
+        const genres = data.map(item => item.author);
+        console.log("DATA GENRE T2: ", genres)
+        debugger
+        this.authorMap[song.id] = genres;
+        console.log("DATA GENRE T3: ", this.genreMap[song.id])
 
-    forkJoin(observables).subscribe((results) => {
-      results.forEach((result) => {
-        this.authorMap[result.songId] = result.authors;
       });
-      console.log('Author Map:', this.authorMap);
     });
   }
 
@@ -260,18 +228,11 @@ export class UserPlaysongComponent implements OnInit {
   }
 
   checkFav() {
-
     if (this.acc?.id) {
       this.favSong
         .isAlbumLikedByUser(this.acc.id, this.id)
         .subscribe((data) => {
           console.log('isAlbumLikedByUser', this.isFavAlbum);
-          // if (data == null) {
-          //   this.isFavAlbum = false;
-          // } else {
-          //   this.isFavAlbum = true;
-          // }
-          // this.isFavAlbum = (data !== null);
           this.isFavAlbum = data ? true : false;
         });
 
@@ -279,11 +240,6 @@ export class UserPlaysongComponent implements OnInit {
         .isAlbumLikedByUser(this.acc.id, this.id)
         .subscribe((data) => {
           console.log('isAlbumLikedByUser', this.isFavAlbum);
-          // if (data == null) {
-          //   this.isFavAlbum = false;
-          // } else {
-          //   this.isFavAlbum = true;
-          // }
           this.isFavAlbum = data ? true : false;
         });
 

@@ -32,11 +32,6 @@
           </div>
         </div>
 
-        <!--        <div class="artist__listeners">-->
-        <!--          <div class="artist__listeners__count">15,662,810</div>-->
-
-        <!--          <div class="artist__listeners__label">Monthly Listeners</div>-->
-        <!--        </div>-->
 
         <div class="artist__navigation">
           <ul class="nav nav-tabs" role="tablist">
@@ -49,44 +44,9 @@
               >Overview</a
               >
             </li>
-
-            <!--            <li role="presentation">-->
-            <!--              <a-->
-            <!--                href="#related-artists"-->
-            <!--                aria-controls="related-artists"-->
-            <!--                role="tab"-->
-            <!--                data-toggle="tab"-->
-            <!--              >Related Artists</a-->
-            <!--              >-->
-            <!--            </li>-->
-
-            <!--<li role="presentation">
-              <a href="#artist-about" aria-controls="artist-about" role="tab" data-toggle="tab">About</a>
-            </li>-->
           </ul>
 
-          <!-- <div class="artist__navigation__friends">
-            <a href="#">
-              <img
-                src="http://zblogged.com/wp-content/uploads/2015/11/17.jpg"
-                alt=""
-              />
-            </a>
 
-            <a href="#">
-              <img
-                src="http://zblogged.com/wp-content/uploads/2015/11/5.png"
-                alt=""
-              />
-            </a>
-
-            <a href="#">
-              <img
-                src="http://cdn.devilsworkshop.org/files/2013/01/enlarged-facebook-profile-picture.jpg"
-                alt=""
-              />
-            </a>
-          </div> -->
         </div>
       </div>
 
@@ -179,12 +139,13 @@
                     <div class="track__title">{{ song.name }}</div>
 
                     <div class="track__explicit">
+
                       <span
                         *ngFor="
                           let singer of singerMap[song.id];
                           let last = last
                         "
-                      >{{
+                      > {{
                           singer.fullname
                         }}{{
                           !last && singerMap[song.id].length > 1 ? ", " : ""

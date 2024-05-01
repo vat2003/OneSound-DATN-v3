@@ -50,7 +50,8 @@ export class ManageuserAdminComponent implements OnInit {
   titleAlbum: string[] = [];
   activeStatus: boolean = true;
   private searchTerms = new Subject<string>();
-
+  formattedBirthday: string = ''; // Khai báo formattedBirthday và khởi tạo giá trị mặc định
+  forceDate: any;
 
   constructor(
     private accountServiceService: accountServiceService,
@@ -317,28 +318,63 @@ export class ManageuserAdminComponent implements OnInit {
     await this.router.navigate(['/manage/users']);
   }
 
+  // view(id: number) {
+  //   this.accountServiceService.getUserById(id).subscribe(
+  //     async (data: account) => {
+  //
+  //       this.Account = data;
+  //       this.setImageUrl = this.Account.avatar_url;
+  //       this.imageUrl = this.setImageUrl;
+  //       this.formatDate(this.Account.birthday);
+
+  //       this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
+  //     },
+  //     (error: any) => {
+  //
+  //       console.log(error);
+  //     }
+  //   );
+  // }
+
+  formatDate(birthday: Date | undefined): string {
+    if (!birthday) return '';
+    // const birthdayMilliseconds = birthday.getTime();
+    const birthdayDate = new Date(birthday);
+    return birthdayDate.toISOString().split('T')[0];
+  }
+
+
   view(id: number) {
     this.accountServiceService.getUserById(id).subscribe(
       async (data: account) => {
+
         this.Account = data;
         this.setImageUrl = this.Account.avatar_url;
         this.imageUrl = this.setImageUrl;
-        this.formatDate(this.Account.birthday);
+        if (this.Account.birthday) {
+          this.forceDate = new DatePipe('en-US').transform(this.Account.birthday, 'yyyy-MM-dd');
+          this.Account.birthday = this.forceDate;
+          console.log(this.forceDate);
+        } else {
+          console.log('Birthday is undefined');
+        }
         this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
       },
       (error: any) => {
+
         console.log(error);
       }
     );
   }
 
-  formatDate(date: Date | string | undefined): string {
-    if (!date) {
-      return '';
-    }
-    const formattedDate = typeof date === 'string' ? date : date.toISOString();
-    return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
-  }
+
+  // formatDate(date: Date | string | undefined): string {
+  //   if (!date) {
+  //     return '';
+  //   }
+  //   const formattedDate = typeof date === 'string' ? date : date.toISOString();
+  //   return new DatePipe('en-US').transform(formattedDate, 'yyyy-MM-dd') || '';
+  // }
 
 
   checkAge() {
@@ -406,18 +442,15 @@ export class ManageuserAdminComponent implements OnInit {
         this.accountServiceService.updateUser(this.Account.id, UpdateUserForAdmin).subscribe(
           async (data) => {
 
-            alert(this.registerForm.form.controls['birthday'].value)
 
             if (this.imageFile) {
               await this.firebaseStorage.uploadFile(
                 'adminManageImage/user/',
                 this.imageFile
               );
-
             }
             this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
             await this.getAllUsers(0, 10);
-            this.Account = createAccount();
             this.removeUpload();
 
             console.log(data);
@@ -429,11 +462,11 @@ export class ManageuserAdminComponent implements OnInit {
             return;
           }
         );
-
+        this.Account = createAccount();
 
         if (UpdateUserForAdmin.active == false) {
 
-          this.accountServiceService.hot("Your Account Has Been Locked", UpdateUserForAdmin.email).subscribe(
+          this.accountServiceService.hot("lock", UpdateUserForAdmin.email).subscribe(
             async (data) => {
 
               console.log(data);
@@ -449,7 +482,7 @@ export class ManageuserAdminComponent implements OnInit {
         } else {
 
 
-          this.accountServiceService.hot("Your Account Has Been Unlocked", UpdateUserForAdmin.email).subscribe(
+          this.accountServiceService.hot("unlock", UpdateUserForAdmin.email).subscribe(
             async (data) => {
 
               console.log(data);
@@ -467,16 +500,61 @@ export class ManageuserAdminComponent implements OnInit {
         console.error("ID is undefined");
       }
     } else {
-      alert("nhân viên không có quyền update")
+      // alert("nhân viên không có quyền update")
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 3000
+      });
+
     }
 
 
   }
 
+
+  saveUsers() {
+
+
+    this.Account.avatar_url = this.setImageUrl;
+    this.accountServiceService.createAccount(this.Account).subscribe(
+      async (data) => {
+
+        this.goToUserList();
+        console.log("Update successfully");
+        // alert('Update successfully');
+        this.toast.success({detail: 'Successfully Message', summary: 'Update Successfully', duration: 3000});
+      },
+      (error) => {
+
+        console.log("FAILED" + error);
+        // alert('Update failed');
+        this.toast.error({detail: 'Error Message', summary: 'Update Failed!', duration: 3000});
+      }
+    );
+  }
+
+
+  getUser(id: number) {
+    this.accountServiceService.getUserById(id).subscribe(
+      async (data: account) => {
+
+        this.Account = data;
+        this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    )
+  }
+
   Reset(id: number) {
+
+
     const datePipe = new DatePipe('en-US');
     const formattedDate = datePipe.transform(this.Account?.birthday, 'yyyy-MM-dd') ?? '';
     const UpdateUserForAdmin: UpdateUserForAdmin = {
+
       fullname: this.Account.fullname,
       email: this.Account.email,
       Phone: this.Account.Phone,
@@ -489,6 +567,33 @@ export class ManageuserAdminComponent implements OnInit {
       createdDate: formattedDate,
       accountRole: this.Account.accountRole,
     };
+
+    this.accountServiceService.getUserById(id).subscribe(
+      async (data) => {
+
+        console.log(data);
+        this.accountServiceService.hot("unlock", data.email).subscribe(
+          async (data) => {
+
+            console.log(data);
+            return;
+          },
+          (error) => {
+
+            console.log(error);
+            return;
+          }
+        );
+        return;
+      },
+      (error) => {
+
+        console.log(error);
+        return;
+      }
+    );
+
+
     this.accountServiceService.UpdateActive(id, UpdateUserForAdmin).subscribe(
       async (data) => {
 
@@ -508,6 +613,7 @@ export class ManageuserAdminComponent implements OnInit {
 
       },
       (error) => {
+
         this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
         console.log(error);
         return;
@@ -516,67 +622,45 @@ export class ManageuserAdminComponent implements OnInit {
   }
 
 
-  saveUsers() {
-
-
-    this.Account.avatar_url = this.setImageUrl;
-    this.accountServiceService.createAccount(this.Account).subscribe(
-      async (data) => {
-
-        this.goToUserList();
-        console.log("Update successfully");
-        alert('Update successfully');
-      },
-      (error) => {
-
-        console.log("FAILED" + error);
-        alert('Update failed');
-
-      }
-    );
-  }
-
-
-  getUser(id: number) {
-    this.accountServiceService.getUserById(id).subscribe(
-      async (data: account) => {
-
-        this.Account = data;
-        this.fillImage(await this.setImageURLFirebase(this.Account.avatar_url));
-      },
-      (error: any) => {
-        console.log(error);
-      }
-    )
-  }
-
-
   deleteUser() {
-
+    debugger
     if (this.account?.accountRole?.id == 2) {
+      debugger
       const confirm = window.confirm('Are you sure?');
       if (confirm) {
-        this.accountServiceService.hot("Tài Khoản Của Bạn Đã Bị xoá khỏi hệ thống", this.Account.email)
+        debugger
+        this.accountServiceService.hot("delete", this.Account.email)
           .pipe(
             mergeMap(() => this.accountServiceService.deleteUser(this.Account.id!)),
             catchError(error => {
+              debugger
               console.error('Error deleting user:', error);
               return of(null);
             })
           )
           .subscribe(data => {
+            debugger
             if (data !== null) {
+              debugger
               console.log(data);
               this.getAllUsers(0, 10);
-              
             }
           });
+        this.getAllUsers(0, 10);
+
       } else {
+        debugger
+        this.getAllUsers(0, 10);
+
         alert('Delete was denied!');
       }
     } else {
-      alert("nhân viên không được phép xoá")
-
+      alert("nhân viên không được phép xoá");
+      // this.toast.warning({
+      //   detail: 'Warning Message',
+      //   summary: 'Only Administrator can use this Function',
+      //   duration: 3000
+      // });
     }
   }
 

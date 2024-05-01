@@ -74,7 +74,12 @@ export class UserPlayerAudioComponent implements OnInit {
       if (video == null || video == undefined) {
         this.selectedSong = this.dataGlobal.getItem('songHeardLast');
       } else {
+        this.audio.pause();
+
+        // this.seek_bar.nativeElement.style.width = 0+'%';
+        // this.seek_dot.nativeElement.style.left = 0+'%';
         this.selectedSong = video; // Cập nhật giá trị mới của ind_display khi có sự thay đổi của index
+
         console.log('this.selectedSong from player AUDIO ', this.selectedSong);
       }
       console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ', this.selectedSong);
@@ -83,7 +88,7 @@ export class UserPlayerAudioComponent implements OnInit {
       } else {
         this.audio.pause();
       }
-
+      this.pauseMusic();
       // this.loadAudio();
     });
 
@@ -98,8 +103,8 @@ export class UserPlayerAudioComponent implements OnInit {
       this.playall = playall;
     });
 
-    this.seek_bar.nativeElement.style.width = '0%';
-    this.seek_dot.nativeElement.style.left = '0%';
+    this.seek_bar.nativeElement.style.width = 0+'%';
+    this.seek_dot.nativeElement.style.left = 0+'%';
   }
 
   loadAudio(): void {
@@ -199,6 +204,16 @@ export class UserPlayerAudioComponent implements OnInit {
 
     // Update position of the dot
     this.seek_dot.nativeElement.style.left = `${this.seek.nativeElement.value}%`;
+
+    if (this.audio.paused || this.audio.currentTime <= 0) {
+      this.masterPlay.nativeElement.classList.add('fa-play');
+      this.masterPlay.nativeElement.classList.remove('fa-pause');
+
+    } else {
+      this.masterPlay.nativeElement.classList.remove('fa-play');
+      this.masterPlay.nativeElement.classList.add('fa-pause');
+
+    }
   }
 
   formatDuration(duration: number): string {

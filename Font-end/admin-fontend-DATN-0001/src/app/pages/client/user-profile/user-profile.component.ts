@@ -198,27 +198,15 @@ export class UserProfileComponent implements OnInit {
   }
 
 
-getSingersForSongs() {
-  const observables = this.songs.map(song => {
-    return this.SongSingerService.getAllSingerBySong(song.id).pipe(
-      switchMap(singers => {
-        const singerObservables = singers.map(singer => this.singerService.getArtistById(singer.singer.id));
-        return forkJoin(singerObservables).pipe(
-          map(singerDataArray => {
-            return { songId: song.id, singers: singerDataArray };
-          })
-        );
-      })
-    );
-  });
-
-  forkJoin(observables).subscribe(results => {
-    results.forEach(result => {
-      this.singerMap[result.songId] = result.singers;
+  getSingersForSongs() {
+    this.songs.forEach(song => {
+      this.SongSingerService.getAllSingerBySong(song.id).subscribe(data => {
+        const singers = data.map(item => item.singer);
+        this.singerMap[song.id] = singers;
+      });
     });
-    console.log("Singer Map:", this.singerMap);
-  });
-}
+  }
+
 
   getSingersForAlbums() {
     const observables = this.albums.map(song => {

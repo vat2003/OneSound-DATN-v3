@@ -40,6 +40,7 @@ export class ManagegenreAdminComponent implements OnInit {
   pU: number = 1;
   pI: number = 1;
   pageSize: number = 5;
+
   constructor(
     private GenreService: GenreServiceService,
     private router: Router,
@@ -96,13 +97,21 @@ export class ManagegenreAdminComponent implements OnInit {
     const maxSizeInBytes = 8 * 1024 * 1024; // giối hạn 25 MB
     //Kiểm tra giới hạn kích thước ảnh
     if (selectedFile.size > maxSizeInBytes) {
-      alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      // alert("File size axceeds the allowed limit (8 MB). Please choose a smaller file.");
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'File size axceeds the allowed limit (8 MB). Please choose a smaller file.',
+        duration: 5000
+      });
+
       this.resetFileInput();
       return;
     }
 
     if (selectedFile && !selectedFile.type.startsWith('image/')) {
-      alert('Please select an image file.');
+      // alert('Please select an image file.');
+      this.toast.warning({detail: 'Warning Message', summary: 'Please select an image file.', duration: 5000});
+
       this.resetFileInput(); // Hàm này để đặt lại input file sau khi thông báo lỗi
       return;
     }
@@ -160,7 +169,6 @@ export class ManagegenreAdminComponent implements OnInit {
     } else {
       debugger
       this.setImageUrl = 'adminManageImage/genre/null.jpg';
-      alert('aa');
       this.removeUpload();
     }
   }
@@ -224,6 +232,7 @@ export class ManagegenreAdminComponent implements OnInit {
     this.GenreService.getListGenres(page, limit).subscribe(async (data) => {
       console.log(data);
       this.GenresFromData = data.content;
+
       this.Genre = this.GenresFromData;
 
       for (const genre of this.Genre) {
@@ -287,7 +296,8 @@ export class ManagegenreAdminComponent implements OnInit {
         this.Genree = new Genre();
         this.removeUpload();
         //Load lại table
-        this.goToSingerList();
+        // this.goToSingerList();
+        this.ngOnInit();
         console.log(data);
         this.toast.success({detail: 'Success Message', summary: 'Adding successfully', duration: 3000});
       },
@@ -320,7 +330,8 @@ export class ManagegenreAdminComponent implements OnInit {
           }
           this.Genree = new Genre();
 
-          this.goToSingerList();
+          // this.goToSingerList();
+          this.ngOnInit();
           this.removeUpload();
           console.log(data);
           this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
@@ -331,7 +342,9 @@ export class ManagegenreAdminComponent implements OnInit {
         }
       );
     } else {
-      alert("nhân viên không được phép update")
+      // alert("nhân viên không được phép update")
+      this.toast.error({detail: 'Failed Message', summary: 'Only Administrator can use this Function', duration: 3000});
+
 
     }
 
@@ -357,14 +370,21 @@ export class ManagegenreAdminComponent implements OnInit {
       const isConfirmed = window.confirm('Are you sure you want to delete this singer?');
       if (isConfirmed) {
         this.GenreService.deleteGenre(id).subscribe((data) => {
-          console.log(data);
-
-          this.getListGenresPage(0, 4);
-        });
+            console.log(data);
+            // this.getListGenresPage(0, 4);
+            this.ngOnInit();
+            this.toast.success({detail: 'Success Message', summary: 'Delete Successfully', duration: 5000});
+          }, (error) => {
+            this.toast.error({detail: 'Error Message', summary: 'Delete Failed', duration: 5000});
+          }
+        );
       }
     } else {
-      alert("nhân viên không được phép xoá")
-
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 5000
+      });
     }
   }
 
