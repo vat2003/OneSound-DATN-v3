@@ -39,7 +39,7 @@ export class SingerService {
   //   // Giả sử bạn có một endpoint /search trong API để thực hiện tìm kiếm theo tên
   // }
 
-  getAllArtistActive():Observable<Singer[]>{
+  getAllArtistActive(): Observable<Singer[]> {
     return this.httpClient.get<Singer[]>(`${this.baseUrl}/getAllSingerActive`);
   }
 

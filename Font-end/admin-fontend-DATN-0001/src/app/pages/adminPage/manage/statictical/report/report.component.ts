@@ -129,10 +129,15 @@ export class ReportComponent implements OnInit {
     this.displaySelectedYearOfBarChart();
 
     this.barChartData.datasets[0].data = this.getData();
-
+    console.log("user Date: ", this.userDatas)
     this.chart?.update();
-
   }
+
+  refesh() {
+    this.getQuantityUser();
+  }
+
+
 
   getLabel() {
     const listLabel = [];
@@ -196,25 +201,7 @@ export class ReportComponent implements OnInit {
   };
 
   // events
-  public chartClicked({
-    event,
-    active,
-  }: {
-    event?: ChartEvent;
-    active?: object[];
-  }): void {
-    console.log(event, active);
-  }
 
-  public chartHovered({
-    event,
-    active,
-  }: {
-    event?: ChartEvent;
-    active?: object[];
-  }): void {
-    console.log(event, active);
-  }
 
   changeUserData() {
     this.getDataBarchart(this.barYear);

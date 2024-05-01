@@ -49,7 +49,11 @@
           <div>
             <button class="ms-5 border-light border-2 btn btn-outline-light rounded-pill"
               (click)="getCountUserBetweenDate()">Search</button>
+            <button class="ms-5 border-light border-2 btn btn-outline-light rounded-pill"
+              (click)="refesh()">Refesh</button>
+
           </div>
+
         </div>
 
 
@@ -215,7 +219,7 @@
         <div class="  col-md-2">
           <label for="floatingSelect">Year</label>
           <select class="form-select barYear" id="barYear" name="barYear" [(ngModel)]="barYear"
-                  aria-label="Floating label select example" (change)="changeUserData()">
+            aria-label="Floating label select example" (change)="changeUserData()">
 
           </select>
 

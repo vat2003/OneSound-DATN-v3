@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ListeningStatsService} from '../../../../../services/listening-stats/listening-stats.service';
-import {CommonModule} from '@angular/common';
-import {NgxPaginationModule} from 'ngx-pagination';
-import {FormsModule} from '@angular/forms';
-import {StaticticalService} from '../../../adminEntityService/adminService/statictical/statictical.service';
-import {isThisSecond} from 'date-fns';
-import {Listens} from '../../../adminEntityService/adminEntity/listens/listens';
-import {FirebaseStorageCrudService} from "../../../../../services/firebase-storage-crud.service";
+import { Component, OnInit } from '@angular/core';
+import { ListeningStatsService } from '../../../../../services/listening-stats/listening-stats.service';
+import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
+import { StaticticalService } from '../../../adminEntityService/adminService/statictical/statictical.service';
+import { isThisSecond } from 'date-fns';
+import { Listens } from '../../../adminEntityService/adminEntity/listens/listens';
+import { FirebaseStorageCrudService } from "../../../../../services/firebase-storage-crud.service";
 
 @Component({
   selector: 'app-listen-stats',
@@ -102,6 +102,10 @@ export class ListenStatsComponent implements OnInit {
       })
       this.top10Listen = res;
     });
+  }
+
+  refesh() {
+    this.getAllListens();
   }
 
 }

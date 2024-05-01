@@ -362,7 +362,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
   displaySingerBysearch() {
-    this.singerService.getAllArtists().subscribe(
+    this.singerService.getAllArtistActive().subscribe(
       async (data) => {
         this.singerName = data.map((singer: Singer) => singer.fullname);
         console.log("List singer", this.singers);
@@ -405,7 +405,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
   deleteSingerInTable(idSinger: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const index = this.singerTable.findIndex(singer => singer.id === idSinger);
       if (index !== -1) {
         const deletedSinger = this.singerTable[index];
@@ -420,7 +420,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       this.filterOptions = this.formcontrol.valueChanges.pipe(
         startWith(''), map(value => this._FILTER(value || ''))
       )
-    }else{
+    } else {
       alert("nhân viên không được phép xoá")
 
     }
@@ -541,7 +541,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //||                   Update Album                        ||
   //||-------------------------------------------------------||
   updateAlbum(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       if (this.imageFile) {
         this.album.image = this.setImageUrl;
       }
@@ -585,7 +585,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         },
         (error) => console.log(error)
       )
-    }else{
+    } else {
       alert("nhân viên không có quyền update")
 
     }
@@ -597,7 +597,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //||                   Delete Album                        ||
   //||-------------------------------------------------------||
   deleteAlbum(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const isConfirmed = window.confirm('Are you sure you want to delete this album? If you delete  it, all related information will be deleted too');
       if (isConfirmed) {
         //--------------------delete Album after SingerAlbum-------
@@ -616,7 +616,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       } else {
 
       }
-    }else{
+    } else {
       alert("nhân viên không có quyền delete")
 
     }
