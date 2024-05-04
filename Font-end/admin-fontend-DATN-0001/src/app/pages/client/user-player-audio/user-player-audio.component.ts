@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -7,21 +7,22 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Album } from '../../adminPage/adminEntityService/adminEntity/album/album';
-import { Song } from '../../adminPage/adminEntityService/adminEntity/song/song';
-import { DataGlobalService } from '../../../services/data-global.service';
-import { HttpClientModule } from '@angular/common/http';
-import { FirebaseStorageCrudService } from '../../../services/firebase-storage-crud.service';
-import { account } from '../../adminPage/adminEntityService/adminEntity/account/account';
-import { accountServiceService } from '../../adminPage/adminEntityService/adminService/account-service.service';
-import { FavoriteService } from '../../../services/favorite-service/favorite.service';
-import { FavoriteSong } from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
-import { ListeningStatsService } from '../../../services/listening-stats/listening-stats.service';
-import { HistoryListensService } from '../../../services/history-listens/history-listens.service';
-import { MatDialog } from '@angular/material/dialog';
-import { CommentSongComponent } from '../comment-song/comment-song.component';
+import {FormsModule} from '@angular/forms';
+import {Album} from '../../adminPage/adminEntityService/adminEntity/album/album';
+import {Song} from '../../adminPage/adminEntityService/adminEntity/song/song';
+import {DataGlobalService} from '../../../services/data-global.service';
+import {HttpClientModule} from '@angular/common/http';
+import {FirebaseStorageCrudService} from '../../../services/firebase-storage-crud.service';
+import {account} from '../../adminPage/adminEntityService/adminEntity/account/account';
+import {accountServiceService} from '../../adminPage/adminEntityService/adminService/account-service.service';
+import {FavoriteService} from '../../../services/favorite-service/favorite.service';
+import {FavoriteSong} from '../../adminPage/adminEntityService/adminEntity/favoriteYoutube/favorite-song';
+import {ListeningStatsService} from '../../../services/listening-stats/listening-stats.service';
+import {HistoryListensService} from '../../../services/history-listens/history-listens.service';
+import {MatDialog} from '@angular/material/dialog';
+import {CommentSongComponent} from '../comment-song/comment-song.component';
 import {UserPlaylistModalComponent} from "../user-playlist-modal/user-playlist-modal.component";
+import {SongSingerService} from './../../adminPage/adminEntityService/adminService/song-singer.service';
 
 @Component({
   selector: 'app-user-player-audio',
@@ -47,6 +48,7 @@ export class UserPlayerAudioComponent implements OnInit {
   currentTime: string = '0:00';
   totalTime: string = '0:00';
   songFromFirebase: any;
+  singerMap: { [key: number]: any[] } = {};
 
   acc!: account | null;
   favListSongs: any[] = [];
@@ -55,6 +57,7 @@ export class UserPlayerAudioComponent implements OnInit {
   currentIndex!: number;
   arrPreNext: any[] = [];
   private increaseLisTimeout: any;
+
   constructor(
     private dataGlobal: DataGlobalService,
     private firebaseStorage: FirebaseStorageCrudService,
@@ -63,8 +66,10 @@ export class UserPlayerAudioComponent implements OnInit {
     private listenService: ListeningStatsService,
     private historyListenService: HistoryListensService,
     private cdr: ChangeDetectorRef, // Inject ChangeDetectorRef
-    private matDialog: MatDialog
-  ) {}
+    private matDialog: MatDialog,
+    private SongSingerService: SongSingerService
+  ) {
+  }
 
   ngOnInit(): void {
     this.acc = this.userService.getUserResponseFromLocalStorage();
@@ -103,8 +108,15 @@ export class UserPlayerAudioComponent implements OnInit {
       this.playall = playall;
     });
 
-    this.seek_bar.nativeElement.style.width = 0+'%';
-    this.seek_dot.nativeElement.style.left = 0+'%';
+    this.seek_bar.nativeElement.style.width = 0 + '%';
+    this.seek_dot.nativeElement.style.left = 0 + '%';
+  }
+
+  getSingersForSongs() {
+    this.SongSingerService.getAllSingerBySong(this.selectedSong.id).subscribe(data => {
+      const singers = data.map(item => item.singer);
+      this.singerMap[this.selectedSong.id] = singers;
+    });
   }
 
   loadAudio(): void {
@@ -176,11 +188,11 @@ export class UserPlayerAudioComponent implements OnInit {
     if (this.audio.currentTime <= 1) {
 
       this.historyListenService.addHisLis(this.selectedSong.id, this.acc!.id).subscribe(res => {
-        console.log("Add history Listen success++++++++++++++++++");
-      }, error => {
-        console.log("error add history: ", error);
+          console.log("Add history Listen success++++++++++++++++++");
+        }, error => {
+          console.log("error add history: ", error);
 
-      }
+        }
       )
     }
   }
@@ -308,10 +320,12 @@ export class UserPlayerAudioComponent implements OnInit {
         return;
       }
       song.isFav = false;
-      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.deleteFavoriteSong(favS).subscribe((data) => {
+      });
     } else {
       song.isFav = true;
-      this.favSong.addFavoriteSong(favS).subscribe((data) => {});
+      this.favSong.addFavoriteSong(favS).subscribe((data) => {
+      });
     }
   }
 
@@ -347,7 +361,7 @@ export class UserPlayerAudioComponent implements OnInit {
 
   openDialogComment() {
     const dialogRef = this.matDialog.open(CommentSongComponent, {
-      data: { song: this.selectedSong },
+      data: {song: this.selectedSong},
       // selectedSong
     });
   }
@@ -364,6 +378,7 @@ export class UserPlayerAudioComponent implements OnInit {
     });
   }
 }
+
 // =======
 // import { CommonModule } from '@angular/common';
 // import {

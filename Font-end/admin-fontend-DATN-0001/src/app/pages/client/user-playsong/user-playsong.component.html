@@ -22,9 +22,9 @@
         <button (click)="shuffle()"><i class="fa-solid fa-shuffle"></i>Shuffle</button>
       </div>
       <div class="detail-container-banner-favicon-more">
-        <div class="more-item">
+        <div class="more-item" *ngIf="this.acc">
 
-          <i *ngIf="this.acc" class="favorite fa-heart" [ngClass]="{
+          <i class="favorite fa-heart" [ngClass]="{
               'fa-solid': isFavAlbum,
               'fa-regular': !isFavAlbum
             }" [ngStyle]="{ color: isFavAlbum === true ? 'rgb(212, 15, 15)' : '' }" (click)="favoriteAlbum()">

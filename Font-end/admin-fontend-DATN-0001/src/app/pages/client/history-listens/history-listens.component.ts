@@ -91,24 +91,30 @@ export class HistoryListensComponent implements OnInit {
     }
   }
 
-  deleteSelectedHistories() {
-    const idsToDelete = this.historyDel.map(h => h.id);
-    idsToDelete.forEach(id => {
-      this.historyListen.deleteLisHis(id).subscribe({
-        next: () => {
-          console.log(`History with id ${id} deleted successfully`);
-          this.history = this.history.filter(item => item.id !== id);
-        },
-        error: err => {
-          console.error('Error deleting history: ', err);
-        },
-        complete: () => {
-          // This callback doesn't need to do anything here but is available if needed
-        }
-      });
-    });
-    this.historyDel = [];
-  }
+
+    deleteSelectedHistories() {
+      const idsToDelete = this.historyDel.map(h => h.id);
+      const isConfirmed = window.confirm('Are you sure you want to delete these history?');
+      if (isConfirmed) {
+        idsToDelete.forEach(id => {
+          this.historyListen.deleteLisHis(id).subscribe({
+            next: () => {
+              console.log(`History with id ${id} deleted successfully`);
+              this.history = this.history.filter(item => item.id !== id);
+            },
+            error: err => {
+              console.error('Error deleting history: ', err);
+            },
+            complete: () => {
+              // This callback doesn't need to do anything here but is available if needed
+            }
+          });
+        });
+      }
+
+      this.historyDel = [];
+    }
+
 
   toggleAll() {
     const allChecked = this.allSelected();

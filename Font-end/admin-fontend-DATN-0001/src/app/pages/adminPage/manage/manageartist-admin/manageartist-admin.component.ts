@@ -7,15 +7,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FirebaseStorageCrudService} from "../../../../services/firebase-storage-crud.service";
 import {read} from 'node:fs';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
-import { Subject, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
-import { account } from '../../adminEntityService/adminEntity/account/account';
+import {Subject, debounceTime, distinctUntilChanged, switchMap} from 'rxjs';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
+import {account} from '../../adminEntityService/adminEntity/account/account';
 import {NgxPaginationModule} from "ngx-pagination";
 
 @Component({
   selector: 'app-manageartist-admin',
   standalone: true,
-    imports: [CommonModule, FormsModule, NgToastModule, NgxPaginationModule],
+  imports: [CommonModule, FormsModule, NgToastModule, NgxPaginationModule],
 
   templateUrl: './manageartist-admin.component.html',
   styleUrl: './manageartist-admin.component.scss',
@@ -53,7 +53,6 @@ export class ManageartistAdminComponent {
     private firebaseStorage: FirebaseStorageCrudService,
     private toast: NgToastService,
     private accountServiceService: accountServiceService,
-
     @Inject(DOCUMENT) private document: Document
   ) {
     this.localStorage = document.defaultView?.localStorage;
@@ -68,14 +67,14 @@ export class ManageartistAdminComponent {
     this.getArtist(this.id);
 
     this.searchTerms
-    .pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      switchMap((term: string) => this.singerService.getAllAlbumByAuthorByName(term, 0, 10))
-    )
-    .subscribe(async (data) => {
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((term: string) => this.singerService.getAllAlbumByAuthorByName(term, 0, 10))
+      )
+      .subscribe(async (data) => {
 
-    });
+      });
   }
 
   loadSingers(page: number, limit: number) {
@@ -125,7 +124,6 @@ export class ManageartistAdminComponent {
   }
 
 
-
   private loadSingerById() {
     this.singerService.getArtistById(this.id).subscribe(
       (data) => {
@@ -136,7 +134,7 @@ export class ManageartistAdminComponent {
   }
 
   updateSinger(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       console.log('001 === ' + this.singer.image);
       if (this.imageFile) {
         this.singer.image = this.setImageUrl;
@@ -145,35 +143,37 @@ export class ManageartistAdminComponent {
       if (!this.imageFile && !this.setImageUrl) {
         this.singer.image = 'adminManageImage/artist/null.jpg';
       }
-    this.singerService.updateArtist(id, this.singer).subscribe(
-      async (data) => {
-        if (this.imageFile) {
-          await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
+      this.singerService.updateArtist(id, this.singer).subscribe(
+        async (data) => {
+          if (this.imageFile) {
+            await this.firebaseStorage.uploadFile('adminManageImage/artist/', this.imageFile);
+          }
+
+          this.removeUpload();
+          this.goToSingerList();
+          console.log(data);
+          this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
+
+        },
+        (error) => {
+          console.log(error)
+          this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
         }
-
-        this.removeUpload();
-        this.goToSingerList();
-        console.log(data);
-        this.toast.success({detail: 'Success Message', summary: 'Update successfully', duration: 3000});
-
-      },
-      (error) => {
-        console.log(error)
-        this.toast.error({detail: 'Failed Message', summary: 'Update failed', duration: 3000});
-      }
-    );
-    }else{
-      alert("nhân viên không được phép update")
+      );
+    } else {
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 5000,
+      });
 
     }
-
-
 
 
   }
 
   deleteSinger(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const isConfirmed = window.confirm('Are you sure you want to delete this singer?');
       if (isConfirmed) {
         this.singerService.deleteArtist(id).subscribe((data) => {
@@ -182,8 +182,12 @@ export class ManageartistAdminComponent {
 
         });
       }
-    }else{
-      alert("nhân viên không được phép xoá")
+    } else {
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 5000,
+      });
     }
   }
 
@@ -216,7 +220,6 @@ export class ManageartistAdminComponent {
       return;
     }
     this.singerService.createArtist(this.singer).subscribe(
-
       async (data) => {
         debugger
         if (this.imageFile) {
@@ -269,7 +272,11 @@ export class ManageartistAdminComponent {
     }
 
     if (selectedFile && !selectedFile.type.startsWith('image/')) {
-      alert('Please select an image file.');
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Please complete all information',
+        duration: 5000,
+      });
       this.resetFileInput(); // Hàm này để đặt lại input file sau khi thông báo lỗi
       return;
     }
@@ -373,6 +380,7 @@ export class ManageartistAdminComponent {
       return 'null';
     }
   }
+
   validateGenreEmpty(valueCheck: any): string[] {
     const errorFieldsArr: string[] = [];
     for (const key in valueCheck) {

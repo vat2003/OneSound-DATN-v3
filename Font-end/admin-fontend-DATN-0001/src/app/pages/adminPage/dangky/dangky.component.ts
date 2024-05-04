@@ -46,11 +46,8 @@ export class DangkyComponent {
   }
 
   register() {
-    debugger;
-    // Kiểm tra tính hợp lệ của các trường
+
     if (this.registerForm.valid) {
-      debugger;
-      // Kiểm tra xem các trường thông tin có rỗng không
       if (
         !this.email ||
         !this.password ||
@@ -58,18 +55,15 @@ export class DangkyComponent {
         !this.fullname ||
         !this.birthday
       ) {
-        debugger;
-        alert('Vui lòng điền đầy đủ thông tin người dùng.');
+        alert('Please fill in all user information.');
         return;
       }
-      debugger;
 
       if (this.password !== this.retypePassword) {
         alert('The password does not match');
         return;
       }
 
-      debugger;
       const registerData: Register = {
         fullname: this.fullname,
         email: this.email,
@@ -81,7 +75,7 @@ export class DangkyComponent {
         birthday: this.birthday,
         role_id: 1,
       };
-      debugger;
+
       this.userService.hot("create", registerData.email).subscribe(
         async (data) => {
 
@@ -94,37 +88,39 @@ export class DangkyComponent {
           return;
         }
       );
+
       this.userService.checkEmailExists(this.email).subscribe({
         next: (emailExists: boolean) => {
-          debugger
+
           if (emailExists) {
-            debugger
-            alert('Email đã tồn tại. Vui lòng sử dụng email khác.');
+
+            alert('Email already exists. Please use another email.');
           } else {
-            debugger
+
             this.userService.register(registerData).subscribe({
               next: (response: any) => {
-                alert('Đăng ký thành công');
+                debugger
+                alert('Registration successful');
                 console.log(response);
                 this.router.navigate(['onesound/dangnhap']);
               },
               complete: () => {
               },
               error: (error: any) => {
-                alert('Thất bại');
+                alert('Failed');
                 console.error(error);
               },
             });
           }
         },
         error: (error: any) => {
-          debugger
-          console.error('Lỗi kiểm tra sự tồn tại của email', error);
+
+          console.error('Error checking email existence', error);
         },
       });
     } else {
-      debugger
-      alert('Vui lòng không để trống các thông tin người dùng');
+
+      alert('Please do not leave user information blank');
     }
   }
 
@@ -144,6 +140,11 @@ export class DangkyComponent {
       if (age < 18) {
         this.registerForm.form.controls['birthday'].setErrors({
           invalidAge: true,
+        });
+      } else if (age > 80) {
+        this.registerForm.form.controls['birthday'].setErrors({
+          invalidAge: true,
+          tooOld: true,
         });
       } else {
         this.registerForm.form.controls['birthday'].setErrors(null);

@@ -174,6 +174,16 @@ export class ProfileComponent implements OnInit {
       birthday: this.userProfileForm.get('birthday')?.value,
       role_id: this.userProfileForm.get('role_id')?.value
     };
+
+    if (updateUserDTO.birthday) {
+      const today = new Date();
+      const birthDate = new Date(updateUserDTO.birthday);
+      const age = today.getFullYear() - birthDate.getFullYear();
+      if (age < 18 || age > 80) {
+        alert('Invalid age. Please provide a valid date of birth.');
+        return;
+      }
+    }
     if (!this.setImageUrl) {
       updateUserDTO.avatar_url = this.account?.avatar_url ?? 'null';
     }

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
 import {Feedback} from '../../adminEntityService/adminEntity/DTO/Feedback';
 import {FormsModule} from '@angular/forms';
+import {NgToastService} from "ng-angular-popup";
 
 @Component({
   selector: 'app-feedback',
@@ -17,16 +18,11 @@ export class FeedbackComponent {
   feedbackContent: string = '';
 
   constructor(
-    private userService: accountServiceService,
+    private userService: accountServiceService, private toast: NgToastService,
   ) {
   }
 
   submitFeedback(): void {
-    debugger
-    alert(this.email)
-    alert(this.reason)
-    alert(this.feedbackContent)
-    debugger
     var feedbackInstance: Feedback = {
 
       email: this.email,
@@ -36,12 +32,14 @@ export class FeedbackComponent {
     debugger
     this.userService.EmailFeedBack(feedbackInstance).subscribe(
       async (data) => {
-        alert("thành công");
+        this.toast.success({detail: 'Success Message', summary: 'Sending Mail successfully', duration: 3000});
+        alert('Sending Mail successfully')
         console.log('data feed', data)
       },
       (error) => {
-        debugger
-        alert(error)
+        console.log(error);
+        this.toast.success({detail: 'Error Message', summary: 'Sending Mail failed', duration: 3000});
+        alert('Sending Mail failed')
 
       }
     );

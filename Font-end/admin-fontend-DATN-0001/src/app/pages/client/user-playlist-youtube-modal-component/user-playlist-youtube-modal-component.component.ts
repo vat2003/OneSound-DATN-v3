@@ -153,6 +153,7 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
   }
 
   Playlist(): void {
+
     this.account = this.userService.getUserResponseFromLocalStorage();
     const playlist: Playlist = {
       name: this.playlistName,
@@ -162,14 +163,15 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
     };
 
     if (!this.playlistName.trim()) {
-      alert("Vui lòng không để trống tên playlist");
+      alert("Vui lòng không để trống tên playlist 2");
       return;
     }
 
-    this.playlistService.getPlaylistByName(playlist.name).subscribe(
+    this.playlistService.getPlaylistByName(playlist.name, this.account?.id ?? 0).subscribe(
       (existingPlaylist: Playlist | null) => {
+
         if (existingPlaylist) {
-          alert("Tên playlist đã tồn tại, vui lòng nhập tên playlist khác");
+          alert("Tên playlist đã tồn tại, vui lòng nhập tên playlist khác 2");
         } else {
           this.playlistService.createPlaylist(playlist).subscribe(
             (createdPlaylist: Playlist) => {
@@ -179,15 +181,19 @@ export class UserPlaylistYoutubeModalComponentComponent implements OnInit {
               this.addSongToNewPlaylist(createdPlaylist.id ?? 0);
             },
             (error) => {
+
               console.error('Error creating playlist:', error);
             }
           );
         }
       },
       (error) => {
+
         console.error('Error checking playlist name:', error);
       }
     );
+
+
   }
 
   addSongToNewPlaylist(playlistId: number): void {

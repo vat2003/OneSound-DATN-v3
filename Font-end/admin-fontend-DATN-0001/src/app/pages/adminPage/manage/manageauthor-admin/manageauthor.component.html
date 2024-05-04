@@ -2,7 +2,7 @@
 <ng-toast></ng-toast>
 <div class="container-fluid pt-4 px-4">
   <div class="row g-4">
-    <div class="col-sm-12 col-xl-6">
+    <div class="col-sm-12 col-xl-5">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-3 text-uppercase">AUTHOR MANAGEMENT</h6>
 
@@ -152,15 +152,9 @@
       </div>
     </div>
 
-    <div class="col-sm-12 col-xl-6">
+    <div class="col-sm-12 col-xl-7">
       <div class="bg-secondary rounded h-100 p-4">
         <h6 class="mb-3">AUTHOR LIST</h6>
-        <!-- <input
-          type="text"
-          class="form-control mb-4 border-light border-2"
-          style="border-radius: 20px"
-          placeholder="Search"
-        /> -->
 
         <input
           type="text"
@@ -171,14 +165,6 @@
           (ngModelChange)="search()"
           (keyup)="onKey($event)"
         />
-        <!-- <mat-autocomplete autoActiveFirstOption #auto>
-          <mat-option
-            (click)="addSingertoTable(item)"
-            *ngFor="let item of filterOptions | async"
-            value="{{ item }}"
-            >{{ item }}</mat-option
-          >
-        </mat-autocomplete> -->
         <table class="table table-hover">
           <thead>
           <tr>
@@ -196,7 +182,7 @@
           <tr *ngFor="let item of Authors; let i = index">
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ item.fullname }}</td>
-            <td>{{ item.description }}</td>
+            <td>{{ item.description | slice:0:20 }}...</td>
             <td>
               <img
                 src="{{ item.image }}"
@@ -247,7 +233,7 @@
           placeholder="Search"
           [(ngModel)]="searchTerm2"
           (ngModelChange)="search2()"
-          (keyup)="onKey($event)"
+          (keyup)="onKey2($event)"
         />
         <table class="table table-hover">
           <thead>

@@ -156,13 +156,17 @@ export class UserPlaylistModalComponent implements OnInit {
     };
 
     if (playlist.name == null) {
-      alert("Vui lòng không để trống tên playlist");
+      alert("Vui lòng không để trống tên playlist 1");
     } else {
-      this.playlistService.getPlaylistByName(playlist.name).subscribe(
+      debugger
+      this.playlistService.getPlaylistByName(playlist.name, this.account?.id ?? 0).subscribe(
         (existingPlaylist: Playlist | null) => {
+          debugger
           if (existingPlaylist) {
-            alert("Tên playlist đã tồn tại, vui lòng nhập tên playlist khác");
+            debugger
+            alert("Tên playlist đã tồn tại, vui lòng nhập tên playlist khác 1");
           } else {
+            debugger
             this.playlistService.createPlaylist(playlist).subscribe(
               (createdPlaylist: Playlist) => {
                 this.PlaylistTable.push(createdPlaylist);
@@ -204,6 +208,7 @@ export class UserPlaylistModalComponent implements OnInit {
         },
         (error) => {
           console.error('Error checking playlist name:', error);
+          alert('Playlist already exist')
         }
       );
     }

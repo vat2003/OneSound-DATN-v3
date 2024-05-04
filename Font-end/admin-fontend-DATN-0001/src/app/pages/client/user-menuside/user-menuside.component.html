@@ -16,9 +16,9 @@
       </div>
       <div class="my-collection">
         <p class="my-collection-tilte">MY COLLECTION</p>
-        <p *ngIf="this.acc">
-          <span routerLink="/onesound/home/vip"><i class="fa-solid fa-fire-flame-curved"></i> VIP's</span>
-        </p>
+        <!--        <p *ngIf="this.acc">-->
+        <!--          <span routerLink="/onesound/home/vip"><i class="fa-solid fa-fire-flame-curved"></i> VIP's</span>-->
+        <!--        </p>-->
         <p *ngIf="this.acc">
           <span routerLink="/onesound/home/user/playlist"><i class="fa-solid fa-sliders"></i> Playlists</span>
         </p>
@@ -35,9 +35,9 @@
           <span [routerLink]="['/onesound/home/history-listen', this.acc!.id]"><i
             class="fa-solid fa-clock-rotate-left"></i> History</span>
         </p>
-        <p *ngIf="this.acc">
-          <span routerLink="/onesound/home/payment"><i class="fa-solid fa-wallet"></i> Wallet</span>
-        </p>
+        <!--        <p *ngIf="this.acc">-->
+        <!--          <span routerLink="/onesound/home/payment"><i class="fa-solid fa-wallet"></i> Wallet</span>-->
+        <!--        </p>-->
       </div>
       <div class="create-playlist">
         <!--        <p class="create-playlist-title">-->
@@ -73,8 +73,8 @@
         <hr>
         <div style="margin-bottom: 30px;" id="list-playlists">
           <div class="playlist-items">
-            <a *ngIf="acc" routerLink="/signin" (click)="logout()" class="text-white">Log Out</a>
-            <a *ngIf="!acc" href="onesound/signin" class="text-white">Login</a>
+            <a *ngIf="this.acc" routerLink="/signin" (click)="logout()" class="text-white">Log Out</a>
+            <a *ngIf="!this.acc" href="onesound/signin" class="text-white">Login</a>
           </div>
         </div>
 

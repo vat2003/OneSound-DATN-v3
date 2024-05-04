@@ -13,12 +13,13 @@ import {UpdateUserForAdmin} from '../../adminEntityService/adminEntity/DTO/Updat
 import {mergeMap, catchError, debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import {Subject, of} from 'rxjs';
 import {NgToastModule, NgToastService} from "ng-angular-popup";
+import {NgxPaginationModule} from "ngx-pagination";
 
 @Component({
   selector: 'app-manageuser-admin',
   standalone: true,
   imports: [CommonModule, FormsModule, NgOptimizedImage,
-    RouterLink, NgToastModule, ReactiveFormsModule],
+    RouterLink, NgToastModule, ReactiveFormsModule, NgxPaginationModule],
   templateUrl: './manageuser-admin.component.html',
   styleUrl: './manageuser-admin.component.scss'
 })
@@ -38,11 +39,11 @@ export class ManageuserAdminComponent implements OnInit {
   Role: Role = new Role();
   selectedRole!: string;
   pages: number[] = [];
-  total: number = 0;
+  total: number = 10000;
   visiblePages: number[] = [];
   localStorage?: Storage;
   page: number = 0;
-  itempage: number = 1;
+  itempage: number = 3;
   selectedUser: account = createAccount();
   createdDate: Date | undefined;
   birthday: Date;
@@ -52,6 +53,9 @@ export class ManageuserAdminComponent implements OnInit {
   private searchTerms = new Subject<string>();
   formattedBirthday: string = ''; // Khai báo formattedBirthday và khởi tạo giá trị mặc định
   forceDate: any;
+  pU: number = 1;
+  pI: number = 1;
+  pageSize: number = 3;
 
   constructor(
     private accountServiceService: accountServiceService,
@@ -94,7 +98,7 @@ export class ManageuserAdminComponent implements OnInit {
           Accounts.avatar_url = await this.setImageURLFirebase(Accounts.avatar_url);
         }
         this.total = data.totalPages;
-        this.visiblePages = this.PageArray(this.page, this.total);
+        this.visiblePages = this.PageArray(page, limit);
       }
     );
   }
@@ -143,7 +147,7 @@ export class ManageuserAdminComponent implements OnInit {
     this.account = this.accountServiceService.getUserResponseFromLocalStorage();
 
     this.id = this.route.snapshot.params['id'];
-    this.getAllUsers(0, 10);
+    this.getAllUsers(0, 1000);
     this.loadUserById();
     this.view(this.id);
     this.getAllRole();
@@ -425,6 +429,17 @@ export class ManageuserAdminComponent implements OnInit {
           createdDate: formattedDate,
           accountRole: this.Account.accountRole,
         };
+
+        if (UpdateUserForAdmin.birthday) {
+          const today = new Date();
+          const birthDate = new Date(UpdateUserForAdmin.birthday);
+          const age = today.getFullYear() - birthDate.getFullYear();
+          if (age < 18 || age > 80) {
+            alert('Invalid age. Please provide a valid date of birth.');
+            return;
+          }
+        }
+
         if (!UpdateUserForAdmin.fullname
         ) {
           this.toast.warning({detail: 'Validate warning', summary: 'Fullname not be null', duration: 5000})

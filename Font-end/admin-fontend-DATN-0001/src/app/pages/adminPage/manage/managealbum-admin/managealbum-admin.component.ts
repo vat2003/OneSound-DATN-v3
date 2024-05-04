@@ -1,22 +1,41 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, NO_ERRORS_SCHEMA, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
-import { AlbumService } from '../../adminEntityService/adminService/album/album.service';
-import { Singer } from '../../adminEntityService/adminEntity/singer/singer';
-import { Album } from '../../adminEntityService/adminEntity/album/album';
-import { FirebaseStorageCrudService } from '../../../../services/firebase-storage-crud.service';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators, NgModel } from '@angular/forms';
-import { error, log } from 'console';
-import { SingerService } from '../../adminEntityService/adminService/singer-service.service';
-import { Observable, Subject, debounceTime, distinctUntilChanged, fromEvent, map, startWith, switchMap } from 'rxjs';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { SingerAlbumService } from '../../adminEntityService/adminService/singerAlbum/singer-album.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { account } from '../../adminEntityService/adminEntity/account/account';
-import { accountServiceService } from '../../adminEntityService/adminService/account-service.service';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  NO_ERRORS_SCHEMA,
+  OnChanges,
+  OnInit,
+  Renderer2,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {AlbumService} from '../../adminEntityService/adminService/album/album.service';
+import {Singer} from '../../adminEntityService/adminEntity/singer/singer';
+import {Album} from '../../adminEntityService/adminEntity/album/album';
+import {FirebaseStorageCrudService} from '../../../../services/firebase-storage-crud.service';
+import {CommonModule} from '@angular/common';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+  NgModel
+} from '@angular/forms';
+import {error, log} from 'console';
+import {SingerService} from '../../adminEntityService/adminService/singer-service.service';
+import {Observable, Subject, debounceTime, distinctUntilChanged, fromEvent, map, startWith, switchMap} from 'rxjs';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {SingerAlbumService} from '../../adminEntityService/adminService/singerAlbum/singer-album.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {account} from '../../adminEntityService/adminEntity/account/account';
+import {accountServiceService} from '../../adminEntityService/adminService/account-service.service';
 
 
 @Component({
@@ -78,7 +97,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
 
-
   constructor(
     private accountServiceService: accountServiceService,
     private el: ElementRef,
@@ -90,14 +108,14 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     private singerService: SingerService,
     private singerAlbumService: SingerAlbumService,
     private formBuilder: FormBuilder,
-
-
   ) {
 
   }
+
   ngAfterContentInit(): void {
 
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.filterOptions = this.formcontrol.valueChanges.pipe(
       startWith(''), map(value => this._FILTER(value || ''))
@@ -138,11 +156,8 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         console.log("album: --->", this.albums);
 
 
-
       });
   }
-
-
 
 
   onSubmit() {
@@ -182,7 +197,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
 
   reload() {
     const currentUrl = this.router.url;
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
       this.router.navigate([currentUrl]);
     });
   }
@@ -211,7 +226,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       this.resetFileInput();
       return;
     }
-
 
 
     //Dọc file ảnh
@@ -368,10 +382,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         console.log("List singer", this.singers);
       }
     )
-
   }
-
-
 
   addSingertoTable(singerName: string) {
     const singerExists = this.singerTable.some(singer => singer.fullname === singerName);
@@ -405,7 +416,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
   deleteSingerInTable(idSinger: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const index = this.singerTable.findIndex(singer => singer.id === idSinger);
       if (index !== -1) {
         const deletedSinger = this.singerTable[index];
@@ -420,11 +431,10 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       this.filterOptions = this.formcontrol.valueChanges.pipe(
         startWith(''), map(value => this._FILTER(value || ''))
       )
-    }else{
+    } else {
       alert("nhân viên không được phép xoá")
 
     }
-
 
 
   }
@@ -453,7 +463,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     }
 
     this.albumService.createAlbum(this.album).subscribe(
-
       async (data: any) => {
 
         if (this.album.image != null) {
@@ -462,7 +471,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         const albumId = data.id;
         console.log("Add album successful!");
         console.log("AlbumId: ", albumId);
-
 
 
         console.log("List album: ", this.albums);
@@ -474,8 +482,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
           console.log("singerId: ", singerId + " albumId: ", albumId);
 
           this.singerAlbumService.createSingerAlbum(singerId, data.id).subscribe(
-
-
             () => {
 
               console.log(`----------Added singerAlbum for singer with ID ${singerId} and album with ID ${albumId}`);
@@ -499,9 +505,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
 
-
-
-
   getAlbum(id: number) {
     this.albumService.getAlbumById(id).subscribe(
       async (data: Album) => {
@@ -515,20 +518,19 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
     );
 
     this.singerService.getAllArtistsByAlbumId(id).subscribe((data) => {
-      this.singerTable = data;
-      this.singerTable.forEach((singer: Singer) => {
-        const singerNameIndex = this.singerName.indexOf(singer.fullname);
-        if (singerNameIndex !== -1) {
-          // fullname tồn tại trong singerName, hãy xóa nó
-          this.singerName.splice(singerNameIndex, 1);
-        }
-      });
-      this.filterOptions = this.formcontrol.valueChanges.pipe(
-        startWith(''), map(value => this._FILTER(value || ''))
-      )
-      console.log("Singer in Table --------------------->", this.singerTable);
-    }, error => console.log("Get singer by AlbumId")
-
+        this.singerTable = data;
+        this.singerTable.forEach((singer: Singer) => {
+          const singerNameIndex = this.singerName.indexOf(singer.fullname);
+          if (singerNameIndex !== -1) {
+            // fullname tồn tại trong singerName, hãy xóa nó
+            this.singerName.splice(singerNameIndex, 1);
+          }
+        });
+        this.filterOptions = this.formcontrol.valueChanges.pipe(
+          startWith(''), map(value => this._FILTER(value || ''))
+        )
+        console.log("Singer in Table --------------------->", this.singerTable);
+      }, error => console.log("Get singer by AlbumId")
     )
 
 
@@ -536,12 +538,11 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   }
 
 
-
   //||-------------------------------------------------------||
   //||                   Update Album                        ||
   //||-------------------------------------------------------||
   updateAlbum(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       if (this.imageFile) {
         this.album.image = this.setImageUrl;
       }
@@ -565,8 +566,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
               console.log("singerId: ", singerId + " albumId: ", id);
 
               this.singerAlbumService.createSingerAlbum(singerId, id).subscribe(
-
-
                 () => {
 
                   console.log(`----------Added singerAlbum for singer with ID ${singerId} and album with ID ${id}`);
@@ -585,7 +584,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
         },
         (error) => console.log(error)
       )
-    }else{
+    } else {
       alert("nhân viên không có quyền update")
 
     }
@@ -597,17 +596,17 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //||                   Delete Album                        ||
   //||-------------------------------------------------------||
   deleteAlbum(id: number) {
-    if ( this.account?.accountRole?.id == 2) {
+    if (this.account?.accountRole?.id == 2) {
       const isConfirmed = window.confirm('Are you sure you want to delete this album? If you delete  it, all related information will be deleted too');
       if (isConfirmed) {
         //--------------------delete Album after SingerAlbum-------
 
         this.albumService.deleteAlbum(id).subscribe((data) => {
 
-          console.log("--------Delete Album successful!");
-          this.displayDataOnTable(0, 10);
-          this.displayDataOnTableInactive();
-        }, error => console.log("---------Failed to delete the Album!")
+            console.log("--------Delete Album successful!");
+            this.displayDataOnTable(0, 10);
+            this.displayDataOnTableInactive();
+          }, error => console.log("---------Failed to delete the Album!")
         );
         this.displayDataOnTable(0, 10);
         this.displayDataOnTableInactive();
@@ -616,7 +615,7 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       } else {
 
       }
-    }else{
+    } else {
       alert("nhân viên không có quyền delete")
 
     }
@@ -670,8 +669,6 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
   //||-------------------------------------------------------||
 
 
-
-
   search() {
     this.searchTerms.next(this.searchTerm);
   }
@@ -686,9 +683,9 @@ export class ManagealbumAdminComponent implements OnInit, AfterViewInit, OnChang
       //--------------------delete Album after SingerAlbum-------
 
       this.albumService.restoreAlbum(albumId).subscribe((data) => {
-        this.displayDataOnTable(0, 10);
-        this.displayDataOnTableInactive();
-      }, error => console.log("---------Failed to resore the Album!")
+          this.displayDataOnTable(0, 10);
+          this.displayDataOnTableInactive();
+        }, error => console.log("---------Failed to resore the Album!")
       );
       this.displayDataOnTable(0, 10);
       this.displayDataOnTableInactive();

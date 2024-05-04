@@ -545,8 +545,11 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
       )
       this.updateAlbumList();
     } else {
-      alert("nhân viên không được phép xoá")
-
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 3000
+      });
     }
 
   }
@@ -1311,7 +1314,6 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
     }
     // Kiểm tra các trường cần thiết trước khi tạo bài hát mới
     if (!this.song.name || !this.song.release_date || !this.setImageUrl || !this.setAudioUrl) {
-      alert("Vui lòng điền đầy đủ thông tin để tạo bài hát mới.");
       return; // Dừng việc thực hiện hàm nếu có trường trống
     }
     this.SongService.createSong(this.song).subscribe(async (data: any) => {
@@ -1451,172 +1453,180 @@ export class ManagesongAdminComponent implements OnInit, OnChanges {
 
   updateSong(id: number) {
     // Kiểm tra xem bài hát đã chọn để cập nhật có tồn tại không
-    if (this.song.release_date) {
-      const today = new Date();
-      const releaseDate = new Date(this.song.release_date);
-      if (releaseDate.getTime() > today.getTime()) {
-        this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
+    if (this.account?.accountRole?.id == 2) {
+      if (this.song.release_date) {
+        const today = new Date();
+        const releaseDate = new Date(this.song.release_date);
+        if (releaseDate.getTime() > today.getTime()) {
+          this.toast.error({detail: 'Failed Message', summary: 'Invalid release date', duration: 3000});
+          return;
+        }
+      } else {
+        this.toast.error({detail: 'Failed Message', summary: 'Release date is required', duration: 3000});
         return;
       }
-    } else {
-      this.toast.error({detail: 'Failed Message', summary: 'Release date is required', duration: 3000});
-      return;
-    }
 
-    if (this.imageFile) {
-      this.song.image = this.setImageUrl;
-    }
-    if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
-      this.song.image = 'adminManageImage/song/null.jpg';
-    }
-    // Kiểm tra xem tiêu đề bài hát có được nhập hay không
-    if (!this.song.name) {
-      this.toast.error({detail: 'Failed Message', summary: 'Title is required', duration: 3000});
-      return;
-    }
-//-----------------------------------------
-    if (this.imageFile) {
-      this.song.image = this.setImageUrl;
-    }
-    if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
-      this.song.image = 'adminManageImage/song/null.jpg';
-    }
-
-    if (this.audioFile) {
-      this.song.path = this.setAudioUrl;
-    }
-    // if (!this.setAudioUrl || !this.audioFile) {
-    if ((!this.audioFile && !this.setAudioUrl) || (this.audioFile == '' && this.setAudioUrl == '')) {
-      this.song.path = 'adminManageAudio/song/null.mp3';
-    }
-
-    this.album = this.albumTable[0];
-    this.song.album = this.album;
-
-
-    // Gọi API để cập nhật bài hát
-    this.SongService.updateSong(id, this.song).subscribe(async (data: any) => {
-      // try {
-      console.log("Updating song...");
-
-      // Upload hình ảnh nếu có
       if (this.imageFile) {
-        await this.firebaseStorage.uploadFile('adminManageImage/song/', this.imageFile);
+        this.song.image = this.setImageUrl;
+      }
+      if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
+        this.song.image = 'adminManageImage/song/null.jpg';
+      }
+      // Kiểm tra xem tiêu đề bài hát có được nhập hay không
+      if (!this.song.name) {
+        this.toast.error({detail: 'Failed Message', summary: 'Title is required', duration: 3000});
+        return;
+      }
+//-----------------------------------------
+      if (this.imageFile) {
+        this.song.image = this.setImageUrl;
+      }
+      if (!this.imageFile && !this.setImageUrl || this.imageFile == '' && this.setImageUrl == '') {
+        this.song.image = 'adminManageImage/song/null.jpg';
       }
 
-      // Upload file âm nhạc nếu có
       if (this.audioFile) {
-        await this.firebaseStorage.uploadFile('adminManageAudio/song/', this.audioFile);
+        this.song.path = this.setAudioUrl;
+      }
+      // if (!this.setAudioUrl || !this.audioFile) {
+      if ((!this.audioFile && !this.setAudioUrl) || (this.audioFile == '' && this.setAudioUrl == '')) {
+        this.song.path = 'adminManageAudio/song/null.mp3';
       }
 
-      // Cập nhật thông tin ca sĩ, thể loại, tác giả cho bài hát
-      const songId = data.id;
+      this.album = this.albumTable[0];
+      this.song.album = this.album;
 
 
-      this.SongSingerService.deleteAllSongSingerBySongId(songId).subscribe((data) => {
-        console.log("--------Delete all SingerAlbum successful!");
+      // Gọi API để cập nhật bài hát
+      this.SongService.updateSong(id, this.song).subscribe(async (data: any) => {
+        // try {
+        console.log("Updating song...");
 
-        //----------------------Thêm Singer Album-------------------------
-        const singerIds = this.singerTable.map(singer => singer.id);
-        console.log("---------------test--------------------------")
-        for (const singerId of singerIds) {
+        // Upload hình ảnh nếu có
+        if (this.imageFile) {
+          await this.firebaseStorage.uploadFile('adminManageImage/song/', this.imageFile);
+        }
 
-          console.log("singerId: ", singerId + " albumId: ", id);
+        // Upload file âm nhạc nếu có
+        if (this.audioFile) {
+          await this.firebaseStorage.uploadFile('adminManageAudio/song/', this.audioFile);
+        }
 
+        // Cập nhật thông tin ca sĩ, thể loại, tác giả cho bài hát
+        const songId = data.id;
+
+
+        this.SongSingerService.deleteAllSongSingerBySongId(songId).subscribe((data) => {
+          console.log("--------Delete all SingerAlbum successful!");
+
+          //----------------------Thêm Singer Album-------------------------
+          const singerIds = this.singerTable.map(singer => singer.id);
+          console.log("---------------test--------------------------")
           for (const singerId of singerIds) {
-            this.SongSingerService.createSongSinger(songId, singerId).subscribe(
+
+            console.log("singerId: ", singerId + " albumId: ", id);
+
+            for (const singerId of singerIds) {
+              this.SongSingerService.createSongSinger(songId, singerId).subscribe(
+                () => {
+                  console.log(`Updated SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+                },
+                (error) => {
+                  console.log(`Failed to update SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+                }
+              );
+            }
+          }
+          // this.resetForm();
+          // alert("Update successful!")
+        })
+
+        this.SongGenreService.deleteAllSongGenreBySongId(songId).subscribe((data) => {
+          console.log("--------Delete all SingerAlbum successful!");
+
+          //----------------------Thêm Singer Album-------------------------
+          const genreIds = this.genreTable.map(singer => singer.id);
+          console.log("---------------test--------------------------")
+          for (const singerId of genreIds) {
+            console.log("singerId: ", singerId + " albumId: ", id);
+            this.SongGenreService.createSongGenre(songId, singerId).subscribe(
               () => {
-                console.log(`Updated SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+                console.log(`Updated SongGenre for genre with ID ${singerId} and song with ID ${songId}`);
               },
               (error) => {
-                console.log(`Failed to update SongSinger for singer with ID ${singerId} and song with ID ${songId}`);
+                console.log(`Failed to update SongGenre for genre with ID ${singerId} and song with ID ${songId}`);
               }
             );
           }
-        }
+
+          // this.resetForm();
+          // alert("Update successful!")
+        })
+        // Cập nhật thông tin ca sĩ
+
+
+        // Cập nhật thông tin thể loại
+
+
+        // Cập nhật thông tin tác giả
+        // for (const authorId of authorIds) {
+        //   this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
+        //     () => {
+        //       console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+        //     },
+        //     (error) => {
+        //       console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+        //     }
+        //   );
+        // }
+
+        this.SongAuthorService.deleteAllSongAuthorBySongId(songId).subscribe((data) => {
+          console.log("--------Delete all SingerAlbum successful!");
+
+          //----------------------Thêm Singer Album-------------------------
+          const authorIds = this.authorTable.map(singer => singer.id);
+          console.log("---------------test--------------------------")
+          for (const authorId of authorIds) {
+            this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
+              () => {
+                console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+              },
+              (error) => {
+                console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
+              }
+            );
+          }
+          // this.resetForm();
+          // alert("Update successful!")
+        })
+
+        // Hiển thị lại dữ liệu trên bảng
+        this.displayDataOnTable(0, 10);
+        this.displayDataOnTableInActive();
+        this.reload();
+        this.toast.success({detail: 'Success Message', summary: 'Update song successfully', duration: 5000});      // } catch (error) {
+
         // this.resetForm();
-        // alert("Update successful!")
-      })
+        console.log("Update song successful!");
+        //   console.error("Error occurred while updating song:", error);
+        //   alert("Failed to update song. Please try again later." + error);
+        // }
+      }, (error) => {
+        console.error("Update song failed:", error);
+        this.toast.warning({
+          detail: 'Warning Message',
+          summary: 'Failed to update song. Please try again later.',
+          duration: 3000
+        });
+      });
+    } else {
+      this.toast.warning({
+        detail: 'Warning Message',
+        summary: 'Only Administrator can use this Function',
+        duration: 3000
+      });
 
-      this.SongGenreService.deleteAllSongGenreBySongId(songId).subscribe((data) => {
-        console.log("--------Delete all SingerAlbum successful!");
-
-        //----------------------Thêm Singer Album-------------------------
-        const genreIds = this.genreTable.map(singer => singer.id);
-        console.log("---------------test--------------------------")
-        for (const singerId of genreIds) {
-          console.log("singerId: ", singerId + " albumId: ", id);
-          this.SongGenreService.createSongGenre(songId, singerId).subscribe(
-            () => {
-              console.log(`Updated SongGenre for genre with ID ${singerId} and song with ID ${songId}`);
-            },
-            (error) => {
-              console.log(`Failed to update SongGenre for genre with ID ${singerId} and song with ID ${songId}`);
-            }
-          );
-        }
-
-        // this.resetForm();
-        // alert("Update successful!")
-      })
-      // Cập nhật thông tin ca sĩ
-
-
-      // Cập nhật thông tin thể loại
-
-
-      // Cập nhật thông tin tác giả
-      // for (const authorId of authorIds) {
-      //   this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
-      //     () => {
-      //       console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-      //     },
-      //     (error) => {
-      //       console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-      //     }
-      //   );
-      // }
-
-      this.SongAuthorService.deleteAllSongAuthorBySongId(songId).subscribe((data) => {
-        console.log("--------Delete all SingerAlbum successful!");
-
-        //----------------------Thêm Singer Album-------------------------
-        const authorIds = this.authorTable.map(singer => singer.id);
-        console.log("---------------test--------------------------")
-        for (const authorId of authorIds) {
-          this.SongAuthorService.createSongAuthor(songId, authorId).subscribe(
-            () => {
-              console.log(`Updated SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-            },
-            (error) => {
-              console.log(`Failed to update SongAuthor for author with ID ${authorId} and song with ID ${songId}`);
-            }
-          );
-        }
-        // this.resetForm();
-        // alert("Update successful!")
-      })
-
-      // Hiển thị lại dữ liệu trên bảng
-      this.displayDataOnTable(0, 10);
-      this.displayDataOnTableInActive();
-      this.reload();
-      this.toast.success({detail: 'Success Message', summary: 'Update song successfully', duration: 5000});      // } catch (error) {
-
-      // this.resetForm();
-      console.log("Update song successful!");
-      //   console.error("Error occurred while updating song:", error);
-      //   alert("Failed to update song. Please try again later." + error);
-      // }
-    }, (error) => {
-      console.error("Update song failed:", error);
-      alert("Failed to update song. Please try again later.");
-    });
-    // }
-    // else {
-    //   alert("nhân viên không được phép update")
-    //
-    // }
+    }
     // Kiểm tra xem bài hát đã chọn để cập nhật có tồn tại không
 
   }

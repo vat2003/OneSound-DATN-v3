@@ -43,6 +43,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   imageUrl: string = '';
   setImageUrl: string = '';
   imageFile: any;
+  imageFile2: any;
   errorFieldsArr: String[] = [];
   AuthorsFromData: Author[] = [];
   filterName: string = '';
@@ -52,6 +53,7 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   total: number = 0;
   itempage: number = 4;
   titleAlbum: string[] = [];
+  titleAlbum2: string[] = [];
   visiblePages: number[] = [];
   localStorage?: Storage;
   formcontrol = new FormControl('');
@@ -108,23 +110,21 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
 
   search(): void {
     const searchTermLowerCase = this.searchTerm.toLowerCase();
-
     this.Authors = this.Authors.filter(author =>
       author.fullname.toLowerCase().includes(searchTermLowerCase)
     );
-
-
     if (searchTermLowerCase == '') {
       this.displayDataOnTable(0, 5);
     }
   }
 
   search2(): void {
-    const searchTermLowerCase = this.searchTerm2.toLowerCase();
-    this.AuthorsInactive = this.AuthorsInactive.filter((author: Author) => {
-      author.fullname.toLowerCase().includes(searchTermLowerCase)
+    const searchTermLowerCase2 = this.searchTerm2.toLowerCase();
+    this.AuthorsInactive = this.AuthorsInactive.filter(author => {
+      return author.fullname.toLowerCase().includes(searchTermLowerCase2)
     });
-    if (searchTermLowerCase == '') {
+
+    if (searchTermLowerCase2 == '') {
       this.displayDataOnTableInActive();
     }
   }
@@ -137,16 +137,16 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.search();
-    this.search2();
+    // this.search();
+    // this.search2();
   }
 
-  // onKey(event: any): void {
-  //   this.search();
-  // }
 
   onKey(event: any): void {
     this.searchTerms.next(event.target.value);
+  }
+
+  onKey2(event: any): void {
     this.searchTerms2.next(event.target.value);
   }
 
@@ -182,21 +182,22 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
   displayDataOnTableInActive() {
     this.AuthorService.getAllAuthorsInactive().subscribe(
       async (data) => {
-        this.imageFile = data.map((album: Author) => album.image);
-        this.titleAlbum = data.map((album: Author) => album.fullname);
+        this.imageFile2 = data.map((album: Author) => album.image);
+        this.titleAlbum2 = data.map((album: Author) => album.fullname);
         this.AuthorsInactive = data;
-
         for (const author of this.AuthorsInactive) {
           if (author.image == '' || author.image == null) {
             continue;
           }
           author.image = await this.setImageURLFirebase(author.image);
         }
+
       },
       (error) => {
         console.log('Error huh data:', error);
       }
     );
+
   }
 
   restore(id: Author) {
@@ -215,8 +216,8 @@ export class ManageauthorComponent implements OnInit, AfterViewInit, OnChanges {
       this.AuthorService.updateAuthor(data.id, data).subscribe();
       this.reload()
     })
-    // this.displayDataOnTable(0, 5);
-    // this.displayDataOnTableInActive();
+    this.displayDataOnTable(0, 5);
+    this.displayDataOnTableInActive();
     // this.reload()
     // alert("HEHHEEHHE")
   }

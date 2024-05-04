@@ -13,26 +13,26 @@
       </div>
     </div>
 
-    <div class="detail-container-banner-favicon">
-      <div class="detail-container-banner-favicon-cta">
-        <button><i class="fa-solid fa-play"></i>Play</button>
-        <button><i class="fa-solid fa-shuffle"></i>Shuffle</button>
-      </div>
-      <div class="detail-container-banner-favicon-more">
-        <div class="more-item">
-          <i class="fa-regular fa-heart"></i>
-          Add
-        </div>
-        <div class="more-item">
-          <i class="fa-solid fa-arrow-up-from-bracket"></i>
-          Share
-        </div>
-        <div class="more-item">
-          <i class="fa-solid fa-ellipsis"></i>
-          More
-        </div>
-      </div>
-    </div>
+<!--    <div class="detail-container-banner-favicon">-->
+    <!--      <div class="detail-container-banner-favicon-cta">-->
+    <!--        <button><i class="fa-solid fa-play"></i>Play</button>-->
+    <!--        <button><i class="fa-solid fa-shuffle"></i>Shuffle</button>-->
+    <!--      </div>-->
+    <!--      <div class="detail-container-banner-favicon-more">-->
+    <!--        <div class="more-item">-->
+    <!--          <i class="fa-regular fa-heart"></i>-->
+    <!--          Add-->
+    <!--        </div>-->
+    <!--        <div class="more-item">-->
+    <!--          <i class="fa-solid fa-arrow-up-from-bracket"></i>-->
+    <!--          Share-->
+    <!--        </div>-->
+    <!--        <div class="more-item">-->
+    <!--          <i class="fa-solid fa-ellipsis"></i>-->
+    <!--          More-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </div>
 
@@ -61,7 +61,7 @@
         <th>ARTIST</th>
         <!-- <th>AUTHOR</th> -->
         <th>GENRE</th>
-        <th>TIME</th>
+<!--        <th>TIME</th>-->
         <th></th>
       </tr>
     </thead>
@@ -84,14 +84,6 @@
             >
           </div>
         </td>
-        <!-- <td>
-          <div>
-            <span *ngFor="let singer of authorMap[song.id]; let last = last">
-              {{ singer.fullname
-              }}{{ !last && authorMap[song.id].length > 1 ? ", " : "" }}</span
-            >
-          </div>
-        </td> -->
         <td>
           <div>
             <span *ngFor="let singer of genreMap[song.id]; let last = last"
@@ -100,7 +92,7 @@
             >
           </div>
         </td>
-        <td>3:15</td>
+<!--        <td>3:15</td>-->
         <td>
           <i class="fa-solid fa-plus" (click)="openDialog(song)"></i
           >&nbsp;&nbsp;
